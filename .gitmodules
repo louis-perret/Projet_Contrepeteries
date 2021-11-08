@@ -1,6 +1,0 @@
-[submodule "js/projettut"]
-	path = js/projettut
-	url = https://gitlab.iut-clermont.uca.fr/thgounon/projettut.git
-[submodule "python/contrepeteries"]
-	path = python/contrepeteries
-	url = https://forge.clermont-universite.fr/git/contrepeteries
