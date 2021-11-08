@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-sale=1, schrink-to-fit=no">
+      <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <link rel="stylesheet" href="../css/style.css">
+      <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+      <title>L'art de décaler les sons</title>
+   </head>
+   <body>
+      <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon my-toggler"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav navbar-tabs">
+               <li class="nav-item mr-3">
+                  <a class="nav-link font" href="presentation.html">Présentation</a>
+               </li>
+                          
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#classification" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Classification
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="contrepeterie_classique.html">Contrepèterie classique</a>
+                    <a class="dropdown-item" href="contrepeterie_decadente.html">Contrepèterie décadente</a>
+                    <a class="dropdown-item" href="contrepeterie_irreguliere.html">Contrepèterie irrégulière</a>
+                    <a class="dropdown-item" href="contrepeterie_enchevetree.html">Contrepèterie enchevêtrée</a>
+
+                  </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link font" href="generation_contrepeterie.html">Génération</a>
+                </li>
+
+                 <li class="nav-item">
+                    <a class="nav-link font" href="aide_a_la_contrepeterie.html">Aide à la contrepèterie</a>
+                </li>
+
+                 <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#classification" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Jeu
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="facile.html">Facile</a>
+                    <a class="dropdown-item" href="moyen.html">Moyen</a>
+                    <a class="dropdown-item" href="difficile.html">Difficile</a>
+                  </div>
+                </li>
+            
+
+            </ul>
+            
+         </div>
+         <div class="justify-content-end">
+              <ul  class="navbar-nav navbar-tabs">
+               <li class="nav-item ">
+                    <a class="nav-link font langue" href="index.html"><img class="langue1" src="../image/fr.png"/></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link font langue" href="../en/easy.html"><img class="langue2" src="../image/en.png"></a>
+                </li>
+              </ul>
+            </div>
+      </nav>
+      <section>
+
+        <div class="jumbotron pt-5 pb-5 text-center">
+            <h2 id="titrePr">Êtes-vous un professionnel des contrepèteries ?</h2/>
+              <br/>
+              <h2>(Facile)</h2>
+         </div >
+        
+      <style> 
+
+      #myDIV {
+        display: flex; 
+        flex-direction:column;
+        color: white;
+        width: 550px;
+        height: 200px;
+        background: black;
+        position: relative;
+        font-size: 20px;
+        margin: 100px auto ;
+      }
+
+      #myButton{       
+        margin: 10px auto;
+        vertical-align: middle;
+        background: white;
+        border-radius: 25px; 
+      }
+
+      #myH1{
+        margin: auto;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      #myButton:hover{
+        background: white; 
+      }
+
+      #text{
+        text-align: center;
+        margin-top: 100px;
+      }
+
+      #d{
+        display: flex; 
+        flex-direction:column;
+        position: relative;
+        font-size: 30px;
+        margin: 100px auto ;      
+      }
+
+
+      #btnNext, #soluce{
+        margin-top: 50px;
+      }
+
+      /* Chrome, Safari, Opera */
+      @-webkit-keyframes mymove {
+        from{width: 550px;}
+        to{width: 1000px;}
+        from{height: 100px;}
+        to{height: 500px;}
+
+        from{border-radius: 0px;}
+        to{border-radius: 25px;}
+
+        from{background: black;}
+        to{background: white;}
+
+        from{color: white;}
+        to{color: black;}
+
+        
+      }
+
+      @keyframes mymove {
+        
+
+        from{width: 550px;}
+        to{width: 1000px;}
+        from{height: 100px;}
+        to{height: 500px;}
+
+        from{border-radius: 0px;}
+        to{border-radius: 25px;}
+
+        from{background: black;}
+        to{background: white;}
+
+        from{color: white;}
+        to{color: black;}
+
+        
+      }
+
+      </style>
+
+      
+          <p id="jeu"></p>
+      <a id="aidej" href="aide.html">Besoin d'aide ?</a>
+      <div id="divJeu">
+        <h1 id="text"></h1>
+
+        <div id="myDIV">
+
+            <h1 id="myH1">Le meilleur jeu de contrepèteries !</h1>
+            <button id="myButton" onclick="myFunction();removeButton();writeText()">Commencez la partie !</button>
+        </div>
+      </div>
+
+
+
+
+      
+       </section>
+       <footer class="bg-dark bandeN">   
+         <div>
+            <p id="footer">
+               Copyright © 2020 L'art de décaler les sons / <a id="mentionL" href="mentions.html">Mentions</a>
+            </p>
+         </div>
+       </footer>
+   </body>
+   <script src="../js/jeu.js"></script>
+    <script src="../js/facile.js"></script>   
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+
+</html>
