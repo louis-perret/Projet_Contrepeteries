@@ -1,0 +1,3 @@
+[submodule "js/projettut"]
+	path = js/projettut
+	url = https://gitlab.iut-clermont.uca.fr/thgounon/projettut.git
