@@ -1,0 +1,449 @@
+@font-face {
+    font-family: 'ChopinScript';
+    src: url('../font/ChopinScript.otf');
+    font-style: normal;
+    }
+
+nav{
+	font-size: 2rem;
+	border-bottom: 5px solid black;
+}
+
+body {
+	font-size: 1rem;
+  	position: relative;
+}
+
+a{
+	outline: none; 
+}
+
+#brandnav{
+	min-height: 100vh ;
+  	position: relative;
+}
+
+#mentions{
+	padding: 20px;
+	text-align: center;
+}
+
+#jeua{
+	padding: 20px;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	flex-direction: column;
+ }
+
+ #tjeu{
+ 	margin-top: 30px;
+ 	text-align: center;
+ }
+
+#nvjeu{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+
+#imgJeu{
+	width: 75%;
+	height: 75%;
+	margin: 20px;
+}
+
+#aidej{
+	margin: 20px;
+	display: flex;
+  	justify-content: flex-end;
+  	align-items: flex-end;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#aHead{
+	position: absolute;
+  	top: 50%; 
+  	left: 50%;
+  	transform: translateY(-50%) translateX(-50%);
+}
+
+#mentionL{
+	color: white;
+}
+
+#mentionL:hover{
+	color:white;
+}
+
+.langue1, .langue2{
+	vertical-align: top;
+}
+
+#navbarNav{
+	justify-content: center;
+	margin-left: 92px;
+}
+
+
+#generation, #chargementDico, #file{
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px; 
+}
+
+#aide{
+	padding: 75px;
+}
+
+.jumbotron{
+	font-family: 'ChopinScript';
+	/*background-image: fixed;
+	background-size: 100%;*/
+	background-position: center;
+	background-color: black;
+	background-size: cover;
+    margin-bottom: 0;
+    border-radius: 0rem;
+}
+
+#titrePr{
+	text-shadow: 0px 0px 15px black;
+	font-family: 'ChopinScript';
+}
+
+#textePr{
+	text-shadow: 0px 0px 2px black;
+	margin-bottom: 100px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color:  black;
+    text-shadow: 0px 0px 1px black;
+}
+
+.navbar-light .navbar-toggler {
+    color: black;
+    border-color: black;
+}
+
+.navbar-light .navbar-toggler:hover {
+    box-shadow: 0px 0px 10px black;
+}
+
+
+.border {
+    border: 2px solid black!important;
+}
+
+.border:hover {
+    box-shadow: 0px 0px 5px black;
+}
+
+.font{
+	color: black;
+}
+
+.bandeN{
+ 	height: 100px;
+ }
+
+
+.imgFilm{
+  height: 300px;
+  width: 200px;
+}
+
+.nomFilm{
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'ChopinScript';
+}
+
+#filmsAVenir{
+  background: #870004;
+}
+
+#t1{
+	color: white;
+	text-shadow: 2px 2px black;
+	font-family: 'ChopinScript';
+}
+
+#p1{
+	color: white;
+}
+
+.imgPerso{
+	height: 300px;
+	width: 200px;
+}
+
+.nomPerso{
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'ChopinScript';
+}
+
+.shop{
+	background: #870004;
+	
+}
+
+.active{
+	border-bottom: 2px solid black;
+	text-shadow: 0px 0px 1px black;
+}
+
+nav{
+	background-color: white;
+	font-family: 'ChopinScript';
+}
+
+.ajust1{
+	margin-top: 150px;
+}
+
+.ajust2{
+	margin-bottom: 150px;
+}
+
+.ajust3{
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.btnShop{
+	background-color: white;
+	opacity: 0.95;
+}
+
+.btnShop:hover{
+	opacity: 1;
+	box-shadow: 0px 0px 10px white;
+}
+
+.btn-dark{
+	box-shadow: 0px 0px 5px black;
+}
+
+
+h2{
+    font-family: 'ChopinScript';
+    font-size: 50px;
+    color: white;
+}
+
+h3{
+    font-size: 1.25rem;
+    color: black;
+}
+
+
+.logoM{
+	 height: 200px;
+}
+
+.pb-1, .py-1 {
+    padding-bottom: .9rem!important;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color:  black;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color:  black;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color:  black;
+}
+
+.navbar-light .navbar-toggler {
+    background: white;
+	border: 2px solid black!important;
+}
+
+.navbar-light .navbar-toggler-icon {
+		background-image: url("../image/barre.jpg");
+
+}
+
+.bg-dark {
+    background-color: black!important;
+}
+
+article{
+	vertical-align: center;
+	margin: 20%;
+	margin-bottom: 0%;
+	margin-top: 3%;
+	background-color: white;
+}
+
+blockquote{
+	font-style: italic;
+	border-left: 4px solid grey;
+	padding-left: 50px;
+	margin-left: 30px;
+	margin-bottom: 30px; 
+	color: grey;
+}
+
+#pres{
+	padding: 50px; 
+	padding-bottom: 0px;
+	padding-top: 0px;
+	margin-bottom: 30px; 
+}
+
+h1{
+	font-size: 1.5rem;
+	margin-top: 50px;
+}
+
+header{
+	font-size: 2rem;
+	margin-bottom: 50px;
+	text-align:center;
+}
+
+#pItalique{
+	font-style: italic;
+	padding: 50px; 
+	padding-bottom: 0px;
+	padding-top: 0px;
+	
+}
+
+#footer{
+	text-align: center;
+	color: white;
+	font-family: "ChopinScript";
+	font-size: 1.5rem;
+	padding-top: 25px;
+}
+
+#envoie{
+	font-family: "ChopinScript";
+	font-size: 2rem;
+}
+
+#search{
+	box-shadow: 0px 0px 5px black;
+}
+
+section{
+	background-color: beige;
+	padding-bottom: 50px;
+}
+
+p{
+	margin-bottom: 0rem;
+}
+
+#contact{
+	background-color: white;
+	margin-top: 100px; 
+}
+
+#contactPart{
+	margin: 10px;
+}
+
+.dropdown-item{
+	font-size: 1.5rem; 
+}
+
+span.c0 {
+    display: inline;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#contrepetrieDiv{
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.dropdown-toggle::after {
+	margin-left: 0em;   
+    margin-right: .255em;
+    vertical-align: 0em;    
+}
+
+#source{
+	font-style: italic;
+	text-align: right;
+	margin-right: 50px;
+}
+
+/* ---------------------Code jeu.html ----------------------------------- */
+
+.quizz {
+  width: 800px;
+  max-width: 80%;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px 2px;
+}
+
+
+.hide {
+  display: none;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.rep {
+  --hue: var(--hue-neutral);
+  border: 1px solid hsl(var(--hue), 100%, 30%);
+  background-color: hsl(var(--hue), 100%, 50%);
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+  outline: none;
+}
+
+.rep:hover {
+ 	border-color: black;
+}
+
+.rep.correct {
+  --hue: var(--hue-correct);
+  color: black;
+}
+
+.rep.wrong {
+  --hue: var(--hue-wrong);
+}
+
+
+#start, #next {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

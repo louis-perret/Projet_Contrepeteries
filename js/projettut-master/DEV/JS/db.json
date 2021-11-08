@@ -1,0 +1,18 @@
+{
+  "cont":[
+    {
+      "id":1,
+      "ask":"Elle revient de la ferme pleine d'espoir",
+      "sy":["Elle","re","vient","de","la","f","er","me","pl","eine","d","es","p","oir"],
+      "sysol":["er","me","oir"],
+      "sol":"Elle revient de la foire pleine de sperme"
+    },
+    {
+      "id":2,
+      "ask":"Il fait beau et chaud",
+      "sy":["Il","fait","b","eau","et","ch","aud"],
+      "sysol":["b","ch"],
+      "sol":"Il fait chaud et beau"
+    }
+    ]
+}    
