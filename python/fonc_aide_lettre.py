@@ -15,17 +15,17 @@ i.e replacer("bonjour","pate",3) --> "bonpateour"
 """
 
 
-def replacer(s, newstring, index):
+def replacer(s, newstring, index,length):
 
     if index < 0:  # l'ajoute au début
         return newstring + s
     if index > len(s):  # l'ajoute à la fin
         return s + newstring
     # insère la nouvelle chaîne entre les tranches de l'original
-    return s[:index] + newstring + s[index + 1:]
+    return s[:index] + newstring + s[index + length:]
 
 
-
+"""
 #temporaire, il faudra transformer remplacer en remplacer2 (avec param lenght en +) dans tout le code
 def replacer2(s, newstring, index, lenght):
 
@@ -35,7 +35,7 @@ def replacer2(s, newstring, index, lenght):
         return s + newstring
     # insère la nouvelle chaîne entre les tranches de l'originalnsert the new string between "slices" of the original
     return s[:index] + newstring + s[index + lenght:]
-
+"""
 
 # ----------------------------------------------------------------------------
 """
@@ -60,7 +60,7 @@ def aideLettreSubs(mot):
             compteur += 1
             # si on remplace à l'index la lettre1 par lettre2,
             # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-            nvMot = replacer(mot, lettre2, lettre1[0])
+            nvMot = replacer(mot, lettre2, lettre1[0],1)
 
             test = isInDico('word', nvMot)
 
@@ -82,31 +82,26 @@ def aide2Lettre1Lettre(mot):
     listeDeMotCop = []
     print("Voici donc les lettres que l'on peut changer :")
     # pour chaque lettre du mot
-    backupmot = mot
-    anciennelettre = mot[0]
-    mot = mot[1:len(mot)]
     for lettre1 in enumerate(mot):
 
-        if len(mot) == 0:
+        if lettre1[0] == (len(mot)-1):
             break
             
 
-        doublelettre = anciennelettre+lettre1[1]
-        print(f"  '{doublelettre}'", end='\n')
+        doublelettre = lettre1[1]+mot[lettre1[0]+1]
+        print(f"  '{doublelettre}'", end='')
 
         # on regarde toutes les lettres possibles
         for lettre2 in list(string.ascii_lowercase):
             # si on remplace à l'index les doubles lettres par lettre2,
             # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-            nvMot = replacer2(backupmot, lettre2, lettre1[0], 2) 
+            nvMot = replacer(mot, lettre2, lettre1[0], 2) #On remplace 2 lettres par 1
 
             test = isInDico('word', nvMot)
 
             if test:
                 listeDeMotCop.append((nvMot, doublelettre, lettre2))
-                #print(f"Mot possible : {nvMot}", end='\n') #s'affiche pas bien
-        anciennelettre = mot[0]
-        mot = mot[1:len(mot)]
+    print('\n')
     return listeDeMotCop
 
 
@@ -158,13 +153,13 @@ def aideLettreRechDico(index, listeDeMotCop):
             if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
                 testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
                                        mot.index(
-                    listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+                    listeDeMotCop[ChaqueLettre][2]),1) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
                 # la lettre est dans le mot
                 if isInDico('word', testDansMot):
                     # test we need
                     if diconfig["FiltreGrossier"] == "Oui":
 
-                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossé
+                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
                             listeDeRacines.append(mot[:5])
 
                             listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
