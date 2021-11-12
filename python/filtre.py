@@ -8,11 +8,11 @@ selon fichier config.json
 """
 
 def clear():
-    with open('data/config.json','r') as diconfig_:
-        diconfig = json.load(diconfig_)
+    with open('data/config.json','r') as diconfig_: #lit le fichier et met dans diconfig_
+        diconfig = json.load(diconfig_) #charge le fichier dans un dico
 
         if diconfig["EffacerComplétement"] == "Oui":
-            os.system('clear') if os.name == 'posix' else os.system('clear')
+            os.system('clear') if os.name == 'posix' else os.system('clear') #opérateur ternaire : value_if if condition else value_else
         else :
             print("\n"*60)
 #-------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ def configFiltre():
     for i in diconfig.keys():
         print(f"{i}  -  {diconfig[i]}")
     with open('data/config.json','w') as diconfig_:
-        json.dump(diconfig,diconfig_)
+        json.dump(diconfig,diconfig_) #écrit dans le fichier
 
 #-------------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ def affiRechFiltre(nvDico,mode):
 
     if mode == 'phon':
         if diconfig["FiltreGrossier"] == "Oui":
-            nvDico = filtreMix(nvDico)
+            nvDico = filtreMix(nvDico) #On filtre en ne gardant que ce qui est grossier
         count1 = 0
         count2 = 0
         for key in nvDico:
@@ -94,10 +94,10 @@ def affiRechFiltre(nvDico,mode):
             if diconfig["FiltreGrammatical"] == "Oui":
 
                 for j in nvDico[key]:
-                    j = ' '.join(j)
+                    j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
                     if j[0] == " ":
-                        j = j[1:]
-                    j = j.capitalize()
+                        j = j[1:] #Si la phrase commence par un espace, on l'enlève
+                    j = j.capitalize() #Met la première en majuscule et toutes les autres en minuscules
                     compteur += 1
 
                     if StockPourkey != key and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
@@ -154,7 +154,7 @@ def affiRechFiltre(nvDico,mode):
         #filtrage par grammaire de la phrase
         nvListe = [nvDico[0]]
         if diconfig["FiltreGrossier"] == "Non" and diconfig["FiltreGrammatical"] == "Non":
-            for i in nvDico[1:]:
+            for i in nvDico[1:]: #On renvoie les résultats qu'on avaient de base
                 nvListe.append(" ".join(i[0]))
             return nvListe
 
@@ -198,13 +198,13 @@ au moins un mot vulgaire.
 def filtreMix(dicoResult):
 
     with open('data/DicoVulgaire.json') as vulgaire:
-        BDvulgaire = json.load(vulgaire)
+        BDvulgaire = json.load(vulgaire) #dico contenant tous les mots vulgaires
 
-    dicoFiltre = {}
+    dicoFiltre = {} #nos mots filtrés à la fin
     for key in dicoResult:
         tmpListe = []
 
-        dicoTmp = dicoResult[key]
+        dicoTmp = dicoResult[key] #on récupère les valeurs de chaque clé de dicoResult
         for i in range(len(dicoTmp)):
             test1 = False
 
@@ -224,6 +224,7 @@ def filtreMix(dicoResult):
 
 #-------------------------------------------------------------------------------
 """
+Définit le filtre grammatical
 filtre pour l'aide à la contrepétrie.
 retourne une liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 
@@ -231,13 +232,13 @@ retourne une liste de quadruplets dont tous les élèments sont de la même clas
 """
 def GramFiltre(listeOrgine, mot_origine):
     nouvelleListe = []
-
+	#arbre_mot = arbre qui contient tous les mots
     for pack in listeOrgine:
         mot1 = Mot_to_Phon(arbre_mot, mot_origine)
         mot2 = Mot_to_Phon(arbre_mot, pack[4])
         mot3 = Mot_to_Phon(arbre_mot, pack[2])
         mot4 = Mot_to_Phon(arbre_mot, pack[3])
-        if mot1 is not False and mot2 is not False and mot3 is not False and mot4 is not False:
-            if mot1.split(",")[1] == mot2.split(",")[1] and mot3.split(",")[1] == mot4.split(",")[1]:
+        if mot1 is not False and mot2 is not False and mot3 is not False and mot4 is not False: #si les mots existent dans l'arbre
+            if mot1.split(",")[1] == mot2.split(",")[1] and mot3.split(",")[1] == mot4.split(",")[1]: #s'ils sont de la même classe grammaticale
                 nouvelleListe.append(pack)
     return nouvelleListe

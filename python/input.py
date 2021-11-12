@@ -1,6 +1,6 @@
 print("Chargement des dictionnaires")
-from filtre import *
-import sys
+from filtre import * #Importe toutes les fonctions du fichier filtre
+import sys #Importe fonctions système
 
 boucle = True
 memoireImport = set()
@@ -20,13 +20,13 @@ while boucle:
 3. Configuration des filtres
 0. Quitter\n""")
         try:
-            n = int(input())
+            n = int(input()) #Récupère ce que rentre l'utilisateur
         except ValueError:
             print("Vous n'avez pas saisie un nombre.\n")
 
         if n == 0:
             sys.exit()
-        elif n in range(1,4):
+        elif n in range(1,4): #de 1 à 4 exclu
             test = False
         else:
             print("Votre saisie n'est pas valide\n")
@@ -79,7 +79,7 @@ while boucle:
                     break
 
                 if test:
-                    if  phraseOrigine == 0 :
+                    if  phraseOrigine == 0 : #si la phrase est vide
                         sys.exit()
 
                     elif phraseOrigine == 1:
@@ -135,11 +135,11 @@ while boucle:
             nvListe = {}
 
             for i in liste[1:]:
-                tmp = " ".join(i[0])
-                pos1 = i[1][0]
-                pos2 = i[2][0]
+                tmp = " ".join(i[0])#L'écriture phonétique de la phrase
+                pos1 = i[1][0] #index 1
+                pos2 = i[2][0] #index 2
                 # Phon_to_Phrase ("phrase phon" + phrase origine(l))
-                nvListe[tmp] = Phon_to_Phrase(tmp, phraseOrigine.split(" "), pos1, pos2)
+                nvListe[tmp] = Phon_to_Phrase(tmp, phraseOrigine.split(" "), pos1, pos2) #Pour chaque phrase, on ressort toutes ses écritures possibles
 
             test = affiRechFiltre(nvListe,'phon')
             if test == 0:

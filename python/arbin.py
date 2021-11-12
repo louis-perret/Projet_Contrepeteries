@@ -1,6 +1,6 @@
 import os
 import sys
-import csv
+import csv #permet de lire les fichiers .tsv
 sys.stdout.reconfigure(encoding='utf-8')
 
 # ----------------------------------------------------------------------------
@@ -168,8 +168,8 @@ retour de forme:
 def Mot_to_Phon(tree, value):
     if tree is None:
         return False
-    if (tree.value.split(",")[0]) == value:
-        return (tree.value.split(",")[1] + "," + tree.value.split(",")[2])
+    if (tree.value.split(",")[0]) == value: #Si c'est le mot que je recherche
+        return (tree.value.split(",")[1] + "," + tree.value.split(",")[2]) #renvoie son phonème et sa classe grammaticale
     if (tree.value.split(",")[0]) is not None and value < (tree.value.split(",")[0]):
         return Mot_to_Phon(tree.left, value)
     elif (tree.value.split(",")[0]) is not None:

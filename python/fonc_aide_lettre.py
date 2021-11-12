@@ -21,7 +21,7 @@ def replacer(s, newstring, index):
         return newstring + s
     if index > len(s):  # l'ajoute à la fin
         return s + newstring
-    # insère la nouvelle chaîne entre les tranches de l'originalnsert the new string between "slices" of the original
+    # insère la nouvelle chaîne entre les tranches de l'original
     return s[:index] + newstring + s[index + 1:]
 
 
@@ -52,11 +52,11 @@ def aideLettreSubs(mot):
     compteur = 0
     print("Voici donc les lettres que l'on peut changer :")
     # pour chaque lettre du mot
-    for lettre1 in enumerate(mot):
+    for lettre1 in enumerate(mot): #enumerate renvoie deux paramètres : la position de l'index et la valeur qui correspond
 
         print(f"  '{lettre1[1]}'", end='')
         # on regarde toutes les lettres possibles
-        for lettre2 in list(string.ascii_lowercase):
+        for lettre2 in list(string.ascii_lowercase): #pour chaque lettre de l'alphabet
             compteur += 1
             # si on remplace à l'index la lettre1 par lettre2,
             # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
@@ -64,7 +64,7 @@ def aideLettreSubs(mot):
 
             test = isInDico('word', nvMot)
 
-            if lettre1[1] != lettre2 and test:
+            if lettre1[1] != lettre2 and test: #Si on pas changé la lettre par elle même et si le mot existe
                 listeDeMotCop.append((nvMot, lettre1[1], lettre2))
     print("\n")
     return listeDeMotCop
@@ -148,23 +148,23 @@ def aideLettreRechDico(index, listeDeMotCop):
         BDvulgaire = json.load(vulgaire)
 
     for mot in lignes:
-        mot = mot[0]
+        mot = mot[0] #On recupère le mot qu'on veut tester
 
         for ChaqueLettre in range(len(listeDeMotCop)):
 
-            test1 = listeDeMotCop[ChaqueLettre][2] in mot
+            test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
             test2 = mot[:5] not in listeDeRacines
             # Racines:
-            if index == ChaqueLettre and test1 and test2:
+            if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
                 testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
                                        mot.index(
-                    listeDeMotCop[ChaqueLettre][2]))
+                    listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
                 # la lettre est dans le mot
                 if isInDico('word', testDansMot):
                     # test we need
                     if diconfig["FiltreGrossier"] == "Oui":
 
-                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire):
+                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossé
                             listeDeRacines.append(mot[:5])
 
                             listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
@@ -191,13 +191,13 @@ pretty print des resultats de l'aide sur les lettres et les syllabes.
 
 def affiRechLettre(listeAffichage, compteur, mot_origine):
 
-    listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0]))
+    listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0])) #key = fonction qui prend lettre en param et ressort lettre[0] -> la liste sera trié par rapport à ça
     clear()
 
     while(True):
         compt = 1
 
-        for pack in listeAffichage:
+        for pack in listeAffichage: #pack = (lettre1,lettre2,mot1',mot2',mot2)
 
             marge = len(str(compt))+2
             print(marge*" "+f"{mot_origine} - {pack[4]}")
@@ -243,7 +243,7 @@ def tranchesMot(mot, tSlice):
     dicoSliceCom = {}
     for i in range(len(mot)):
         for j in range(i+1, len(mot)+1):
-            if mot[i:j] != mot and j-i <= tSlice:
+            if mot[i:j] != mot and j-i <= tSlice: #Pas plus de 3 lettres
                 dicoSliceCom[mot[i:j]] = []
 
     return dicoSliceCom
@@ -257,7 +257,7 @@ def DebFinMot(mot, tSlice):
     for i in range(len(mot)):
         for j in range(i+1, len(mot)+1):
             if mot[i:j] != mot and j-i <= tSlice:
-                yield (mot[:i], mot[j:])
+                yield (mot[:i], mot[j:]) #retourne un générateur (itérateur qu'on ne parcours qu'une fois)
 
 
 # ----------------------------------------------------------------------------
@@ -284,7 +284,7 @@ def aideSyllSubs(mot_origine):
         # on ne fait pas de recherche sur les mots composés et on exclue le mot d'entrée
         if '-' not in ligne[0] and ' ' not in ligne[0] and ligne[0] != mot_origine:
             ensTmp = []
-            LexMot = ligne[0]
+            LexMot = ligne[0] #=mot qu'on teste du dico Lexique383
 
             iterDebFin = DebFinMot(mot_origine, 3)
 # pour chaque tranche on recherche les mots dans lexique qui commencent
@@ -294,12 +294,12 @@ def aideSyllSubs(mot_origine):
 
             for slice in dicoSliceCom.keys():
                 try:
-                    deb, fin = next(iterDebFin)
+                    deb, fin = next(iterDebFin) #prend la valeur suivante de l'itérateur
                 except:
                     break
 
                 test = (len(LexMot) - len(deb) - len(fin)) <= 5
-                if LexMot.startswith(deb) and LexMot.endswith(fin) and test:
+                if LexMot.startswith(deb) and LexMot.endswith(fin) and test: #si le mot commence et se termine par ce qu'on veut
                     dicoSliceCom[slice].append(LexMot)
     # on supprime les tranches qui n'ont pas de résultats
     dicoTmp = {}
@@ -325,8 +325,8 @@ def affiNbCorrTranche(dicoSliceCom):
     index = 1
     for i in dicoSliceCom.keys():
         # elimination des doublons dans les listes.
-        dicoSliceCom[i] = sorted(list(set(dicoSliceCom[i])))
-        tailleString = 15 - len(str(i) + str(len(dicoSliceCom[i])))
+        dicoSliceCom[i] = sorted(list(set(dicoSliceCom[i]))) #le set enlève les doublons, on convertit une liste ordonnée
+        tailleString = 15 - len(str(i) + str(len(dicoSliceCom[i]))) #pour aligner dans l'affichage
 
         print(index, i, "-"*tailleString+">", len(dicoSliceCom[i]), "mots")
         index += 1
@@ -348,7 +348,7 @@ def affiNbCorrTranche(dicoSliceCom):
             return -1
         else:
             print("L'entrée n'est pas valide, réessayez\n")
-    return list(dicoSliceCom.keys())[selectSlice-1]
+    return list(dicoSliceCom.keys())[selectSlice-1] #Récupère la liste des mots d'après l'échange selectionné
 
 
 # -----------------------------------------------------------------------------
@@ -371,14 +371,14 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
     continuer = True
     while(continuer):
         if selecteur == -2:
-            numPage = numPage+1 if numPage+1 <= nbPage else numPage
+            numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
         elif selecteur == -1:
-            numPage = numPage-1 if numPage-1 >= 0 else numPage
+            numPage = numPage-1 if numPage-1 >= 0 else numPage #Pas en dessous 0 pages
 
         clear()
         print(f"page {numPage}/{nbPage}\n")
 
-        for i in range(1, nbMotPage, 2):
+        for i in range(1, nbMotPage, 2): #de 1 à 60 avec un pas de 2
 
             mot1 = listeMot[nbMotPage*numPage+i-1] if nbMotPage*numPage+i-1 < len(listeMot) else ""
             mot2 = listeMot[nbMotPage*numPage+i] if nbMotPage*numPage+i < len(listeMot) else ""
@@ -405,7 +405,7 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
                 print("\nVous n'avez pas saisi un chiffre")
                 continue
 
-            test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0
+            test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0 #Si je peux toujours afficher des mots
 
             if selecteur == 0:
                 return 0
@@ -420,7 +420,7 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
             else:
                 print("\nL'entrée n'est pas valide, réessayez")
         continuer = False if selecteur not in choix else True
-    return listeMot[nbMotPage*numPage+selecteur-1]
+    return listeMot[nbMotPage*numPage+selecteur-1] #retourne le mot sélectionné par l'utilisateur pour l'échange
 
 
 # ----------------------------------------------------------------------------
@@ -432,19 +432,19 @@ de forme exemple :
 """
 
 def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
-    # d'an'se      d'ar'se    an
+    		     # d'an'se      d'ar'se    an
 
     listeAffichage = []
     listeTmp = []
 
     # recup deb et fin de mot_origine:
-    debFin = mot_origine.split(syllOrigine)
+    debFin = mot_origine.split(syllOrigine) #séparent le mot avec la syllabe choisie
     # extraction de 'ar' de selectMot.
-    if len(debFin[1]) > 0:
-        syllNvlle = selectMot[len(debFin[0]):-len(debFin[1])]
+    if len(debFin[1]) > 0: #Si la longueur de la fin du mot > 0
+        syllNvlle = selectMot[len(debFin[0]):-len(debFin[1])] #on récupère juste 'ar' dans 'darse'
 
     else:
-        syllNvlle = selectMot[len(debFin[0]):]
+        syllNvlle = selectMot[len(debFin[0]):] #on récupère juste 'ar' dans 'darse'
     print(syllNvlle,"-",syllOrigine)
     tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
     LexLignes = csv.reader(tsv_file, delimiter="\t")
@@ -461,14 +461,14 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
     diconfig = changerfiltre(diconfig)
 
     for ligne in LexLignes:
-        LexMot = ligne[0]
+        LexMot = ligne[0] #On récupère le mot du dico
 
         # cherche occurences de la nouvelle tranche dans le lexique
         if syllNvlle in LexMot:
 
             # on recupère le deb et fin du mot du lexique
-            indexSyllNvlle = re.finditer(syllNvlle, LexMot)
-            indexSyllNvlle = [match.start() for match in indexSyllNvlle]
+            indexSyllNvlle = re.finditer(syllNvlle, LexMot) #retourne un itérateur
+            indexSyllNvlle = [match.start() for match in indexSyllNvlle] 
 
             for i in indexSyllNvlle:
                 # À partir de celles-ci on recupère le début et la fin de ce mot

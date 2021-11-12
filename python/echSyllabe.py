@@ -6,7 +6,10 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 ###############################################################################
-
+"""
+Pour deux mots, teste toutes les combinaisons d'échanges possible entre ces deux mots
+Renvoie une liste de type : (nouveauMot1,nouveauMot2,[i,j] du mot1,[i,j] du mot2)
+"""
 
 def mixSyllablesWord1(Word1, Word2, phrase, mode):
     listeWord = []
@@ -30,8 +33,10 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
     return listeWord
 
 ###############################################################################
-
-
+"""
+Créer un nouveau mot à partir de word2 en changeant ses lettres par la syllabe sy
+Retourne une liste de résultat de type : (nouveauMot,ancienneSyllabe, le couple[i,j])
+"""
 def mixSyllablesWord2(sy, Word2, phrase, mode):
     i = 0
     j = 1
@@ -40,7 +45,7 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
     while(i < len(Word2)):
         # test si retour de Word_to_Phon est une chaîne de caractère
         # et si le Word trouvé n'est pas déjà dans la phrase d'origine.
-        if isInDico(mode, Word2[:i]+sy+Word2[j:]) and Word2[:i]+sy+Word2[j:] not in phrase:
+        if isInDico(mode, Word2[:i]+sy+Word2[j:]) and Word2[:i]+sy+Word2[j:] not in phrase: #le nouveau mot qu'on forme existe et n'est pas dans la phrase
             liste.append([Word2[:i]+sy+Word2[j:], Word2[i:j], [i, j]])
         # gestion de l'intervalle [i:j] section du Word2
         j += 1
@@ -65,7 +70,7 @@ du deuxième mot que l'on échange
 def mainMixSyllables(phrase, mode):
 
     phrase = phrase.split()
-    Lphrases = [[phrase]]
+    Lphrases = [[phrase]] #phrase se contient elle même
     i = 0
 
     # Pour chaque mot dans la phrase
@@ -76,8 +81,9 @@ def mainMixSyllables(phrase, mode):
             WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
             # remplace les contreP trouvees dans la phrase
             for k in WordsContreP:
-                tmp = phrase[:]
-                tmp[i] = k[0]
+                tmp = phrase[:] #tous les éléments de phrase
+		#ajoute les nouveaux mots au même endroit que les anciens
+                tmp[i] = k[0] 
                 tmp[j] = k[1]
 
                 # pour chaque nouvelles combinaisons trouvées,
@@ -130,7 +136,7 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2):
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée
     for i in range(len(listePhon)):
-        listePhon[i] = dicoPhon[listePhon[i]]
+        listePhon[i] = dicoPhon[listePhon[i]] #Pour chaque phonème de la phrase, on récupère tous les mots qui s'écrivent pareil
 
     for i in range(len(listePhon[pos1])):
         for j in range(len(listePhon[pos2])):

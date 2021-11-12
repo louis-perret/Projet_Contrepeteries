@@ -22,7 +22,7 @@ def aideContrepetrie():
         # case rech sur une lettre
         # ou   rech sur une syllabe
 
-        listeDeMotCop = []
+        listeDeMotCop = [] #contient les contrepétries du mot entré
         choix = set(range(6))
         print("""Voulez-vous faire une recherche sur :
             1- une lettre
@@ -68,7 +68,7 @@ def aideContrepetrie():
             print(f"Recherche des échanges possibles sur les différentes tranches :")
             print("\nChargement en cours...\n")
 
-            sliceCorr = aideSyllSubs(mot)
+            sliceCorr = aideSyllSubs(mot) #récupère le dico qui a pour clé les lettres à changer et comme valeur tous les mots obtenus
             # si les tranches n'avait pas de correspondance:
             if isinstance(sliceCorr, bool):
                 clear()
@@ -140,7 +140,7 @@ def aideContrepetrie():
         if selection == 1 or selection == 2 or selection == 5:
 
             # affichage des premiers resultats
-            for i in enumerate(listeDeMotCop):
+            for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
                 tmp = i[1][2] if i[1][2] != "" else chr(32)
                 if selection == 1 or selection == 5:
                     print(f" {i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]}")
@@ -167,7 +167,7 @@ def aideContrepetrie():
                     clear()
                     continuer = -1
                     boucle = False
-                elif selectMot <= len(listeDeMotCop) and selectMot > 0:
+                elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
                     boucle = False
                 else:
                     print("\nL'entrée n'est pas valide, réessayez")

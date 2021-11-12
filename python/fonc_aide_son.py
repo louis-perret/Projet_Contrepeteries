@@ -148,7 +148,7 @@ def affiRechSon(listeAffichage, compteur, mot_origine):
     with open('data/dicoPhoncom.json') as tmp:
         dicoPhon = json.load(tmp)
 
-    motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine)
+    motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupuère la syntaxe phonétique du mot d'origine
     listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0]))
     son1,son2 = "",""
     clear()
@@ -212,15 +212,17 @@ def affiOrthoPhon(listeAffichage, index, mot_origine):
         dicoPhon = json.load(tmp)
 
     motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine)
-    pack = listeAffichage[index]
+    pack = listeAffichage[index]#Récupère le tuple voulu
 
     tCol = 20
+	#affichage de l'écriture phonétique des 4 mots
     print(" "*8, motOriPhon, " "*(tCol-len(motOriPhon)), end='')
     print(pack[3], " "*(tCol-len(pack[4])), end='')
     print(pack[2], " "*(tCol-len(pack[2])), end='')
     print(pack[4], " "*(tCol-len(pack[3])), "\n")
 
-    phon2 = dicoPhon[pack[3]]
+	#On récupère tous les mots qui se prononcent pareil
+    phon2 = dicoPhon[pack[3]] 
     phon3 = dicoPhon[pack[2]]
     phon4 = dicoPhon[pack[4]]
 
@@ -292,11 +294,11 @@ def aideMultiSonSubs(mot_origine):
     tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
     Lexlignes = csv.reader(tsv_file, delimiter="\t")
     tmp = mot_origine
-    mot_origine = Mot_to_Phon_Only(arbre_mot, mot_origine)
+    mot_origine = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupère l'écriture phonétique du mot
     if isinstance(mot_origine, bool):
-        return False
+        return False #S'il existe pas
 
-    dicoSliceCom = trancheMot2(mot_origine, 3)
+    dicoSliceCom = trancheMot2(mot_origine, 3) #On récupère les couples de phonèmes à échanger
 
 # recherche dans le lexique la correspondance des slices
     for ligne in Lexlignes:
@@ -375,7 +377,7 @@ def affiNbCorrTranche2(dicoSliceCom):
             return -1
         else:
             print("L'entrée n'est pas valide, réessayez\n")
-    return list(dicoSliceCom.keys())[selectSlice-1]
+    return list(dicoSliceCom.keys())[selectSlice-1] #Récupère la liste des mots d'après l'échange selectionné
 
 
 # -----------------------------------------------------------------------------
