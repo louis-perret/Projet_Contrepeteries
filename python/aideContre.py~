@@ -139,7 +139,7 @@ def aideContrepetrie():
         elif selection == 6:
             clear()
             print("Recherche des contrepétries possibles ...")
-            listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
+            listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
             
                 
 

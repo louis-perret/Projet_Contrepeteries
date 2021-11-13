@@ -174,7 +174,7 @@ def aideLettreRechDico(index, listeDeMotCop):
             test2 = mot[:5] not in listeDeRacines
             # Racines:
             if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
-            	#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
+            	print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
                 testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
                                        mot.index(
                     listeDeMotCop[ChaqueLettre][2]),1) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
