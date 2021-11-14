@@ -86,7 +86,7 @@ def aide2Lettre1Lettre(mot):
 
         if lettre1[0] == (len(mot)-1):
             break
-            
+                          
 
         doublelettre = lettre1[1]+mot[lettre1[0]+1]
         print(f"  '{doublelettre}'", end='')
@@ -124,7 +124,7 @@ def aide1Lettre2Lettre(mot):
 				# et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
 				nvMot = replacer(mot, lettre2+lettre3, lettre1[0], 1) #On remplace 1 lettres par 2
 				if isInDico('word', nvMot):
-					listeDeMotCop.append((nvMot, lettre1, lettre2+lettre3))
+					listeDeMotCop.append((nvMot, lettre1[1], lettre2+lettre3))
 	print('\n')
 	return listeDeMotCop           		
 
