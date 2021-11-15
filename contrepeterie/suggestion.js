@@ -2,6 +2,7 @@ var dic=[];
 var dicMot=[];
 var dicPhon=[];
 var affichResultat=[];
+
 //const orange = '#FFA600';
 //const green = '#28a745';
 
@@ -177,14 +178,44 @@ function aideLettreSubs() {
 		}
 
 	}
-
-	//On appelle ensuite la fonction pour trouver les differences de lettre entre le mot saisi et ses mots compatibles
-	for (let k = 0; k <l.length ; k++) {
-		aideLettreRechDico(motSave,l[k]);
-	}
+	console.log("liste mot compatible " + l);
+	choixMotCompatible(motSave,l);
 
 
 }
+
+function updateBtn() {
+	let mo = document.getElementById('mot').value;
+	mot=mo.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
+	console.log("mot :" + mot);
+
+	var iButton = $(this).val();
+	console.log("test click " + iButton);
+
+	aideLettreRechDico(mot,iButton);
+}
+
+
+function choixMotCompatible(motSave,listeMotCompatible) {
+	var element = document.getElementById("div1");
+	while (element.firstChild){
+		element.removeChild(element.firstChild);
+	}
+
+	for (var i = 0; i < listeMotCompatible.length; i++) {
+			let button = document.createElement("button");
+			button.innerText =motSave+" - " + listeMotCompatible[i];
+			button.value =listeMotCompatible[i];
+			document.getElementById("div1").append(button);
+			button.addEventListener('click', updateBtn);
+
+	}
+	//var valeur = document.getElementById("button")
+
+
+}
+
+
 
 //Fonction qui va trouver 2 mots pour former le groupe des 4 mots
 function chercheMotDico(lettre1,lettre2,resMot1,resMot2) {
