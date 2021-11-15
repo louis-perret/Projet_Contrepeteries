@@ -29,8 +29,8 @@ def aideContrepetrie():
             2- un  son
             3- plusieurs lettres
             4- plusieurs sons
-	         5- 2 lettres -> 1 lettre
-	         6- 1 lettre -> 2 lettres
+	    5- 2 lettres -> 1 lettre
+	    6- 1 lettre -> 2 lettres
             0- quitter l'aide""")
 
         while True:

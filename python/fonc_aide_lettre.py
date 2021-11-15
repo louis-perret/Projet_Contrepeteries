@@ -125,6 +125,7 @@ def aide1Lettre2Lettre(mot):
 				nvMot = replacer(mot, lettre2+lettre3, lettre1[0], 1) #On remplace 1 lettres par 2
 				if isInDico('word', nvMot):
 					listeDeMotCop.append((nvMot, lettre1[1], lettre2+lettre3))
+				listeDeMotCop.extend(verificationEspace(nvMot, lettre1, lettre2+lettre3)) #<- marche
 	print('\n')
 	return listeDeMotCop           		
 
@@ -512,3 +513,28 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
                                                LexMot])
                         listeTmp.append(testMot)
     return (listeAffichage, len(listeAffichage), diconfig)
+
+# ----------------------------------------------------------------------------
+"""
+fonction vérifiant si une contrepétries est valide avec des espaces
+"""
+
+def verificationEspace(mot, ancienneLettre, nouvelleLettre):
+
+	listeMot = []
+
+	if ancienneLettre[0] != 0:
+		motEspace1 = replacer(mot, ' ', ancienneLettre[0], 0)
+		motSplit = motEspace1.split(' ')
+		if isInDico('word', motSplit[0]) and isInDico('word', motSplit[1]):
+			listeMot.append((motEspace1, ancienneLettre[1], nouvelleLettre))
+	
+	if ancienneLettre[0]+len(nouvelleLettre) != len(mot):
+		motEspace2 = replacer(mot, ' ', ancienneLettre[0]+len(nouvelleLettre), 0)
+		motSplit = motEspace2.split(' ')
+		if isInDico('word', motSplit[0]) and isInDico('word', motSplit[1]):
+			listeMot.append((motEspace2, ancienneLettre[1], nouvelleLettre))
+
+	return listeMot
+
+	
