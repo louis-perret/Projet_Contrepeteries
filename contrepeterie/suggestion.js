@@ -84,8 +84,8 @@ function motExiste(mot, dic){
 	let mot = document.getElementById('mot');	
 	suggestionMot();
 }*/
-/*
-function suggestionMot(){
+
+function aidePhonemeSubs(){
 	var l=[];
 	let mo = document.getElementById('mot').value;
 	mot=mo.toLowerCase();
@@ -123,9 +123,10 @@ function suggestionMot(){
 			}
 		}
 	}
-	affichageMot(l);
+	//affichageMot(l);
+	choixMotCompatible(mot, l);
 }
-*/
+
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -143,16 +144,28 @@ String.prototype.replaceAt = function(index, replacement) {
 	chars[index] = replacement;
 	return chars.join('');
 }
+
+
+function redirigeLettreOuPhoneme() {
+	if (document.getElementById('choixLettre').value == 'true')
+		aideLettreSubs()
+	else
+		aidePhonemeSubs()
+}
+
+
+
 //Fonction principale
 //Fonction qui rend une liste de mot compatible -> pour code = gode, cote, iode...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 function aideLettreSubs() {
 	affichResultat=[];
-	var l=[];
-	let mo = document.getElementById('mot').value;
-	mot=mo.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
+	var l = [];
+	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
 	console.log("mot :" + mot);
 	//console.log(dicMot);
+	if (mot.length == 0)
+		return;
 	let ind = 0;
 	for(let j=0;j<dicMot.length;j++){ //On trouve l'index de ce mot dans le dico
 		if(dicMot[j] == mot){
@@ -213,6 +226,23 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	//var valeur = document.getElementById("button")
 
 
+}
+
+//changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection
+function choixLettre() {
+	if (document.getElementById('choixLettre').value == 'false')
+	{
+		document.getElementById('choixLettre').value = 'true';
+		document.getElementById('choixPhoneme').value = 'false';
+    }
+}
+
+function choixPhoneme() {
+	if (document.getElementById('choixPhoneme').value == 'false')
+	{
+		document.getElementById('choixPhoneme').value = 'true';
+		document.getElementById('choixLettre').value = 'false';
+    }
 }
 
 
