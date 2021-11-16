@@ -85,10 +85,8 @@
 
         <div id="aide">
             <div>
-                <select>
-                    <option id="choixLettre" onclick="choixLettre()" value="true">Lettres</option>
-                    <option id="choixPhoneme" onclick="choixPhoneme()" value="false">Phonèmes</option>
-                </select>
+                    <button id="choixLettre" onclick="choixLettre()" value="true">Lettres</button>
+                    <button id="choixPhoneme" onclick="choixPhoneme()" value="false">Phonèmes</button>
             </div>
 
             <div id="chargementDico">
@@ -97,8 +95,20 @@
 
             </div>
 
+            <div id="choixXY">
+                <div class="divInline">
+                    <p>Nombre de lettres à échanger (mot renseigné)</p>
+                    <input type="text" id="choixDeX" placeholder="1"/>
+                </div>
+
+                <div >
+                    <p>Nombre de lettres à échanger (mot recherché)</p>
+                    <input type="text" id="choixDeY" placeholder="1"/>
+                </div>
+            </div>
+
             <div id="generation">
-                <input type="text" name="phrase" id="mot">
+                <input type="text" name="phrase" id="mot"/>
                 <button id="gen" onclick="redirigeLettreOuPhoneme()"> Lancer la recherche</button>
             </div>
 

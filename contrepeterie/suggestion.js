@@ -85,6 +85,7 @@ function motExiste(mot, dic){
 	suggestionMot();
 }*/
 
+//fonction permettant la contrepétrie à base de phonèmes, échange d'1 phonème contre 1 phonème
 function aidePhonemeSubs(){
 	var l=[];
 	let mo = document.getElementById('mot').value;
@@ -123,7 +124,6 @@ function aidePhonemeSubs(){
 			}
 		}
 	}
-	//affichageMot(l);
 	choixMotCompatible(mot, l);
 }
 
@@ -145,12 +145,29 @@ String.prototype.replaceAt = function(index, replacement) {
 	return chars.join('');
 }
 
-
+//redirige vers l'exécution de aideLettreSubs() ou aidePhonemeSubs() selon si
+//l'utilisateur a sélectionné choixLettre ou choixPhoneme
 function redirigeLettreOuPhoneme() {
 	if (document.getElementById('choixLettre').value == 'true')
-		aideLettreSubs()
+	{
+		aideLettreSubs();
+
+		/*//servira pour plusieurs lettres/plusieurs lettres
+		if (document.getElementById('choixDeX').value == "" || document.getElementById('choixDeY').value == "")
+		{
+			if (document.getElementById('choixDeX').value == "" && document.getElementById('choixDeY').value == "")
+				aideMultiLettre(1, 1);
+			else if (document.getElementById('choixDeX').value == "")
+				aideMultiLettre(1, document.getElementById('choixDeY').value);
+			else if(document.getElementById('choixDeY').textContent == "")
+				aideMultiLettre(document.getElementById('choixDeX').value, 1);
+        }
+		else
+			aideMultiLettre(document.getElementById('choixDeX').value, document.getElementById('choixDeY').value);
+		*/
+	}
 	else
-		aidePhonemeSubs()
+		aidePhonemeSubs();
 }
 
 
@@ -193,9 +210,56 @@ function aideLettreSubs() {
 	}
 	console.log("liste mot compatible " + l);
 	choixMotCompatible(motSave,l);
-
-
 }
+
+
+
+//Prototype de la fonction principale, en enlevant x lettres du mot rensigné et y lettres du mot recherché
+function aideMultiLettre(x, y) {
+	replaceBetween(document.getElementById('mot').value, "ch", x, y);
+	/*
+	affichResultat = [];
+	var l = [];
+	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
+	console.log("mot :" + mot);
+	//console.log(dicMot);
+	if (mot.length == 0)
+		return;
+	let ind = 0;
+	for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
+		if (dicMot[j] == mot) {
+			ind = j;
+		}
+	}
+	var mot2 = dicMot[ind]; //On copie ce mot dans mot2
+	var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+	let motSave = mot2; //On garde le mot en memoire
+
+	for (let i = 0; i < mot2.length; i++) { //Pour chaque lettre de notre mot
+		mot2 = motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
+		for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet
+			mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
+			console.log(mot2);
+			if (motExiste(mot2, dicMot) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
+				console.log('Ok : ' + mot2 + " ajouté");
+				let i = dicMot.indexOf(mot2);
+				if (dicMot[i] != mot) {
+					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
+				}
+			}
+		}
+
+	}
+	console.log("liste mot compatible " + l);
+	choixMotCompatible(motSave, l);*/
+}
+
+//Remplace une partie de mot par nvpartie, depuis indexDebut et pendant longueur charactères
+function replaceBetween(mot, nvPartie, indexDebut, longueur) {
+	console.log(mot.substring(0, indexDebut) + nvPartie + mot.substring(indexDebut, mot.lenght).substring(longueur, mot.lenght));// doit pouvoir être simplifié
+};
+
+
 
 function updateBtn() {
 	let mo = document.getElementById('mot').value;
