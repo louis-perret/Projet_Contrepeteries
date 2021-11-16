@@ -24,110 +24,79 @@ def replacer(s, newstring, index,length):
 		# insère la nouvelle chaîne entre les tranches de l'original
 	return s[:index] + newstring + s[index + length:]
 
-
-"""
-#temporaire, il faudra transformer remplacer en remplacer2 (avec param lenght en +) dans tout le code
-def replacer2(s, newstring, index, lenght):
-
-    if index < 0:  # l'ajoute au début
-        return newstring + s
-    if index > len(s):  # l'ajoute à la fin
-        return s + newstring
-    # insère la nouvelle chaîne entre les tranches de l'originalnsert the new string between "slices" of the original
-    return s[:index] + newstring + s[index + lenght:]
-"""
-
 # ----------------------------------------------------------------------------
+
 """
-Recherche dans le mot donné les mots possible en substituant une lettre
-ex : model -> monel,motel,modal,modem,etc
-retourne une liste de tuples des possibilitées au format :
-[(mot,Anciennelettre,nouvellelettre),...]
+Objectif : Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
+Paramètres :
+	-Entrée :
+		mot : mot sur lequel on va récupérer le couple
+		x : nombre de lettres pour le couple
+		index : à partir de qu'elle lettre
+	-Sortie :
+		Renvoie un tuple de la forme : boolean,couple.
 """
-
-
-def aideLettreSubs(mot):
-
-    listeDeMotCop = []
-    compteur = 0
-    print("Voici donc les lettres que l'on peut changer :")
-    # pour chaque lettre du mot
-    for lettre1 in enumerate(mot): #enumerate renvoie deux paramètres : la position de l'index et la valeur qui correspond
-
-        print(f"  '{lettre1[1]}'", end='')
-        # on regarde toutes les lettres possibles
-        for lettre2 in list(string.ascii_lowercase): #pour chaque lettre de l'alphabet
-            compteur += 1
-            # si on remplace à l'index la lettre1 par lettre2,
-            # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-            nvMot = replacer(mot, lettre2, lettre1[0],1)
-
-            test = isInDico('word', nvMot)
-
-            if lettre1[1] != lettre2 and test: #Si on pas changé la lettre par elle même et si le mot existe
-                listeDeMotCop.append((nvMot, lettre1[1], lettre2))
-    print("\n")
-    return listeDeMotCop
-
-
-
-# ----------------------------------------------------------------------------
-"""
-Fonction temporaire visant à effectuer une contrepétrie en échangeant 2 lettres contre 1 lettre
-"""
-
-
-def aide2Lettre1Lettre(mot):
-
-    listeDeMotCop = []
-    print("Voici donc les lettres que l'on peut changer :")
-    # pour chaque lettre du mot
-    for lettre1 in enumerate(mot):
-
-        if lettre1[0] == (len(mot)-1):
-            break
-                          
-
-        doublelettre = lettre1[1]+mot[lettre1[0]+1]
-        print(f"  '{doublelettre}'", end='')
-
-        # on regarde toutes les lettres possibles
-        for lettre2 in list(string.ascii_lowercase):
-            # si on remplace à l'index les doubles lettres par lettre2,
-            # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-            nvMot = replacer(mot, lettre2, lettre1[0], 2) #On remplace 2 lettres par 1
-
-            test = isInDico('word', nvMot)
-
-            if test:
-                listeDeMotCop.append((nvMot, doublelettre, lettre2))
-    print('\n')
-    return listeDeMotCop
-
-# ----------------------------------------------------------------------------
-"""
-Fonction temporaire visant à effectuer une contrepétrie en échangeant 1 lettre contre 2 lettres
-"""
-
-def aide1Lettre2Lettre(mot):
+def recupCouple(mot,x,index):
+	if x>1: #Si on désire récupérer un couple de plus de 2 lettres
+		if index+1 == len(mot): #Si on est à la fin du mot (evite les index out of range)
+			return (False,'') #Exemple : bonjour, si on est à la lettre r, on peut pas prendre de couple avec r car on est à la fin
+	return (True,mot[index:index+x])
 	
-	listeDeMotCop = []
-	print("Voici donc les lettres que l'on peut changer :")
-	# pour chaque lettre du mot
-	for lettre1 in enumerate(mot):
-		print(f"  '{lettre1[1]}'", end='')
-		# on regarde toutes les lettres possibles
-		for lettre2 in list(string.ascii_lowercase):
-			#pour faire des couples
-			for lettre3 in list(string.ascii_lowercase):
-				# si on remplace à l'index de la lettre1 par lettre2+lettre3,
-				# et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-				nvMot = replacer(mot, lettre2+lettre3, lettre1[0], 1) #On remplace 1 lettres par 2
-				if isInDico('word', nvMot):
-					listeDeMotCop.append((nvMot, lettre1[1], lettre2+lettre3))
-				listeDeMotCop.extend(verificationEspace(nvMot, lettre1, lettre2+lettre3)) #<- marche
+# ----------------------------------------------------------------------------
+
+"""
+Objectif : Renvoie une liste des couples possibles de lettres à partir de l'alphabet
+Paramètres :
+	-Entrée :
+		-y : nombre lettres pour la combinaison
+		-a : chaîne contenant la combinaison (utile pour la récursivité, vide au premier appel)
+		-liste : liste des réponses (utile pour la récursivité, vide au premier appel)
+	-Sortie : 
+		-listeCouple : liste des réponses
+
+Exemple : Si je désire récupérer tous les couples de 2 lettres possibiles à partir de l'alphabet, j'utilise cette fonction qui me retournera une liste qui contiendra : aa,ab,ac,ad,...,zz.
+"""
+def recupCoupleLettre(y,a,liste):
+	listeCouple=liste
+	for l in list(string.ascii_lowercase):
+		if y == 1: #On a le nombre de lettre désiré
+			listeCouple.append(a+l)
+		else:
+			listeCouple=recupCoupleLettre(y-1,a+l,listeCouple) 
+	return listeCouple
+
+# ----------------------------------------------------------------------------
+"""
+Objectif : Renvoie une liste des contrepétries possibles en remplaçant x lettres par y lettres
+Paramètres :
+	-Entrée :
+		-mot : mot de base
+		-x : nombre de lettres dans mot à changer
+		-y : nombre lettres pour la combinaison
+	-Sortie : 
+		-listeMotCop : liste des réponses
+
+listeMotCop est de la forme : (nouveau mot, ancienne(s) lettre(s), nouvelle(s) lettre(s))
+
+Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des combinaisons (si on veut échanger par 3 lettres, on aura 26^3)
+"""
+def aide(mot,x,y):
+	listeMotCop=[]
+	listeCouple=recupCoupleLettre(y,'',[]) #Récupère la liste de combinaisons possibles de longueur y
+	print('Voici donc les lettres que l\'on peut changer : ')
+	for lettre in enumerate(mot): #Pour chaque lettre du mot
+		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
+		if coupleLettre[0]: #S'il existe un couple possible à échanger
+			print(f'\'{coupleLettre[1]}\'',end=' ')			
+			for couple in listeCouple: #Pour chaque combinaison possible
+				
+				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
+				
+				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+					listeMotCop.append((nvtMot,coupleLettre[1],couple))
+				#listeMotCop.extend(verificationEspace(nvtMot, (lettre[0],coupleLettre[1]), couple)) <- à revoir
 	print('\n')
-	return listeDeMotCop           		
+	return listeMotCop
 
 
 # ----------------------------------------------------------------------------

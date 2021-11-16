@@ -52,7 +52,8 @@ def aideContrepetrie():
         elif selection == 1:
             clear()
             print("Recherche des contrepétries possibles ...")
-            listeDeMotCop = aideLettreSubs(mot)
+            #listeDeMotCop = aideLettreSubs(mot)
+            listeDeMotCop = aide(mot,1,1)
     # -------------------------------------------------------------------------------
 
         elif selection == 2:
@@ -133,14 +134,15 @@ def aideContrepetrie():
         elif selection == 5:
             clear()
             print("Recherche des contrepétries possibles ...")
-            listeDeMotCop = aide2Lettre1Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
+            #listeDeMotCop = aide2Lettre1Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
+            listeDeMotCop = aide(mot,2,1)
     # -------------------------------------------------------------------------------
 
         elif selection == 6:
             clear()
             print("Recherche des contrepétries possibles ...")
-            listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
-            
+            #listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
+            listeDeMotCop = aide(mot,1,2)
                 
 
     # -------------------------------------------------------------------------------
