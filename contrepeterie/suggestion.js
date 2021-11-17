@@ -153,9 +153,9 @@ String.prototype.replaceAt = function(index, replacement) {
 function redirigeLettreOuPhoneme() {
 	if (document.getElementById('choixLettre').value == 'true')
 	{
-		aideLettreSubs();
+		//aideLettreSubs();
 
-		/*//servira pour plusieurs lettres/plusieurs lettres
+		//servira pour plusieurs lettres/plusieurs lettres
 		if (document.getElementById('choixDeX').value == "" || document.getElementById('choixDeY').value == "")
 		{
 			if (document.getElementById('choixDeX').value == "" && document.getElementById('choixDeY').value == "")
@@ -167,7 +167,7 @@ function redirigeLettreOuPhoneme() {
         }
 		else
 			aideMultiLettre(document.getElementById('choixDeX').value, document.getElementById('choixDeY').value);
-		*/
+		
 	}
 	else
 		aidePhonemeSubs();
@@ -224,14 +224,12 @@ function aideLettreSubs() {
 
 
 //Prototype de la fonction principale, en enlevant x lettres du mot rensigné et y lettres du mot recherché
+//Traduction de la fonction de généralisation python en JS
 function aideMultiLettre(x, y) {
-	replaceBetween(document.getElementById('mot').value, "ch", x, y);
-	/*
+	//replaceBetween(document.getElementById('mot').value, "ch", x, 2);
 	affichResultat = [];
 	var l = [];
 	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
-	console.log("mot :" + mot);
-	//console.log(dicMot);
 	if (mot.length == 0)
 		return;
 	let ind = 0;
@@ -244,23 +242,77 @@ function aideMultiLettre(x, y) {
 	var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 	let motSave = mot2; //On garde le mot en memoire
 
-	for (let i = 0; i < mot2.length; i++) { //Pour chaque lettre de notre mot
-		mot2 = motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
-		for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet
-			mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-			console.log(mot2);
-			if (motExiste(mot2, dicMot) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
-				console.log('Ok : ' + mot2 + " ajouté");
-				let i = dicMot.indexOf(mot2);
-				if (dicMot[i] != mot) {
-					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
-				}
-			}
-		}
 
+	//code de Louis Perret traduit en JS, bug pour l'instant 
+	
+	let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
+	for (var i = 0; i < mot.length; i++) //Pour chaque lettre de notre mot
+	{
+		var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans pyrhon = i ici normalement
 	}
-	console.log("liste mot compatible " + l);
-	choixMotCompatible(motSave, l);*/
+		if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
+	{
+		for (couple in listeCouple) //Pour chaque combinaison possible
+		{
+			let nvtMot = replaceBetween(mot, couple, i, x); //On remplace
+
+			//if coupleLettre[1] != couple and isInDico('word', nvtMot): //Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+
+			let aInsererDansl = [nvtMot, coupleLettre[1], couple];
+			l.push(aInsererDansl);
+			//l.extend(verificationEspace(nvtMot, (lettre[0], coupleLettre[1]), couple)) < - à revoir
+		}
+	}
+	choixMotCompatible(motSave, l);
+	
+}
+
+
+
+
+/*
+Objectif: Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
+Paramètres:
+-Entrée :
+mot: mot sur lequel on va récupérer le couple
+x: nombre de lettres pour le couple
+index: à partir de qu'elle lettre
+	- Sortie :
+Renvoie un tuple de la forme: boolean, couple.
+*/
+function recupCouple(mot, x, index) {
+	console.log(x);
+	if (x > 1) //Si on désire récupérer un couple de plus de 2 lettres
+		if (index + 1 == mot.lenght) //Si on est à la fin du mot(evite les index out of range)
+			return ['false', '']; //Exemple: bonjour, si on est à la lettre r, on peut pas prendre de couple avec r car on est à la fin
+	return ['true', mot.substring(index, index+x)];
+}
+
+
+
+
+/*
+Objectif : Renvoie une liste des couples possibles de lettres à partir de l'alphabet
+Paramètres :
+	-Entrée :
+		-y : nombre lettres pour la combinaison
+		-a : chaîne contenant la combinaison (utile pour la récursivité, vide au premier appel)
+		-liste : liste des réponses (utile pour la récursivité, vide au premier appel)
+	-Sortie :
+		-listeCouple : liste des réponses
+
+Exemple : Si je désire récupérer tous les couples de 2 lettres possibiles à partir de l'alphabet, j'utilise cette fonction qui me retournera une liste qui contiendra : aa,ab,ac,ad,...,zz.
+*/
+function recupCoupleLettre(y, a, liste, alphabet) {
+	listeCouple = liste;
+	for (l in alphabet)
+	{
+		if (y == 1)
+			listeCouple.push(a + l);
+		else
+			listeCouple = recupCoupleLettre(y - 1, a + l, listeCouple);
+	}
+	return listeCouple
 }
 
 //Remplace une partie de mot par nvpartie, depuis indexDebut et pendant longueur charactères
