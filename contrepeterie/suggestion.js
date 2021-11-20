@@ -226,6 +226,10 @@ function aideLettreSubs() {
 //Prototype de la fonction principale, en enlevant x lettres du mot rensigné et y lettres du mot recherché
 //Traduction de la fonction de généralisation python en JS
 function aideMultiLettre(x, y) {
+	  bonjour="bonjour"
+	  bonjour=bonjour.replacerAvecIndex(3,"pate")
+	  console.log("Test replacer :" + bonjour)
+
 	//replaceBetween(document.getElementById('mot').value, "ch", x, 2);
 	affichResultat = [];
 	var l = [];
@@ -241,35 +245,36 @@ function aideMultiLettre(x, y) {
 	var mot2 = dicMot[ind]; //On copie ce mot dans mot2
 	var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 	let motSave = mot2; //On garde le mot en memoire
-
-
-	//code de Louis Perret traduit en JS, bug pour l'instant 
-	
 	let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-	for (var i = 0; i < mot.length; i++) //Pour chaque lettre de notre mot
+	console.log("Voici donc les lettres que l\'on peut changer :[ ");
+	for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
 	{
+		console.log("passage dans le for ---------------------------------------------------")
 		var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans pyrhon = i ici normalement
-	}
+		//console.log("true ou false ? : " + coupleLettre[0])
 		if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
-	{
-		for (couple in listeCouple) //Pour chaque combinaison possible
 		{
-			let nvtMot = replaceBetween(mot, couple, i, x); //On remplace
+			console.log(coupleLettre[1] + " , ");
+			for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
+			{
+				couple = listeCouple[j]
+				var nvtMot = mot.replacerAvecIndex(i, couple)
+				console.log("NvMot = " + nvtMot)
+				//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
 
-			//if coupleLettre[1] != couple and isInDico('word', nvtMot): //Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+				if (coupleLettre[1] != couple && motExiste(nvtMot, dicMot)) { //Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+					console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+					l.push(nvtMot);
+				}
 
-			let aInsererDansl = [nvtMot, coupleLettre[1], couple];
-			l.push(aInsererDansl);
-			//l.extend(verificationEspace(nvtMot, (lettre[0], coupleLettre[1]), couple)) < - à revoir
+			}
 		}
 	}
+	console.log(" ]")
+	//console.log("--------------------------Ma liste compatible : " + l)
 	choixMotCompatible(motSave, l);
 	
 }
-
-
-
-
 /*
 Objectif: Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
 Paramètres:
@@ -281,15 +286,19 @@ index: à partir de qu'elle lettre
 Renvoie un tuple de la forme: boolean, couple.
 */
 function recupCouple(mot, x, index) {
-	console.log(x);
-	if (x > 1) //Si on désire récupérer un couple de plus de 2 lettres
-		if (index + 1 == mot.lenght) //Si on est à la fin du mot(evite les index out of range)
-			return ['false', '']; //Exemple: bonjour, si on est à la lettre r, on peut pas prendre de couple avec r car on est à la fin
-	return ['true', mot.substring(index, index+x)];
+	console.log("----------------------------------Valeur de mot :" +mot);
+	console.log("----------------------------------Valeur de x :" +x);
+	console.log("----------------------------------Valeur de index :" +index);
+	if (x > 1) {
+		console.log("----------------------------------Valeur de index+1 :" + (index + 1));
+		console.log("----------------------------------Valeur de length :" + mot.length);
+		if ((index + 1) === mot.length)
+			return ['false', '']
+
+	}
+	//console.log("Je return : " + 'true' + ', ' +mot.substr(index, x))
+	return ['true', mot.substr(index, x)];
 }
-
-
-
 
 /*
 Objectif : Renvoie une liste des couples possibles de lettres à partir de l'alphabet
@@ -305,21 +314,31 @@ Exemple : Si je désire récupérer tous les couples de 2 lettres possibiles à 
 */
 function recupCoupleLettre(y, a, liste, alphabet) {
 	listeCouple = liste;
-	for (l in alphabet)
-	{
-		if (y == 1)
-			listeCouple.push(a + l);
-		else
-			listeCouple = recupCoupleLettre(y - 1, a + l, listeCouple);
+	for (let i = 0; i < alphabet.length; i++)
+		{
+			var l=alphabet[i]
+			if (y == 1)
+				listeCouple.push(a + l);
+			else
+			listeCouple = recupCoupleLettre(y - 1, a + l , listeCouple,alphabet);
 	}
 	return listeCouple
 }
-
+/*
 //Remplace une partie de mot par nvpartie, depuis indexDebut et pendant longueur charactères
 function replaceBetween(mot, nvPartie, indexDebut, longueur) {
 	console.log(mot.substring(0, indexDebut) + nvPartie + mot.substring(indexDebut, mot.lenght).substring(longueur, mot.lenght));// doit pouvoir être simplifié
 };
+*/
+String.prototype.replacerAvecIndex = function (index, string) {
+	if (index < 0)
+		return string
+	if (index > this.length)
+		return this.substring(0)+string;
+	return this.substring(0,index) + string + this.substring(index+1,this.length);
+};
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function updateBtn() {
