@@ -94,7 +94,7 @@ def aide(mot,x,y):
 				
 				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					listeMotCop.append((nvtMot,coupleLettre[1],couple))
-				#listeMotCop.extend(verificationEspace(nvtMot, (lettre[0],coupleLettre[1]), couple)) <- à revoir
+				listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
 	print('\n')
 	return listeMotCop
 
@@ -493,8 +493,8 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre):
 	listeMot = []
 
 	for l in enumerate(mot):
-		if l[0] != 0 or l[0] != len(mot)-1:
-			motEspace1 = replacer(mot, ' ', ancienneLettre[0], 0)
+		if l[0] >= 2 and l[0] <= len(mot)-2:
+			motEspace1 = replacer(mot, ' ', l[0], 0)
 			motSplit = motEspace1.split(' ')
 			if isInDico('word', motSplit[0]) and isInDico('word', motSplit[1]):
 				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre))

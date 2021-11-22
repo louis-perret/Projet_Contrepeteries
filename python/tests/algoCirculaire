@@ -1,0 +1,10 @@
+contrpèteries circulaire(mot,x,y,anciennesyll,syllnouv,listemotcop)
+{
+	pour chaque mot du dico (motDico)
+	{
+		pour chaque lettre de motDico
+		{
+			nouvMot = remplacer(
+		}
+	}
+}
