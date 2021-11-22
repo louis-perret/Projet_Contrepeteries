@@ -38,7 +38,7 @@ Paramètres :
 """
 def recupCouple(mot,x,index):
 	if x>1: #Si on désire récupérer un couple de plus de 2 lettres
-		if index+1 == len(mot): #Si on est à la fin du mot (evite les index out of range)
+		if index+(x-1) >= len(mot): #Si on est à la fin du mot (evite les index out of range)
 			return (False,'') #Exemple : bonjour, si on est à la lettre r, on peut pas prendre de couple avec r car on est à la fin
 	return (True,mot[index:index+x])
 	
