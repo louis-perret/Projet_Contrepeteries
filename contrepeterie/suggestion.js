@@ -67,9 +67,9 @@ function splitdic(){
   		dicMot.push(dic[i]['data'][0]);
 		dicPhon.push(dic[i]['data'][1]);	
   	}
-  	console.log("Affichage du dctionaire de mots");
+  	console.log("Affichage du dictionaire de mots");
   	console.log(dicMot);
-  	console.log("Affichage du dctionaire de sons");
+  	console.log("Affichage du dictionaire de sons");
   	console.log(dicPhon);
 }
 
@@ -81,62 +81,13 @@ function motExiste(mot, dic){
 }
 
 
-//fonction permettant la contrepétrie à base de phonèmes, échange d'1 phonème contre 1 phonème
-function aidePhonemeSubs(){
-	affichResultat=[];
-	var l=[];
-	let mo = document.getElementById('mot').value;
-	mot=mo.toLowerCase();
-	console.log("mot :" + mot);
-	if (mot.length == 0)
-		return
-	let ind = 0;
-	for(let j=0;j<dicMot.length;j++){
-		if(dicMot[j] == mot){
-			ind = j;
-		}
-	}
-	if (ind==0) {
-		l.push("Aucune correspondance");
-		affichageMot(l);
-		l=[];
-		return;
-	}
-	console.log("ind :" + ind);
-	var mot2=dicPhon[ind];
-	console.log("mot2 :" + mot2);
-	var alph = ['b', 'd', 'f', 'g', 'k', 'l', 'm', 'n', 'ŋ','ɲ','p','ʁ','s', 'ʃ', 't', 'v', 'z', 'ʒ', 'j', 'w','ɥ', 'a', 'ɑ', 'e', 'ɛ','ɛː','ə','i', 'œ','ø','o','ɔ','u','y','ɑ̃','ɛ̃','œ̃','ɔ̃'];
-	let motSave=mot2; //On garde le mot en memoire
-	var m=mot2.split('');
-	console.log(m);
-
-	for (let i=0; i<mot2.length; i++) { //Pour chaque lettre de notre mot
-		mot2=motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
-		for(let j=0;j<alph.length;j++) { //Pour chaque lettre de l'alphabet
-			mot2 = mot2.replaceAt(i,alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-			console.log(mot2);
-			if (motExiste(mot2,dicPhon) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
-				console.log('Ok : ' + mot2 + " ajouté");
-				let i = dicPhon.indexOf(mot2);
-				if(dicMot[i] != mot){
-					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
-				}
-			}
-		}
-
-	}
-	console.log("liste mot compatible " + l);
-	choixMotCompatible(mot, l);
-
-}
-
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
-
+/*
 //Fonction qui remplace a un index donné, une lettre donnée.
 String.prototype.replaceAt = function(index, replacement) {
 	if (index >= this.length) {
@@ -147,6 +98,8 @@ String.prototype.replaceAt = function(index, replacement) {
 	chars[index] = replacement;
 	return chars.join('');
 }
+*/
+
 
 //redirige vers l'exécution de aideLettreSubs() ou aidePhonemeSubs() selon si
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
@@ -175,106 +128,7 @@ function redirigeLettreOuPhoneme() {
 
 
 
-//Fonction principale
-//Fonction qui rend une liste de mot compatible -> pour code = gode, cote, iode...
-//Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
-function aideLettreSubs() {
-	affichResultat=[];
-	var l = [];
-	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
-	console.log("mot :" + mot);
-	//console.log(dicMot);
-	if (mot.length == 0)
-		return;
-	let ind = 0;
-	for(let j=0;j<dicMot.length;j++){ //On trouve l'index de ce mot dans le dico
-		if(dicMot[j] == mot){
-			ind = j;
-		}
-	}
-	if (ind==0) {
-		l.push("Aucune correspondance");
-		affichageMot(l);
-		l=[];
-		return;
-	}
-	var mot2=dicMot[ind]; //On copie ce mot dans mot2
-	var alph=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-	let motSave=mot2; //On garde le mot en memoire
 
-	for (let i=0; i<mot2.length; i++) { //Pour chaque lettre de notre mot
-		mot2=motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
-		for(let j=0;j<alph.length;j++) { //Pour chaque lettre de l'alphabet
-			mot2 = mot2.replaceAt(i,alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-			console.log(mot2);
-			if (motExiste(mot2,dicMot) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
-				console.log('Ok : ' + mot2 + " ajouté");
-				let i = dicMot.indexOf(mot2);
-				if(dicMot[i] != mot){
-					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
-				}
-			}
-		}
-
-	}
-	console.log("liste mot compatible " + l);
-	choixMotCompatible(motSave,l);
-}
-
-
-
-//Prototype de la fonction principale, en enlevant x lettres du mot rensigné et y lettres du mot recherché
-//Traduction de la fonction de généralisation python en JS
-function aideMultiLettre(x, y) {
-	  bonjour="bonjour"
-	  bonjour=bonjour.replacerAvecIndex(3,"pate")
-	  console.log("Test replacer :" + bonjour)
-
-	//replaceBetween(document.getElementById('mot').value, "ch", x, 2);
-	affichResultat = [];
-	var l = [];
-	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
-	if (mot.length == 0)
-		return;
-	let ind = 0;
-	for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
-		if (dicMot[j] == mot) {
-			ind = j;
-		}
-	}
-	var mot2 = dicMot[ind]; //On copie ce mot dans mot2
-	var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-	let motSave = mot2; //On garde le mot en memoire
-	let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-	console.log("Voici donc les lettres que l\'on peut changer :[ ");
-	for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
-	{
-		console.log("passage dans le for ---------------------------------------------------")
-		var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
-		//console.log("true ou false ? : " + coupleLettre[0])
-		if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
-		{
-			console.log(coupleLettre[1] + " , ");
-			for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
-			{
-				couple = listeCouple[j]
-				var nvtMot = mot.replacerAvecIndex(i, x, couple)
-				console.log("NvMot = " + nvtMot)
-				//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
-
-				if (nvtMot != mot && motExiste(nvtMot, dicMot)) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-					console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-					l.push(nvtMot);
-				}
-
-			}
-		}
-	}
-	console.log(" ]")
-	//console.log("--------------------------Ma liste compatible : " + l)
-	choixMotCompatible(motSave, l);
-	
-}
 /*
 Objectif: Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
 Paramètres:
@@ -294,6 +148,11 @@ function recupCouple(mot, x, index) {
 		//console.log("----------------------------------Valeur de length :" + mot.length);
 		if ((index + 1) === mot.length)
 			return ['false', '']
+		
+		/* peut-être à remplacer par
+		if ((index + (x - 1)) >= mot.length)
+		return ['false', '']
+		*/
 
 	}
 	//console.log("Je return : " + 'true' + ', ' +mot.substr(index, x))
@@ -349,7 +208,7 @@ function updateBtn() {
 	var iButton = $(this).val();
 	console.log("test click " + iButton);
 
-	aideLettreRechDico(mot,iButton);
+	aideLettreRechDico(mot,iButton, document.getElementById("choixDeX").value, document.getElementById("choixDeY").value);
 }
 
 
@@ -367,9 +226,6 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 			button.addEventListener('click', updateBtn);
 
 	}
-	//var valeur = document.getElementById("button")
-
-
 }
 
 //changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection
@@ -390,12 +246,16 @@ function choixPhoneme() {
 }
 
 
-
+/*
 //Fonction qui va trouver 2 mots pour former le groupe des 4 mots
-function chercheMotDico(lettre1,lettre2,resMot1,resMot2) {
-	for(let i=0;i<dicMot.length;i++){ //Pour chaque mots du dico
+function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
+	console.log("lettre 1 : " + lettre1);
+	console.log("lettre : " + lettre2);
+	for(let i=0;i<10000;i++){ //Pour chaque mots du dico
 		let mot1=dicMot[i]; //On prend le premier mot
-
+		
+		console.log("motrecherché = "+mot1)
+		console.log("poslettre1 :" +mot1.indexOf(lettre1));
 		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
 
 		if(posLettre1 != -1 && mot1.length<5) { //Si la lettre1 est presente dans le mot 1 du dico
@@ -426,32 +286,133 @@ function chercheMotDico(lettre1,lettre2,resMot1,resMot2) {
 	console.log("Mot 1 : " + resMot1);
 	console.log("mot 2 : " + resMot2);
 }
+*/
 
+function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
+	console.log("lettre 1 : " + lettre1);
+	console.log("lettre : " + lettre2);
+	for(let i=0;i<dicMot.lenght;i++){ //Pour chaque mots du dico
+		let mot1=dicMot[i]; //On prend le premier mot
+		
+		console.log("motrecherché = "+mot1)
+		console.log("poslettre1 :" +mot1.indexOf(lettre1));
+		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
+
+		if(posLettre1 != -1 && mot1.length<5) { //Si la lettre1 est presente dans le mot 1 du dico
+			for(let j=0;j<dicMot.length;j++){ //Pour chaque mot du dico
+				let mot2=dicMot[j]; //On prend le premier mot
+				let diffXY = x - y;
+
+				switch(diffXY) {
+					case diffXY > 0:
+						console.log("###################################")
+						if (mot1.length == mot2.length-diffXY) { //Si les 2 mots ne sont pas les memes
+							var lettreCommune = 0;
+							for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
+
+								if (mot1[k] == mot2[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+									lettreCommune++; //On incremente cette variable
+								}
+							}
+							var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+							if(posLettre2 != -1) { //Si la lettre2 est presente dans le mot 2 du dico
+								if (posLettre1 == posLettre2 && lettreCommune == mot1.length-1 ) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+									resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+									resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+									console.log("trouve");
+									break;
+								}
+							}
+						}
+						break;
+
+					case diffXY < 0:
+						console.log("??????????????????????????")
+						if (mot1.length == mot2.length+diffXY) { //Si les 2 mots ne sont pas les memes
+							var lettreCommune = 0;
+							for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
+
+								if (mot1[k] == mot2[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+									lettreCommune++; //On incremente cette variable
+								}
+							}
+							var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+							if(posLettre2 != -1) { //Si la lettre2 est presente dans le mot 2 du dico
+								if (posLettre1 == posLettre2 && lettreCommune == mot1.length-1 ) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+									resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+									resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+									console.log("trouve");
+									break;
+								}
+							}
+						}
+						break;
+
+					default :
+						console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+						if (mot1.length == mot2.length && mot1 != mot2) { //Si les 2 mots sont de meme longueur et ne sont pas les memes
+							var lettreCommune = 0;
+							for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
+
+								if (mot1[k] == mot2[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+									lettreCommune++; //On incremente cette variable
+								}
+							}
+							var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+							if(posLettre2 != -1) { //Si la lettre2 est presente dans le mot 2 du dico
+								if (posLettre1 == posLettre2 && lettreCommune == mot1.length-1 ) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+									resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+									resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+									console.log("trouve");
+									break;
+								}
+							}
+						}
+				}
+				console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+			}
+		}
+	}
+	console.log("Mot 1 : " + resMot1);
+	console.log("mot 2 : " + resMot2);
+}
 
 //Fonction qui va trouver la difference de lettre entre deux mots
-function aideLettreRechDico(mot1,mot2,resMot1,resMot2) {
+function aideLettreRechDico(mot1, mot2, x, y) {
+	var lettreMot1 = "";
+	var lettreMot2 = "";
+	let saveX = x;
+	let saveY = y;
 	for (let i=0; i<mot1.length; i++) { //Pour chaque lettre du mot 1 (mot saisi)
 
 		if (mot1[i] != mot2[i]) { //Si la lettre au meme indice n'est pas la meme sur les 2 mots
-			var lettreMot1 = mot1[i]; //On stock les 2 lettres qui changent
-			var lettreMot2 = mot2[i];
+			let saveI = i;
+
+			for(x; x>0; x--){
+				lettreMot1 = lettreMot1 + mot1[i]; //On stock les lettres qui changent
+				i++;
+			}
+			i = saveI;
+			for(y; y>0; y--){
+				lettreMot2 = lettreMot2 + mot2[i]; //On stock les lettres qui changent
+				i++;
+			}
 			break;
 		}
-
+		console.log("lettremot1 : "+lettreMot1)
+		console.log("lettremot2 : "+lettreMot2)
 	}
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
-	chercheMotDico(lettreMot1,lettreMot2,resMot1,resMot2);//fonction pour trouver les 4 mots
+	console.log("!!!!!!!!!!lettremot1 : "+lettreMot1)
+	console.log("!!!!!!!!!!!lettremot2 : "+lettreMot2)
+	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		affichResultat.push('<b>' + mot1 + '</b>&#9;' + ' - ' + resMot2[j] ); //On ajoute dans une variable globale
 		affichResultat.push(mot2 + ' - ' + resMot1[j] );//Le mot saisi - le mot avec la lettre du mot2
 		affichResultat.push('----------------');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
 	}
 	affichageMot(affichResultat);
-
-
-
-
 }
 
 

@@ -45,7 +45,7 @@ def aideSonSubs(mot_origine):
     BD_phoneme = BD_phoneme.split("\n")
     listeDeMotCop = []
 
-    mot = Mot_to_Phon_Only(arbre_mot, mot_origine)
+    mot = Mot_to_Phon_Only(arbre_mot, mot_origine) #revoit false si le mot n'exi
     if not isinstance(mot, str):
         print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
         return 0
