@@ -94,10 +94,43 @@ def aide(mot,x,y):
 				
 				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					listeMotCop.append((nvtMot,coupleLettre[1],couple))
-				listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
+					#circulaire(coupleLettre[1], couple, nvtMot, x)
+				#listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
 	print('\n')
 	return listeMotCop
 
+#---------- a enlever plus tard
+def circulaire (ancLettre, nouvLettre, nouvMot, x):
+	listeSextup = []
+	with open('data/config.json') as diconfig_:
+		diconfig = json.load(diconfig_)
+	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter="\t")
+	# lit ligne par ligne du DICO (près de 100k lignes)
+	# changer filtres
+	diconfig = changerfiltre(diconfig)
+	# bd filtres
+	with open('data/DicoVulgaire.json') as vulgaire:
+		BDvulgaire = json.load(vulgaire)
+	for mot in lignes:
+		mot = mot[0]
+		if len(mot) < 1:
+			for l in enumerate(mot):
+				nouvMot1 = replacer(mot, ancLettre, l[0], x)
+				if isInDico('word', nouvMot1):
+					midLettre = mot[l[0]:l[0]+x]
+					print(midLettre)
+					for mot2 in lignes:
+						mot2 = mot2[0]
+						if len(mot) < 1:
+							if nouvLettre in mot2:
+								for l2 in enumerate(mot2):
+									if mot2[l2[0]:l2[0]+len(nouvLettre)] == nouvLettre:
+										nouvMot2 = replacer(mot2, midLettre, l2[0], x)
+										if isInDico('word', nouvMot2):
+												listeSextup.append((ancLettre, midLettre, nouvLettre, mot, mot2, nouvMot, nouvMot1, nouvMot2))
+	print(listeSextup)
+	return listeSextup
 
 # ----------------------------------------------------------------------------
 """

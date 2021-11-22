@@ -1,10 +1,38 @@
-contrpèteries circulaire(mot,x,y,anciennesyll,syllnouv,listemotcop)
+listeSexttup [lettre1,lettre2,lettre3,ancienmot2,ancienmot3,nouvmot1,nouvmot2,nouvmot3]
+
+
+
+
+
+
+contrpèteries circulaire(ancLettre,nouvLettre,nouvmot1,x)
 {
-	pour chaque mot du dico (motDico)
+	listeSextup = []
+	pour chaque mot du dico
 	{
-		pour chaque lettre de motDico
+		pour chaque lettre du mot
 		{
-			nouvMot = remplacer(
+			nouvMot2 = remplacer(mot, anclettre, index de lettre,x)
+			si nouvMot2 est dans le dico
+			{
+				midLettre = mot[indexlettre:indexlettre+x]
+				pour chaque mot2 du dico
+				{
+					si mot2 contient nouvLettre
+					{
+						pour chaque lettre2 du mot2
+						{
+							nouvMot3 = remplacer(mot2, midlettre, index de lettre2, x)
+							si nouvMot3 est dans le dico
+							{
+								listeSextup.append(anclettre,midlettre,nouvlettre,mot,mot2,nouvmot,noumot2,nouvmot3)
+							}
+						}
+					}
+				}
+			}
 		}
 	}
+	print(listeSextup)
+	return listeSextup
 }
