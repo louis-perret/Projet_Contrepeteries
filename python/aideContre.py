@@ -59,7 +59,7 @@ def aideContrepetrie():
         elif selection == 2:
             clear()
             print("Recherche des contrepétries possibles ...\n")
-            listeDeMotCop = aideSonSubs(mot)
+            listeDeMotCop = aideSon(mot,1,1)
             # cas où le mot rentré par l'utilisateur n'est pas dans le lexique
             if listeDeMotCop == 0:
                 continue

@@ -240,7 +240,7 @@ chaque feuille contient une string de forme :
 """
 
 def Constructeur_Arbre_Phon():
-    a = Tree("aaa", None, None)
+    a = Tree("$$", None, None)
     tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
     read_tsv = csv.reader(tsv_file, delimiter="\t")
     for lignes in read_tsv:

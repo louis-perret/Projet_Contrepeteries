@@ -1,69 +1,11 @@
 from arbin import *
 from filtre import *
+from commun import *
 import string
 import sys
 import json
 import re
 import os
-
-
-# ----------------------------------------------------------------------------
-"""
-Remplace une lettre dans la chaine s à la position "index"
-par la chaîne newstring.
-i.e replacer("bonjour","pate",3) --> "bonpateour"
-"""
-
-
-def replacer(s, newstring, index,length):
-	
-	if index < 0:  # l'ajoute au début
-		return newstring + s
-	if index > len(s):  # l'ajoute à la fin
-		return s + newstring
-		# insère la nouvelle chaîne entre les tranches de l'original
-	return s[:index] + newstring + s[index + length:]
-
-# ----------------------------------------------------------------------------
-
-"""
-Objectif : Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
-Paramètres :
-	-Entrée :
-		mot : mot sur lequel on va récupérer le couple
-		x : nombre de lettres pour le couple
-		index : à partir de qu'elle lettre
-	-Sortie :
-		Renvoie un tuple de la forme : boolean,couple.
-"""
-def recupCouple(mot,x,index):
-	if x>1: #Si on désire récupérer un couple de plus de 2 lettres
-		if index+(x-1) >= len(mot): #Si on est à la fin du mot (evite les index out of range)
-			return (False,'') #Exemple : bonjour, si on est à la lettre r, on peut pas prendre de couple avec r car on est à la fin
-	return (True,mot[index:index+x])
-	
-# ----------------------------------------------------------------------------
-
-"""
-Objectif : Renvoie une liste des couples possibles de lettres à partir de l'alphabet
-Paramètres :
-	-Entrée :
-		-y : nombre lettres pour la combinaison
-		-a : chaîne contenant la combinaison (utile pour la récursivité, vide au premier appel)
-		-liste : liste des réponses (utile pour la récursivité, vide au premier appel)
-	-Sortie : 
-		-listeCouple : liste des réponses
-
-Exemple : Si je désire récupérer tous les couples de 2 lettres possibiles à partir de l'alphabet, j'utilise cette fonction qui me retournera une liste qui contiendra : aa,ab,ac,ad,...,zz.
-"""
-def recupCoupleLettre(y,a,liste):
-	listeCouple=liste
-	for l in list(string.ascii_lowercase):
-		if y == 1: #On a le nombre de lettre désiré
-			listeCouple.append(a+l)
-		else:
-			listeCouple=recupCoupleLettre(y-1,a+l,listeCouple) 
-	return listeCouple
 
 # ----------------------------------------------------------------------------
 """
@@ -72,7 +14,7 @@ Paramètres :
 	-Entrée :
 		-mot : mot de base
 		-x : nombre de lettres dans mot à changer
-		-y : nombre lettres pour la combinaison
+		-y : nombre de lettres pour la combinaison
 	-Sortie : 
 		-listeMotCop : liste des réponses
 
@@ -82,7 +24,7 @@ Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des 
 """
 def aide(mot,x,y):
 	listeMotCop=[]
-	listeCouple=recupCoupleLettre(y,'',[]) #Récupère la liste de combinaisons possibles de longueur y
+	listeCouple=recupCoupleLettre(y,'',[],list(string.ascii_lowercase)) #Récupère la liste de combinaisons possibles de longueur y
 	print('Voici donc les lettres que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
@@ -95,7 +37,7 @@ def aide(mot,x,y):
 				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					listeMotCop.append((nvtMot,coupleLettre[1],couple))
 					#circulaire(coupleLettre[1], couple, nvtMot, x)
-				#listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
+				listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
 	print('\n')
 	return listeMotCop
 

@@ -1,41 +1,27 @@
 from arbin import *
 from filtre import *
+from commun import *
 import string
 import sys
 import json
 import re
 import os
 
-
-# ----------------------------------------------------------------------------
 """
-Remplace une lettre dans la chaine s à la position "index"
-par la chaîne newstring.
-i.e replacer("bonjour","pate",3) --> "bonpateour"
+Objectif : Renvoie une liste des contrepétries possibles en remplaçant x sons par y sons
+Paramètres :
+    -Entrée :
+        -mot : mot de base
+        -x : nombre de sons dans mot à changer
+        -y : nombre de sons pour la combinaison
+    -Sortie : 
+        -listeMotCop : liste des réponses
+
+listeMotCop est de la forme : (nouveau mot, ancien(s) son(s), nouveau(s) son(s))
+
+Complexité = O((38^y)*N) où N est la longueur du mot, et 38^y la longueur des combinaisons (si on veut échanger par 3 sons, on aura 26^3)
 """
-
-
-def replacer(s, newstring, index):
-
-    if index < 0:  # l'ajoute au début
-        return newstring + s
-    if index > len(s):  # l'ajoute à la fin
-        return s + newstring
-    # insère la nouvelle chaîne entre les tranches de l'originalnsert the new string between "slices" of the original
-    return s[:index] + newstring + s[index + 1:]
-# ----------------------------------------------------------------------------
-
-
-"""
-Recherche dans le mot donné les mots possible à partir de
-sa forme phonétique en substituant une partie du mot
-ex : model -> monel,motel,modal,modem,etc
-retourne une liste de tuples des possibilitées au format :
-[(mot,Anciennelettre,nouvellelettre),...]
-"""
-
-
-def aideSonSubs(mot_origine):
+def aideSon(mot_origine,x,y):
 
     with open('data/dicoPhoncom.json') as tmp:
         dicoPhon = json.load(tmp)
@@ -43,34 +29,30 @@ def aideSonSubs(mot_origine):
     phon_file = open("data/BD_phoneme.txt", encoding="utf-8")
     BD_phoneme = phon_file.read()
     BD_phoneme = BD_phoneme.split("\n")
+    del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableai
     listeDeMotCop = []
-
-    mot = Mot_to_Phon_Only(arbre_mot, mot_origine)
+    
+    mot = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupère l'écriture phonétique du mot
     if not isinstance(mot, str):
         print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
         return 0
     clear()
-    # mettre un test de si Mot_to_Phon renvoi False, cest une Erreur
+
     print(f"\nEn phonétique '{mot_origine}' se lit '{mot}'\n")
 
+    listeCouple=recupCoupleLettre(y,"",[],BD_phoneme) #On récupère toutes les combinaisons de phonèmes de longueur y à tester
     print("Voici donc les sons que l'on peut changer :")
-    compteur = 0
-    for lettre1 in enumerate(mot):
-        print(f"  '{lettre1[1]}'    ", end='')
+    for lettre1 in enumerate(mot): #Pour chaque phonème du mot
+        coupleLettre=recupCouple(mot,x,lettre1[0]) #On récupère le couple de longueur x son(s) associé
+        if coupleLettre[0]:
+                print(f"  '{coupleLettre[1]}'    ", end='')
+                for couple in listeCouple: #Pour chasue combinaison possiblr
+                    nvMot = replacer(mot, couple, lettre1[0],x) #On remplace dans le mot
 
-        for lettre2 in BD_phoneme:
-            compteur += 1
-            # si on remplace à l'index la lettre1 par lettre2,
-            # et que ça forme un mot dans lexique, on ajoute le nvMot à la liste.
-            nvMot = replacer(mot, lettre2, lettre1[0])
-
-            test = isInDico('phon', nvMot)
-
-            if lettre1[1] != lettre2 and test:
-                listeDeMotCop.append((nvMot, lettre1[1], lettre2, dicoPhon[nvMot][0]))
+                    if coupleLettre[1] != couple and isInDico('phon', nvMot): #Si on a pas échangé par le même couple et si le mot existe
+                        listeDeMotCop.append((nvMot, coupleLettre[1], couple, dicoPhon[nvMot][0])) #On ajoute dans les réponses
     print("\n")
     return listeDeMotCop
-
 
 # ----------------------------------------------------------------------------
 """
@@ -118,7 +100,7 @@ def aideSonRechDico(index, listeDeMotCop):
             # Racines:
             if index == ChaqueLettre and test1 and test2:
                 testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
-                                       mot.index(listeDeMotCop[ChaqueLettre][2]))
+                                       mot.index(listeDeMotCop[ChaqueLettre][2]),1)
                 # la lettre est dans le mot
                 if isInDico('phon', testDansMot):
                     if diconfig["FiltreGrossier"] == "Oui":
