@@ -71,7 +71,6 @@ function aideMultiLettre(x, y) {
   console.log("Voici donc les lettres que l\'on peut changer :[ ");
   for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
   {
-      console.log("passage dans le for ---------------------------------------------------")
       var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
       //console.log("true ou false ? : " + coupleLettre[0])
       if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger

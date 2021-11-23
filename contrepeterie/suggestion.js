@@ -289,23 +289,104 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 */
 
 function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
+	var diffXY = x - y;
+	console.log("diffXY : " + diffXY);
 	console.log("lettre 1 : " + lettre1);
-	console.log("lettre : " + lettre2);
-	for(let i=0;i<dicMot.lenght;i++){ //Pour chaque mots du dico
+	console.log("lettre 2 : " + lettre2);
+	for(let i=0;i<dicMot.length;i++){ //Pour chaque mots du dico
 		let mot1=dicMot[i]; //On prend le premier mot
-		
-		console.log("motrecherché = "+mot1)
-		console.log("poslettre1 :" +mot1.indexOf(lettre1));
+		lg1=mot1.length;
+		longueur1=lg1-diffXY;
 		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
 
 		if(posLettre1 != -1 && mot1.length<5) { //Si la lettre1 est presente dans le mot 1 du dico
 			for(let j=0;j<dicMot.length;j++){ //Pour chaque mot du dico
 				let mot2=dicMot[j]; //On prend le premier mot
-				let diffXY = x - y;
+				lg2=mot2.length;
+				longueur2=lg2-diffXY;
 
-				switch(diffXY) {
+				if (diffXY ==0 ) { //MARCHE OK !!!!!!
+					//Rentre ici : testé
+					if (mot1.length == mot2.length && mot1 != mot2) { //Si les 2 mots sont de meme longueur et ne sont pas les memes
+						var lettreCommune = 0;
+						for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
+
+							if (mot1[k] == mot2[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+								lettreCommune++; //On incremente cette variable
+							}
+						}
+						var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+						if(posLettre2 != -1) { //Si la lettre2 est presente dans le mot 2 du dico
+							if (posLettre1 == posLettre2 && lettreCommune == mot1.length-1 ) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+								resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+								resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+								console.log("trouve");
+								break;
+							}
+						}
+					}
+				}
+				if (diffXY > 0 ) { //FONCTIONNEL NORMALEMENT MAIS A TESTER
+					//Rentre ici : testé
+					if (longueur1 == mot2.length) { //Si le premier mot fait x lettres et le deuxieme fait x-1 lettres
+						var lettreCommune = 0;
+						console.log("mot 1 ex  : " + mot1);
+						console.log("mot 2 ex : " + mot2);
+						var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+						if(posLettre2 != -1 && posLettre1 == posLettre2) {
+							mot1test=mot1.replace(lettre1,"")
+							mot2test=mot2.replace(lettre2,"")
+							console.log("tets !!!!! : " + mot1test)
+							console.log("tets !!!!! : " + mot2test)
+							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1
+
+								if (mot1test[k] == mot2test[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+									lettreCommune++; //On incremente cette variable
+								}
+							}
+							console.log("Nb lettres communes : " + lettreCommune)
+								if (lettreCommune == longueur2) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+									resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+									resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+									console.log("trouve");
+									break;
+								}
+						}
+					}
+				}
+				if (diffXY < 0 ) {
+					//Rentre ici : testé
+					if (longueur1 == mot2.length) { //Si le premier mot fait x lettres et le deuxieme fait x-1 lettres
+						var lettreCommune = 0;
+						var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
+						if(posLettre2 != -1 && posLettre1 == posLettre2) {
+							mot1test=mot1.replace(lettre1,"")
+							mot2test=mot2.replace(lettre2,"")
+							console.log("mot 1 ex  : " + mot1);
+							console.log("mot 2 ex : " + mot2);
+							console.log("tets !!!!! : " + mot1test)
+							console.log("tets !!!!! : " + mot2test)
+							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1
+
+								if (mot1test[k] == mot2test[k]){ //Si la lettre au meme index entre les 2 mots est identique :
+									lettreCommune++; //On incremente cette variable
+								}
+							}
+							console.log("Nb lettres communes : " + lettreCommune)
+							if (lettreCommune == longueur2) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
+								resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+								resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+								console.log("trouve");
+								break;
+							}
+						}
+					}
+				}
+
+
+
+				/*switch(diffXY) {
 					case diffXY > 0:
-						console.log("###################################")
 						if (mot1.length == mot2.length-diffXY) { //Si les 2 mots ne sont pas les memes
 							var lettreCommune = 0;
 							for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
@@ -368,8 +449,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 								}
 							}
 						}
-				}
-				console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+				}*/
 			}
 		}
 	}
@@ -399,8 +479,6 @@ function aideLettreRechDico(mot1, mot2, x, y) {
 			}
 			break;
 		}
-		console.log("lettremot1 : "+lettreMot1)
-		console.log("lettremot2 : "+lettreMot2)
 	}
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
