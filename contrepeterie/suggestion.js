@@ -120,7 +120,6 @@ function redirigeLettreOuPhoneme() {
         }
 		else
 			aideMultiLettre(document.getElementById('choixDeX').value, document.getElementById('choixDeY').value);
-		
 	}
 	else
 		aidePhonemeSubs();

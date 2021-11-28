@@ -28,13 +28,17 @@ function aideLettreSubs() {
 	for (let i=0; i<mot2.length; i++) { //Pour chaque lettre de notre mot
 		mot2=motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
 		for(let j=0;j<alph.length;j++) { //Pour chaque lettre de l'alphabet
-			mot2 = mot2.replaceAt(i,alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-			console.log(mot2);
+			mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
+
+			var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
+			if (tabVerifEspaces != "")
+				l.push(tabVerifEspaces);
+
 			if (motExiste(mot2,dicMot) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
 				console.log('Ok : ' + mot2 + " ajouté");
-				let i = dicMot.indexOf(mot2);
-				if(dicMot[i] != mot){
-					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
+				let iter = dicMot.indexOf(mot2);
+				if(dicMot[iter] != mot){
+					l.push(dicMot[iter]); //On ajoute le mot dans la liste l des mots compatibles
 				}
 			}
 		}
@@ -42,6 +46,30 @@ function aideLettreSubs() {
 	}
 	console.log("liste mot compatible " + l);
 	choixMotCompatible(motSave,l);
+}
+
+//vérifie si une contrepétrie est valide avec espaces
+function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
+	listeMot = []
+	console.log("###"+ancienneLettre)
+	console.log("'''" + nouvelleLettre)
+	console.log("---" + index)
+
+	for (var l = 0; l < mot.length; l++) {
+		if (l >= 2 && l <= mot.length - 2) {
+			motEspace1 = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre+' ');
+			motSplit = motEspace1.split(' ');
+			console.log("!!!!!!!!- motEspace1 : " + motEspace1)
+			console.log("!!!!!!!!- motSplit : " + motSplit)
+			console.log("!!!!!!!!- motSplit0 : " + motSplit[0])
+			console.log("!!!!!!!!- motSplit1 : " + motSplit[1])
+			if (motExiste(motSplit[0], dicMot) && motExiste(motSplit[1], dicMot) && !motExiste(motEspace1, listeMot)) {
+				listeMot.push(motEspace1);
+			}
+		}
+	}
+
+	return listeMot;
 }
 
 
@@ -71,6 +99,16 @@ function aideMultiLettre(x, y) {
   console.log("Voici donc les lettres que l\'on peut changer :[ ");
   for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
   {
+
+	  //pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
+	  for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
+		  mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
+
+		  var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
+		  if (tabVerifEspaces != "")
+			  l.push(tabVerifEspaces);
+	  }
+
       var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
       //console.log("true ou false ? : " + coupleLettre[0])
       if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
