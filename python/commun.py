@@ -63,3 +63,35 @@ def recupCoupleLettre(y,a,liste,listeSource):
 			listeCouple=recupCoupleLettre(y-1,a+l,listeCouple,listeSource) 
 	return listeCouple
 
+#--------------------------------------------------------------------------
+
+"""
+fonction vérifiant si une contrepétries est valide avec des espaces
+"""
+
+def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
+
+	listeMot = []
+
+	for l in enumerate(mot): #pour chaque lettre du mot
+		if l[0] >= 2 and l[0] <= len(mot)-2: #bornes pour la taille minimum des mot (ici 2 lettres)
+			motEspace1 = replacer(mot, ' ', l[0], 0) #ajout d'un espace
+			motSplit = motEspace1.split(' ') #séparation des mots à l'espace
+			if isInDico(dico, motSplit[0]) and isInDico(dico, motSplit[1]): #vérification des deux mots
+				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre))
+			for l in enumerate(motSplit[0]): #recherche dans le premier mot apres une séparation
+				if l[0] >= 2 and l[0] <= len(motSplit[0])-2:
+					motEspace2 = replacer(motSplit[0], ' ', l[0], 0) #ajout d'un espace
+					motSplit2 = motEspace2.split(' ') #séparation des mots à l'espace
+					if isInDico(dico, motSplit2[0]) and isInDico(dico, motSplit2[1]) and isInDico(dico, motSplit[1]): #vérification des deux mots
+						listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre))
+			for l in enumerate(motSplit[1]): #recherche dans le second mot apres une séparation
+				if l[0] >= 2 and l[0] <= len(motSplit[1])-2:
+					motEspace3 = replacer(motSplit[1], ' ', l[0], 0) #ajout d'un espace
+					motSplit3 = motEspace3.split(' ') #séparation des mots à l'espace
+					if isInDico(dico, motSplit3[0]) and isInDico(dico, motSplit3[1]) and isInDico(dico, motSplit[0]): #vérification des deux mots
+						listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre))
+				
+		
+	return listeMot
+

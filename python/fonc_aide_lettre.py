@@ -7,6 +7,11 @@ import json
 import re
 import os
 
+#les afficheurs encollent les murs (a faire mélange de lettres et phonème)
+#l'apache recrute
+#la flutiste fait peur
+#je n'ai pas de rebords à mes épaulettes
+
 # ----------------------------------------------------------------------------
 """
 Objectif : Renvoie une liste des contrepétries possibles en remplaçant x lettres par y lettres
@@ -25,6 +30,7 @@ Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des 
 def aide(mot,x,y):
 	listeMotCop=[]
 	listeCouple=recupCoupleLettre(y,'',[],list(string.ascii_lowercase)) #Récupère la liste de combinaisons possibles de longueur y
+	choix = int(input("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :"))
 	print('Voici donc les lettres que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
@@ -37,7 +43,8 @@ def aide(mot,x,y):
 				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					listeMotCop.append((nvtMot,coupleLettre[1],couple))
 					#circulaire(coupleLettre[1], couple, nvtMot, x)
-				listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple)) #<- à revoir
+				if choix == 1:
+					listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, 'word'))
 	print('\n')
 	return listeMotCop
 
@@ -89,7 +96,7 @@ mot2 -> obtenu en échangeant lettre1 par lettre2 dans le mot d'origine
 mot1'-> mot contenant lettre1
 mot2'-> mot contenant lettre2
 """
-
+"""
 def aideLettreRechDico(index, listeDeMotCop):
     index -= 1
     NombreDeMot = len(listeDeMotCop)
@@ -145,6 +152,69 @@ def aideLettreRechDico(index, listeDeMotCop):
                                                testDansMot, mot))
                     compteur += 1
     return (listeAffichage, compteur, diconfig)
+"""
+
+#-----------------------------------------------------------------------------
+"""
+effectue la recherche de quadruplet de manière générale
+"""
+def aideLettreRechDicoGeneral(index, listeDeMotCop):
+    index -= 1
+    NombreDeMot = len(listeDeMotCop)
+    compteur = 0
+    listeDeMotNONCop = []
+    listeDeRacines = []
+    listeAffichage = []
+    # config filtres
+    with open('data/config.json') as diconfig_:
+        diconfig = json.load(diconfig_)
+
+    tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+    lignes = csv.reader(tsv_file, delimiter="\t")
+    # lit ligne par ligne du DICO (près de 100k lignes)
+    # changer filtres
+    diconfig = changerfiltre(diconfig)
+    # bd filtres
+    with open('data/DicoVulgaire.json') as vulgaire:
+        BDvulgaire = json.load(vulgaire)
+
+    for mot in lignes:
+        mot = mot[0] #On recupère le mot qu'on veut tester
+
+        for ChaqueLettre in range(len(listeDeMotCop)):
+
+            test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
+            test2 = mot[:5] not in listeDeRacines
+            # Racines:
+            if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
+            	#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
+                testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+                # la lettre est dans le mot
+                if isInDico('word', testDansMot):
+                    # test we need
+                    if diconfig["FiltreGrossier"] == "Oui":
+
+                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+                            listeDeRacines.append(mot[:5])
+
+                            listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+                                                   listeDeMotCop[ChaqueLettre][2],
+                                                   listeDeMotCop[ChaqueLettre][0],
+                                                   testDansMot, mot))
+
+                    else:
+                        listeDeRacines.append(mot[:5])
+
+                        listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+                                               listeDeMotCop[ChaqueLettre][2],
+                                               listeDeMotCop[ChaqueLettre][0],
+                                               testDansMot, mot))
+                    compteur += 1
+    return (listeAffichage, compteur, diconfig)
+
+
+
+
 
 
 # ----------------------------------------------------------------------------
@@ -459,21 +529,6 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
     return (listeAffichage, len(listeAffichage), diconfig)
 
 # ----------------------------------------------------------------------------
-"""
-fonction vérifiant si une contrepétries est valide avec des espaces
-"""
 
-def verificationEspace(mot, ancienneLettre, nouvelleLettre):
-
-	listeMot = []
-
-	for l in enumerate(mot):
-		if l[0] >= 2 and l[0] <= len(mot)-2:
-			motEspace1 = replacer(mot, ' ', l[0], 0)
-			motSplit = motEspace1.split(' ')
-			if isInDico('word', motSplit[0]) and isInDico('word', motSplit[1]):
-				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre))
-		
-	return listeMot
 
 	
