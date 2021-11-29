@@ -33,14 +33,19 @@ $("#csv-file").change(handleFileSelect);
   		dicMot.push(dic[0]['data'][i][0]);
 		dicPhon.push(dic[0]['data'][i][1]);	
   	}
-  	console.log("Affichage du dctionaire de mots");
+  	console.log("Affichage du dictionaire de mots");
   	console.log(dicMot);
-  	console.log("Affichage du dctionaire de sons");
+  	console.log("Affichage du dictionaire de sons");
   	console.log(dicPhon);
 }
 
 function load(){
-	document.getElementById('chargement').innerHTML = '<div id="loading"></div>';
+	//ajoute un event qui déclenche afficheStats() lorsque l'utilisateur change
+	//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
+	document.getElementById('choixDeX').addEventListener('input', afficheStats);
+	document.getElementById('choixDeY').addEventListener('input', afficheStats);
+
+	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
 	Papa.parse(pathToDictionnary, {
     download: true,
@@ -103,40 +108,77 @@ String.prototype.replaceAt = function(index, replacement) {
 //redirige vers l'exécution de aideLettreSubs() ou aidePhonemeSubs() selon si
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
 function redirigeLettreOuPhoneme() {
-	var text=""
-	let x=document.getElementById('choixDeX').value
-	let y=document.getElementById('choixDeY').value
-	let diffxy=x-y;
-	if (diffxy==0)
-		text='rapide'
-	if (diffxy==1 || diffxy == -1)
-		text='lent'
-	if (diffxy>1 || diffxy < -1)
-		text='très lent'
-	var tExec=document.getElementById('tempsExecution');
-	tExec.innerText="Temps d'execution : " + text;
+	
+	document.getElementById('loadingStats').style.visibility = "visible";
+
+
+	var x=document.getElementById('choixDeX').value;
+	var y=document.getElementById('choixDeY').value;
+	
+	afficheStats();
 
 	if (document.getElementById('choixLettre').value == 'true')
 	{
 		//aideLettreSubs();
 
 		//servira pour plusieurs lettres/plusieurs lettres
-		if (document.getElementById('choixDeX').value == "" || document.getElementById('choixDeY').value == "")
+		if (x == "" || y == "")
 		{
-			if (document.getElementById('choixDeX').value == "" && document.getElementById('choixDeY').value == "")
-				aideMultiLettre(1, 1);
-			else if (document.getElementById('choixDeX').value == "")
-				aideMultiLettre(1, document.getElementById('choixDeY').value);
-			else if(document.getElementById('choixDeY').textContent == "")
-				aideMultiLettre(document.getElementById('choixDeX').value, 1);
+			if (x == "" && y == "") {
+				document.getElementById("choixDeX").value = 1;
+				document.getElementById("choixDeY").value = 1;
+			}
+			else if (x == "")
+				document.getElementById("choixDeY").value
+			else if(y == "")
+				document.getElementById("choixDeX").value = 1;
+			x = document.getElementById("choixDeX").value;
+			y = document.getElementById("choixDeY").value;
+			aideMultiLettre(x,y);
         }
 		else
-			aideMultiLettre(document.getElementById('choixDeX').value, document.getElementById('choixDeY').value);
+			aideMultiLettre(x, y);
 	}
 	else
 		aidePhonemeSubs();
+
+	
 }
 
+
+function afficheStats() {
+	var text="";
+	var x=document.getElementById('choixDeX').value;
+	var y=document.getElementById('choixDeY').value;
+
+	var tExec = document.getElementById('tempsExecution');
+	var divStatsToHide = document.getElementById('divStatsToHide');
+
+	divStatsToHide.style.visibility = "visible";
+	//ne pas tester avec diffXY au final, car si x=5 et y=4 par ex, diffXY sera faible(1)
+	//mais la vitesse d'exécution sera très lente (complexité élevée)
+	if (x>7 || y>3) {
+		text='très lent';
+		divStatsToHide.style.backgroundColor = 'darkred';
+	}
+	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) { 
+		text='lent';
+		divStatsToHide.style.backgroundColor = 'orange';
+	}
+	else {
+		text='rapide';
+		divStatsToHide.style.backgroundColor = 'green';
+	}
+	tExec.innerText="Temps d'execution : " + text;
+}
+
+
+function afficheInfoProc() {
+	if (document.getElementById('pInfoProc').style.visibility == "collapse")
+		document.getElementById('pInfoProc').style.visibility = "visible";
+	else
+	document.getElementById('pInfoProc').style.visibility = "collapse";
+}
 
 
 
