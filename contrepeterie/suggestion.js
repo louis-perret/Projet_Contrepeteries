@@ -2,7 +2,7 @@ var dic=[];
 var dicMot=[];
 var dicPhon=[];
 var affichResultat=[];
-
+var saveTuple=[];
 //const orange = '#FFA600';
 //const green = '#28a745';
 
@@ -207,13 +207,24 @@ function updateBtn() {
 	var iButton = $(this).val();
 	console.log("test click " + iButton);
 	if(document.getElementById('choixPhoneme').value == 'false')
-		aideLettreRechDico(mot,iButton, document.getElementById("choixDeX").value, document.getElementById("choixDeY").value);
+		aideLettreRechDico(mot,iButton);
 	//if(document.getElementById('choixPhoneme').value == 'true')
 		//aidePhonemRechDico(mot,iButton);
 }
 
 
+
+
 function choixMotCompatible(motSave,listeMotCompatible) {
+	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
+	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
+	//Sans cela, des pb d'initialisation peuvent apparaitre
+	if(listeMotCompatible.length>1) {
+		saveTuple = listeMotCompatible;
+	}
+	if(listeMotCompatible.length==1) {
+		listeMotCompatible=saveTuple;
+	}
 	var element = document.getElementById("div1");
 	while (element.firstChild){
 		element.removeChild(element.firstChild);
@@ -346,7 +357,11 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 }
 
 //Fonction qui va trouver la difference de lettre entre deux mots
-function aideLettreRechDico(mot1, mot2, x, y) {
+function aideLettreRechDico(mot1, mot2) {
+	document.getElementById("bRetour").setAttribute("class","mt-3");
+	affichResultat=[]
+	x=document.getElementById("choixDeX").value;
+	y=document.getElementById("choixDeY").value;
 	var lettreMot1 = "";
 	var lettreMot2 = "";
 	let saveX = x;
@@ -374,9 +389,11 @@ function aideLettreRechDico(mot1, mot2, x, y) {
 	console.log("!!!!!!!!!!!lettremot2 : "+lettreMot2)
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
+		if(mot1 != resMot1[j]) {
 		affichResultat.push('<b>' + mot1 + '</b>&#9;' + ' - ' + resMot2[j] ); //On ajoute dans une variable globale
 		affichResultat.push(mot2 + ' - ' + resMot1[j] );//Le mot saisi - le mot avec la lettre du mot2
 		affichResultat.push('----------------');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
+		}
 	}
 	affichageMot(affichResultat);
 }

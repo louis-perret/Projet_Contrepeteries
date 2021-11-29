@@ -1,6 +1,8 @@
+
 //Fonction principale
 //Fonction qui rend une liste de mot compatible -> pour code = gode, cote, iode...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
+/*
 function aideLettreSubs() {
 	affichResultat=[];
 	var l = [];
@@ -37,7 +39,13 @@ function aideLettreSubs() {
 			if (motExiste(mot2,dicMot) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
 				console.log('Ok : ' + mot2 + " ajouté");
 				let iter = dicMot.indexOf(mot2);
-				if(dicMot[iter] != mot){
+
+				var lengthmot = mot.length
+				lMot=lengthmot+x;
+				var lengthiter= dicMot[iter].length
+				lIter=lengthiter+y;
+
+				if(dicMot[iter] != mot && lMot == lIter ){
 					l.push(dicMot[iter]); //On ajoute le mot dans la liste l des mots compatibles
 				}
 			}
@@ -47,22 +55,26 @@ function aideLettreSubs() {
 	console.log("liste mot compatible " + l);
 	choixMotCompatible(motSave,l);
 }
+*/
 
 //vérifie si une contrepétrie est valide avec espaces
 function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
 	listeMot = []
+	/*
 	console.log("###"+ancienneLettre)
 	console.log("'''" + nouvelleLettre)
 	console.log("---" + index)
-
+	*/
 	for (var l = 0; l < mot.length; l++) {
 		if (l >= 2 && l <= mot.length - 2) {
 			motEspace1 = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre+' ');
 			motSplit = motEspace1.split(' ');
+			/*
 			console.log("!!!!!!!!- motEspace1 : " + motEspace1)
 			console.log("!!!!!!!!- motSplit : " + motSplit)
 			console.log("!!!!!!!!- motSplit0 : " + motSplit[0])
 			console.log("!!!!!!!!- motSplit1 : " + motSplit[1])
+			*/
 			if (motExiste(motSplit[0], dicMot) && motExiste(motSplit[1], dicMot) && !motExiste(motEspace1, listeMot)) {
 				listeMot.push(motEspace1);
 			}
@@ -76,9 +88,6 @@ function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
 //Prototype de la fonction principale, en enlevant x lettres du mot rensigné et y lettres du mot recherché
 //Traduction de la fonction de généralisation python en JS
 function aideMultiLettre(x, y) {
-    bonjour="bonjour"
-    bonjour=bonjour.replacerAvecIndex(3,"pate")
-    console.log("Test replacer :" + bonjour)
 
   //replaceBetween(document.getElementById('mot').value, "ch", x, 2);
   affichResultat = [];
@@ -103,9 +112,12 @@ function aideMultiLettre(x, y) {
 	  //pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
 	  for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
 		  mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-
 		  var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
-		  if (tabVerifEspaces != "")
+		  mot2temp=mot2.replace(" ","");
+		  var lengthmot = mot.length
+		  lMot=lengthmot-(x-y);
+
+		  if (tabVerifEspaces != "" && lMot == mot2temp.length)
 			  l.push(tabVerifEspaces);
 	  }
 
@@ -121,7 +133,13 @@ function aideMultiLettre(x, y) {
               console.log("NvMot = " + nvtMot)
               //var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
 
-              if (nvtMot != mot && motExiste(nvtMot, dicMot)) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
+			  nvtMot=nvtMot.replace(" ","");
+			  console.log("Mot a tester : " + nvtMot)	
+			  var lengthmot = mot.length
+			  lMot=lengthmot-(x-y);
+			  console.log("longueur mot saisi - diffxy = " + lMot);
+			  
+              if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
                   console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
                   l.push(nvtMot);
               }

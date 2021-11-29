@@ -89,13 +89,15 @@
                     <button id="choixLettre" onclick="choixLettre()" value="true">Lettres</button>
                     <button id="choixPhoneme" onclick="choixPhoneme()" value="false">Phonèmes</button>
             </div>
-
+            
+    
             <div id="chargementDico">
                 <button id="genener" onclick="load()">Charger le dictionnaire</button>
                 <span id="chargement"></span>
 
             </div>
 
+            
             <div id="choixXY">
                 <div class="divInline">
                     <p>Nombre de lettres à échanger (mot renseigné)</p>
@@ -107,11 +109,25 @@
                     <input type="text" id="choixDeY" placeholder="1"/>
                 </div>
             </div>
+            <button id="bRetour" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [1])">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                  </svg>
+                  Retour
+            </button>
 
-            <div id="generation">
-                <input type="text" name="phrase" id="mot"/>
+            <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">
+                <div style="display:flex;">
+                <input  type="text" name="phrase" id="mot"/>
                 <button id="gen" onclick="redirigeLettreOuPhoneme()"> Lancer la recherche</button>
+                <button  id="gen" onclick="aideLettreRechDico(document.getElementById('mot').value,document.getElementById('motDirect').value)"> Lancer la recherche pour deux mots</button>
+                </div>
+                <div id="generationDirect" >
+                    <input type="text" placeholder="Facultatif" name="phraseDirect" id="motDirect"/>
+                    
+                </div>
             </div>
+            
 
         </div>
         <div id="div1"></div>
