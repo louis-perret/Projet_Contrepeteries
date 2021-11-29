@@ -115,13 +115,15 @@
                   </svg>
                   Retour
             </button>
-
+            <p id="tempsExecution"></p>
             <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">
                 <div style="display:flex;">
                 <input  type="text" name="phrase" id="mot"/>
                 <button id="gen" onclick="redirigeLettreOuPhoneme()"> Lancer la recherche</button>
                 <button  id="gen" onclick="aideLettreRechDico(document.getElementById('mot').value,document.getElementById('motDirect').value)"> Lancer la recherche pour deux mots</button>
+
                 </div>
+
                 <div id="generationDirect" >
                     <input type="text" placeholder="Facultatif" name="phraseDirect" id="motDirect"/>
                     

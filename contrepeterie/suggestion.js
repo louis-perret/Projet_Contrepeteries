@@ -103,6 +103,19 @@ String.prototype.replaceAt = function(index, replacement) {
 //redirige vers l'exécution de aideLettreSubs() ou aidePhonemeSubs() selon si
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
 function redirigeLettreOuPhoneme() {
+	var text=""
+	let x=document.getElementById('choixDeX').value
+	let y=document.getElementById('choixDeY').value
+	let diffxy=x-y;
+	if (diffxy==0)
+		text='rapide'
+	if (diffxy==1 || diffxy == -1)
+		text='lent'
+	if (diffxy>1 || diffxy < -1)
+		text='très lent'
+	var tExec=document.getElementById('tempsExecution');
+	tExec.innerText="Temps d'execution : " + text;
+
 	if (document.getElementById('choixLettre').value == 'true')
 	{
 		//aideLettreSubs();
