@@ -40,7 +40,7 @@ while boucle:
             from aideContre import *
         memoireImport.add('aide')
         clear()
-        aideContrepetrie()
+        aideContrepetrie(0)
 
 # ------------------------------------------------------------------------------
     # recherche de contrepeterie

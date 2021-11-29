@@ -7,7 +7,7 @@ from fonc_aide_lettre import *
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-def aideContrepetrie():
+def aideContrepetrie(skipper):
     with open('data/config.json') as diconfig_:
         diconfig = json.load(diconfig_)
 
@@ -23,26 +23,32 @@ def aideContrepetrie():
         # ou   rech sur une syllabe
 
         listeDeMotCop = [] #contient les contrepétries du mot entré
-        choix = set(range(7))
-        print("""Voulez-vous faire une recherche sur :
-            1- une lettre
-            2- un  son
-            3- plusieurs lettres
-            4- plusieurs sons
-	    5- 2 lettres -> 1 lettre
-	    6- 1 lettre -> 2 lettres
-            0- quitter l'aide""")
+        if skipper == 0:
+            choix = set(range(9))
+            print("""Voulez-vous faire une recherche sur :
+                1- une lettre
+                2- un  son
+                3- plusieurs lettres
+                4- plusieurs sons
+                5- 2 lettres -> 1 lettre
+                6- 1 lettre -> 2 lettres
+                7- recherche personnalisée lettre
+                8- recherche personnalisée son
+                0- quitter l'aide""")
 
-        while True:
-            try:
-                selection = int(input(""))
-            except:
-                print("\nVous n'avez pas saisi un chiffre")
-                continue
-            if selection in choix:
-                break
-            else:
-                print("\nL'entrée n'est pas valide, réessayez")
+            while True:
+                try:
+                    selection = int(input(""))
+                except:
+                    print("\nVous n'avez pas saisi un chiffre")
+                    continue
+                if selection in choix:
+                    break
+                else:
+                    print("\nL'entrée n'est pas valide, réessayez")
+        else:
+            selection = skipper
+            
 
         # selection des différents mode de l'aide
         if selection == 0:
@@ -143,15 +149,31 @@ def aideContrepetrie():
             print("Recherche des contrepétries possibles ...")
             #listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
             listeDeMotCop = aide(mot,1,2)
+
+    #--------------------------------------------------------------------------------
+
+        elif selection == 7:
+            x = int(input("longueur de la syllabe enlevée : "))
+            y = int(input("longueur de la syllabe ajoutée : "))
+            print("Recherche des contrepétries possibles ...")
+            listeDeMotCop = aide(mot,x,y)
                 
 
+    #--------------------------------------------------------------------------------
+
+        elif selection == 8:
+            x = int(input("longueur de la syllabe enlevée : "))
+            y = int(input("longueur de la syllabe ajoutée : "))
+            print("Recherche des contrepétries possibles ...")
+            listeDeMotCop = aideSon(mot,x,y)
+
     # -------------------------------------------------------------------------------
-        if selection == 1 or selection == 2 or selection == 5 or selection == 6:
+        if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
 
             # affichage des premiers resultats
             for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
                 tmp = i[1][2] if i[1][2] != "" else chr(32)
-                if selection == 1 or selection == 5 or selection == 6:
+                if selection == 1 or selection == 5 or selection == 6 or selection == 7:
                     print(f" {i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]}")
                 else:
                     if (i[0]+1)<10:
@@ -164,7 +186,7 @@ def aideContrepetrie():
             while(boucle):
                 try:
                     selectMot = int(input(
-                        "\n0 = quitter l'aide,-1 revenir au début de l'aide \nou numéro de l'échange qui vous intéresse : \n"))
+                        "\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 rechercher par phonèmes \nou numéro de l'échange qui vous intéresse : \n"))
                 except:
                     print("\nVous n'avez pas saisi un chiffre")
                     continue
@@ -176,6 +198,8 @@ def aideContrepetrie():
                     clear()
                     continuer = -1
                     boucle = False
+                elif selectMot == -2:
+                    clear()
                 elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
                     boucle = False
                 else:
@@ -188,9 +212,9 @@ def aideContrepetrie():
                 continue
 
         # affichage affiné sur contrepetrie choisie
-        if selection == 1 or selection == 5 or selection == 6:
+        if selection == 1 or selection == 5 or selection == 6 or selection == 7:
 
-            listeAffichage, compteur, diconfig = aideLettreRechDico(selectMot, listeDeMotCop)
+            listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop)
 
             # en cas de liste vide, affichant qu'aucune possibilité n'est trouvé
             if listeAffichage != []:
