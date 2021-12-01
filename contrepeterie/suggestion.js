@@ -314,9 +314,8 @@ function choixPhoneme() {
 
 function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 	var diffXY = x - y;
-	console.log("diffXY : " + diffXY);
-	console.log("lettre 1 : " + lettre1);
-	console.log("lettre 2 : " + lettre2);
+	var longueurMax= document.getElementById("choixLongueurMax").value
+	var longueurMin= document.getElementById("choixLongueurMin").value
 	for(let i=0;i<dicMot.length;i++){ //Pour chaque mots du dico
 		let mot1=dicMot[i]; //On prend le premier mot
 		lg1=mot1.length;
@@ -324,7 +323,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 		longueur1plus=lg1+diffXY;
 		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
 
-		if(posLettre1 != -1 && mot1.length<5) { //Si la lettre1 est presente dans le mot 1 du dico
+		if(posLettre1 != -1 && mot1.length<= longueurMax && mot1.length >= longueurMin) { //Si la lettre1 est presente dans le mot 1 du dico
 			for(let j=0;j<dicMot.length;j++){ //Pour chaque mot du dico
 				let mot2=dicMot[j]; //On prend le premier mot
 				lg2=mot2.length;
@@ -360,9 +359,6 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 						if(posLettre2 != -1 && posLettre1 == posLettre2) {
 							mot1test=mot1.replace(lettre1,"")
 							mot2test=mot2.replace(lettre2,"")
-							console.log("mot 2 ex : " + mot2 + " "+ mot2.length);
-							console.log("tets !!!!! : " + mot1test)
-							console.log("tets !!!!! : " + mot2test)
 							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1
 
 								if (mot1test[k] == mot2test[k]){ //Si la lettre au meme index entre les 2 mots est identique :
@@ -444,9 +440,9 @@ function aideLettreRechDico(mot1, mot2) {
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
-		affichResultat.push('<b>' + mot1 + '</b>&#9;' + ' - ' + resMot2[j] ); //On ajoute dans une variable globale
-		affichResultat.push(mot2 + ' - ' + resMot1[j] );//Le mot saisi - le mot avec la lettre du mot2
-		affichResultat.push('----------------');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
+		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">'+ mot1 + ' - ' + resMot2[j] + '</div>'  ); //On ajoute dans une variable globale
+		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div>');//Le mot saisi - le mot avec la lettre du mot2
+		affichResultat.push('<hr width="50">');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
 		}
 	}
 	affichageMot(affichResultat);
