@@ -3,6 +3,9 @@ var dicMot=[];
 var dicPhon=[];
 var affichResultat=[];
 var saveTuple=[];
+//Ces variables globales sont essentielles pour certaines fonctions de notre site, notamment pour garder des resultats en memoire
+
+
 //const orange = '#FFA600';
 //const green = '#28a745';
 
@@ -18,9 +21,6 @@ function handleFileSelect(evt) {
       	splitdicSelector()
       }
     });
-    
-    //console.log(dicMot);
-    //console.log(dicPhon);
     
   }
 
@@ -77,14 +77,12 @@ function splitdic(){
   	console.log(dicPhon);
 }
 
-
+//Fonction qui permet de savoir si un mot donné est contenu dans un dictionnaire donné
 function motExiste(mot, dic){
 	if(dic.includes(mot))
 		return true;
 	return false;
 }
-
-
 
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -92,21 +90,21 @@ function motExiste(mot, dic){
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 /*
-//Fonction qui remplace a un index donné, une lettre donnée.
-String.prototype.replaceAt = function(index, replacement) {
-	if (index >= this.length) {
-		return this.valueOf();
-	}
+-----------------------------FONCTIONNEMENT GLOBAL SIMPLIFIE -----------------------------------
+au click de l'utilisateur sur "Lancer la recherche" : redirigeLettreOuPhoneme() => controle le choix de l'utilisateur sur les lettres et phonemes
+	appel de : aideMultiLettre(x, y) => trouve la liste des mots compatibles
+		appel de : choixMotCompatible(motSave,listeMotCompatible) => crée les boutons mot saisi - mot compatibles
+		affichage des boutons mot saisi - mot compatibles
+		au click appel de aideLettreRechDico(mot1, mot2) => trouve la difference de lettre entre le couple de mot
+			appel de chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2); => cherche les 2 mots manquants pour former le groupe de 4 mots
+			affichage des resultats
 
-	var chars = this.split('');
-	chars[index] = replacement;
-	return chars.join('');
-}
+
 */
-
 
 //redirige vers l'exécution de aideLettreSubs() ou aidePhonemeSubs() selon si
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
+//Cette fonction sera modifiée au niveau de la partie recupération des x et y
 function redirigeLettreOuPhoneme() {
 	
 	document.getElementById('loadingStats').style.visibility = "visible";
@@ -120,8 +118,6 @@ function redirigeLettreOuPhoneme() {
 	if (document.getElementById('choixLettre').value == 'true')
 	{
 		//aideLettreSubs();
-
-		//servira pour plusieurs lettres/plusieurs lettres
 		if (x == "" || y == "")
 		{
 			if (x == "" && y == "") {
@@ -141,11 +137,10 @@ function redirigeLettreOuPhoneme() {
 	}
 	else
 		aidePhonemeSubs();
-
-	
 }
 
 
+//Cette fonction permet de donner à l'utilisateur une idée du temps des recherches qu'il execute
 function afficheStats() {
 	var text="";
 	var x=document.getElementById('choixDeX').value;
@@ -155,8 +150,8 @@ function afficheStats() {
 	var divStatsToHide = document.getElementById('divStatsToHide');
 
 	divStatsToHide.style.visibility = "visible";
-	//ne pas tester avec diffXY au final, car si x=5 et y=4 par ex, diffXY sera faible(1)
-	//mais la vitesse d'exécution sera très lente (complexité élevée)
+
+	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if (x>7 || y>3) {
 		text='très lent';
 		divStatsToHide.style.backgroundColor = 'darkred';
@@ -172,7 +167,7 @@ function afficheStats() {
 	tExec.innerText="Temps d'execution : " + text;
 }
 
-
+//Fonction d'affichage des informations du processeur utilisé pour determiner le temps des requetes (voir afficheStats() )
 function afficheInfoProc() {
 	if (document.getElementById('pInfoProc').style.visibility == "collapse")
 		document.getElementById('pInfoProc').style.visibility = "visible";
@@ -192,23 +187,13 @@ index: à partir de qu'elle lettre
 	- Sortie :
 Renvoie un tuple de la forme: boolean, couple.
 */
+
 function recupCouple(mot, x, index) {
-	//console.log("----------------------------------Valeur de mot :" +mot);
-	//console.log("----------------------------------Valeur de x :" +x);
-	//console.log("----------------------------------Valeur de index :" +index);
 	if (x > 1) {
-		//console.log("----------------------------------Valeur de index+1 :" + (index + 1));
-		//console.log("----------------------------------Valeur de length :" + mot.length);
 		if ((index + 1) === mot.length)
 			return ['false', '']
-		
-		/* peut-être à remplacer par
-		if ((index + (x - 1)) >= mot.length)
-		return ['false', '']
-		*/
 
 	}
-	//console.log("Je return : " + 'true' + ', ' +mot.substr(index, x))
 	return ['true', mot.substr(index, x)];
 }
 
@@ -224,6 +209,7 @@ Paramètres :
 
 Exemple : Si je désire récupérer tous les couples de 2 lettres possibiles à partir de l'alphabet, j'utilise cette fonction qui me retournera une liste qui contiendra : aa,ab,ac,ad,...,zz.
 */
+
 function recupCoupleLettre(y, a, liste, alphabet) {
 	listeCouple = liste;
 	for (let i = 0; i < alphabet.length; i++)
@@ -250,16 +236,11 @@ String.prototype.replacerAvecIndex = function (index, x, string) {
 	return this.substring(0,index-(x-1)) + string + this.substring(index+1,this.length);
 };
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+//Cette fonction lance la recherche des contrepeteries suite au click de l'utilisateur sur le couple de mot de son choix (=recherche des 4 mots)
 function updateBtn() {
 	let mo = document.getElementById('mot').value;
 	mot=mo.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
-	console.log("mot :" + mot);
-
 	var iButton = $(this).val();
-	console.log("test click " + iButton);
 	if(document.getElementById('choixPhoneme').value == 'false')
 		aideLettreRechDico(mot,iButton);
 	//if(document.getElementById('choixPhoneme').value == 'true')
@@ -268,12 +249,12 @@ function updateBtn() {
 
 
 
-
+//Cette fonction permet de creer les couples mot - mot compatibles sous la forme de boutons
 function choixMotCompatible(motSave,listeMotCompatible) {
 	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
 	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
 	//Sans cela, des pb d'initialisation peuvent apparaitre
-	if(listeMotCompatible.length>1) {
+	if(listeMotCompatible.length>1) { //Sert uniquement à sauvegarder la liste en memoire pour le bouton retour
 		saveTuple = listeMotCompatible;
 	}
 	if(listeMotCompatible.length==1) {
@@ -284,7 +265,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		element.removeChild(element.firstChild);
 	}
 
-	for (var i = 0; i < listeMotCompatible.length; i++) {
+	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			let button = document.createElement("button");
 			button.innerText =motSave+" - " + listeMotCompatible[i];
 			button.value =listeMotCompatible[i];
@@ -294,7 +275,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	}
 }
 
-//changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection
+//Changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection de l'utilisateur
 function choixLettre() {
 	if (document.getElementById('choixLettre').value == 'false')
 	{
@@ -311,30 +292,30 @@ function choixPhoneme() {
     }
 }
 
-
+//Cette fonction permet de trouver les 2 mots manquant pour constituer les 4 mots à partir du mot saisi et du mot compatible
 function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 	var diffXY = x - y;
 	var longueurMax= document.getElementById("choixLongueurMax").value
 	var longueurMin= document.getElementById("choixLongueurMin").value
 	for(let i=0;i<dicMot.length;i++){ //Pour chaque mots du dico
-		let mot1=dicMot[i]; //On prend le premier mot
+		let mot1=dicMot[i]; //On prend le ieme mot du dico
 		lg1=mot1.length;
-		longueur1=lg1-diffXY;
+		longueur1=lg1-diffXY; //Variable pour determiner les longueurs des mots à trouver quand le nombre de lettre à remplacer change
 		longueur1plus=lg1+diffXY;
 		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
 
-		if(posLettre1 != -1 && mot1.length<= longueurMax && mot1.length >= longueurMin) { //Si la lettre1 est presente dans le mot 1 du dico
+		if(posLettre1 != -1 && mot1.length<= longueurMax && mot1.length >= longueurMin) { //Si la lettre1 est presente dans le mot 1 du dico + respecte les conditions de longueur
 			for(let j=0;j<dicMot.length;j++){ //Pour chaque mot du dico
 				let mot2=dicMot[j]; //On prend le premier mot
 				lg2=mot2.length;
-				longueur2moins=lg2-diffXY;
+				longueur2moins=lg2-diffXY;//Variable pour determiner les longueurs des mots à trouver quand le nombre de lettre à remplacer change
 				longueur2plus=lg2+diffXY;
 
-				if (diffXY ==0 ) { //MARCHE OK !!!!!!
+				if (diffXY ==0 ) { //Si on remplace i par i lettres
 					//Rentre ici : testé
 					if (mot1.length == mot2.length && mot1 != mot2) { //Si les 2 mots sont de meme longueur et ne sont pas les memes
 						var lettreCommune = 0;
-						for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1
+						for (let k=0;k<mot1.length;k++) { //Pour chaque lettre du mot1 on compte les lettres communes avec le mot 2
 
 							if (mot1[k] == mot2[k]){ //Si la lettre au meme index entre les 2 mots est identique :
 								lettreCommune++; //On incremente cette variable
@@ -351,47 +332,44 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 						}
 					}
 				}
-				if (diffXY > 0 ) { //FONCTIONNEL NORMALEMENT MAIS A TESTER
+				if (diffXY > 0 ) { //Si on remplace i+x par i lettres
 					//Rentre ici : testé
-					if (longueur1 == mot2.length) { //Si le premier mot fait x lettres et le deuxieme fait x-1 lettres
+					if (longueur1 == mot2.length) { //Si le premier mot fait x lettres et le deuxieme fait x lettres de moins
 						var lettreCommune = 0;
 						var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre1 est dans ce mot
 						if(posLettre2 != -1 && posLettre1 == posLettre2) {
-							mot1test=mot1.replace(lettre1,"")
+							mot1test=mot1.replace(lettre1,"") //On garde uniquement les lettres qui ne sont pas a echanger entre les 2 mots
 							mot2test=mot2.replace(lettre2,"")
-							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1
+							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1 sans ses lettres à echanger
 
 								if (mot1test[k] == mot2test[k]){ //Si la lettre au meme index entre les 2 mots est identique :
 									lettreCommune++; //On incremente cette variable
 								}
 							}
-								if (lettreCommune == mot1test.length) { //On regarde si les deux mots ont la lettre1 et la lettre2 au meme endroit
-									resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
+								if (lettreCommune == mot1test.length) { //On regarde le mot1 et le mot2 ont toutes leurs lettres en commun à part les lettres à echanger
+									resMot1.push(mot1);
 									resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
-									console.log("=================================trouve============================================");
 									break;
 								}
 						}
 					}
 				}
-				if (diffXY < 0 ) {
-					if (mot1.length == longueur2plus) { //Si le premier mot fait x lettres et le deuxieme fait x-1 lettres
-						//console.log("mot 1 length: " + mot1.length)
-
+				if (diffXY < 0 ) {//Si on remplace i par i+y lettres
+					if (mot1.length == longueur2plus) { //Si le premier mot fait x lettres et le deuxieme fait y lettres de plus
 						var lettreCommune = 0;
-						var posLettre2=mot2.indexOf(lettre2);//On regarde ou la lettre2 est dans ce mot
+						var posLettre2=mot2.indexOf(lettre2);//Meme principe que juste au dessus
 						if(posLettre2 != -1 && posLettre1 == posLettre2) {
 							mot1test=mot1.replace(lettre1,"")
 							mot2test=mot2.replace(lettre2,"")
-							for (let k=0;k<mot1test.length;k++) { //Pour chaque lettre du mot1
+							for (let k=0;k<mot1test.length;k++) {
 
-								if (mot1test[k] == mot2test[k]){ //Si la lettre au meme index entre les 2 mots est identique :
-									lettreCommune++; //On incremente cette variable
+								if (mot1test[k] == mot2test[k]){
+									lettreCommune++;
 								}
 							}
 							if (lettreCommune == mot1test.length) {
-								resMot1.push(mot1); //Et on regarde si le mot2 a toutes ses autres lettres differentes du mot grace a "LettreCommune"
-								resMot2.push(mot2);//Si c'est le cas on ajoute les 2 mots dans les tableaux respectifs
+								resMot1.push(mot1);
+								resMot2.push(mot2);
 								console.log("trouve");
 								break;
 							}
@@ -406,7 +384,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 	console.log("mot 2 : " + resMot2);
 }
 
-//Fonction qui va trouver la difference de lettre entre deux mots
+//Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
 function aideLettreRechDico(mot1, mot2) {
 	document.getElementById("bRetour").setAttribute("class","mt-3");
 	affichResultat=[]
@@ -435,9 +413,8 @@ function aideLettreRechDico(mot1, mot2) {
 	}
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
-	console.log("!!!!!!!!!!lettremot1 : "+lettreMot1)
-	console.log("!!!!!!!!!!!lettremot2 : "+lettreMot2)
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
+	//On prepare l'affichage des 4 mots un à un
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
 		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">'+ mot1 + ' - ' + resMot2[j] + '</div>'  ); //On ajoute dans une variable globale
@@ -450,7 +427,7 @@ function aideLettreRechDico(mot1, mot2) {
 
 
 
-
+//Fonction qui affiche les groupes de 4 mots
 function affichageMot(l){
 	var element = document.getElementById("div1");
 	while (element.firstChild){
