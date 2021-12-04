@@ -40,10 +40,17 @@ $("#csv-file").change(handleFileSelect);
 }
 
 function load(){
-	//ajoute un event qui déclenche afficheStats() lorsque l'utilisateur change
+	//ajoute un event listener qui déclenche afficheStats() lorsque l'utilisateur change
 	//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
+	afficheStats(); //appelle aussi la fonction au chargement du dico
 	document.getElementById('choixDeX').addEventListener('input', afficheStats);
 	document.getElementById('choixDeY').addEventListener('input', afficheStats);
+
+	//ajoute un event listener qui déclenche afficheLoadStats() lorsque l'utilisateur clique sur un des boutons.
+	//l'icone de chargement sera cachée au moment de l'affichage des résultats (voir fonction choixMotCompatible dans le cas du click sur gen1)
+	//(voir fonction aideLettreRechDico dans le cas du click sur gen2)
+	document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
+	document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
 
 	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
@@ -106,8 +113,6 @@ au click de l'utilisateur sur "Lancer la recherche" : redirigeLettreOuPhoneme() 
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
 //Cette fonction sera modifiée au niveau de la partie recupération des x et y
 function redirigeLettreOuPhoneme() {
-	
-	document.getElementById('loadingStats').style.visibility = "visible";
 
 
 	var x=document.getElementById('choixDeX').value;
@@ -135,8 +140,28 @@ function redirigeLettreOuPhoneme() {
 		else
 			aideMultiLettre(x, y);
 	}
-	else
+	else //l'utilisateur a choisi les phonèmes
+	{
 		aidePhonemeSubs();
+		/*
+		if (x == "" || y == "")
+		{
+			if (x == "" && y == "") {
+				document.getElementById("choixDeX").value = 1;
+				document.getElementById("choixDeY").value = 1;
+			}
+			else if (x == "")
+				document.getElementById("choixDeY").value
+			else if(y == "")
+				document.getElementById("choixDeX").value = 1;
+			x = document.getElementById("choixDeX").value;
+			y = document.getElementById("choixDeY").value;
+			aideMultiPhon(x,y);
+        }
+		else
+			aideMultiPhon(x, y);
+		*/
+	}
 }
 
 
@@ -175,7 +200,10 @@ function afficheInfoProc() {
 	document.getElementById('pInfoProc').style.visibility = "collapse";
 }
 
-
+//affiche l'icone de chargement dans le panneau des Stats
+function affichLoadStats() {
+	document.getElementById('loadingStats').style.visibility = "visible";
+}
 
 /*
 Objectif: Renvoie un couple de x lettre(s) à partir de l'index index dans le mot mot
@@ -251,6 +279,7 @@ function updateBtn() {
 
 //Cette fonction permet de creer les couples mot - mot compatibles sous la forme de boutons
 function choixMotCompatible(motSave,listeMotCompatible) {
+	document.getElementById('loadingStats').style.visibility = "collapse";
 	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
 	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
 	//Sans cela, des pb d'initialisation peuvent apparaitre
@@ -281,6 +310,7 @@ function choixLettre() {
 	{
 		document.getElementById('choixLettre').value = 'true';
 		document.getElementById('choixPhoneme').value = 'false';
+		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Lettres';
     }
 }
 
@@ -289,6 +319,7 @@ function choixPhoneme() {
 	{
 		document.getElementById('choixPhoneme').value = 'true';
 		document.getElementById('choixLettre').value = 'false';
+		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
     }
 }
 
@@ -386,6 +417,8 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 
 //Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
 function aideLettreRechDico(mot1, mot2) {
+	document.getElementById('loadingStats').style.visibility = "collapse";
+
 	document.getElementById("bRetour").setAttribute("class","mt-3");
 	affichResultat=[]
 	x=document.getElementById("choixDeX").value;

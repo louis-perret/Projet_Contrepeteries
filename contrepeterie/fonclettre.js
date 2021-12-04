@@ -96,5 +96,4 @@ function aideMultiLettre(x, y) {
   console.log(" ]")
   //console.log("--------------------------Ma liste compatible : " + l)
   choixMotCompatible(motSave, l);
-  
 }

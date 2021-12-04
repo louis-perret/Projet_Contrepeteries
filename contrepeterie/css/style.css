@@ -91,7 +91,7 @@ a{
 }
 
 
-#generation, #chargementDico, #file{
+#generation, #file{
 	display: flex;
   justify-content: center;
   align-items: center;
@@ -402,7 +402,7 @@ span.c0 {
 }
 
 #loadingStats {
-  visibility: hidden;
+  visibility: collapse;
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -517,6 +517,7 @@ span.c0 {
   color: aliceblue;
   visibility: collapse;
 }
+
 
 /* ---------------------Code jeu.html ----------------------------------- */
 

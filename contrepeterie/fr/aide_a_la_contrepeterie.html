@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="../suggestion.js"></script>
     <script src="../fonclettre.js"></script>
+    <script src="../foncphoneme.js"></script>
 
     <title>L'art de décaler les sons</title>
 </head>
@@ -85,37 +86,42 @@
         
 
         <div id="aide">
-            <div>
-                    <button id="choixLettre" onclick="choixLettre()" value="true">Lettres</button>
-                    <button id="choixPhoneme" onclick="choixPhoneme()" value="false">Phonèmes</button>
+            <div class="row">
+                    <button id="choixLettre" class="m-2" onclick="choixLettre()" value="true">Lettres</button>
+                    <button id="choixPhoneme" class="m-2"onclick="choixPhoneme()" value="false">Phonèmes</button>
+                    <p id="pSelectLettrePhon" class="m-2">Sélectionné : Lettres</p>
             </div>
             
             
             <div id="chargementDico">
                 <button id="genener" onclick="load()">Charger le dictionnaire </button>
                 <span id="chargement"></span>
-
             </div>
 
             <div style="display: flex; justify-content: space-between;">           
-                <div id="choixXY">
+                <div id="choixXY" style="outline: 1.5px solid black; outline-offset: 10px; border-radius: 4px;">
+                    <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Nombre de lettres à échanger :</h3>
                     <div>
-                        <p>Nombre de lettres à échanger (mot renseigné)</p>
+                        <p>(mot renseigné)</p>
                         <input type="text" id="choixDeX" value="1"/>
                     </div>
 
                     <div>
-                        <p>Nombre de lettres à échanger (mot recherché)</p>
+                        <p>(mot recherché)</p>
                         <input type="text" id="choixDeY" value="1"/>
                     </div>
                 </div>
-                <div margin="10">
-                    <p>Longueur minimum des résultats </p>
-                    <input type="text" id="choixLongueurMin" value="3"/>
-                </div>
-                <div>
-                    <p>Longueur maximum des résultats</p>
-                    <input type="text" id="choixLongueurMax" value="5"/>
+
+                <div id="choixLongueurMinMax" style="outline: 1.5px solid black; outline-offset: 10px; border-radius: 4px;">
+                    <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Longueur min/max des résultats :</h3>
+                    <div margin="10">
+                        <p>(minimum)</p>
+                        <input type="text" id="choixLongueurMin" value="3"/>
+                    </div>
+                    <div>
+                        <p>(maximum)</p>
+                        <input type="text" id="choixLongueurMax" value="5"/>
+                    </div>
                 </div>
 
                 <div class="statsDiv p-1 shadow bg-light">
@@ -123,7 +129,7 @@
 
                     <div id="divStatsToHide">
                         <div id="loadingStats"></div>
-                        <h5 id="tempsExecution"style="padding: 10%;"></h5>
+                        <h5 id="tempsExecution" style="padding: 10%;"></h5>
                     </div>
                 
                     <div class="m-2"style="display: flex; justify-content: right;">
@@ -141,7 +147,7 @@
                 <div style="display:flex;">
                 <input  type="text" name="phrase" id="mot"/>
                 <button id="gen" onclick="redirigeLettreOuPhoneme()"> Lancer la recherche</button>
-                <button  id="gen" onclick="aideLettreRechDico(document.getElementById('mot').value,document.getElementById('motDirect').value); afficheStats();"> Lancer la recherche pour deux mots</button>
+                <button id="gen2" onclick="aideLettreRechDico(document.getElementById('mot').value,document.getElementById('motDirect').value); afficheStats();"> Lancer la recherche pour deux mots</button>
 
                 </div>
 
