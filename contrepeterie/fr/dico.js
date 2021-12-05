@@ -50,9 +50,8 @@ function splitdic(){
 
 
 
-function load(){
-	document.getElementById('chargement').innerHTML = 'Dictionnaire en cours de chargement';
-	document.getElementById('chargement').style.backgroundColor=orange;
+function loadDico(){
+	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
 	Papa.parse(pathToDictionnary, {
     download: true,
@@ -61,9 +60,9 @@ function load(){
       	
     },
     complete: function() {
-    	document.getElementById('chargement').innerHTML = 'Dictionnaire chargé';
-		document.getElementById('chargement').style.backgroundColor=green;
-		document.getElementById('genener').disabled=true;
+    	document.getElementById('chargement').innerHTML = '<div id="wrapper"><svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg></div>';
+		document.getElementById('chargement').style.backgroundColor="beige";
+		document.getElementById('loadDicoBtn').disabled=true;
         console.log("All done!");
         console.log(dic);
         console.log("Appel de split dic");

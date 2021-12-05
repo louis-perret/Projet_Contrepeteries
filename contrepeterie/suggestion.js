@@ -39,7 +39,7 @@ $("#csv-file").change(handleFileSelect);
   	console.log(dicPhon);
 }
 
-function load(){
+function loadSuggestion(){
 	//ajoute un event listener qui déclenche afficheStats() lorsque l'utilisateur change
 	//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
 	afficheStats(); //appelle aussi la fonction au chargement du dico
@@ -61,9 +61,9 @@ function load(){
       	
     },
     complete: function() {
-    	document.getElementById('chargement').innerHTML = '<div class="wrapper"> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg></div> ';
-		document.getElementById('chargement').style.backgroundColor=green;
-		document.getElementById('genener').disabled=true;
+    	document.getElementById('chargement').innerHTML = '<div id="wrapper"><svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg></div>';
+		document.getElementById('chargement').style.backgroundColor="beige";
+		document.getElementById('loadSugg').disabled=true;
         console.log("All done!");
         console.log(dic);
         console.log("Appel de split dic");
