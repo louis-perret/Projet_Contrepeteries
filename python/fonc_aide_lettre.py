@@ -98,60 +98,60 @@ mot2'-> mot contenant lettre2
 """
 """
 def aideLettreRechDico(index, listeDeMotCop):
-    index -= 1
-    NombreDeMot = len(listeDeMotCop)
-    compteur = 0
-    listeDeMotNONCop = []
-    listeDeRacines = []
-    listeAffichage = []
-    # config filtres
-    with open('data/config.json') as diconfig_:
-        diconfig = json.load(diconfig_)
+	index -= 1
+	NombreDeMot = len(listeDeMotCop)
+	compteur = 0
+	listeDeMotNONCop = []
+	listeDeRacines = []
+	listeAffichage = []
+	# config filtres
+	with open('data/config.json') as diconfig_:
+		diconfig = json.load(diconfig_)
 
-    tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-    lignes = csv.reader(tsv_file, delimiter="\t")
-    # lit ligne par ligne du DICO (près de 100k lignes)
-    # changer filtres
-    diconfig = changerfiltre(diconfig)
-    # bd filtres
-    with open('data/DicoVulgaire.json') as vulgaire:
-        BDvulgaire = json.load(vulgaire)
+	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter="\t")
+	# lit ligne par ligne du DICO (près de 100k lignes)
+	# changer filtres
+	diconfig = changerfiltre(diconfig)
+	# bd filtres
+	with open('data/DicoVulgaire.json') as vulgaire:
+		BDvulgaire = json.load(vulgaire)
 
-    for mot in lignes:
-        mot = mot[0] #On recupère le mot qu'on veut tester
+	for mot in lignes:
+		mot = mot[0] #On recupère le mot qu'on veut tester
 
-        for ChaqueLettre in range(len(listeDeMotCop)):
+		for ChaqueLettre in range(len(listeDeMotCop)):
 
-            test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
-            test2 = mot[:5] not in listeDeRacines
-            # Racines:
-            if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
-            	#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
-                testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
-                                       mot.index(
-                    listeDeMotCop[ChaqueLettre][2]),1) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
-                # la lettre est dans le mot
-                if isInDico('word', testDansMot):
-                    # test we need
-                    if diconfig["FiltreGrossier"] == "Oui":
+			test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
+			test2 = mot[:5] not in listeDeRacines
+			# Racines:
+			if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
+				#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
+				testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
+									   mot.index(
+					listeDeMotCop[ChaqueLettre][2]),1) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+				# la lettre est dans le mot
+				if isInDico('word', testDansMot):
+					# test we need
+					if diconfig["FiltreGrossier"] == "Oui":
 
-                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
-                            listeDeRacines.append(mot[:5])
+						if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+							listeDeRacines.append(mot[:5])
 
-                            listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-                                                   listeDeMotCop[ChaqueLettre][2],
-                                                   listeDeMotCop[ChaqueLettre][0],
-                                                   testDansMot, mot))
+							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+												   listeDeMotCop[ChaqueLettre][2],
+												   listeDeMotCop[ChaqueLettre][0],
+												   testDansMot, mot))
 
-                    else:
-                        listeDeRacines.append(mot[:5])
+					else:
+						listeDeRacines.append(mot[:5])
 
-                        listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-                                               listeDeMotCop[ChaqueLettre][2],
-                                               listeDeMotCop[ChaqueLettre][0],
-                                               testDansMot, mot))
-                    compteur += 1
-    return (listeAffichage, compteur, diconfig)
+						listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+											   listeDeMotCop[ChaqueLettre][2],
+											   listeDeMotCop[ChaqueLettre][0],
+											   testDansMot, mot))
+					compteur += 1
+	return (listeAffichage, compteur, diconfig)
 """
 
 #-----------------------------------------------------------------------------
@@ -159,58 +159,58 @@ def aideLettreRechDico(index, listeDeMotCop):
 effectue la recherche de quadruplet de manière générale
 """
 def aideLettreRechDicoGeneral(index, listeDeMotCop):
-    index -= 1
-    NombreDeMot = len(listeDeMotCop)
-    compteur = 0
-    listeDeMotNONCop = []
-    listeDeRacines = []
-    listeAffichage = []
-    # config filtres
-    with open('data/config.json') as diconfig_:
-        diconfig = json.load(diconfig_)
+	index -= 1
+	NombreDeMot = len(listeDeMotCop)
+	compteur = 0
+	listeDeMotNONCop = []
+	listeDeRacines = []
+	listeAffichage = []
+	# config filtres
+	with open('data/config.json') as diconfig_:
+		diconfig = json.load(diconfig_)
 
-    tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-    lignes = csv.reader(tsv_file, delimiter="\t")
-    # lit ligne par ligne du DICO (près de 100k lignes)
-    # changer filtres
-    diconfig = changerfiltre(diconfig)
-    # bd filtres
-    with open('data/DicoVulgaire.json') as vulgaire:
-        BDvulgaire = json.load(vulgaire)
+	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter="\t")
+	# lit ligne par ligne du DICO (près de 100k lignes)
+	# changer filtres
+	diconfig = changerfiltre(diconfig)
+	# bd filtres
+	with open('data/DicoVulgaire.json') as vulgaire:
+		BDvulgaire = json.load(vulgaire)
 
-    for mot in lignes:
-        mot = mot[0] #On recupère le mot qu'on veut tester
+	for mot in lignes:
+		mot = mot[0] #On recupère le mot qu'on veut tester
 
-        for ChaqueLettre in range(len(listeDeMotCop)):
+		for ChaqueLettre in range(len(listeDeMotCop)):
 
-            test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
-            test2 = mot[:5] not in listeDeRacines
-            # Racines:
-            if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
-            	#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
-                testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
-                # la lettre est dans le mot
-                if isInDico('word', testDansMot):
-                    # test we need
-                    if diconfig["FiltreGrossier"] == "Oui":
+			test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
+			test2 = mot[:5] not in listeDeRacines
+			# Racines:
+			if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
+				#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
+				testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+				# la lettre est dans le mot
+				if isInDico('word', testDansMot):
+					# test we need
+					if diconfig["FiltreGrossier"] == "Oui":
 
-                        if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
-                            listeDeRacines.append(mot[:5])
+						if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+							listeDeRacines.append(mot[:5])
 
-                            listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-                                                   listeDeMotCop[ChaqueLettre][2],
-                                                   listeDeMotCop[ChaqueLettre][0],
-                                                   testDansMot, mot))
+							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+												   listeDeMotCop[ChaqueLettre][2],
+												   listeDeMotCop[ChaqueLettre][0],
+												   testDansMot, mot))
 
-                    else:
-                        listeDeRacines.append(mot[:5])
+					else:
+						listeDeRacines.append(mot[:5])
 
-                        listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-                                               listeDeMotCop[ChaqueLettre][2],
-                                               listeDeMotCop[ChaqueLettre][0],
-                                               testDansMot, mot))
-                    compteur += 1
-    return (listeAffichage, compteur, diconfig)
+						listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+											   listeDeMotCop[ChaqueLettre][2],
+											   listeDeMotCop[ChaqueLettre][0],
+											   testDansMot, mot))
+					compteur += 1
+	return (listeAffichage, compteur, diconfig)
 
 
 
@@ -225,41 +225,41 @@ pretty print des resultats de l'aide sur les lettres et les syllabes.
 
 def affiRechLettre(listeAffichage, compteur, mot_origine):
 
-    listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0])) #key = fonction qui prend lettre en param et ressort lettre[0] -> la liste sera trié par rapport à ça
-    clear()
+	listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0])) #key = fonction qui prend lettre en param et ressort lettre[0] -> la liste sera trié par rapport à ça
+	clear()
 
-    while(True):
-        compt = 1
+	while(True):
+		compt = 1
 
-        for pack in listeAffichage: #pack = (lettre1,lettre2,mot1',mot2',mot2)
+		for pack in listeAffichage: #pack = (lettre1,lettre2,mot1',mot2',mot2)
 
-            marge = len(str(compt))+2
-            print(marge*" "+f"{mot_origine} - {pack[4]}")
-            print(compt)
-            print(marge*" "+f"{pack[2]} - {pack[3]}")
-            print("\n"+"-"*30+"\n")
-            compt += 1
+			marge = len(str(compt))+2
+			print(marge*" "+f"{mot_origine} - {pack[4]}")
+			print(compt)
+			print(marge*" "+f"{pack[2]} - {pack[3]}")
+			print("\n"+"-"*30+"\n")
+			compt += 1
 
-        print(f"Nombre de combinaisons : {compt-1}")
+		print(f"Nombre de combinaisons : {compt-1}")
 
-        selecteur = None
-        boucle = True
-        while(boucle):
-            try:
-                selecteur = int(input(
-                    "\n0 = quitter l'aide,-1 revenir au début de l'aide :\n"))
-            except:
-                print("\nVous n'avez pas saisi un chiffre")
-                continue
+		selecteur = None
+		boucle = True
+		while(boucle):
+			try:
+				selecteur = int(input(
+					"\n0 = quitter l'aide,-1 revenir au début de l'aide :\n"))
+			except:
+				print("\nVous n'avez pas saisi un chiffre")
+				continue
 
-            if selecteur == 0:
-                return 0
-            elif selecteur == -1:
-                clear()
-                return 1
+			if selecteur == 0:
+				return 0
+			elif selecteur == -1:
+				clear()
+				return 1
 
-            else:
-                print("\nL'entrée n'est pas valide, réessayez")
+			else:
+				print("\nL'entrée n'est pas valide, réessayez")
 
 
 """
@@ -274,13 +274,13 @@ que tailleMin
 
 def tranchesMot(mot, tSlice):
 
-    dicoSliceCom = {}
-    for i in range(len(mot)):
-        for j in range(i+1, len(mot)+1):
-            if mot[i:j] != mot and j-i <= tSlice: #Pas plus de 3 lettres
-                dicoSliceCom[mot[i:j]] = []
+	dicoSliceCom = {}
+	for i in range(len(mot)):
+		for j in range(i+1, len(mot)+1):
+			if mot[i:j] != mot and j-i <= tSlice: #Pas plus de 3 lettres
+				dicoSliceCom[mot[i:j]] = []
 
-    return dicoSliceCom
+	return dicoSliceCom
 # ----------------------------------------------------------------------------
 """
 génère un itérateur de tuples contenant (debutMot,finMot) autour de toutes
@@ -288,10 +288,10 @@ les différentes tranches possible du mot.
 """
 def DebFinMot(mot, tSlice):
 
-    for i in range(len(mot)):
-        for j in range(i+1, len(mot)+1):
-            if mot[i:j] != mot and j-i <= tSlice:
-                yield (mot[:i], mot[j:]) #retourne un générateur (itérateur qu'on ne parcours qu'une fois)
+	for i in range(len(mot)):
+		for j in range(i+1, len(mot)+1):
+			if mot[i:j] != mot and j-i <= tSlice:
+				yield (mot[:i], mot[j:]) #retourne un générateur (itérateur qu'on ne parcours qu'une fois)
 
 
 # ----------------------------------------------------------------------------
@@ -304,45 +304,45 @@ un ensemble contenant les mots contenant cette slice du mot d'origine
 
 def aideSyllSubs(mot_origine):
 
-    tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-    Lexlignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+	Lexlignes = csv.reader(tsv_file, delimiter="\t")
 
-    with open('data/DicoVulgaire.json') as vulgaire:
-        BDvulgaire = json.load(vulgaire)
+	with open('data/DicoVulgaire.json') as vulgaire:
+		BDvulgaire = json.load(vulgaire)
 
-    dicoSliceCom = tranchesMot(mot_origine, 3)
+	dicoSliceCom = tranchesMot(mot_origine, 3)
 
 
 # recherche dans le lexique la correspondance des slices
-    for ligne in Lexlignes:
-        # on ne fait pas de recherche sur les mots composés et on exclue le mot d'entrée
-        if '-' not in ligne[0] and ' ' not in ligne[0] and ligne[0] != mot_origine:
-            ensTmp = []
-            LexMot = ligne[0] #=mot qu'on teste du dico Lexique383
+	for ligne in Lexlignes:
+		# on ne fait pas de recherche sur les mots composés et on exclue le mot d'entrée
+		if '-' not in ligne[0] and ' ' not in ligne[0] and ligne[0] != mot_origine:
+			ensTmp = []
+			LexMot = ligne[0] #=mot qu'on teste du dico Lexique383
 
-            iterDebFin = DebFinMot(mot_origine, 3)
+			iterDebFin = DebFinMot(mot_origine, 3)
 # pour chaque tranche on recherche les mots dans lexique qui commencent
 # et finissent de la même façon que le mot_origine:
 # ex. danse -> slice: "an", on cherche les mots commençant
 # par "d" et finissant par "se".
 
-            for slice in dicoSliceCom.keys():
-                try:
-                    deb, fin = next(iterDebFin) #prend la valeur suivante de l'itérateur
-                except:
-                    break
+			for slice in dicoSliceCom.keys():
+				try:
+					deb, fin = next(iterDebFin) #prend la valeur suivante de l'itérateur
+				except:
+					break
 
-                test = (len(LexMot) - len(deb) - len(fin)) <= 5
-                if LexMot.startswith(deb) and LexMot.endswith(fin) and test: #si le mot commence et se termine par ce qu'on veut
-                    dicoSliceCom[slice].append(LexMot)
-    # on supprime les tranches qui n'ont pas de résultats
-    dicoTmp = {}
-    for i in dicoSliceCom.keys():
-        if dicoSliceCom[i] != []:
-            dicoTmp[i] = dicoSliceCom[i]
+				test = (len(LexMot) - len(deb) - len(fin)) <= 5
+				if LexMot.startswith(deb) and LexMot.endswith(fin) and test: #si le mot commence et se termine par ce qu'on veut
+					dicoSliceCom[slice].append(LexMot)
+	# on supprime les tranches qui n'ont pas de résultats
+	dicoTmp = {}
+	for i in dicoSliceCom.keys():
+		if dicoSliceCom[i] != []:
+			dicoTmp[i] = dicoSliceCom[i]
 
-    print(f"Mot saisie : {mot_origine}")
-    return dicoSliceCom
+	print(f"Mot saisie : {mot_origine}")
+	return dicoSliceCom
 
 
 # -----------------------------------------------------------------------------
@@ -355,34 +355,34 @@ Retourne la tranche que souhaite échangé l'utilisateur dans le mot d'origine
 
 
 def affiNbCorrTranche(dicoSliceCom):
-    # affichage du nombre de correspondances par slices
-    index = 1
-    for i in dicoSliceCom.keys():
-        # elimination des doublons dans les listes.
-        dicoSliceCom[i] = sorted(list(set(dicoSliceCom[i]))) #le set enlève les doublons, on convertit une liste ordonnée
-        tailleString = 15 - len(str(i) + str(len(dicoSliceCom[i]))) #pour aligner dans l'affichage
+	# affichage du nombre de correspondances par slices
+	index = 1
+	for i in dicoSliceCom.keys():
+		# elimination des doublons dans les listes.
+		dicoSliceCom[i] = sorted(list(set(dicoSliceCom[i]))) #le set enlève les doublons, on convertit une liste ordonnée
+		tailleString = 15 - len(str(i) + str(len(dicoSliceCom[i]))) #pour aligner dans l'affichage
 
-        print(index, i, "-"*tailleString+">", len(dicoSliceCom[i]), "mots")
-        index += 1
+		print(index, i, "-"*tailleString+">", len(dicoSliceCom[i]), "mots")
+		index += 1
 
-    print("\n0 : quitter l'aide/ -1 revenir au début de l'aide")
-    selectSlice = None
-    test = True
-    while(test):
-        try:
-            selectSlice = int(
-                input("Quelle partie voulez-vous voulez-vous échanger ? (rentrez leur indice) :"))
-        except:
-            print("")
-        if selectSlice in range(1, len(dicoSliceCom.keys())+1):
-            test = False
-        elif selectSlice == 0:
-            return 0
-        elif selectSlice == -1:
-            return -1
-        else:
-            print("L'entrée n'est pas valide, réessayez\n")
-    return list(dicoSliceCom.keys())[selectSlice-1] #Récupère la liste des mots d'après l'échange selectionné
+	print("\n0 : quitter l'aide/ -1 revenir au début de l'aide")
+	selectSlice = None
+	test = True
+	while(test):
+		try:
+			selectSlice = int(
+				input("Quelle partie voulez-vous voulez-vous échanger ? (rentrez leur indice) :"))
+		except:
+			print("")
+		if selectSlice in range(1, len(dicoSliceCom.keys())+1):
+			test = False
+		elif selectSlice == 0:
+			return 0
+		elif selectSlice == -1:
+			return -1
+		else:
+			print("L'entrée n'est pas valide, réessayez\n")
+	return list(dicoSliceCom.keys())[selectSlice-1] #Récupère la liste des mots d'après l'échange selectionné
 
 
 # -----------------------------------------------------------------------------
@@ -395,66 +395,66 @@ Retourne le mot selectionné par l'utilisateur qui l'intéresse pour l'echange
 
 
 def affiPageParPage(listeMot, syllOrigine, mot_origine):
-    nbMotPage = 60  # nombre de mots par pages
-    nbPage = (len(listeMot)//nbMotPage)  # nombre total de pages.
-    numPage = 0                          # numéro page en cours
+	nbMotPage = 60  # nombre de mots par pages
+	nbPage = (len(listeMot)//nbMotPage)  # nombre total de pages.
+	numPage = 0                          # numéro page en cours
 
-    tailleLigne = 50
-    choix = {-1, -2}
-    selecteur = 0
-    continuer = True
-    while(continuer):
-        if selecteur == -2:
-            numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
-        elif selecteur == -1:
-            numPage = numPage-1 if numPage-1 >= 0 else numPage #Pas en dessous 0 pages
+	tailleLigne = 50
+	choix = {-1, -2}
+	selecteur = 0
+	continuer = True
+	while(continuer):
+		if selecteur == -2:
+			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
+		elif selecteur == -1:
+			numPage = numPage-1 if numPage-1 >= 0 else numPage #Pas en dessous 0 pages
 
-        clear()
-        print(f"page {numPage}/{nbPage}\n")
+		clear()
+		print(f"page {numPage}/{nbPage}\n")
 
-        for i in range(1, nbMotPage, 2): #de 1 à 60 avec un pas de 2
+		for i in range(1, nbMotPage, 2): #de 1 à 60 avec un pas de 2
 
-            mot1 = listeMot[nbMotPage*numPage+i-1] if nbMotPage*numPage+i-1 < len(listeMot) else ""
-            mot2 = listeMot[nbMotPage*numPage+i] if nbMotPage*numPage+i < len(listeMot) else ""
+			mot1 = listeMot[nbMotPage*numPage+i-1] if nbMotPage*numPage+i-1 < len(listeMot) else ""
+			mot2 = listeMot[nbMotPage*numPage+i] if nbMotPage*numPage+i < len(listeMot) else ""
 
-            # recupération de la taille des mots pour l'espace entre les deux
-            # c'est un pretty print
-            tailleEspace = tailleLigne-len(mot1)
+			# recupération de la taille des mots pour l'espace entre les deux
+			# c'est un pretty print
+			tailleEspace = tailleLigne-len(mot1)
 
-            if i <= 10:
-                print(f"{i}  {mot1}", " "*tailleEspace, f"{i+1}  {mot2}")
-            else:
-                print(i, mot1, " "*tailleEspace, i+1, mot2)
+			if i <= 10:
+				print(f"{i}  {mot1}", " "*tailleEspace, f"{i+1}  {mot2}")
+			else:
+				print(i, mot1, " "*tailleEspace, i+1, mot2)
 
-        print(
-            f"\nLes mots obtenables en remplaçant '{syllOrigine}' dans '{mot_origine}'")
-        test = True
-        while(test):
+		print(
+			f"\nLes mots obtenables en remplaçant '{syllOrigine}' dans '{mot_origine}'")
+		test = True
+		while(test):
 
-            try:
-                selecteur = int(input("""
+			try:
+				selecteur = int(input("""
 (0 : quitter l'aide/-3: revenir à selection précèdante /-4: revenir au début de l'aide)
 (-1:Gauche / -2:Droite) ou saisissez numéro du mot :\n"""))
-            except:
-                print("\nVous n'avez pas saisi un chiffre")
-                continue
+			except:
+				print("\nVous n'avez pas saisi un chiffre")
+				continue
 
-            test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0 #Si je peux toujours afficher des mots
+			test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0 #Si je peux toujours afficher des mots
 
-            if selecteur == 0:
-                return 0
-            elif selecteur == -3:
-                clear()
-                print(f"{mot_origine}\n")
-                return True
-            elif selecteur == -4:
-                return -1
-            elif selecteur in choix or test1:
-                test = False
-            else:
-                print("\nL'entrée n'est pas valide, réessayez")
-        continuer = False if selecteur not in choix else True
-    return listeMot[nbMotPage*numPage+selecteur-1] #retourne le mot sélectionné par l'utilisateur pour l'échange
+			if selecteur == 0:
+				return 0
+			elif selecteur == -3:
+				clear()
+				print(f"{mot_origine}\n")
+				return True
+			elif selecteur == -4:
+				return -1
+			elif selecteur in choix or test1:
+				test = False
+			else:
+				print("\nL'entrée n'est pas valide, réessayez")
+		continuer = False if selecteur not in choix else True
+	return listeMot[nbMotPage*numPage+selecteur-1] #retourne le mot sélectionné par l'utilisateur pour l'échange
 
 
 # ----------------------------------------------------------------------------
@@ -466,67 +466,67 @@ de forme exemple :
 """
 
 def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
-    		     # d'an'se      d'ar'se    an
+				 # d'an'se      d'ar'se    an
 
-    listeAffichage = []
-    listeTmp = []
+	listeAffichage = []
+	listeTmp = []
 
-    # recup deb et fin de mot_origine:
-    debFin = mot_origine.split(syllOrigine) #séparent le mot avec la syllabe choisie
-    # extraction de 'ar' de selectMot.
-    if len(debFin[1]) > 0: #Si la longueur de la fin du mot > 0
-        syllNvlle = selectMot[len(debFin[0]):-len(debFin[1])] #on récupère juste 'ar' dans 'darse'
+	# recup deb et fin de mot_origine:
+	debFin = mot_origine.split(syllOrigine) #séparent le mot avec la syllabe choisie
+	# extraction de 'ar' de selectMot.
+	if len(debFin[1]) > 0: #Si la longueur de la fin du mot > 0
+		syllNvlle = selectMot[len(debFin[0]):-len(debFin[1])] #on récupère juste 'ar' dans 'darse'
 
-    else:
-        syllNvlle = selectMot[len(debFin[0]):] #on récupère juste 'ar' dans 'darse'
-    print(syllNvlle,"-",syllOrigine)
-    tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-    LexLignes = csv.reader(tsv_file, delimiter="\t")
+	else:
+		syllNvlle = selectMot[len(debFin[0]):] #on récupère juste 'ar' dans 'darse'
+	print(syllNvlle,"-",syllOrigine)
+	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
+	LexLignes = csv.reader(tsv_file, delimiter="\t")
 
-    with open('data/DicoVulgaire.json') as vulgaire:
-        BDvulgaire = json.load(vulgaire)
+	with open('data/DicoVulgaire.json') as vulgaire:
+		BDvulgaire = json.load(vulgaire)
 
-    with open('data/config.json') as diconfig_:
-        diconfig = json.load(diconfig_)
+	with open('data/config.json') as diconfig_:
+		diconfig = json.load(diconfig_)
 
-    # lit ligne par ligne du DICO (près de 100k lignes)
-    # changer filtres
-    print('Maintenant il reste à gérer les filtres pour la génération')
-    diconfig = changerfiltre(diconfig)
+	# lit ligne par ligne du DICO (près de 100k lignes)
+	# changer filtres
+	print('Maintenant il reste à gérer les filtres pour la génération')
+	diconfig = changerfiltre(diconfig)
 
-    for ligne in LexLignes:
-        LexMot = ligne[0] #On récupère le mot du dico
+	for ligne in LexLignes:
+		LexMot = ligne[0] #On récupère le mot du dico
 
-        # cherche occurences de la nouvelle tranche dans le lexique
-        if syllNvlle in LexMot:
+		# cherche occurences de la nouvelle tranche dans le lexique
+		if syllNvlle in LexMot:
 
-            # on recupère le deb et fin du mot du lexique
-            indexSyllNvlle = re.finditer(syllNvlle, LexMot) #retourne un itérateur
-            indexSyllNvlle = [match.start() for match in indexSyllNvlle] 
+			# on recupère le deb et fin du mot du lexique
+			indexSyllNvlle = re.finditer(syllNvlle, LexMot) #retourne un itérateur
+			indexSyllNvlle = [match.start() for match in indexSyllNvlle] 
 
-            for i in indexSyllNvlle:
-                # À partir de celles-ci on recupère le début et la fin de ce mot
-                LexDeb = LexMot[:i]
-                LexFin = LexMot[i+len(syllNvlle):]
+			for i in indexSyllNvlle:
+				# À partir de celles-ci on recupère le début et la fin de ce mot
+				LexDeb = LexMot[:i]
+				LexFin = LexMot[i+len(syllNvlle):]
 
-                # on teste si le la concaténation du debut et fin de ce mot avec la slice
-                # d'origine forment un mot qui existe dans le lexique
-                testMot = LexDeb + syllOrigine + LexFin
-                if isInDico('word', testMot) and testMot not in listeTmp:
-                    if diconfig["FiltreGrossier"] == "Oui":
-                        if (selectMot in BDvulgaire or testMot in BDvulgaire or LexMot in BDvulgaire):
-                            listeAffichage.append([syllOrigine, syllNvlle,
-                                                   selectMot, testMot,
-                                                   LexMot])
-                            listeTmp.append(testMot)
-                    else:
+				# on teste si le la concaténation du debut et fin de ce mot avec la slice
+				# d'origine forment un mot qui existe dans le lexique
+				testMot = LexDeb + syllOrigine + LexFin
+				if isInDico('word', testMot) and testMot not in listeTmp:
+					if diconfig["FiltreGrossier"] == "Oui":
+						if (selectMot in BDvulgaire or testMot in BDvulgaire or LexMot in BDvulgaire):
+							listeAffichage.append([syllOrigine, syllNvlle,
+												   selectMot, testMot,
+												   LexMot])
+							listeTmp.append(testMot)
+					else:
 
-                        # si oui on l'ajoute a notre liste de résultat.
-                        listeAffichage.append([syllOrigine, syllNvlle,
-                                               selectMot, testMot,
-                                               LexMot])
-                        listeTmp.append(testMot)
-    return (listeAffichage, len(listeAffichage), diconfig)
+						# si oui on l'ajoute a notre liste de résultat.
+						listeAffichage.append([syllOrigine, syllNvlle,
+											   selectMot, testMot,
+											   LexMot])
+						listeTmp.append(testMot)
+	return (listeAffichage, len(listeAffichage), diconfig)
 
 # ----------------------------------------------------------------------------
 
