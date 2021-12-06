@@ -7,21 +7,40 @@ from fonc_aide_lettre import *
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-def aideContrepetrie(skipper, premot):
+def aideContrepetrie(historique):
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
 
 	# boucle "tant que" pour le recommencer aide avec un autre mot.
 	continuer = 1
 	while continuer == 1:
+		if historique != [] :
+			print("historique : \n")
+		for i in range(len(historique)):
+			print(i+1," : ",historique[i],"\n")
 		Linput = input("Mot : ")
-		mot = Linput
-		mot = mot.lower()
+		if Linput in ["1","2","3","4","5"]:
+			if historique[int(Linput)-1] is not None:
+				mot =  historique[int(Linput)-1]
+			else :
+				print("\nL'entrée n'est pas valide")
+				continue
+		else :
+			mot = Linput
+			mot = mot.lower()
+			if mot in historique :
+				historique.remove(mot)
+			historique.insert(0,mot)
+			if len(historique) == 6:
+				historique.pop(-1)
+
+		if "/" in mot :
+			quadruplRapide(mot)
 		# case rech sur une lettre
 		# ou   rech sur une syllabe
 
 		listeDeMotCop = [] #contient les contrepétries du mot entré
-
+		clear()
 		choix = set(range(9))
 		print("""Voulez-vous faire une recherche sur :
 			1- une lettre
@@ -295,4 +314,4 @@ def aideContrepetrie(skipper, premot):
 		if selection == 8:
 			listeAffichage, compteur, diconfig = aideSonRechDico(selectMot, listeDeMotCop)
 
-	return 0
+	return historique

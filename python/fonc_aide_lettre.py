@@ -529,6 +529,8 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
 	return (listeAffichage, len(listeAffichage), diconfig)
 
 # ----------------------------------------------------------------------------
+"""
+recherche et affichage rapide des contrepeteries dans un quadruplé prédefinie
+"""
 
-
-	
+def quadruplRapid (mot):	

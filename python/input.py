@@ -4,6 +4,7 @@ import sys #Importe fonctions système
 
 boucle = True
 memoireImport = set()
+historique = []
 # boucle pour recommencer le programme
 while boucle:
 	clear()
@@ -36,11 +37,14 @@ while boucle:
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
 	elif n == 1:
+
 		if 'aide' not in memoireImport:
 			from aideContre import *
 		memoireImport.add('aide')
+		if len(historique) == 6:
+			historique.pop(-1)
 		clear()
-		aideContrepetrie(0, "")
+		historique = aideContrepetrie(historique)
 
 # ------------------------------------------------------------------------------
 	# recherche de contrepeterie
