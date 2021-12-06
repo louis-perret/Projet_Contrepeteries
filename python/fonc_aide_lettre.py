@@ -533,4 +533,13 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
 recherche et affichage rapide des contrepeteries dans un quadruplé prédefinie
 """
 
-def quadruplRapid (mot):	
+def quadruplRapid (mot):
+	motSplit = mot.split('/')
+	for i in range(len(motSplit[0])):
+		for j in range(len(motSplit[0])):
+			for lettre0 in enumerate(motSplit[0]):
+				for lettre1 in enumerate(motSplit[1]):
+					coupleLettre0=recupCouple(motSplit[0],i,lettre0[0])
+					coupleLettre1=recupCouple(motSplit[1],j,lettre1[0])
+					nvtMot0=replacer(motSplit[0],coupleLettre1,lettre0[0],i)
+					nvtMot1=replacer(motSplit[1],coupleLettre0,lettre1[0],j)

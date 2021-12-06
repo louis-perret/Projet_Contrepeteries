@@ -34,8 +34,8 @@ def aideContrepetrie(historique):
 			if len(historique) == 6:
 				historique.pop(-1)
 
-		if "/" in mot :
-			quadruplRapide(mot)
+		#if "/" in mot :
+			#quadruplRapide(mot)
 		# case rech sur une lettre
 		# ou   rech sur une syllabe
 
