@@ -45,6 +45,7 @@ function loadSuggestion(){
 	afficheStats(); //appelle aussi la fonction au chargement du dico
 	document.getElementById('choixDeX').addEventListener('input', afficheStats);
 	document.getElementById('choixDeY').addEventListener('input', afficheStats);
+	
 
 	//ajoute un event listener qui déclenche afficheLoadStats() lorsque l'utilisateur clique sur un des boutons.
 	//l'icone de chargement sera cachée au moment de l'affichage des résultats (voir fonction choixMotCompatible dans le cas du click sur gen1)
@@ -92,7 +93,7 @@ function motExiste(mot, dic){
 }
 
 //-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
+//--------------------------------document.getElementById('choixDeY').addEventListener('input', afficheStats);---------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -122,7 +123,6 @@ function redirigeLettreOuPhoneme() {
 
 	if (document.getElementById('choixLettre').value == 'true')
 	{
-		//aideLettreSubs();
 		if (x == "" || y == "")
 		{
 			if (x == "" && y == "") {
@@ -142,8 +142,7 @@ function redirigeLettreOuPhoneme() {
 	}
 	else //l'utilisateur a choisi les phonèmes
 	{
-		aidePhonemeSubs();
-		/*
+		
 		if (x == "" || y == "")
 		{
 			if (x == "" && y == "") {
@@ -160,12 +159,12 @@ function redirigeLettreOuPhoneme() {
         }
 		else
 			aideMultiPhon(x, y);
-		*/
 	}
 }
 
 
 //Cette fonction permet de donner à l'utilisateur une idée du temps des recherches qu'il execute
+//elle est exécuté lors du click sur "Lancer la recherche" et "Lancer la recherche sur 2 mots"
 function afficheStats() {
 	var text="";
 	var x=document.getElementById('choixDeX').value;
@@ -177,20 +176,67 @@ function afficheStats() {
 	divStatsToHide.style.visibility = "visible";
 
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
-	if (x>7 || y>3) {
-		text='très lent   au moins 60 sec';
-		divStatsToHide.style.backgroundColor = 'darkred';
+	if (y>4) {
+		divStatsToHide.style.backgroundColor = 'black';
+		text='indéterminable   temps ∞';
+		tExec.innerText="Temps d'execution : " + text;
 	}
-	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) { 
-		text='lent   10 à 60 sec';
+	else if (x>7 || y>3) {
+		divStatsToHide.style.backgroundColor = 'darkred';
+		text='très   lent au moins 60 sec';
+		tExec.innerText="Temps : " + text;
+	}
+	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) {
 		divStatsToHide.style.backgroundColor = 'orange';
+		text='lent   10 à 60 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 	else {
-		text='rapide   2 à 10 sec';
 		divStatsToHide.style.backgroundColor = 'green';
+		text='rapide   2 à 10 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
-	tExec.innerText="Temps d'execution : " + text;
 }
+
+
+//idem que afficheStats1, mais elle observe plus de paramètres et 
+//est exécuté lors du click sur un couple de mots afin d'afficher les 4 mots
+function afficheStats2() {
+	var text="";
+	var x=document.getElementById('choixDeX').value;
+	var y=document.getElementById('choixDeY').value;
+	var min=document.getElementById('choixLongueurMin').value;
+	var max=document.getElementById('choixLongueurMax').value;
+
+	var tExec = document.getElementById('tempsExecution');
+	var divStatsToHide = document.getElementById('divStatsToHide');
+
+	divStatsToHide.style.visibility = "visible";
+
+	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
+	if(max >8 || y>4) {
+		divStatsToHide.style.backgroundColor = 'black';
+		text='impossible   temps : ∞';
+		tExec.innerText="Temps d'execution : " + text;
+	}
+	else if (x>7 || y>3 || (max <=8 && max >6)){
+		divStatsToHide.style.backgroundColor = 'darkred';
+		text='très lent   au moins 60 sec';
+		tExec.innerText="Temps : " + text;
+	}
+	else if ((x>=4 || y>=2) && (x<=7 || y<=3) ||  max==6) {
+		divStatsToHide.style.backgroundColor = 'orange';
+		text='lent   10 à 60 sec';
+		tExec.innerText="Temps d'execution : " + text;
+	}
+	else {
+		divStatsToHide.style.backgroundColor = 'green';
+		text='rapide   2 à 10 sec';
+		tExec.innerText="Temps d'execution : " + text;
+	}
+}
+
+
 
 //Fonction d'affichage des informations du processeur utilisé pour determiner le temps des requetes (voir afficheStats() )
 function afficheInfoProc() {
@@ -283,6 +329,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
 	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
 	//Sans cela, des pb d'initialisation peuvent apparaitre
+	
 	if(listeMotCompatible.length>1) { //Sert uniquement à sauvegarder la liste en memoire pour le bouton retour
 		saveTuple = listeMotCompatible;
 	}
@@ -294,6 +341,8 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		element.removeChild(element.firstChild);
 	}
 
+	//if(listeMotCompatible.length == 0) saveTuple = [];
+
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			let button = document.createElement("button");
 			button.innerText =motSave+" - " + listeMotCompatible[i];
@@ -301,7 +350,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 			document.getElementById("div1").append(button);
 			button.addEventListener('click', updateBtn);
 			button.addEventListener('mousedown', affichLoadStats);
-
+			button.addEventListener('mousedown', afficheStats2);//au click pour trouver les 4 mots
 	}
 }
 
@@ -312,6 +361,7 @@ function choixLettre() {
 		document.getElementById('choixLettre').value = 'true';
 		document.getElementById('choixPhoneme').value = 'false';
 		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Lettres';
+		saveTuple = [];
     }
 }
 
@@ -321,6 +371,7 @@ function choixPhoneme() {
 		document.getElementById('choixPhoneme').value = 'true';
 		document.getElementById('choixLettre').value = 'false';
 		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
+		saveTuple = [];
     }
 }
 
@@ -362,7 +413,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 								break;
 							}
 						}
-					}
+					}6
 				}
 				if (diffXY > 0 ) { //Si on remplace i+x par i lettres
 					//Rentre ici : testé
@@ -479,55 +530,6 @@ function affichageMot(l){
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 
-
-
-function aidePhonemeSubs(){
-	affichResultat=[];
-	var l=[];
-	let mo = document.getElementById('mot').value;
-	mot=mo.toLowerCase();
-	console.log("mot :" + mot);
-	if (mot.length == 0)
-		return
-	let ind = 0;
-	for(let j=0;j<dicMot.length;j++){
-		if(dicMot[j] == mot){
-			ind = j;
-		}
-	}
-	if (ind==0) {
-		l.push("Aucune correspondance");
-		affichageMot(l);
-		l=[];
-		return;
-	}
-	console.log("ind :" + ind);
-	var mot2=dicPhon[ind];
-	console.log("mot2 :" + mot2);
-	var alph = ['b', 'd', 'f', 'g', 'k', 'l', 'm', 'n', 'ŋ','ɲ','p','ʁ','s', 'ʃ', 't', 'v', 'z', 'ʒ', 'j', 'w','ɥ', 'a', 'ɑ', 'e', 'ɛ','ɛː','ə','i', 'œ','ø','o','ɔ','u','y','ɑ̃','ɛ̃','œ̃','ɔ̃'];
-	let motSave=mot2; //On garde le mot en memoire
-	var m=mot2.split('');
-	console.log(m);
-
-	for (let i=0; i<mot2.length; i++) { //Pour chaque lettre de notre mot
-		mot2=motSave; //On reinitialise le mot ici afin d'avoir toujours "code" au lieu de "zode" puis "zzode" par ex
-		for(let j=0;j<alph.length;j++) { //Pour chaque lettre de l'alphabet
-			mot2 = mot2.replaceAt(i,alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-			console.log(mot2);
-			if (motExiste(mot2,dicPhon) && mot2 != mot) { //Si le mot existe et que le mot n'est pas le mot saisi
-				console.log('Ok : ' + mot2 + " ajouté");
-				let i = dicPhon.indexOf(mot2);
-				if(dicMot[i] != mot){
-					l.push(dicMot[i]); //On ajoute le mot dans la liste l des mots compatibles
-				}
-			}
-		}
-
-	}
-	console.log("liste mot compatible " + l);
-	choixMotCompatible(mot, l);
-
-}
 
 String.prototype.replaceAt = function(index, replacement) {
 	if (index >= this.length) {

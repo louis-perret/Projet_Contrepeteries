@@ -18,7 +18,7 @@
 
     <title>L'art de décaler les sons</title>
 </head>
-<body>
+<body style="min-width: 1000px;">
     <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon my-toggler"></span>
@@ -83,6 +83,7 @@
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Aide à la contrepèterie</h2>
         </div>
+
         
 
         <div id="aide">
@@ -101,28 +102,32 @@
            
 
             <div style="display: flex; justify-content: space-between;">           
-                <div id="choixXY" style="outline: 1.5px solid black; outline-offset: 10px; border-radius: 4px;">
-                    <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Nombre de lettres à échanger :</h3>
-                    <div>
-                        <p>(mot renseigné)</p>
-                        <input type="text" id="choixDeX" value="1"/>
-                    </div>
+                <div id="choixXY" class="blackOutline">
+                    <div class="divPadding20px">
+                        <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Nombre de lettres à échanger :</h3>
+                        <div>
+                            <p>(mot renseigné)</p>
+                            <input type="text" id="choixDeX" value="1"/>
+                        </div>
 
-                    <div>
-                        <p>(mot recherché)</p>
-                        <input type="text" id="choixDeY" value="1"/>
+                        <div>
+                            <p>(mot recherché)</p>
+                            <input type="text" id="choixDeY" value="1"/>
+                        </div>
                     </div>
                 </div>
 
-                <div id="choixLongueurMinMax" style="outline: 1.5px solid black; outline-offset: 10px; border-radius: 4px;">
-                    <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Longueur min/max des résultats :</h3>
-                    <div margin="10">
-                        <p>(minimum)</p>
-                        <input type="text" id="choixLongueurMin" value="3"/>
-                    </div>
-                    <div>
-                        <p>(maximum)</p>
-                        <input type="text" id="choixLongueurMax" value="5"/>
+                <div id="choixLongueurMinMax" class="blackOutline">
+                    <div class="divPadding20px">
+                        <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Longueur min/max des 2 couples :</h3>
+                        <div margin="10">
+                            <p>(minimum)</p>
+                            <input type="text" id="choixLongueurMin" value="3"/>
+                        </div>
+                        <div>
+                            <p>(maximum)</p>
+                            <input type="text" id="choixLongueurMax" value="5"/> 
+                        </div>
                     </div>
                 </div>
 
@@ -138,7 +143,7 @@
                         <button class="bg-secondary" id="btnInfoProc" onclick="afficheInfoProc()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
                             <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0Z"/>
                         </svg></button>
-                        <p class="text-dark" id="pInfoProc">Pour un processeur Intel Core i5-9300HF</p>
+                        <p class="text-dark" id="pInfoProc">Pour un processeur Intel Core i7-8700K</p>
                     </div>
                 </div>
             </div> 

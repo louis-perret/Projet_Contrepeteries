@@ -520,6 +520,14 @@ span.c0 {
   visibility: collapse;
 }
 
+.blackOutline {
+  border: 1.5px solid black;  
+  border-radius: 4px;
+}
+
+.divPadding20px {
+  padding: 20px;
+}
 
 /* ---------------------Code jeu.html ----------------------------------- */
 
