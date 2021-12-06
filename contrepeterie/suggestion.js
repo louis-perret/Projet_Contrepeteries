@@ -178,15 +178,15 @@ function afficheStats() {
 
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if (x>7 || y>3) {
-		text='très lent';
+		text='très lent   au moins 60 sec';
 		divStatsToHide.style.backgroundColor = 'darkred';
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) { 
-		text='lent';
+		text='lent   10 à 60 sec';
 		divStatsToHide.style.backgroundColor = 'orange';
 	}
 	else {
-		text='rapide';
+		text='rapide   2 à 10 sec';
 		divStatsToHide.style.backgroundColor = 'green';
 	}
 	tExec.innerText="Temps d'execution : " + text;
@@ -300,6 +300,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 			button.value =listeMotCompatible[i];
 			document.getElementById("div1").append(button);
 			button.addEventListener('click', updateBtn);
+			button.addEventListener('mousedown', affichLoadStats);
 
 	}
 }
@@ -447,6 +448,7 @@ function aideLettreRechDico(mot1, mot2) {
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
+	document.getElementById("loadingStats").style.visibility="collapse";
 	//On prepare l'affichage des 4 mots un à un
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
