@@ -51,7 +51,7 @@ function aideMultiLettre(x, y) {
   var alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   let motSave = mot2; //On garde le mot en memoire
   let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-  console.log("Voici donc les lettres que l\'on peut changer :[ ");
+  console.log("listeCouple :  " + listeCouple);
   for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
   {
 

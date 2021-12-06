@@ -142,8 +142,9 @@ function redirigeLettreOuPhoneme() {
 	}
 	else //l'utilisateur a choisi les phonèmes
 	{
-		aidePhonemeSubs();
-		/*
+		
+		//aidePhonemeSubs();
+		
 		if (x == "" || y == "")
 		{
 			if (x == "" && y == "") {
@@ -160,7 +161,7 @@ function redirigeLettreOuPhoneme() {
         }
 		else
 			aideMultiPhon(x, y);
-		*/
+		
 	}
 }
 
