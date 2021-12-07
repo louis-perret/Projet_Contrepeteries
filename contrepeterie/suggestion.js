@@ -315,10 +315,13 @@ function updateBtn() {
 	let mo = document.getElementById('mot').value;
 	mot=mo.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
 	var iButton = $(this).val();
+
 	if(document.getElementById('choixPhoneme').value == 'false')
 		aideLettreRechDico(mot,iButton);
-	//if(document.getElementById('choixPhoneme').value == 'true')
-		//aidePhonemRechDico(mot,iButton);
+	if(document.getElementById('choixPhoneme').value == 'true')
+		aidePhonemRechDico(mot,iButton);
+
+
 }
 
 
@@ -496,6 +499,8 @@ function aideLettreRechDico(mot1, mot2) {
 			break;
 		}
 	}
+	console.log("lettres1 " + lettreMot1)
+	console.log("lettres2 " + lettreMot2)
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
@@ -541,30 +546,6 @@ String.prototype.replaceAt = function(index, replacement) {
 	return chars.join('');
 }
 
-function aidePhonemRechDico(mot1,mot2,resMot1,resMot2) {
-	for (let i=0; i<mot1.length; i++) { //Pour chaque lettre du mot 1 (mot saisi)
-
-		if (mot1[i] != mot2[i]) { //Si la lettre au meme indice n'est pas la meme sur les 2 mots
-			var lettreMot1 = mot1[i]; //On stock les 2 lettres qui changent
-			var lettreMot2 = mot2[i];
-			break;
-		}
-
-	}
-	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
-	var resMot2=[];
-	chercheMotDico(lettreMot1,lettreMot2,resMot1,resMot2);//fonction pour trouver les 4 mots
-	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
-		affichResultat.push('<b>' + mot1 + '</b>&#9;' + ' - ' + resMot2[j] ); //On ajoute dans une variable globale
-		affichResultat.push(mot2 + ' - ' + resMot1[j] );//Le mot saisi - le mot avec la lettre du mot2
-		affichResultat.push('----------------');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
-	}
-	affichageMot(affichResultat);
-
-
-
-
-}
 
 
 
