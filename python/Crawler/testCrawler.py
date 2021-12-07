@@ -29,6 +29,30 @@ def lireCSV(fichier):
 			a=row[3][2:-2].replace('\'','').split(',')
 			print(a)
 
+
+
+"""
+Récupère tous les prénoms d'une langue.
+Paramaètres :
+	En entrée : 
+		-url : url de la page web sur laquelle on va récupérer les informations
+		-fichier : chemin du fichier dans lequel sera écris les résultats
+		-dicoInfos : clé -> info à récupérer, valeurs -> contient les balises et leurs classes qui contienne l'infos
+"""
+def crawlerNom(url,fichierDestination,dicoInfos):
+	with open(fichierDestination,'a') as file: #'a'-> écris à partir de la fin du fichier sans effacer ce qu'il y avait déjà d'écris
+		try:
+			r = requete.get(url) #On exécute une requête get
+			page = r.content #On récupère le contenu de la réponse
+			soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+			noms=soup.find_all(dicoInfos['nom'][0], {"class": dicoInfos['nom'][1]})
+			for n in noms:
+				n=n.string.strip().lower()
+				n=n.title() #Met le premier caractère en majuscule
+				file.write(n+'\n')
+		except:
+			print('Problème dans la recherche des noms')
+
 """
 Récupère l'écriture phonétique, le genre et toutes les classes grammaticales des mots d'une langue.
 Paramaètres :
@@ -39,8 +63,9 @@ Paramaètres :
 		-infosAEnlever : contient les chaînes de caractères à enlever (pour la recherche des classes grammaticales suivant les langues)
 		-langue : langue des mots
 		-fichier : chemin du fichier dans lequel sera écris les résultats
+		-isNom : booléen, si True -> on recherche que pour les noms propres d'une langue (pour la catégorie)
 """
-def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier):
+def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 	with open(fichier,'w') as dico:
 		dicoWriter=csv.writer(dico,delimiter=',')
 		for mot in listeMot:
@@ -51,7 +76,6 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier):
 				prononciation = soup.find(dicoInfos['phon'][0], {"class": dicoInfos['phon'][1]}) #On recherche la première balise span qui a une class API
 				pron = prononciation.string.strip() #On enlève les balises html de la chaine
 				pron = pron[1:-1] #On enlève les '\' en début et fin
-				
 				genre=soup.find(dicoInfos['genre'][0],{"class": dicoInfos['genre'][1]})
 				if(genre != None):
 					genre=genre.string.strip()
@@ -60,31 +84,45 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier):
 				if genre != 'm' and genre != 'f': #Si le mot n'a pas de genre
 					genre=""
 			
-				tabCateg=set() #Permettra d'éviter les doublons
-				categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
-				for c in categ:
-					c=c.string.strip().lower()
-												
-					for infos in infosAEnlever:
-						c=c.replace(infos,"") #Enlève les sous-chaînes inutiles
-					tabCateg.add(c) 
-							
+				
+				if(isNom): #Si on recherche pour les noms propres
+					dicoWriter.writerow([mot,pron,genre,dicoInfos['nom']]) #on met comme catégorie nom propre
+				else:
+					tabCateg=set() #Permettra d'éviter les doublons
+					categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
+					for c in categ:
+						c=c.string.strip().lower()
+													
+						for infos in infosAEnlever:
+							c=c.replace(infos,"") #Enlève les sous-chaînes inutiles
+						tabCateg.add(c) 
+								
 
-				tabCateg=list(tabCateg) #Convertie en liste
-				dicoWriter.writerow([mot,pron,genre,tabCateg]) #écrit dans le fichier
+					tabCateg=list(tabCateg) #Convertie en liste
+					dicoWriter.writerow([mot,pron,genre,tabCateg]) #écrit dans le fichier
 				time.sleep(0.1) #S'endort 0.1 seconde (permet d'éviter de se faire ban)
 			except:
 				print("Problème dans la recherche du : "+mot)
+
+
+
+
+#Pour récupérer tous les noms de la langue française
+dicoInfos={"nom":['a','new']}
+fichierDestination="test.txt"
+urlPrenom="https://fr.wikipedia.org/wiki/Liste_de_prénoms_en_français"
+#crawlerNom(urlPrenom,fichierDestination,dicoInfos)
 
 
 #Pour la langue française
 fichierSource='dictionnaire.txt'
 listeMot=getDictAsList(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
 url="https://fr.wiktionary.org/wiki/" #l'url de la page à parser
-dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe" : ["span","titredef"]} 
+dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe" : ["span","titredef"],"nom": "nom propre"} 
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
-fichier='dicoFr.csv'
-crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier)
-lireCSV(fichier)
+fichier='test.csv'
+crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,False)
+#lireCSV(fichier)
+
