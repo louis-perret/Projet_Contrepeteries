@@ -533,13 +533,23 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
 recherche et affichage rapide des contrepeteries dans un quadruplé prédefinie
 """
 
-def quadruplRapid (mot):
+def quadruplRapide (mot):
+	compteur = 0
+	listeAffichage = []
 	motSplit = mot.split('/')
 	for i in range(len(motSplit[0])):
-		for j in range(len(motSplit[0])):
+		for j in range(len(motSplit[1])):
 			for lettre0 in enumerate(motSplit[0]):
 				for lettre1 in enumerate(motSplit[1]):
 					coupleLettre0=recupCouple(motSplit[0],i,lettre0[0])
 					coupleLettre1=recupCouple(motSplit[1],j,lettre1[0])
-					nvtMot0=replacer(motSplit[0],coupleLettre1,lettre0[0],i)
-					nvtMot1=replacer(motSplit[1],coupleLettre0,lettre1[0],j)
+					if coupleLettre0[0] and coupleLettre1[0]:
+						nvMot0=replacer(motSplit[0],coupleLettre1[1],lettre0[0],i)
+						nvMot1=replacer(motSplit[1],coupleLettre0[1],lettre1[0],j)
+						if isInDico('word',nvMot0) and isInDico('word',nvMot1) :
+							if (coupleLettre0[1],coupleLettre1[1],nvMot0,nvMot1,motSplit[1]) not in listeAffichage :
+								listeAffichage.append((coupleLettre0[1],coupleLettre1[1],nvMot0,nvMot1,motSplit[1]))
+								compteur += 1
+	if listeAffichage != [] :
+		return affiRechLettre(listeAffichage, compteur, motSplit[0])
+						
