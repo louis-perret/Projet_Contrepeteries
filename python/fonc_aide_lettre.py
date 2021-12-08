@@ -474,7 +474,7 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
 	# recup deb et fin de mot_origine:
 	debFin = mot_origine.split(syllOrigine) #séparent le mot avec la syllabe choisie
 	# extraction de 'ar' de selectMot.
-	if len(debFin[1]) > 0: #Si la longueur de la fin du mot > 0
+	if len(debFin[1]) > 0: #Si la longueur de la fin du mot > 0aideLettreRechDicoGeneral
 		syllNvlle = selectMot[len(debFin[0]):-len(debFin[1])] #on récupère juste 'ar' dans 'darse'
 
 	else:
@@ -536,6 +536,7 @@ recherche et affichage rapide des contrepeteries dans un quadruplé prédefinie
 def quadruplRapide (mot):
 	compteur = 0
 	listeAffichage = []
+	histo = []
 	motSplit = mot.split('/')
 	for i in range(len(motSplit[0])):
 		for j in range(len(motSplit[1])):
@@ -546,9 +547,10 @@ def quadruplRapide (mot):
 					if coupleLettre0[0] and coupleLettre1[0]:
 						nvMot0=replacer(motSplit[0],coupleLettre1[1],lettre0[0],i)
 						nvMot1=replacer(motSplit[1],coupleLettre0[1],lettre1[0],j)
-						if isInDico('word',nvMot0) and isInDico('word',nvMot1) :
-							if (coupleLettre0[1],coupleLettre1[1],nvMot0,nvMot1,motSplit[1]) not in listeAffichage :
+						if isInDico('word',nvMot0) and isInDico('word',nvMot1) :							
+							if nvMot0 not in histo and nvMot1 not in histo and nvMot0 != motSplit[0] and nvMot0 != motSplit[1]:
 								listeAffichage.append((coupleLettre0[1],coupleLettre1[1],nvMot0,nvMot1,motSplit[1]))
+								histo.append(nvMot0)
 								compteur += 1
 	if listeAffichage != [] :
 		return affiRechLettre(listeAffichage, compteur, motSplit[0])
