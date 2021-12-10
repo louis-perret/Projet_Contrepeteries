@@ -80,13 +80,13 @@ def aideContrepetrie(historique):
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aideLettreSubs(mot)
-			listeDeMotCop = aide(mot,1,1)
+			listeDeMotCop = aide(mot,1,1,'word')
 	# -------------------------------------------------------------------------------
 
 		elif selection == 2:
 			clear()
 			print("Recherche des contrepétries possibles ...\n")
-			listeDeMotCop = aideSon(mot,1,1)
+			listeDeMotCop = aide(mot,1,1,'phon')
 			# cas où le mot rentré par l'utilisateur n'est pas dans le lexique
 			if listeDeMotCop == 0:
 				continue
@@ -162,14 +162,14 @@ def aideContrepetrie(historique):
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aide2Lettre1Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
-			listeDeMotCop = aide(mot,2,1)
+			listeDeMotCop = aide(mot,2,1,'word')
 	# -------------------------------------------------------------------------------
 
 		elif selection == 6:
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
-			listeDeMotCop = aide(mot,1,2)
+			listeDeMotCop = aide(mot,1,2,'word')
 
 	#--------------------------------------------------------------------------------
 
@@ -177,7 +177,7 @@ def aideContrepetrie(historique):
 			x = int(input("longueur de la syllabe enlevée : "))
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
-			listeDeMotCop = aide(mot,x,y)
+			listeDeMotCop = aide(mot,x,y,'word')
 				
 
 	#--------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ def aideContrepetrie(historique):
 			x = int(input("longueur de la syllabe enlevée : "))
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
-			listeDeMotCop = aideSon(mot,x,y)
+			listeDeMotCop = aide(mot,x,y,'phon')
 
 	# -------------------------------------------------------------------------------
 		if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
@@ -275,7 +275,7 @@ def aideContrepetrie(historique):
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 			continuer = affiRechSon(listeAffichage, compteur, mot)
 
-		elif selction == 8:
+		elif selection == 8:
 			for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
 				tmp = i[1][2] if i[1][2] != "" else chr(32)
 				if selection == 1 or selection == 5 or selection == 6 or selection == 7:

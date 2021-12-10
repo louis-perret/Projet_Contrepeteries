@@ -14,12 +14,13 @@ import os
 
 # ----------------------------------------------------------------------------
 """
-Objectif : Renvoie une liste des contrepétries possibles en remplaçant x lettres par y lettres
+Objectif : Renvoie une liste des contrepétries possibles en remplaçant x par y lettres ou phonèmes
 Paramètres :
 	-Entrée :
 		-mot : mot de base
 		-x : nombre de lettres dans mot à changer
 		-y : nombre de lettres pour la combinaison
+		-mode : précise le type d'échange (word = lettre à lettre,son=phonème à phonème)
 	-Sortie : 
 		-listeMotCop : liste des réponses
 
@@ -27,11 +28,30 @@ listeMotCop est de la forme : (nouveau mot, ancienne(s) lettre(s), nouvelle(s) l
 
 Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des combinaisons (si on veut échanger par 3 lettres, on aura 26^3)
 """
-def aide(mot,x,y):
+def aide(mot,x,y,mode):
+	if(mode=="phon"): #Seulement échanger des sons
+		dico='phon'
+		with open('data/dicoPhoncom.json') as tmp:
+			dicoPhon = json.load(tmp)
+		phon_file = open("data/BD_phoneme.txt", encoding="utf-8")
+		BD_phoneme = phon_file.read()
+		BD_phoneme = BD_phoneme.split("\n")
+		del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
+		listeSource=BD_phoneme
+
+		mot = Mot_to_Phon_Only(arbre_mot, mot) #On récupère l'écriture phonétique du mot
+		if not isinstance(mot, str):
+			print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
+			return 0
+		clear()
+	if(mode=="word"): #S'il veut seulement échanger des lettres
+		dico='word'
+		listeSource=list(string.ascii_lowercase)
+
 	listeMotCop=[]
-	listeCouple=recupCoupleLettre(y,'',[],list(string.ascii_lowercase)) #Récupère la liste de combinaisons possibles de longueur y
+	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
 	choix = int(input("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :"))
-	print('Voici donc les lettres que l\'on peut changer : ')
+	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
 		if coupleLettre[0]: #S'il existe un couple possible à échanger
@@ -40,14 +60,17 @@ def aide(mot,x,y):
 				
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
 				
-				if coupleLettre[1] != couple and isInDico('word', nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
-					listeMotCop.append((nvtMot,coupleLettre[1],couple))
+				if coupleLettre[1] != couple and isInDico(dico, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+					if(mode=='phon'):
+						listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
+					if(mode=='word'):
+						listeMotCop.append((nvtMot,coupleLettre[1],couple))
 					#circulaire(coupleLettre[1], couple, nvtMot, x)
 				if choix == 1:
-					listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, 'word'))
+					if(mode=='word'):
+						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, dico))
 	print('\n')
 	return listeMotCop
-
 #---------- a enlever plus tard
 def circulaire (ancLettre, nouvLettre, nouvMot, x):
 	listeSextup = []

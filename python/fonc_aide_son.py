@@ -7,53 +7,6 @@ import json
 import re
 import os
 
-"""
-Objectif : Renvoie une liste des contrepétries possibles en remplaçant x sons par y sons
-Paramètres :
-	-Entrée :
-		-mot : mot de base
-		-x : nombre de sons dans mot à changer
-		-y : nombre de sons pour la combinaison
-	-Sortie : 
-		-listeMotCop : liste des réponses
-
-listeMotCop est de la forme : (nouveau mot, ancien(s) son(s), nouveau(s) son(s))
-
-Complexité = O((38^y)*N) où N est la longueur du mot, et 38^y la longueur des combinaisons (si on veut échanger par 3 sons, on aura 26^3)
-"""
-def aideSon(mot_origine,x,y):
-
-	with open('data/dicoPhoncom.json') as tmp:
-		dicoPhon = json.load(tmp)
-
-	phon_file = open("data/BD_phoneme.txt", encoding="utf-8")
-	BD_phoneme = phon_file.read()
-	BD_phoneme = BD_phoneme.split("\n")
-	del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableai
-	listeDeMotCop = []
-	
-	mot = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupère l'écriture phonétique du mot
-	if not isinstance(mot, str):
-		print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
-		return 0
-	clear()
-
-	print(f"\nEn phonétique '{mot_origine}' se lit '{mot}'\n")
-
-	listeCouple=recupCoupleLettre(y,"",[],BD_phoneme) #On récupère toutes les combinaisons de phonèmes de longueur y à tester
-	print("Voici donc les sons que l'on peut changer :")
-	for lettre1 in enumerate(mot): #Pour chaque phonème du mot
-		coupleLettre=recupCouple(mot,x,lettre1[0]) #On récupère le couple de longueur x son(s) associé
-		if coupleLettre[0]:
-				print(f"  '{coupleLettre[1]}'    ", end='')
-				for couple in listeCouple: #Pour chasue combinaison possiblr
-					nvMot = replacer(mot, couple, lettre1[0],x) #On remplace dans le mot
-
-					if coupleLettre[1] != couple and isInDico('phon', nvMot): #Si on a pas échangé par le même couple et si le mot existe
-						listeDeMotCop.append((nvMot, coupleLettre[1], couple, dicoPhon[nvMot][0])) #On ajoute dans les réponses
-	print("\n")
-	return listeDeMotCop
-
 # ----------------------------------------------------------------------------
 """
 Gènère les quadruplets de l'aide, avec l'échange d'un seul son entre les mots.
