@@ -97,3 +97,9 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
 		
 	return listeMot
 
+#-------------------------------------------------------------------------
+"""
+fonction pour l'affichage dans le menu
+"""
+def affichageBase (listeDeMotCop)
+
