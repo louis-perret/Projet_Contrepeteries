@@ -41,8 +41,6 @@ while boucle:
 		if 'aide' not in memoireImport:
 			from aideContre import *
 		memoireImport.add('aide')
-		if len(historique) == 6:
-			historique.pop(-1)
 		clear()
 		historique = aideContrepetrie(historique)
 

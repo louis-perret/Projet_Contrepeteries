@@ -1,0 +1,19 @@
+infos :
+-fichier de lancement : python/input.py
+
+listing de ce qui fonctionne :
+-aide à la contrepèterie 
+	-ne pas utiliser "plusieur lettres" et "plusieurs son" (crash)
+	-utiliser les recherches personnalisées à la place (fait par nous)
+	-recherche rapide entre deux mots avec mot1/mot2 lors de la sélection du mot
+	-rentrer le numéro du mot indiqué dans l'historique pour le réutilisé
+	-tout le reste marche
+
+-recherche contrepèterie devrait fonctionner (pas modifié depuis l'année dernière)
+
+-de même pour la configuration des filtres
+	
+
+
+
+

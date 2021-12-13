@@ -89,28 +89,29 @@ def affiRechSon(listeAffichage, compteur, mot_origine):
 	clear()
 	while(True):
 		compt = 1
+		if listeAffichage != [] :
+			for pack in listeAffichage:
 
-		for pack in listeAffichage:
+				espace = 40 - len(mot_origine) - len(pack[4])
+				marge = len(str(compt))+2
+				print(marge*" ", "Phonèmes", " "*(30-marge), "Un exemple d'orthographe")
+				print(marge*" "+f"{motOriPhon} - {pack[4]}"+espace * " "+f"|  {mot_origine} - {dicoPhon[pack[4]][0]}")
+				print(compt, 35 * " ", " ex : ")
 
-			espace = 40 - len(mot_origine) - len(pack[4])
-			marge = len(str(compt))+2
+				espace = 40 - len(pack[2]) - len(pack[3])
 
-			print(marge*" ", "Phonèmes", " "*(30-marge), "Un exemple d'orthographe")
-			print(marge*" "+f"{motOriPhon} - {pack[4]}"+espace * " "+f"|  {mot_origine} - {dicoPhon[pack[4]][0]}")
-			print(compt, 35 * " ", " ex : ")
+				print(marge*" "+f"{pack[2]} - {pack[3]}"+espace*" " +
+					  f"|  {dicoPhon[pack[2]][0]} - {dicoPhon[pack[3]][0]}")
 
-			espace = 40 - len(pack[2]) - len(pack[3])
+				print("\n"+"-"*60+"\n")
 
-			print(marge*" "+f"{pack[2]} - {pack[3]}"+espace*" " +
-				  f"|  {dicoPhon[pack[2]][0]} - {dicoPhon[pack[3]][0]}")
-
-			print("\n"+"-"*60+"\n")
-
-			son1 = pack[0]
-			son2 = pack[1]
-			compt += 1
-		print("Échange entre : ",son1,"-",son2)
-		print(f"Nombre de combinaisons : {compt-1}")
+				son1 = pack[0]
+				son2 = pack[1]
+				compt += 1
+			print("Échange entre : ",son1,"-",son2)
+			print(f"Nombre de combinaisons : {compt-1}")
+		else :
+			print("Aucun résultat\n")
 
 		selecteur = None
 		boucle = True
