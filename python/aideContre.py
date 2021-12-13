@@ -191,8 +191,8 @@ def aideContrepetrie(historique):
 			listeDeMotCop = aide(mot,x,y,'phon')
 
 	# -------------------------------------------------------------------------------
-		if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
-
+		#if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
+			"""
 			# affichage des premiers resultats
 			for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
 				tmp = i[1][2] if i[1][2] != "" else chr(32)
@@ -203,39 +203,37 @@ def aideContrepetrie(historique):
 						print(f"{i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]} ex : {i[1][3]}")
 					else:
 						print(f"{i[0]+1}  {i[1][1]} - {tmp}    {i[1][0]} ex : {i[1][3]}")
-
-			selectMot = None
-			boucle = True
-			while(boucle):
-				try:
-					selectMot = int(input(
-						"\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 rechercher par phonèmes \nou numéro de l'échange qui vous intéresse : \n"))
-				except:
-					print("\nVous n'avez pas saisi un chiffre")
-					continue
-
-				if selectMot == 0:
-					continuer = 0
-					break
-				elif selectMot == -1:
-					clear()
-					continuer = -1
-					boucle = False
-				elif selectMot == -2:
-					clear()
-				elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
-					boucle = False
-				else:
-					print("\nL'entrée n'est pas valide, réessayez")
-
-			if continuer == -1:
-				continuer = 1
+			"""
+		selectMot = None
+		boucle = True
+		while(boucle):
+			try:
+				selectMot = int(input(
+					"\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 rechercher par phonèmes \nou numéro de l'échange qui vous intéresse : \n"))
+			except:
+				print("\nVous n'avez pas saisi un chiffre")
 				continue
-			elif continuer == 0:
-				continue
+			if selectMot == 0:
+				continuer = 0
+				break
+			elif selectMot == -1:
+				clear()
+				continuer = -1
+				boucle = False
+			elif selectMot == -2:
+				clear()
+			elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
+				boucle = False
+			else:
+				print("\nL'entrée n'est pas valide, réessayez")
+		if continuer == -1:
+			continuer = 1
+			continue
+		elif continuer == 0:
+			continue
 
 #-------------------------------------------------------
-
+		"""
 		elif selection == 8:
 			for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
 				tmp = i[1][2] if i[1][2] != "" else chr(32)
@@ -277,7 +275,7 @@ def aideContrepetrie(historique):
 				continue
 			elif continuer == 0:
 				continue
-
+			"""
 		
 
 #----------------------------------------------------

@@ -62,14 +62,15 @@ def aide(mot,x,y,mode):
 				
 				if coupleLettre[1] != couple and isInDico(dico, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					if(mode=='phon'):
-						listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
+						listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0],dico))
 					if(mode=='word'):
-						listeMotCop.append((nvtMot,coupleLettre[1],couple))
+						listeMotCop.append((nvtMot,coupleLettre[1],couple,dico))
 					#circulaire(coupleLettre[1], couple, nvtMot, x)
 				if choix == 1:
 					if(mode=='word'):
 						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, dico))
 	print('\n')
+	affichageBase(listeMotCop)
 	return listeMotCop
 #---------- a enlever plus tard
 def circulaire (ancLettre, nouvLettre, nouvMot, x):

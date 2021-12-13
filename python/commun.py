@@ -101,5 +101,10 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
 """
 fonction pour l'affichage dans le menu
 """
-def affichageBase (listeDeMotCop)
-
+def affichageBase (listeDeMotCop) : 
+	for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
+		tmp = i[1][2] if i[1][2] != "" else chr(32)
+		if i[1][3] == 'word' :
+			print(f" {i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]}")
+		else :
+			print(f"{i[0]+1}  {i[1][1]} - {tmp}    {i[1][0]} ex : {i[1][3]}")
