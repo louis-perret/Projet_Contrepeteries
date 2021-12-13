@@ -333,6 +333,7 @@ function updateBtn() {
 function choixMotCompatible(motSave,listeMotCompatible) {
 	document.getElementById('loadingStats').style.visibility = "collapse";
 	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
+	document.getElementById("bRetour2").setAttribute("class","collapse mt-3");
 	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
 	//Sans cela, des pb d'initialisation peuvent apparaitre
 	
@@ -342,7 +343,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	if(listeMotCompatible.length==1) {
 		listeMotCompatible=saveTuple;
 	}
-	var element = document.getElementById("div1");
+	var element = document.getElementById("resultsDiv");
 	while (element.firstChild){
 		element.removeChild(element.firstChild);
 	}
@@ -351,9 +352,11 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			let button = document.createElement("button");
+			button.style.margin = "10px"; //!
+			button.style.borderRadius = "5px"; //!
 			button.innerText =motSave+" - " + listeMotCompatible[i];
 			button.value =listeMotCompatible[i];
-			document.getElementById("div1").append(button);
+			document.getElementById("resultsDiv").append(button);
 			button.addEventListener('click', updateBtn);
 			button.addEventListener('mousedown', affichLoadStats);
 			button.addEventListener('mousedown', afficheStats2);//au click pour trouver les 4 mots
@@ -480,6 +483,7 @@ function aideLettreRechDico(mot1, mot2) {
 	document.getElementById('loadingStats').style.visibility = "collapse";
 
 	document.getElementById("bRetour").setAttribute("class","mt-3");
+	document.getElementById("bRetour2").setAttribute("class","mt-3");
 	affichResultat=[]
 	x=document.getElementById("choixDeX").value;
 	y=document.getElementById("choixDeY").value;
@@ -513,9 +517,7 @@ function aideLettreRechDico(mot1, mot2) {
 	//On prepare l'affichage des 4 mots un à un
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
-		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">'+ mot1 + ' - ' + resMot2[j] + '</div>'  ); //On ajoute dans une variable globale
-		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div>');//Le mot saisi - le mot avec la lettre du mot2
-		affichResultat.push('<hr width="50">');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
+		affichResultat.push("<div style='margin: 15px;'><div class='card p-2 shadow-sm' style='width: 18rem;'>"+ mot1 + ' - ' + resMot2[j] + '</div>' + '<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div></div>') //Le mot saisi - le mot avec la lettre du mot2
 		}
 	}
 	affichageMot(affichResultat);
@@ -525,14 +527,26 @@ function aideLettreRechDico(mot1, mot2) {
 
 //Fonction qui affiche les groupes de 4 mots
 function affichageMot(l){
-	var element = document.getElementById("div1");
+	var element = document.getElementById("resultsDiv");
 	while (element.firstChild){
   		element.removeChild(element.firstChild);
 	}
-	for(var i=0; i<l.length; i++){
-		let par = document.createElement('p');
-		par.innerHTML=l[i];
-		document.getElementById('div1').append(par);
+	for(var i=0; i<Math.floor(l.length/5); i++){
+		let ret = document.createElement('p');
+		if(l[i*i] == null)
+			return;
+		else if(l[(i+1)*i] == null)
+			ret.innerHTML = '<div style="display: flex;">' + l[i] + '</div>';
+		else if(l[(i+2)*i] == null)
+			ret.innerHTML = '<div style="display: flex;">' + l[i] + l[(i+1)*i] + '</div>';
+		else if(l[(i+3)*i] == null)
+			ret.innerHTML = '<div style="display: flex;">' + l[i] + l[(i+1)*i] + l[(i+2)*i] + '</div>';
+		if(l[(i+4)*i] == null)
+			ret.innerHTML = '<div style="display: flex;">' + l[i] + l[(i+1)*i] + l[(i+2)*i] + l[(i+3)*i] + '</div>';
+		else
+			ret.innerHTML = '<div style="display: flex;">' + l[i] + l[(i+1)*5] + l[(i+2)*i] + l[(i+3)*i] + l[(i+4)*i] + '</div>';
+		
+		document.getElementById('resultsDiv').append(ret);
 	}
 }
 //-----------------------------------------------------------------------------------
@@ -550,9 +564,4 @@ String.prototype.replaceAt = function(index, replacement) {
 	chars[index] = replacement;
 	return chars.join('');
 }
-
-
-
-
-
 
