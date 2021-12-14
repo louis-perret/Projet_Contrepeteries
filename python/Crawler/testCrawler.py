@@ -11,8 +11,8 @@ def getDictAsList(fichierSource):
 	dic = []
 	lignes = file.readlines()
 	for ligne in lignes:
-		if(i>=100000):
-			if(i>=110000):
+		if(i>=180000):
+			if(i>=190000):
 				break
 			mot = ligne.rstrip('\n')
 			dic.append(mot)
@@ -133,7 +133,7 @@ dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
-fichier='dicoFr4.csv'
+fichier='dicoFr6.csv'
 crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,False)
 #lireCSV(fichier)
 #print(len(listeMot))
