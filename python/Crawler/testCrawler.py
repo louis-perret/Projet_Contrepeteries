@@ -11,8 +11,8 @@ def getDictAsList(fichierSource):
 	dic = []
 	lignes = file.readlines()
 	for ligne in lignes:
-		if(i>=180000):
-			if(i>=190000):
+		if(i>=330000):
+			if(i>=340000):
 				break
 			mot = ligne.rstrip('\n')
 			dic.append(mot)
