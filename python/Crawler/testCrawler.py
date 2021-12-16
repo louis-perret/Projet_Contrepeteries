@@ -11,11 +11,11 @@ def getDictAsList(fichierSource):
 	dic = []
 	lignes = file.readlines()
 	for ligne in lignes:
-		if(i>=330000):
-			if(i>=340000):
-				break
-			mot = ligne.rstrip('\n')
-			dic.append(mot)
+		#if(i>=330000):
+			#if(i>=340000):
+				#break
+		mot = ligne.rstrip('\n')
+		dic.append(mot)
 		i=i+1
 	return dic
 
@@ -86,11 +86,12 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 				if genre != 'm' and genre != 'f': #Si le mot n'a pas de genre
 					genre=""
 			
-				
+				tabCateg=set() #Permettra d'éviter les doublons
 				if(isNom): #Si on recherche pour les noms propres
-					dicoWriter.writerow([mot,pron,genre,dicoInfos['nom']]) #on met comme catégorie nom propre
+					tabCateg.add(dicoInfos['nom'])
+					tabCateg=list(tabCateg)
+					dicoWriter.writerow([mot,pron,genre,tabCateg]) #on met comme catégorie nom propre
 				else:
-					tabCateg=set() #Permettra d'éviter les doublons
 					categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
 					for c in categ:
 						c=c.string.strip().lower()
@@ -126,15 +127,15 @@ urlNom="https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courant
 #crawlerNom(urlNom,fichierDestination,dicoInfos)
 
 #Pour la langue française
-fichierSource='dicoFr2.txt'
+fichierSource='nomsFr.txt'
 listeMot=getDictAsList(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
 url="https://fr.wiktionary.org/wiki/" #l'url de la page à parser
 dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe" : ["span","titredef"],"nom": "nom propre"} 
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
-fichier='dicoFr6.csv'
-crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,False)
+fichier='nomsFr.csv'
+crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,True)
 #lireCSV(fichier)
 #print(len(listeMot))
 #print(listeMot)
