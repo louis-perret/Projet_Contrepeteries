@@ -221,7 +221,7 @@ def aideContrepetrie(historique):
 				continuer = -1
 				boucle = False
 			elif selectMot == -2:
-				clear()
+				listeDeMotCop = aide(mot,x,y,'phon')
 			elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
 				boucle = False
 			else:

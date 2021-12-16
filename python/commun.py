@@ -78,21 +78,21 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
 			motEspace1 = replacer(mot, ' ', l[0], 0) #ajout d'un espace
 			motSplit = motEspace1.split(' ') #séparation des mots à l'espace
 			if isInDico(dico, motSplit[0]) and isInDico(dico, motSplit[1]): #vérification des deux mots
-				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre))
+				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,dico))
 			for l in enumerate(motSplit[0]): #recherche dans le premier mot apres une séparation
 				if l[0] >= 2 and l[0] <= len(motSplit[0])-2:
 					motEspace2 = replacer(motSplit[0], ' ', l[0], 0) #ajout d'un espace
 					motSplit2 = motEspace2.split(' ') #séparation des mots à l'espace
 					if isInDico(dico, motSplit2[0]) and isInDico(dico, motSplit2[1]) and isInDico(dico, motSplit[1]): #vérification des deux mots
 						if (motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre) not in listeMot:
-							listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre))
+							listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,dico))
 			for l in enumerate(motSplit[1]): #recherche dans le second mot apres une séparation
 				if l[0] >= 2 and l[0] <= len(motSplit[1])-2:
 					motEspace3 = replacer(motSplit[1], ' ', l[0], 0) #ajout d'un espace
 					motSplit3 = motEspace3.split(' ') #séparation des mots à l'espace
 					if isInDico(dico, motSplit3[0]) and isInDico(dico, motSplit3[1]) and isInDico(dico, motSplit[0]): #vérification des deux mots
 						if (motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre) not in listeMot:
-							listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre))
+							listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,dico))
 				
 		
 	return listeMot
