@@ -323,7 +323,9 @@ function updateBtn() {
 		aideLettreRechDico(mot,iButton);
 	if(document.getElementById('choixPhoneme').value == 'true') {
 		var indexMotDic = dicMot.indexOf(mot)
-		aidePhonemRechDico(dicPhon[indexMotDic],iButton);
+		var indexButton = dicMot.indexOf(iButton)
+
+		aidePhonemRechDico(dicPhon[indexMotDic],dicPhon[indexButton]);
 	}
 
 }
@@ -352,6 +354,11 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 
 
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
+			if(motExiste(listeMotCompatible[i],dicPhon) )
+			{
+				let index = dicPhon.indexOf(listeMotCompatible[i]);
+				listeMotCompatible[i]=dicMot[index];
+			}
 			let button = document.createElement("button");
 			button.style.margin = "10px";
 			button.style.borderRadius = "5px";
