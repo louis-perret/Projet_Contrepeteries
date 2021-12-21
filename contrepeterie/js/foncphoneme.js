@@ -1,8 +1,10 @@
+var alph = []
+
 //Fonction principale
 //Fonction qui rend une liste de mot compatible -> pour code = comme, cognent, cochent,...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiPhon(x, y) {
+function aideMultiPhon(x, y, langue) {
 	affichResultat = [];
 	var l = [];
 	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
@@ -15,7 +17,20 @@ function aideMultiPhon(x, y) {
 		}
 	}
 	var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
-	var alph = ['b', 'd', 'f', 'g', 'k', 'l', 'm', 'n', 'ŋ','ɲ','p','ʁ','s', 'ʃ', 't', 'v', 'z', 'ʒ', 'j', 'w','ɥ', 'a', 'ɑ', 'e', 'ɛ','ɛː','ə','i', 'œ','ø','o','ɔ','u','y','ɑ̃','ɛ̃','œ̃','ɔ̃'];
+
+	var reader = new FileReader();
+	if (langue == "fr") {
+		//lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
+		jQuery.get("../fr/alphPhonemeFR.txt", function(data) {
+			alph = data.split(",");
+		});
+	}	
+	else if (langue == "en") {
+		jQuery.get("../fr/alphPhonemeEN.txt", function(data) {
+			alph = data.split(",");
+		});
+	}
+
 	let motSave = mot2; //On garde le mot en memoire
 	let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
 	console.log(" ########## motSave :  " + motSave.length);

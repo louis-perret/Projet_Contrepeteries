@@ -11,7 +11,8 @@ def getDictAsList(fichierSource):
 	dic = []
 	lignes = file.readlines()
 	for ligne in lignes:
-		#if(i>=330000):
+		if(i>=100000):
+			break
 			#if(i>=340000):
 				#break
 		mot = ligne.rstrip('\n')
@@ -112,11 +113,11 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 						time.sleep(30)
 			except:
 				print("Dernier mot : ",compteur)
-				print("Problème dans la recherche du : "+mot)
+				print("Problème dans la recherche du mot : "+mot)
 
 
 
-
+"""
 #Pour récupérer tous les prénoms de la langue française
 fichierDestination="nomsFr.txt"
 dicoInfos={"nom":['a','new']}
@@ -135,7 +136,19 @@ dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
 fichier='nomsFr.csv'
-crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,True)
+"""
+
+#Pour la langue anglaise
+fichierSourceAng='allenglishwords.txt'
+listeMotAng=getDictAsList(fichierSourceAng) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
+urlAng="https://en.wiktionary.org/wiki/" #l'url de la page à parser
+dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["span","API"],"nom": "common noun"} 
+#Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
+infosAEnleverAng=["/"]#["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
+langue='en'
+fichier='dicoAng.csv'
+crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
+
 #lireCSV(fichier)
 #print(len(listeMot))
 #print(listeMot)

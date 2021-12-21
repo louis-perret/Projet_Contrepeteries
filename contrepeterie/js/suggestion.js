@@ -3,6 +3,7 @@ var dicMot=[];
 var dicPhon=[];
 var affichResultat=[];
 var saveTuple=[];
+var langue = "fr";
 //Ces variables globales sont essentielles pour certaines fonctions de notre site, notamment pour garder des resultats en memoire
 
 
@@ -52,6 +53,10 @@ function loadSuggestion(){
 	//(voir fonction aideLettreRechDico dans le cas du click sur gen2)
 	document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
 	document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
+
+	//ajoute un event listener permettrant de mettre à jour le langage choisi
+	document.getElementById('btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
+	document.getElementById('btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
 
 	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
@@ -156,10 +161,10 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-			aideMultiPhon(x,y);
+			aideMultiPhon(x,y, "fr"); //mettre l'anglais aussi + tard
         }
 		else
-			aideMultiPhon(x, y);
+			aideMultiPhon(x, y, "fr");
 	}
 }
 
@@ -181,23 +186,23 @@ function afficheStats() {
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if (y>4 || x > 12 || max > 10) {
 		divStatsToHide.style.backgroundColor = 'black';
-		text='enormous   time ∞';
-		tExec.innerText="Execution time: " + text;
+		text='indéterminable   temps ∞';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 	else if (x>7 || y>3) {
 		divStatsToHide.style.backgroundColor = 'darkred';
-		text='very   slow at least 60 sec';
-		tExec.innerText="Time : " + text;
+		text='très   lent au moins 60 sec';
+		tExec.innerText="Temps : " + text;
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) {
 		divStatsToHide.style.backgroundColor = 'orange';
-		text='lent   10 to 60 sec';
-		tExec.innerText="Execution time: " + text;
+		text='lent   10 à 60 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
-		text='fast   2 to 10 sec';
-		tExec.innerText="Execution time: " + text;
+		text='rapide   2 à 10 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 }
 
@@ -219,23 +224,23 @@ function afficheStats2() {
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if(max >8 || y>4) {
 		divStatsToHide.style.backgroundColor = 'black';
-		text='enormous   time : ∞';
-		tExec.innerText="Execution time: " + text;
+		text='impossible   temps : ∞';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 	else if (x>7 || y>3 || (max <=8 && max >6)){
 		divStatsToHide.style.backgroundColor = 'darkred';
-		text='very slow   at least 60 sec';
-		tExec.innerText="Time : " + text;
+		text='très lent   au moins 60 sec';
+		tExec.innerText="Temps : " + text;
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3) ||  max==6) {
 		divStatsToHide.style.backgroundColor = 'orange';
-		text='slow   10 to 60 sec';
-		tExec.innerText="Execution time: " + text;
+		text='lent   10 à 60 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
-		text='fast   2 to 10 sec';
-		tExec.innerText="Execution time: " + text;
+		text='rapide   2 à 10 sec';
+		tExec.innerText="Temps d'execution : " + text;
 	}
 }
 
@@ -321,9 +326,12 @@ function updateBtn() {
 
 	if(document.getElementById('choixPhoneme').value == 'false')
 		aideLettreRechDico(mot,iButton);
-	if(document.getElementById('choixPhoneme').value == 'true')
-		aidePhonemRechDico(mot,iButton);
+	if(document.getElementById('choixPhoneme').value == 'true') {
+		var indexMotDic = dicMot.indexOf(mot)
+		var indexButton = dicMot.indexOf(iButton)
 
+		aidePhonemRechDico(dicPhon[indexMotDic],dicPhon[indexButton]);
+	}
 
 }
 
@@ -331,8 +339,10 @@ function updateBtn() {
 
 //Cette fonction permet de creer les couples mot - mot compatibles sous la forme de boutons
 function choixMotCompatible(motSave,listeMotCompatible) {
+	var mo = document.getElementById('mot').value;
 	document.getElementById('loadingStats').style.visibility = "collapse";
 	document.getElementById("bRetour").setAttribute("class","collapse mt-3");
+	document.getElementById("bRetour2").setAttribute("class","collapse mt-3");
 	//Nous comparons par rapport à 1 car nous envoyons un tableau[1] depuis le html
 	//Sans cela, des pb d'initialisation peuvent apparaitre
 	
@@ -347,11 +357,17 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		element.removeChild(element.firstChild);
 	}
 
-	//if(listeMotCompatible.length == 0) saveTuple = [];
 
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
+			if(motExiste(listeMotCompatible[i],dicPhon) )
+			{
+				let index = dicPhon.indexOf(listeMotCompatible[i]);
+				listeMotCompatible[i]=dicMot[index];
+			}
 			let button = document.createElement("button");
-			button.innerText =motSave+" - " + listeMotCompatible[i];
+			button.style.margin = "10px";
+			button.style.borderRadius = "5px";
+			button.innerText =mo+" - " + listeMotCompatible[i];
 			button.value =listeMotCompatible[i];
 			document.getElementById("div1").append(button);
 			button.addEventListener('click', updateBtn);
@@ -421,7 +437,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 								break;
 							}
 						}
-					}6
+					}
 				}
 				if (diffXY > 0 ) { //Si on remplace i+x par i lettres
 					//Rentre ici : testé
@@ -478,7 +494,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 //Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
 function aideLettreRechDico(mot1, mot2) {
 	document.getElementById('loadingStats').style.visibility = "collapse";
-
+	document.getElementById("bRetour2").setAttribute("class","mt-3");
 	document.getElementById("bRetour").setAttribute("class","mt-3");
 	affichResultat=[]
 	x=document.getElementById("choixDeX").value;
@@ -513,9 +529,7 @@ function aideLettreRechDico(mot1, mot2) {
 	//On prepare l'affichage des 4 mots un à un
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
-		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">'+ mot1 + ' - ' + resMot2[j] + '</div>'  ); //On ajoute dans une variable globale
-		affichResultat.push('<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div>');//Le mot saisi - le mot avec la lettre du mot2
-		affichResultat.push('<hr width="50">');        //Le mot 2 (compatible) - le mot avec la lettre du mot1
+			affichResultat.push("<div style='margin: 15px;'><div class='card p-2 shadow-sm' style='width: 18rem;'>"+ mot1 + ' - ' + resMot2[j] + '</div>' + '<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div></div>')
 		}
 	}
 	affichageMot(affichResultat);
