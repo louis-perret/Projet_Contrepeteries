@@ -60,7 +60,17 @@ function loadSuggestion(){
 
 	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
-	Papa.parse(pathToDictionnary, {
+	let pathActuel = window.location.pathname;
+	let fichierActuel = pathActuel.split("/").pop();
+	if(fichierActuel == "aide_a_la_contrepeterie.html") {
+		pathToDictionary = "../dict_fr_ok.csv";
+		langue = "fr";
+	}
+	else if (fichierActuel == "spoonerism_aid.html") {
+		pathToDictionary = "../debut_dico_en.csv";
+		langue = "en";
+	}
+	Papa.parse(pathToDictionary, {
     download: true,
     step: function(row) {
     	dic.push(row);
@@ -393,8 +403,14 @@ function choixPhoneme() {
 	{
 		document.getElementById('choixPhoneme').value = 'true';
 		document.getElementById('choixLettre').value = 'false';
-		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
-		document.getElementById("h3textToChange").innerText = "Nombre de phonèmes à échanger :";
+		if(langue == "fr") {
+			document.getElementById("h3textToChange").innerText = "Nombre de phonèmes à échanger :";	
+			document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
+		}
+		else if(langue == "en") {
+			document.getElementById("h3textToChange").innerText = "Number of phonemes to exchange :";
+			document.getElementById('pSelectLettrePhon').innerHTML = 'Selected : Phonemes';
+		}
 		saveTuple = [];
     }
 }
