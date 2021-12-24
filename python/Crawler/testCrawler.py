@@ -11,12 +11,11 @@ def getDictAsList(fichierSource):
 	dic = []
 	lignes = file.readlines()
 	for ligne in lignes:
-		if(i>=100000):
-			break
-			#if(i>=340000):
-				#break
-		mot = ligne.rstrip('\n')
-		dic.append(mot)
+		if(i>=20000):
+			if(i>=30000):
+				break
+			mot = ligne.rstrip('\n')
+			dic.append(mot)
 		i=i+1
 	return dic
 
@@ -31,6 +30,15 @@ def lireCSV(fichier):
 			a=row[3][2:-2].replace('\'','').split(',')
 			print(a)
 
+
+
+def recupClassGramEn(soup,dicoInfos):
+	categ=list()
+	for classe in dicoInfos['id']:
+		c=soup.find(dicoInfos['classe'][0], {"id": classe})
+		if c is not None:
+			categ.append(c)
+	return categ
 
 
 """
@@ -93,10 +101,12 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 					tabCateg=list(tabCateg)
 					dicoWriter.writerow([mot,pron,genre,tabCateg]) #on met comme catégorie nom propre
 				else:
-					categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
+					if(langue=='fr'):
+						categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
+					if(langue=='en'):
+						categ=recupClassGramEn(soup,dicoInfos)
 					for c in categ:
 						c=c.string.strip().lower()
-													
 						for infos in infosAEnlever:
 							c=c.replace(infos,"") #Enlève les sous-chaînes inutiles
 						tabCateg.add(c) 
@@ -139,16 +149,17 @@ fichier='nomsFr.csv'
 """
 
 #Pour la langue anglaise
-fichierSourceAng='allenglishwords.txt'
+fichierSourceAng='nomsEn.txt'
 listeMotAng=getDictAsList(fichierSourceAng) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
 urlAng="https://en.wiktionary.org/wiki/" #l'url de la page à parser
-dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["span","API"],"nom": "common noun"} 
+dicoClasse=['Noun','Letter','Verb','Adverb','Adjective','Interjection','Preposition','Conjunction','Pronoun']
+dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["span","mw-headline"],"nom": "proper noun","id": dicoClasse} 
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnleverAng=["/"]#["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='en'
-fichier='dicoAng.csv'
+fichier='nomsEn3.csv'
 crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
 
 #lireCSV(fichier)
-#print(len(listeMot))
-#print(listeMot)
+#print(len(listeMotAng))
+#print(listeMotAng)
