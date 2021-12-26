@@ -82,13 +82,19 @@ def aideContrepetrie(historique):
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aideLettreSubs(mot)
-			listeDeMotCop = aide(mot,1,1,'word')
+			dico = 'word'
+			x=1
+			y=1
+			listeDeMotCop = aide(mot,x,y,dico)
 	# -------------------------------------------------------------------------------
 
 		elif selection == 2:
 			clear()
 			print("Recherche des contrepétries possibles ...\n")
-			listeDeMotCop = aide(mot,1,1,'phon')
+			dico = 'phon'
+			x=1
+			y=1
+			listeDeMotCop = aide(mot,x,y,dico)
 			# cas où le mot rentré par l'utilisateur n'est pas dans le lexique
 			if listeDeMotCop == 0:
 				continue
@@ -164,14 +170,18 @@ def aideContrepetrie(historique):
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aide2Lettre1Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
-			listeDeMotCop = aide(mot,2,1,'word')
+			dico = 'word'
+			listeDeMotCop = aide(mot,2,1,dico)
 	# -------------------------------------------------------------------------------
 
 		elif selection == 6:
 			clear()
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aide1Lettre2Lettre(mot) # listeDeMotCop[nvMot][ancienne lettre][lettre2+3]
-			listeDeMotCop = aide(mot,1,2,'word')
+			dico = 'word'
+			x=1
+			y=2
+			listeDeMotCop = aide(mot,x,y,dico)
 
 	#--------------------------------------------------------------------------------
 
@@ -179,7 +189,8 @@ def aideContrepetrie(historique):
 			x = int(input("longueur de la syllabe enlevée : "))
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
-			listeDeMotCop = aide(mot,x,y,'word')
+			dico = 'word'
+			listeDeMotCop = aide(mot,x,y,dico)
 				
 
 	#--------------------------------------------------------------------------------
@@ -188,7 +199,8 @@ def aideContrepetrie(historique):
 			x = int(input("longueur de la syllabe enlevée : "))
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
-			listeDeMotCop = aide(mot,x,y,'phon')
+			dico = 'phon'
+			listeDeMotCop = aide(mot,x,y,dico)
 
 	# -------------------------------------------------------------------------------
 		#if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
@@ -209,7 +221,7 @@ def aideContrepetrie(historique):
 		while(boucle):
 			try:
 				selectMot = int(input(
-					"\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 rechercher par phonèmes \nou numéro de l'échange qui vous intéresse : \n"))
+					"\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 changer la recherche \nou numéro de l'échange qui vous intéresse : \n"))
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
@@ -221,11 +233,16 @@ def aideContrepetrie(historique):
 				continuer = -1
 				boucle = False
 			elif selectMot == -2:
-				listeDeMotCop = aide(mot,x,y,'phon')
+				if dico == 'word' :
+					dico = 'phon'
+				else :
+					dico = 'word'
+				listeDeMotCop = aide(mot,x,y,dico)
 			elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
 				boucle = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
+
 		if continuer == -1:
 			continuer = 1
 			continue
