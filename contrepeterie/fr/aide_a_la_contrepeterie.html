@@ -149,6 +149,10 @@
             </div> 
             
             <p id="tempsExecution"></p>
+            <div>
+                <input type="checkbox" id="couperMots" name="couperMots" value="couperMots">
+                <label for="couperMots">Activer la recherche de mots coupés </label>
+            </div>
             
             <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">
                 <div style="display:flex;">
@@ -162,6 +166,7 @@
                     <input type="text" placeholder="Facultatif" name="phraseDirect" id="motDirect"/>           
                 </div>
             </div>
+
 
             <button id="bRetour" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [1])">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">

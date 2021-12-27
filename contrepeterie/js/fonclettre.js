@@ -54,18 +54,19 @@ function aideMultiLettre(x, y) {
   console.log("Voici donc les lettres que l\'on peut changer :[ ");
   for (var i = 0; i < mot.length; i++) //Pour chaque lettre du mot
   {
+    if (document.getElementById("couperMots").checked) {
+        //pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
+        for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
+            mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
+            var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
+            mot2temp = mot2.replace(" ", "");
+            var lengthmot = mot.length
+            lMot = lengthmot - (x - y);
 
-	  //pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
-	  for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
-		  mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-		  var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
-		  mot2temp=mot2.replace(" ","");
-		  var lengthmot = mot.length
-		  lMot=lengthmot-(x-y);
-
-		  if (tabVerifEspaces != "" && lMot == mot2temp.length)
-			  l.push(tabVerifEspaces);
-	  }
+            if (tabVerifEspaces != "" && lMot == mot2temp.length)
+                l.push(tabVerifEspaces);
+        }
+    }
 
       var coupleLettre = recupCouple(mot, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
       //console.log("true ou false ? : " + coupleLettre[0])
