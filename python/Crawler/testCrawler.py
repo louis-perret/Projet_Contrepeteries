@@ -23,12 +23,17 @@ def getDictAsList(fichierSource):
 def lireCSV(fichier):
 	with open(fichier,'r') as dico:
 		dicoReader=csv.reader(dico,delimiter=',')
+		i=0
 		for row in dicoReader:
-			print(row[0])
-			print(row[1])
-			print(row[2])
+			if(i>100):
+				break
+			print(row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3])
+			#print(row[1])
+			#print(row[2])
+			#print(row[3])
 			a=row[3][2:-2].replace('\'','').split(',')
-			print(a)
+			print(a[0])
+			i=i+1
 
 
 
@@ -157,9 +162,9 @@ dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["sp
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnleverAng=["/"]#["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='en'
-fichier='nomsEn3.csv'
-crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
+fichier='dicoFr.csv'
+#crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
 
-#lireCSV(fichier)
+lireCSV(fichier)
 #print(len(listeMotAng))
 #print(listeMotAng)

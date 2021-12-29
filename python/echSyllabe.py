@@ -131,7 +131,7 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2):
 	listeretour = []
 	listePhon = PhrasePhoneme.split()
 	# PhrasePhoneme(str)
-	with open('data/dicoPhoncom.json') as tmp:
+	with open('data/fr/dicoPhoncomFr.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée

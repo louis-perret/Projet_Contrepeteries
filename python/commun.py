@@ -5,6 +5,7 @@ import sys
 import json
 import re
 import os
+import csv
 
 """
 Remplace une lettre dans la chaine s à la position "index"
@@ -97,3 +98,20 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
 		
 	return listeMot
 
+def creerFichierPhon(fichierSrc,fichierDest):
+	file = open(fichierSrc, encoding="utf-8")
+	read_file = csv.reader(file, delimiter=",")
+	dicoPhon={}
+	i=0
+	for ligne in read_file:
+		if(ligne[1] in dicoPhon):
+			dicoPhon[ligne[1]].append(ligne[0])
+		else:
+			dicoPhon[ligne[1]]=list()
+			dicoPhon[ligne[1]].append(ligne[0])
+	with open(fichierDest,'w') as file2:
+		json.dump(dicoPhon,file2)
+	#read_file.close()
+	#print(dicoPhon)
+
+creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")

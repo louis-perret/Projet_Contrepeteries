@@ -218,15 +218,14 @@ chaque feuille contient une string de forme :
 'mot,sonphoneme,sa classe gramticale,genre,nombre'
 """
 def Constructeur_Arbre_Mot():
-	#attention !!!!! ceci a été modifié, a remettre  sur "aaa" sir le dico bug
+	#attention !!!!! ceci a été modifié, a remettre  sur "aaa" au lieu de $$ si le dico bug
 	a = Tree("$$", None, None) 
 	#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	read_tsv = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	read_tsv = csv.reader(tsv_file, delimiter=",")
 	for lignes in read_tsv:
 		if " " not in lignes[0]:
-			mot = lignes[0] + "," + lignes[1] + "," + \
-				lignes[3][:3] + "," + lignes[4] + "," + lignes[5]
+			mot = lignes[0] + "," + lignes[1] + "," + lignes[2] + "," + lignes[3]
 			insert(a, mot)
 	tsv_file.close()
 	return a
@@ -241,11 +240,11 @@ chaque feuille contient une string de forme :
 
 def Constructeur_Arbre_Phon():
 	a = Tree("$$", None, None)
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	read_tsv = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	read_tsv = csv.reader(tsv_file, delimiter=",")
 	for lignes in read_tsv:
 		if " " not in lignes[0]:
-			mot = lignes[1] + "," + lignes[0] + "," + lignes[3] + lignes[4] + lignes[5]
+			mot = lignes[1] + "," + lignes[0] + "," + lignes[2] + lignes[3]
 			insert(a, mot)
 	tsv_file.close()
 	return a

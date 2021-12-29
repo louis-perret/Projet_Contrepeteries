@@ -31,9 +31,9 @@ Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des 
 def aide(mot,x,y,mode):
 	if(mode=="phon"): #Seulement échanger des sons
 		dico='phon'
-		with open('data/dicoPhoncom.json') as tmp:
+		with open('data/fr/dicoPhoncomFr.json') as tmp:
 			dicoPhon = json.load(tmp)
-		phon_file = open("data/BD_phoneme.txt", encoding="utf-8")
+		phon_file = open("data/fr/BD_phonemeFr.txt", encoding="utf-8")
 		BD_phoneme = phon_file.read()
 		BD_phoneme = BD_phoneme.split("\n")
 		del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
@@ -62,6 +62,7 @@ def aide(mot,x,y,mode):
 				
 				if coupleLettre[1] != couple and isInDico(dico, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					if(mode=='phon'):
+						print(nvtMot)
 						listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
 					if(mode=='word'):
 						listeMotCop.append((nvtMot,coupleLettre[1],couple))
@@ -76,8 +77,8 @@ def circulaire (ancLettre, nouvLettre, nouvMot, x):
 	listeSextup = []
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	lignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter=",")
 	# lit ligne par ligne du DICO (près de 100k lignes)
 	# changer filtres
 	diconfig = changerfiltre(diconfig)
@@ -192,8 +193,8 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop):
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
 
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	lignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter=",")
 	# lit ligne par ligne du DICO (près de 100k lignes)
 	# changer filtres
 	diconfig = changerfiltre(diconfig)
@@ -327,8 +328,8 @@ un ensemble contenant les mots contenant cette slice du mot d'origine
 
 def aideSyllSubs(mot_origine):
 
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	Lexlignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	Lexlignes = csv.reader(tsv_file, delimiter=",")
 
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
@@ -503,8 +504,8 @@ def aideSyllRechDico(mot_origine, selectMot, syllOrigine):
 	else:
 		syllNvlle = selectMot[len(debFin[0]):] #on récupère juste 'ar' dans 'darse'
 	print(syllNvlle,"-",syllOrigine)
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	LexLignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	LexLignes = csv.reader(tsv_file, delimiter=",")
 
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
