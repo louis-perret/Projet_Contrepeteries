@@ -158,11 +158,11 @@ def Phon_to_Mot(tree, value):
 
 # ----------------------------------------------------------------------------
 """
-retourne le phonème et la classe grammaticale de 'value' si le mot est dans
+retourne le phonème, le genre et la classe grammaticale de 'value' si le mot est dans
 le lexique, false sinon
 
 retour de forme:
-'phoneme,classGramm'
+'phoneme,genre'
 """
 
 def Mot_to_Phon(tree, value):
@@ -215,7 +215,7 @@ Construit une structure d'arbre de recherche binaire, trié par ordre alphabéti
 Contient les mots du lexique sous forme orthographique et leur correspondance en phonétique
 
 chaque feuille contient une string de forme :
-'mot,sonphoneme,sa classe gramticale,genre,nombre'
+'mot,sonphoneme,genre, ses classes grammaticales'
 """
 def Constructeur_Arbre_Mot():
 	#attention !!!!! ceci a été modifié, a remettre  sur "aaa" au lieu de $$ si le dico bug
@@ -235,7 +235,7 @@ verso de la fonction ci-dessus, mais cet arbre a peu d'intêret à celle-ci
 à leur où l'on rend le projet
 Cet arbre ne nous sers qu'à la fonction isInDico
 chaque feuille contient une string de forme :
-'phoneme,mot,sa classe gramticale,genre,nombre'
+'phoneme,mot,genre,ses classes grammaticales'
 """
 
 def Constructeur_Arbre_Phon():

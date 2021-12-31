@@ -168,3 +168,5 @@ fichier='dicoFr.csv'
 lireCSV(fichier)
 #print(len(listeMotAng))
 #print(listeMotAng)
+
+#cat data/fr/dicoFr.csv | sed -re 's/pronom [1-9]/pronom/g' > test.csv 

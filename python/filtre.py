@@ -1,6 +1,7 @@
 import language_tool_python
 import json
 import os
+import collections
 from arbin import *
 """
 Efface le terminal ou met une série de \n pour simuler un éffacement du terminal
@@ -224,21 +225,26 @@ def filtreMix(dicoResult):
 
 #-------------------------------------------------------------------------------
 """
-Définit le filtre grammatical
-filtre pour l'aide à la contrepétrie.
-retourne une liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
-
-/!\ ne fonctionne pas correctement car Mot_to_Phon n'est pas adapté.
+Objectif : Définit le filtre grammatical (aide à la contrepèterie)
+Paramètres : 
+	-Entrée :
+		listeOrigine : liste des résultats à traiter
+		mot_origine : mot entré par l'utilisateur
+	-Sortie :
+		liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 """
-def GramFiltre(listeOrgine, mot_origine):
+def GramFiltre(listeOrigine, mot_origine):
 	nouvelleListe = []
+	with open('data/fr/dicoClassGrammFr.json') as tmp:
+			dicoClassGramm = json.load(tmp)
 	#arbre_mot = arbre qui contient tous les mots
-	for pack in listeOrgine:
-		mot1 = Mot_to_Phon(arbre_mot, mot_origine)
-		mot2 = Mot_to_Phon(arbre_mot, pack[4])
-		mot3 = Mot_to_Phon(arbre_mot, pack[2])
-		mot4 = Mot_to_Phon(arbre_mot, pack[3])
-		if mot1 is not False and mot2 is not False and mot3 is not False and mot4 is not False: #si les mots existent dans l'arbre
-			if mot1.split(",")[1] == mot2.split(",")[1] and mot3.split(",")[1] == mot4.split(",")[1]: #s'ils sont de la même classe grammaticale
-				nouvelleListe.append(pack)
+	for pack in listeOrigine:
+		#On rcécupère les classes grammaticales des réponses
+		classGramMot1 = dicoClassGramm[mot_origine]
+		classGramMot2 = dicoClassGramm[pack[4]]
+		classGramMot3 = dicoClassGramm[pack[2]]
+		classGramMot4 = dicoClassGramm[pack[3]]
+		for i in range(len(classGramMot1)): #On parcours les classes grammaticales du mot entré par l'utilisateur
+			if(classGramMot1[i] in classGramMot2 and classGramMot1[i] in classGramMot3 and classGramMot1[i] in classGramMot4): #s'ils ont la même classe grammaticale
+					nouvelleListe.append(pack) #on l'ajoute aux réponses
 	return nouvelleListe

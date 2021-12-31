@@ -98,11 +98,20 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
 		
 	return listeMot
 
+
+"""
+Objectif : Créer un fichier qui contient un dico : key -> une écriture phonétique, value -> toutes ses orthographes possibles
+Paramètres :
+	-Entrée :
+		fichierSrc : fichier source
+		fichierDest : fichier destination
+	-Sortie :
+		aucun
+"""
 def creerFichierPhon(fichierSrc,fichierDest):
 	file = open(fichierSrc, encoding="utf-8")
 	read_file = csv.reader(file, delimiter=",")
 	dicoPhon={}
-	i=0
 	for ligne in read_file:
 		if(ligne[1] in dicoPhon):
 			dicoPhon[ligne[1]].append(ligne[0])
@@ -111,7 +120,28 @@ def creerFichierPhon(fichierSrc,fichierDest):
 			dicoPhon[ligne[1]].append(ligne[0])
 	with open(fichierDest,'w') as file2:
 		json.dump(dicoPhon,file2)
-	#read_file.close()
-	#print(dicoPhon)
 
-creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")
+
+
+"""
+Objectif : Créer un fichier qui contient un dico : key -> un mot, value -> toutes ses classes grammaticales possibles
+Paramètres :
+	-Entrée :
+		fichierSrc : fichier source
+		fichierDest : fichier destination
+	-Sortie :
+		aucun
+"""
+def creerFichierClassGramm(fichierSrc,fichierDest):
+	file = open(fichierSrc, encoding="utf-8")
+	read_file = csv.reader(file, delimiter=",")
+	dicoClassGramm={}
+	for ligne in read_file:
+		if(ligne[0] in dicoClassGramm):
+			dicoClassGramm[ligne[0]]=ligne[3][2:-2].replace('\'','').split(',')
+		else:
+			dicoClassGramm[ligne[0]]=ligne[3][2:-2].replace('\'','').split(',')
+	with open(fichierDest,'w') as file2:
+		json.dump(dicoClassGramm,file2)
+
+#creerFichierClassGramm("data/fr/dicoFr.csv","data/fr/dicoClassGrammFr.json")
