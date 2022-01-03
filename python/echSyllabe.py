@@ -99,6 +99,36 @@ def mainMixSyllables(phrase, mode):
 					L2 = (j, k[3][0], k[3][1])
 					Lphrases.append((tmp, L1, L2))
 	return Lphrases
+
+
+#------------------------------------------------------------------------------
+
+
+"""
+circulaireMixSyllabes
+effectue des recherches circulaires dans une phrase
+"""
+"""
+def circulaireMixSyllabes (phrase, mode):
+	results = []
+	for i in range(3, len(phrase)):
+		for j in range(min(len(enumerate(phrase)))):
+			for k in range(j, min(len(enumerate(phrase)))):
+				results.extends(circulaire(i,j,k,phrase,mode,[]))
+	return results
+
+
+def circulaire (i,j,k,phrase,mode,sylabePrec):
+	results = []
+	for mot in enumerate(phrase):
+		for lettre in enumerate(mot): #Pour chaque lettre du mot
+			coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
+			if coupleLettre[0]:
+				sylabePrec.append(coupleLettre)
+"""
+
+
+
 ###############################################################################
 """
 Retourne liste de phonème de la phrase :
