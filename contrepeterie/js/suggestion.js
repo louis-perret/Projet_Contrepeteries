@@ -4,6 +4,7 @@ var dicPhon=[];
 var affichResultat=[];
 var saveTuple=[];
 var langue = "fr";
+var dicoLoaded = false;
 //Ces variables globales sont essentielles pour certaines fonctions de notre site, notamment pour garder des resultats en memoire
 
 
@@ -31,69 +32,73 @@ $("#csv-file").change(handleFileSelect);
 
   function splitdicSelector(){
 	for(let i=0; i<dic[0]['data'].length; i++){
-  		dicMot.push(dic[0]['data'][i][0]);
-		dicPhon.push(dic[0]['data'][i][1]);	
-  	}
+		dicMot.push(dic[0]['data'][i][0]);
+		dicPhon.push(dic[0]['data'][i][1]);
+	}
   	console.log("Affichage du dictionaire de mots");
   	console.log(dicMot);
   	console.log("Affichage du dictionaire de sons");
   	console.log(dicPhon);
 }
 
+
 function loadSuggestion(){
-	//ajoute un event listener qui déclenche afficheStats() lorsque l'utilisateur change
-	//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
-	afficheStats(); //appelle aussi la fonction au chargement du dico
-	document.getElementById('choixDeX').addEventListener('input', afficheStats);
-	document.getElementById('choixDeY').addEventListener('input', afficheStats);
-	
+	if(!dicoLoaded) {
+		//ajoute un event listener qui déclenche afficheStats() lorsque l'utilisateur change
+		//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
+		afficheStats(); //appelle aussi la fonction au chargement du dico
+		document.getElementById('choixDeX').addEventListener('input', afficheStats);
+		document.getElementById('choixDeY').addEventListener('input', afficheStats);
+		
 
-	//ajoute un event listener qui déclenche afficheLoadStats() lorsque l'utilisateur clique sur un des boutons.
-	//l'icone de chargement sera cachée au moment de l'affichage des résultats (voir fonction choixMotCompatible dans le cas du click sur gen1)
-	//(voir fonction aideLettreRechDico dans le cas du click sur gen2)
-	document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
-	document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
+		//ajoute un event listener qui déclenche afficheLoadStats() lorsque l'utilisateur clique sur un des boutons.
+		//l'icone de chargement sera cachée au moment de l'affichage des résultats (voir fonction choixMotCompatible dans le cas du click sur gen1)
+		//(voir fonction aideLettreRechDico dans le cas du click sur gen2)
+		document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
+		document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
 
-	//ajoute un event listener permettrant de mettre à jour le langage choisi
-	document.getElementById('btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
-	document.getElementById('btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
+		//ajoute un event listener permettrant de mettre à jour le langage choisi
+		document.getElementById('btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
+		document.getElementById('btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
 
-	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
+		document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
-	let pathActuel = window.location.pathname;
-	let fichierActuel = pathActuel.split("/").pop();
-	if(fichierActuel == "aide_a_la_contrepeterie.html") {
-		pathToDictionary = "../dict_fr_ok.csv";
-		langue = "fr";
+		let pathActuel = window.location.pathname;
+		let fichierActuel = pathActuel.split("/").pop();
+		if(fichierActuel == "aide_a_la_contrepeterie.html") {
+			pathToDictionary = "../dict_fr_ok.csv";
+			langue = "fr";
+		}
+		else if (fichierActuel == "spoonerism_aid.html") {
+			pathToDictionary = "../debut_dico_en.csv";
+			langue = "en";
+		}
+
+		Papa.parse(pathToDictionary, {
+		download: true,
+		step: function(row) {
+			dic.push(row);	
+		},
+		complete: function() {
+			document.getElementById('chargement').innerHTML = '<div id="wrapper"><svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg></div>';
+			document.getElementById('chargement').style.backgroundColor="beige";
+			document.getElementById('loadSugg').disabled=true;
+			console.log("All done!");
+			console.log(dic);
+			console.log("Appel de split dic");
+			splitdic(dic);
+
+		}
+		});
 	}
-	else if (fichierActuel == "spoonerism_aid.html") {
-		pathToDictionary = "../debut_dico_en.csv";
-		langue = "en";
-	}
-	Papa.parse(pathToDictionary, {
-    download: true,
-    step: function(row) {
-    	dic.push(row);
-      	
-    },
-    complete: function() {
-    	document.getElementById('chargement').innerHTML = '<div id="wrapper"><svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg></div>';
-		document.getElementById('chargement').style.backgroundColor="beige";
-		document.getElementById('loadSugg').disabled=true;
-        console.log("All done!");
-        console.log(dic);
-        console.log("Appel de split dic");
-        splitdic(dic);
-
-    }
-  });
+	dicoLoaded = true;
 }
 
 function splitdic(){
-    for(let i=0; i<dic.length; i++){
-  		dicMot.push(dic[i]['data'][0]);
+	for(let i=0; i<dic.length; i++){
+		dicMot.push(dic[i]['data'][0]);
 		dicPhon.push(dic[i]['data'][1]);	
-  	}
+	}
   	console.log("Affichage du dictionaire de mots");
   	console.log(dicMot);
   	console.log("Affichage du dictionaire de sons");
@@ -367,6 +372,8 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		element.removeChild(element.firstChild);
 	}
 
+	if(listeMotCompatible.length == 0)
+		document.getElementById("div1").innerHTML = "Pas de résultat";
 
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			if(motExiste(listeMotCompatible[i],dicPhon) )

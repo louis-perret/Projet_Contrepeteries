@@ -124,10 +124,15 @@ function aidePhonemRechDico(mot1, mot2) {
 }
 
 function chercheMotDicoPhon(lettre1,lettre2,x,y,resMot1,resMot2) {
+	console.log(dicPhon[328684])
+	console.log(dicPhon[328685])
+	console.log(dicPhon[328686])
+	console.log("Longueur tab mots: "+ dicMot.length)
+	console.log("Longueur tab phon: "+ dicPhon.length)
 	var diffXY = x - y;
 	var longueurMax= document.getElementById("choixLongueurMax").value
 	var longueurMin= document.getElementById("choixLongueurMin").value
-	for(let i=0;i<dicPhon.length;i++){ //Pour chaque mots du dico
+	for(let i=0;i<dicPhon.length-1;i++){ //Pour chaque mots du dico
 		let mot1=dicPhon[i]; //On prend le ieme mot du dico
 		lg1=mot1.length;
 		longueur1=lg1-diffXY; //Variable pour determiner les longueurs des mots à trouver quand le nombre de lettre à remplacer change
@@ -135,8 +140,12 @@ function chercheMotDicoPhon(lettre1,lettre2,x,y,resMot1,resMot2) {
 		let posLettre1=mot1.indexOf(lettre1); //On regarde ou la lettre1 est dans ce mot
 
 		if(posLettre1 != -1 && mot1.length<= longueurMax && mot1.length >= longueurMin) { //Si la lettre1 est presente dans le mot 1 du dico + respecte les conditions de longueur
-			for(let j=0;j<dicPhon.length;j++){ //Pour chaque mot du dico
+			for(let j=0;j<dicPhon.length-1;j++){ //Pour chaque mot du dico
+				//console.log("!!!!!!!"+dicPhon[j])
 				let mot2=dicPhon[j]; //On prend le premier mot
+				if(mot2 == '' || mot2 == undefined || mot2 == null) {
+					console.log("index :"+j)
+				}
 				lg2=mot2.length;
 				longueur2moins=lg2-diffXY;//Variable pour determiner les longueurs des mots à trouver quand le nombre de lettre à remplacer change
 				longueur2plus=lg2+diffXY;
