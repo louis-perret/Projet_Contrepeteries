@@ -364,7 +364,8 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	if(listeMotCompatible.length>1) { //Sert uniquement à sauvegarder la liste en memoire pour le bouton retour
 		saveTuple = listeMotCompatible;
 	}
-	if(listeMotCompatible.length==1) {
+	//impossible de tester sur un int ou un string, on envoit donc un booleen depuis l'HTML
+	if(listeMotCompatible[0] == true) {
 		listeMotCompatible=saveTuple;
 	}
 	var element = document.getElementById("div1");
