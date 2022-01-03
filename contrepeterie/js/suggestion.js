@@ -507,49 +507,6 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 	console.log("mot 2 : " + resMot2);
 }
 
-//Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
-function aideLettreRechDico(mot1, mot2) {
-	document.getElementById('loadingStats').style.visibility = "collapse";
-	document.getElementById("bRetour2").setAttribute("class","mt-3");
-	document.getElementById("bRetour").setAttribute("class","mt-3");
-	affichResultat=[]
-	x=document.getElementById("choixDeX").value;
-	y=document.getElementById("choixDeY").value;
-	var lettreMot1 = "";
-	var lettreMot2 = "";
-	let saveX = x;
-	let saveY = y;
-	for (let i=0; i<mot1.length; i++) { //Pour chaque lettre du mot 1 (mot saisi)
-
-		if (mot1[i] != mot2[i]) { //Si la lettre au meme indice n'est pas la meme sur les 2 mots
-			let saveI = i;
-
-			for(x; x>0; x--){
-				lettreMot1 = lettreMot1 + mot1[i]; //On stock les lettres qui changent
-				i++;
-			}
-			i = saveI;
-			for(y; y>0; y--){
-				lettreMot2 = lettreMot2 + mot2[i]; //On stock les lettres qui changent
-				i++;
-			}
-			break;
-		}
-	}
-	console.log("lettres1 " + lettreMot1)
-	console.log("lettres2 " + lettreMot2)
-	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
-	var resMot2=[];
-	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
-	document.getElementById("loadingStats").style.visibility="collapse";
-	//On prepare l'affichage des 4 mots un à un
-	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
-		if(mot1 != resMot1[j]) {
-			affichResultat.push("<div style='margin: 15px;'><div class='card p-2 shadow-sm' style='width: 18rem;'>"+ mot1 + ' - ' + resMot2[j] + '</div>' + '<div class="card p-2 shadow-sm" style="width: 18rem;">' + mot2 + ' - ' + resMot1[j] +'</div></div>')
-		}
-	}
-	affichageMot(affichResultat);
-}
 
 
 
@@ -560,9 +517,9 @@ function affichageMot(l){
   		element.removeChild(element.firstChild);
 	}
 	for(var i=0; i<l.length; i++){
-		let par = document.createElement('p');
-		par.innerHTML=l[i];
-		document.getElementById('div1').append(par);
+		let div = document.createElement('div');
+		div.innerHTML=l[i];
+		document.getElementById('div1').append(div);
 	}
 }
 //-----------------------------------------------------------------------------------
