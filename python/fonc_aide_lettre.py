@@ -67,7 +67,7 @@ def aide(mot,x,y,mode):
 						listeMotCop.append((nvtMot,coupleLettre[1],couple,dico))
 					#circulaire(coupleLettre[1], couple, nvtMot, x)
 				if choix == 1:
-					if(mode=='word'):
+					if(mode == 'word'):
 						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, dico))
 	print('\n')
 	affichageBase(listeMotCop)
