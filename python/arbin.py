@@ -142,7 +142,7 @@ def rotate_left(tree):
 """
 retourne une écriture orthographique
 de 'value' si le mot est dans le lexique, false sinon
-mais cette a peu d'intêret à leur où l'on rend le projet
+mais cette a peu d'intêret à l'heure où l'on rend le projet
 Cet arbre ne nous sers qu'à la fonction isInDico
 """
 

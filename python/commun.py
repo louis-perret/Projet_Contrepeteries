@@ -70,30 +70,44 @@ def recupCoupleLettre(y,a,liste,listeSource):
 fonction vérifiant si une contrepétries est valide avec des espaces
 """
 
-def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico):
+def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico, dicoPhon):
 
 	listeMot = []
-
 	for l in enumerate(mot): #pour chaque lettre du mot
 		if l[0] >= 2 and l[0] <= len(mot)-2: #bornes pour la taille minimum des mot (ici 2 lettres)
 			motEspace1 = replacer(mot, ' ', l[0], 0) #ajout d'un espace
 			motSplit = motEspace1.split(' ') #séparation des mots à l'espace
 			if isInDico(dico, motSplit[0]) and isInDico(dico, motSplit[1]): #vérification des deux mots
-				listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,dico))
+				if dico == 'word' :
+					listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,dico))
+				if dico == 'phon' :
+					try : #alors... on test si les deux mots sont dans le dico juste avant mais ça arrive à passer à travers et génère une keyerror dans certains cas
+						exemple = dicoPhon[motSplit[0]][0]+" "+dicoPhon[motSplit[1]][0]
+						listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,exemple))
+					except(KeyError) : 
+						continue
 			for l in enumerate(motSplit[0]): #recherche dans le premier mot apres une séparation
 				if l[0] >= 2 and l[0] <= len(motSplit[0])-2:
 					motEspace2 = replacer(motSplit[0], ' ', l[0], 0) #ajout d'un espace
 					motSplit2 = motEspace2.split(' ') #séparation des mots à l'espace
 					if isInDico(dico, motSplit2[0]) and isInDico(dico, motSplit2[1]) and isInDico(dico, motSplit[1]): #vérification des deux mots
 						if (motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre) not in listeMot:
-							listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,dico))
+							if dico == 'word' :
+								listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,dico))
+							if dico == 'phon' :
+								exemple = dicoPhon[motSplit2[0]][0]+" "+dicoPhon[motSplit2[1]][0]+" "+dicoPhon[motSplit[1]][0]
+								listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,exemple))
 			for l in enumerate(motSplit[1]): #recherche dans le second mot apres une séparation
 				if l[0] >= 2 and l[0] <= len(motSplit[1])-2:
 					motEspace3 = replacer(motSplit[1], ' ', l[0], 0) #ajout d'un espace
 					motSplit3 = motEspace3.split(' ') #séparation des mots à l'espace
 					if isInDico(dico, motSplit3[0]) and isInDico(dico, motSplit3[1]) and isInDico(dico, motSplit[0]): #vérification des deux mots
 						if (motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre) not in listeMot:
-							listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,dico))
+							if dico == 'word' :
+								listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,dico))
+							if dico == 'phon' :
+								exemple = dicoPhon[motSplit[0]][0]+" "+dicoPhon[motSplit3[0]][0]+" "+dicoPhon[motSplit3[1]][0]
+								listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,exemple))
 				
 		
 	return listeMot
@@ -157,3 +171,21 @@ def creerFichierClassGramm(fichierSrc,fichierDest):
 
 #creerFichierClassGramm("data/fr/dicoFr.csv","data/fr/dicoClassGrammFr.json")
 #creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")
+
+"""
+Objectif : chercher des contrepèterie circulaires
+Paramètres :
+	-Entrée :
+		x : taille enlevée
+		y : taille du rajout
+		w : nombre de mot dans la boucle
+		dico : type du dictionnaire
+		motDepart : mot de départ
+		motPrec : mots précédents dans la boucle
+		sylabe : sylabe échangée dans le mot de départ
+		index : index de la sylabe échangée dans le mot de départ
+	-Sortie :
+		listeCirculaires : liste des contrepèterie circulaires fonctionelles 
+"""
+
+#def rechercheCirculaire (motDepart, x, y, w, dico, motPrec, sylabe, index):
