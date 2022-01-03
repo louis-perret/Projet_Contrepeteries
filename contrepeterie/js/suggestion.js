@@ -373,8 +373,13 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		element.removeChild(element.firstChild);
 	}
 
-	if(listeMotCompatible.length == 0)
-		document.getElementById("div1").innerHTML = "Pas de résultat";
+	if(listeMotCompatible.length == 0) {
+		if(langue == "fr")
+			document.getElementById("div1").innerHTML = "Pas de résultat";
+		else if(langue == "en")
+		document.getElementById("div1").innerHTML = "No result";
+	}
+		
 
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			if(motExiste(listeMotCompatible[i],dicPhon) )

@@ -16,61 +16,85 @@ function aideMultiPhon(x, y, langue) {
 			ind = j;
 		}
 	}
-	var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
 
-	var reader = new FileReader();
-	if (langue == "fr") {
-		//lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
-		jQuery.get("../fr/alphPhonemeFR.txt", function(data) {
-			alph = data.split(",");
-		});
-	}	
-	else if (langue == "en") {
-		jQuery.get("../fr/alphPhonemeEN.txt", function(data) {
-			alph = data.split(",");
-		});
+	//récupère le nom de la vue actuelle
+	let pathActuel = window.location.pathname;
+	let fichierActuel = pathActuel.split("/").pop();
+	if(fichierActuel == "aide_a_la_contrepeterie.html") {
+		pathToDictionary = "../dict_fr_ok.csv";
+		langue = "fr";
+	}
+	else if (fichierActuel == "spoonerism_aid.html") {
+		pathToDictionary = "../debut_dico_en.csv";
+		langue = "en";
 	}
 
-	let motSave = mot2; //On garde le mot en memoire
-	let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-	console.log(" ########## motSave :  " + motSave.length);
-	for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
-	{
-		//console.log("!!!!! i : " + i)
-		var coupleLettre = recupCouple(mot2, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
-		//console.log("true ou false ? : " + coupleLettre[0])
-		if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
+	if(ind == 0) {
+		if(langue == "fr")
+			document.getElementById('div1').innerHTML = "Pas de résultat";
+		else if(langue == "en")
+			document.getElementById('div1').innerHTML = "No result";
+		document.getElementById('loadingStats').style.visibility = "collapse";
+	}
+	else {
+		var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
+		if (langue == "fr") {
+			//lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
+			jQuery.get("../fr/alphPhonemeFR.txt", function(data) {
+				alph = data.split(",");
+			});
+		}	
+		else if (langue == "en") {
+			jQuery.get("../fr/alphPhonemeEN.txt", function(data) {
+				alph = data.split(",");
+			});
+		}
+
+		let motSave = mot2; //On garde le mot en memoire
+		let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
+		console.log(" ########## motSave :  " + motSave.length);
+		for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
 		{
-			console.log(coupleLettre[1] + " , ");
-			for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
+			//console.log("!!!!! i : " + i)
+			var coupleLettre = recupCouple(mot2, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
+			//console.log("true ou false ? : " + coupleLettre[0])
+			if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
 			{
-				couple = listeCouple[j]
-				var nvtMot = mot2.replacerAvecIndex(i, x, couple)
-				console.log("NvMot = " + nvtMot)
-				//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
-  
-				nvtMot=nvtMot.replace(" ","");
-				console.log("Mot a tester : " + nvtMot)	
-				var lengthmot = mot2.length
-				lMot=lengthmot-(x-y);
-				console.log("longueur mot saisi - diffxy = " + lMot);
-				if(motExiste(nvtMot,dicPhon)) {
-					console.log("Le mot existe !!!!!!!" + nvtMot)
-					var indexMotDic = dicPhon.indexOf(nvtMot)
-					if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-						console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-						l.push(dicPhon[indexMotDic]);
-					}	
-				
+				console.log(coupleLettre[1] + " , ");
+				for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
+				{
+					couple = listeCouple[j]
+					var nvtMot = mot2.replacerAvecIndex(i, x, couple)
+					console.log("mot2 = " + mot2)
+
+					console.log("i = " + i)
+					console.log("x = " + x)
+					console.log("couple = " + couple)
+					console.log("NvMot = " + nvtMot)
+					//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
+	
+					nvtMot=nvtMot.replace(" ","");
+					console.log("Mot a tester : " + nvtMot)	
+					var lengthmot = mot2.length
+					lMot=lengthmot-(x-y);
+					console.log("longueur mot saisi - diffxy = " + lMot);
+					if(motExiste(nvtMot,dicPhon)) {
+						console.log("Le mot existe !!!!!!!" + nvtMot)
+						var indexMotDic = dicPhon.indexOf(nvtMot)
+						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
+							console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+							l.push(dicPhon[indexMotDic]);
+						}	
+					
+					}
+	
 				}
-  
 			}
 		}
+		console.log(" ]")
+		//console.log("--------------------------Ma liste compatible : " + l)
+		choixMotCompatible(motSave, l);
 	}
-	console.log(" ]")
-	//console.log("--------------------------Ma liste compatible : " + l)
-	choixMotCompatible(motSave, l);
-	
   }
 
 //Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
