@@ -23,13 +23,27 @@ def getDictAsList(fichierSource):
 def lireCSV(fichier):
 	with open(fichier,'r') as dico:
 		dicoReader=csv.reader(dico,delimiter=',')
+		i=0
 		for row in dicoReader:
-			print(row[0])
-			print(row[1])
-			print(row[2])
+			if(i>100):
+				break
+			print(row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3])
+			#print(row[1])
+			#print(row[2])
+			#print(row[3])
 			a=row[3][2:-2].replace('\'','').split(',')
-			print(a)
+			print(a[0])
+			i=i+1
 
+
+
+def recupClassGramEn(soup,dicoInfos):
+	categ=list()
+	for classe in dicoInfos['id']:
+		c=soup.find(dicoInfos['classe'][0], {"id": classe})
+		if c is not None:
+			categ.append(c)
+	return categ
 
 
 """
@@ -86,15 +100,18 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 				if genre != 'm' and genre != 'f': #Si le mot n'a pas de genre
 					genre=""
 			
-				
+				tabCateg=set() #Permettra d'éviter les doublons
 				if(isNom): #Si on recherche pour les noms propres
-					dicoWriter.writerow([mot,pron,genre,dicoInfos['nom']]) #on met comme catégorie nom propre
+					tabCateg.add(dicoInfos['nom'])
+					tabCateg=list(tabCateg)
+					dicoWriter.writerow([mot,pron,genre,tabCateg]) #on met comme catégorie nom propre
 				else:
-					tabCateg=set() #Permettra d'éviter les doublons
-					categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
+					if(langue=='fr'):
+						categ=soup.find_all(dicoInfos['classe'][0], {"class": dicoInfos['classe'][1], "id": regex.compile(langue+"-*")}) #Récupère toutes les classes grammaticales d'un mot pour une langue donnée
+					if(langue=='en'):
+						categ=recupClassGramEn(soup,dicoInfos)
 					for c in categ:
 						c=c.string.strip().lower()
-													
 						for infos in infosAEnlever:
 							c=c.replace(infos,"") #Enlève les sous-chaînes inutiles
 						tabCateg.add(c) 
@@ -111,11 +128,11 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 						time.sleep(30)
 			except:
 				print("Dernier mot : ",compteur)
-				print("Problème dans la recherche du : "+mot)
+				print("Problème dans la recherche du mot : "+mot)
 
 
 
-
+"""
 #Pour récupérer tous les prénoms de la langue française
 fichierDestination="nomsFr.txt"
 dicoInfos={"nom":['a','new']}
@@ -126,15 +143,30 @@ urlNom="https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courant
 #crawlerNom(urlNom,fichierDestination,dicoInfos)
 
 #Pour la langue française
-fichierSource='dicoFr2.txt'
+fichierSource='nomsFr.txt'
 listeMot=getDictAsList(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
 url="https://fr.wiktionary.org/wiki/" #l'url de la page à parser
 dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe" : ["span","titredef"],"nom": "nom propre"} 
 #Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
-fichier='dicoFr2.csv'
-crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,False)
-#lireCSV(fichier)
-#print(len(listeMot))
-#print(listeMot)
+fichier='nomsFr.csv'
+"""
+
+#Pour la langue anglaise
+fichierSourceAng='nomsEn.txt'
+listeMotAng=getDictAsList(fichierSourceAng) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
+urlAng="https://en.wiktionary.org/wiki/" #l'url de la page à parser
+dicoClasse=['Noun','Letter','Verb','Adverb','Adjective','Interjection','Preposition','Conjunction','Pronoun']
+dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["span","mw-headline"],"nom": "proper noun","id": dicoClasse} 
+#Dico avec comme clé l'information à récupérer et comme valeur la balise html et la classe css qui la contient
+infosAEnleverAng=["/"]#["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
+langue='en'
+fichier='dicoFr.csv'
+#crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
+
+lireCSV(fichier)
+#print(len(listeMotAng))
+#print(listeMotAng)
+
+#cat data/fr/dicoFr.csv | sed -re 's/pronom [1-9]/pronom/g' > test.csv 

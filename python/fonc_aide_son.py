@@ -38,8 +38,8 @@ def aideSonRechDico(index, listeDeMotCop):
 	listeDeRacines = []
 	listeAffichage = []
 
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	lignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	lignes = csv.reader(tsv_file, delimiter=",")
 
 	# lit ligne par ligne du DICO (près de 100k lignes)
 	diconfig = changerfiltre(diconfig)
@@ -80,7 +80,7 @@ et permet de voir les orthographes différents des phonèmes du quadruplets en
 appelant affiOrthoPhon
 """
 def affiRechSon(listeAffichage, compteur, mot_origine):
-	with open('data/dicoPhoncom.json') as tmp:
+	with open('data/fr/dicoPhoncomFr.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupuère la syntaxe phonétique du mot d'origine
@@ -144,7 +144,7 @@ de listeAffichage à l'index donnée en entrée.
 
 def affiOrthoPhon(listeAffichage, index, mot_origine):
 	clear()
-	with open('data/dicoPhoncom.json') as tmp:
+	with open('data/fr/dicoPhoncomFr.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine)
@@ -227,8 +227,8 @@ un ensemble contenant les mots contenant cette slice du mot d'origine
 
 def aideMultiSonSubs(mot_origine):
 
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	Lexlignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	Lexlignes = csv.reader(tsv_file, delimiter=",")
 	tmp = mot_origine
 	mot_origine = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupère l'écriture phonétique du mot
 	if isinstance(mot_origine, bool):
@@ -330,7 +330,7 @@ def affiPageParPage2(listeMot, syllOrigine, mot_origine):
 	nbPage = (len(listeMot)//nbMotPage)  # nombre total de pages.
 	numPage = 0                          # numéro page en cours
 
-	with open('data/dicoPhoncom.json') as tmp:
+	with open('data/fr/dicoPhoncomFr.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 	choix = {-1, -2}
@@ -420,8 +420,8 @@ def aideMultiSonRechDico(mot_origine, selectMot, syllOrigine):
 	else:
 		syllNvlle = selectMot[len(debFin[0]):]
 	print(syllNvlle,"-",syllOrigine)
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	LexLignes = csv.reader(tsv_file, delimiter="\t")
+	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	LexLignes = csv.reader(tsv_file, delimiter=",")
 
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)

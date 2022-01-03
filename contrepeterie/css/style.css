@@ -529,6 +529,12 @@ span.c0 {
   padding: 20px;
 }
 
+
+.toTheRight {
+  float: right;
+}
+
+
 /* ---------------------Code jeu.html ----------------------------------- */
 
 .quizz {

@@ -12,9 +12,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script src="../suggestion.js"></script>
-    <script src="../fonclettre.js"></script>
-    <script src="../foncphoneme.js"></script>
+    <script src="../js/suggestion.js"></script>
+    <script src="../js/fonclettre.js"></script>
+    <script src="../js/foncphoneme.js"></script>
 
     <title>L'art de décaler les sons</title>
 </head>
@@ -68,11 +68,11 @@
         <div class="justify-content-end">
             <ul class="navbar-nav navbar-tabs">
                 <li class="nav-item ">
-                    <a class="nav-link font langue" href="index.html"><img class="langue1" src="../image/fr.png" /></a>
+                    <a id="btnFR" class="nav-link font langue" href="index.html"><img class="langue1" src="../image/fr.png" /></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link font langue" href="../en/spoonerism_aid.html"><img class="langue2" src="../image/en.png"></a>
+                    <a id="btnEN" class="nav-link font langue" href="../en/spoonerism_aid.html"><img class="langue2" src="../image/en.png"></a>
                 </li>
             </ul>
         </div>
@@ -84,7 +84,7 @@
             <h2 id="titrePr">Aide à la contrepèterie</h2>
         </div>
 
-        
+        <a style="float: right; margin: 10px;" href="aide_a_la_contrepeterie_help.html">Besoin d'aide?</a>
 
         <div id="aide">
             <div class="row">
@@ -149,6 +149,10 @@
             </div> 
             
             <p id="tempsExecution"></p>
+            <div>
+                <input type="checkbox" id="couperMots" name="couperMots" value="couperMots">
+                <label for="couperMots">Activer la recherche de mots coupés </label>
+            </div>
             
             <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">
                 <div style="display:flex;">
@@ -163,6 +167,7 @@
                 </div>
             </div>
 
+
             <button id="bRetour" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [1])">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
                     <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
@@ -170,9 +175,15 @@
                   Retour
             </button>
             
-
+            <div id="div1"></div>
+            <button id="bRetour2" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [1])">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                  </svg>
+                  Retour
+            </button>
         </div>
-        <div id="div1"></div>
+        
 
     </section>
 
