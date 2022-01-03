@@ -181,7 +181,7 @@ def aideLettreRechDico(index, listeDeMotCop):
 """
 effectue la recherche de quadruplet de manière générale
 """
-def aideLettreRechDicoGeneral(index, listeDeMotCop):
+def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum):
 	index -= 1
 	NombreDeMot = len(listeDeMotCop)
 	compteur = 0
@@ -204,35 +204,37 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop):
 	for mot in lignes:
 		mot = mot[0] #On recupère le mot qu'on veut tester
 
-		for ChaqueLettre in range(len(listeDeMotCop)):
+		if(len(mot)>=minimum and len(mot)<=maximum):
+			for ChaqueLettre in range(len(listeDeMotCop)):
 
-			test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
-			test2 = mot[:5] not in listeDeRacines
-			# Racines:
-			if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
-				#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
-				testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
-				# la lettre est dans le mot
-				if isInDico('word', testDansMot):
-					# test we need
-					if diconfig["FiltreGrossier"] == "Oui":
+				test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
+				test2 = mot[:5] not in listeDeRacines
+				# Racines:
+				if index == ChaqueLettre and test1 and test2: #Si c'est la combinaison sélectionnée avant
+					#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
+					testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+					# la lettre est dans le mot
+					if isInDico('word', testDansMot):
+						# test we need
+						if(len(testDansMot)>=minimum and len(testDansMot)<=maximum):
+							if diconfig["FiltreGrossier"] == "Oui":
 
-						if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
-							listeDeRacines.append(mot[:5])
+								if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+									listeDeRacines.append(mot[:5])
 
-							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-												   listeDeMotCop[ChaqueLettre][2],
-												   listeDeMotCop[ChaqueLettre][0],
-												   testDansMot, mot))
+									listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+														   listeDeMotCop[ChaqueLettre][2],
+														   listeDeMotCop[ChaqueLettre][0],
+														   testDansMot, mot))
 
-					else:
-						listeDeRacines.append(mot[:5])
+							else:
+								listeDeRacines.append(mot[:5])
 
-						listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-											   listeDeMotCop[ChaqueLettre][2],
-											   listeDeMotCop[ChaqueLettre][0],
-											   testDansMot, mot))
-					compteur += 1
+								listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+													   listeDeMotCop[ChaqueLettre][2],
+													   listeDeMotCop[ChaqueLettre][0],
+													   testDansMot, mot))
+							compteur += 1
 	return (listeAffichage, compteur, diconfig)
 
 
@@ -578,3 +580,18 @@ def quadruplRapide (mot):
 	if listeAffichage != [] :
 		return affiRechLettre(listeAffichage, compteur, motSplit[0])
 						
+
+
+
+def inputInt(message):
+	entier=input(message)
+	while(True):
+		try:
+			entier=int(entier)
+			return entier
+		except:
+			print("Vous n'avez pas entré un entier. Ressayer")
+			entier=input(message)
+
+
+

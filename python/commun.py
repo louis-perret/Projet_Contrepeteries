@@ -170,7 +170,7 @@ def creerFichierClassGramm(fichierSrc,fichierDest):
 		json.dump(dicoClassGramm,file2)
 
 #creerFichierClassGramm("data/fr/dicoFr.csv","data/fr/dicoClassGrammFr.json")
-#creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")
+creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")
 
 """
 Objectif : chercher des contrepèterie circulaires

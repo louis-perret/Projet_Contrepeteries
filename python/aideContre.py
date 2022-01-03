@@ -243,6 +243,9 @@ def aideContrepetrie(historique):
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
 
+		print("Veuillez sélectionner la longueur des résultats souhaités")
+		minimum=inputInt("Longueur minimum (-1=toutes les longueurs) : ")
+		maximum=inputInt("Longueur maximum (-1=toutes les longueurs) : ")
 		if continuer == -1:
 			continuer = 1
 			continue
@@ -300,7 +303,7 @@ def aideContrepetrie(historique):
 		# affichage affiné sur contrepetrie choisie
 		if selection == 1 or selection == 5 or selection == 6 or selection == 7:
 
-			listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop)
+			listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum)
 
 			# en cas de liste vide, affichant qu'aucune possibilité n'est trouvé
 			if listeAffichage != []:
