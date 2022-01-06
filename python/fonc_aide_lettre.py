@@ -204,7 +204,7 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum):
 	for mot in lignes:
 		mot = mot[0] #On recupère le mot qu'on veut tester
 
-		if(len(mot)>=minimum and len(mot)<=maximum):
+		if(motIsInBorne(minimum,maximum,mot)):
 			for ChaqueLettre in range(len(listeDeMotCop)):
 
 				test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
@@ -216,7 +216,7 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum):
 					# la lettre est dans le mot
 					if isInDico('word', testDansMot):
 						# test we need
-						if(len(testDansMot)>=minimum and len(testDansMot)<=maximum):
+						if(motIsInBorne(minimum,maximum,testDansMot)):
 							if diconfig["FiltreGrossier"] == "Oui":
 
 								if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
@@ -581,8 +581,46 @@ def quadruplRapide (mot):
 		return affiRechLettre(listeAffichage, compteur, motSplit[0])
 						
 
+"""
+Objectif : Renvoie true si la longueur du mot correspond aux critères de l'utilisateur
+Paramètres :
+	-Entrée :
+		-minimum : longueur minimum
+		-maximum : longueur maximum
+		-mot : mot à vérifier
+	-Sortie : 
+		un boolean
+"""
+def motIsInBorne(minimum,maximum,mot):
+	if((minimum==-1 or len(mot)>=minimum) and (maximum==-1 or len(mot)<=maximum)):
+		return True
+	return False
 
 
+"""
+Objectif : Renvoie la longueur sélectionner par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
+def selectionLongueurMot(message):
+	l=inputInt(message)
+	while(l<-1):
+		print("Vous n'avez pas entré un entier convenable. Ressayer")
+		l=inputInt(message)
+	return l
+
+
+"""
+Objectif : Vérifie et renvoie l'entier entré par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
 def inputInt(message):
 	entier=input(message)
 	while(True):

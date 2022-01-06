@@ -2,7 +2,8 @@ import os
 import sys
 import csv #permet de lire les fichiers .tsv
 sys.stdout.reconfigure(encoding='utf-8')
-
+import json
+import string
 # ----------------------------------------------------------------------------
 """
 fonctions de navigations et création de la classe d'arbre binaire 
@@ -217,11 +218,12 @@ Contient les mots du lexique sous forme orthographique et leur correspondance en
 chaque feuille contient une string de forme :
 'mot,sonphoneme,genre, ses classes grammaticales'
 """
-def Constructeur_Arbre_Mot():
+def Constructeur_Arbre_Mot(langue):
 	#attention !!!!! ceci a été modifié, a remettre  sur "aaa" au lieu de $$ si le dico bug
 	a = Tree("$$", None, None) 
 	#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
+	tsv_file = open(cheminFichier, encoding="utf-8")
 	read_tsv = csv.reader(tsv_file, delimiter=",")
 	for lignes in read_tsv:
 		if " " not in lignes[0]:
@@ -238,9 +240,10 @@ chaque feuille contient une string de forme :
 'phoneme,mot,genre,ses classes grammaticales'
 """
 
-def Constructeur_Arbre_Phon():
+def Constructeur_Arbre_Phon(langue):
 	a = Tree("$$", None, None)
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
+	tsv_file = open(cheminFichier, encoding="utf-8")
 	read_tsv = csv.reader(tsv_file, delimiter=",")
 	for lignes in read_tsv:
 		if " " not in lignes[0]:
@@ -251,5 +254,9 @@ def Constructeur_Arbre_Phon():
 
 
 # ----------------------------------------------------------------------------
-arbre_mot = Constructeur_Arbre_Mot()
-arbre_phon = Constructeur_Arbre_Phon()
+#on charge le dico dans deux arbres suivant la langue choisie par l'utilisateur
+with open("data/config.json","r") as file:
+	dicoConfig=json.load(file)
+	
+arbre_mot = Constructeur_Arbre_Mot(dicoConfig['langue'])
+arbre_phon = Constructeur_Arbre_Phon(dicoConfig['langue'])

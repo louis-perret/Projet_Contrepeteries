@@ -2,7 +2,6 @@ import language_tool_python
 import json
 import os
 import collections
-from arbin import *
 """
 Efface le terminal ou met une série de \n pour simuler un éffacement du terminal
 selon fichier config.json
@@ -48,6 +47,14 @@ def configFiltre():
 
 #-------------------------------------------------------------------------------
 
+"""
+Objectif : Met à jour les filtres
+Paramètres :
+	-Entrée :
+		-diconfig : dictionnaire qui contient la configuration
+	-Sortie : 
+		-diconfig : dictionnaire qui contient la configuration
+"""
 def changerfiltre(diconfig):
 	n = input("\nActiver filtre Grammaticale\n(1:Oui/0:Non/n'importe quelle clef:défaut):")
 	if n == '1':
@@ -64,6 +71,32 @@ def changerfiltre(diconfig):
 	print("\n")
 	return diconfig
 #-------------------------------------------------------------------------------
+
+
+"""
+Objectif : Met à jour la langue sélectionné
+Paramètres :
+	-Entrée :
+		-tabLanguesDispo : tableau contenant les langues supportées par l'application
+	-Sortie : 
+		aucun
+"""
+def configLangue(tabLanguesDispo):
+	with open("data/config.json","r") as file:
+		diconfig = json.load(file) #on charge le fichier
+		print("\nChoisissez la langue :\n")
+		for i in range(len(tabLanguesDispo)):
+			print(f"-{tabLanguesDispo[i]}\n")
+		n = input()
+		while(n not in tabLanguesDispo): #on s'assure qu'il sélectionne une langue qui existe
+			n = input("\nChoisissez la langue :\n")
+		diconfig['langue']=n
+	with open("data/config.json","w") as file:
+		json.dump(diconfig,file) #on écrit dans le fichier
+		
+
+#-------------------------------------------------------------------------------
+
 
 """
 Applique les filtres et affiche les résultats en fonctions de la config

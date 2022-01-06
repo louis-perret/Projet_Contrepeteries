@@ -1,0 +1,25 @@
+fonction crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom){
+	j'ouvre le fichier nommé fichier
+	Pour chaque mot contenu dans listeMot{
+		j'effectue une requête HTTP avec pour url url+mot
+		je récupère le contenu de la réponse
+		je parse la page html pour récupérer les infos mentionnées dans dicoInfos
+		j'enlève les informations mentionnées dans infosAEnlever
+		Si isNom == true{
+				j'ajoute comme classe grammaticale "nom propre" à mot
+		}
+		j'écris dans le fichier le résultat de ces opérations
+		Si erreur{
+			afficher("informations inconnues pour ce mot")
+		}
+	}	
+
+
+
+Mode d'emploi du crawler :
+
+-Rechercher le site qui contient les informations à récupérer
+-Inspecter la page web pour identifier les balises et leur classe qui contiennent ces informations
+-Insérer le nom des balises et leur classe dans dicoInfos
+-Vérifier si certaines informations ont besoin de nettoyage -> à préciser dans le tableau infosAEnlever
+-Lancer le crawler

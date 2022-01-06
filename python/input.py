@@ -1,6 +1,10 @@
-print("Chargement des dictionnaires")
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
+
+tabLanguesDispo=["fr"]#définit les langues admises par l'application
+configLangue(tabLanguesDispo) #on met à jour la langue choisie
+print("Chargement des dictionnaires")
+from arbin import * #on charge le dico
 
 boucle = True
 memoireImport = set()

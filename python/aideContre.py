@@ -244,8 +244,8 @@ def aideContrepetrie(historique):
 				print("\nL'entrée n'est pas valide, réessayez")
 
 		print("Veuillez sélectionner la longueur des résultats souhaités")
-		minimum=inputInt("Longueur minimum (-1=toutes les longueurs) : ")
-		maximum=inputInt("Longueur maximum (-1=toutes les longueurs) : ")
+		minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
+		maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
 		if continuer == -1:
 			continuer = 1
 			continue
