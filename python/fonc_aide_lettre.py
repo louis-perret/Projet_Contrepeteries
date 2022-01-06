@@ -28,12 +28,12 @@ listeMotCop est de la forme : (nouveau mot, ancienne(s) lettre(s), nouvelle(s) l
 
 Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des combinaisons (si on veut échanger par 3 lettres, on aura 26^3)
 """
-def aide(mot,x,y,mode):
+def aide(mot,x,y,mode,langue):
 	if(mode=="phon"): #Seulement échanger des sons
 		dico='phon'
-		with open('data/fr/dicoPhoncomFr.json') as tmp:
+		with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
 			dicoPhon = json.load(tmp)
-		phon_file = open("data/fr/BD_phonemeFr.txt", encoding="utf-8")
+		phon_file = open(f"data/{langue}/BD_phoneme{langue.capitalize()}.txt", encoding="utf-8")
 		BD_phoneme = phon_file.read()
 		BD_phoneme = BD_phoneme.split("\n")
 		del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
@@ -181,7 +181,7 @@ def aideLettreRechDico(index, listeDeMotCop):
 """
 effectue la recherche de quadruplet de manière générale
 """
-def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum):
+def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig):
 	index -= 1
 	NombreDeMot = len(listeDeMotCop)
 	compteur = 0
@@ -189,10 +189,9 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum):
 	listeDeRacines = []
 	listeAffichage = []
 	# config filtres
-	with open('data/config.json') as diconfig_:
-		diconfig = json.load(diconfig_)
-
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	
+	langue = diconfig['langue']
+	tsv_file = open(f"data/{langue}/dico{langue.capitalize()}.csv", encoding="utf-8")
 	lignes = csv.reader(tsv_file, delimiter=",")
 	# lit ligne par ligne du DICO (près de 100k lignes)
 	# changer filtres

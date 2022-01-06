@@ -8,10 +8,9 @@ from fonc_aide_lettre import *
 sys.stdout.reconfigure(encoding='utf-8')
 
 def aideContrepetrie(historique):
-	with open('data/config.json') as diconfig_:
+	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
-
-
+		langue=dicoConfig['langue']
 	# boucle "tant que" pour le recommencer aide avec un autre mot.
 	continuer = 1
 	while continuer == 1:
@@ -85,7 +84,7 @@ def aideContrepetrie(historique):
 			dico = 'word'
 			x=1
 			y=1
-			listeDeMotCop = aide(mot,x,y,dico)
+			listeDeMotCop = aide(mot,x,y,dico,langue)
 	# -------------------------------------------------------------------------------
 
 		elif selection == 2:
@@ -94,7 +93,7 @@ def aideContrepetrie(historique):
 			dico = 'phon'
 			x=1
 			y=1
-			listeDeMotCop = aide(mot,x,y,dico)
+			listeDeMotCop = aide(mot,x,y,dico,langue)
 			# cas où le mot rentré par l'utilisateur n'est pas dans le lexique
 			if listeDeMotCop == 0:
 				continue
@@ -171,7 +170,7 @@ def aideContrepetrie(historique):
 			print("Recherche des contrepétries possibles ...")
 			#listeDeMotCop = aide2Lettre1Lettre(mot) # listeDeMotCop[nvMot][doublelettre][lettre2]
 			dico = 'word'
-			listeDeMotCop = aide(mot,2,1,dico)
+			listeDeMotCop = aide(mot,2,1,dico,langue)
 	# -------------------------------------------------------------------------------
 
 		elif selection == 6:
@@ -181,7 +180,7 @@ def aideContrepetrie(historique):
 			dico = 'word'
 			x=1
 			y=2
-			listeDeMotCop = aide(mot,x,y,dico)
+			listeDeMotCop = aide(mot,x,y,dico,langue)
 
 	#--------------------------------------------------------------------------------
 
@@ -190,7 +189,7 @@ def aideContrepetrie(historique):
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
 			dico = 'word'
-			listeDeMotCop = aide(mot,x,y,dico)
+			listeDeMotCop = aide(mot,x,y,dico,langue)
 				
 
 	#--------------------------------------------------------------------------------
@@ -200,7 +199,7 @@ def aideContrepetrie(historique):
 			y = int(input("longueur de la syllabe ajoutée : "))
 			print("Recherche des contrepétries possibles ...")
 			dico = 'phon'
-			listeDeMotCop = aide(mot,x,y,dico)
+			listeDeMotCop = aide(mot,x,y,dico,langue)
 
 	# -------------------------------------------------------------------------------
 		#if selection == 1 or selection == 2 or selection == 5 or selection == 6 or selection == 7:
@@ -237,7 +236,7 @@ def aideContrepetrie(historique):
 					dico = 'phon'
 				else :
 					dico = 'word'
-				listeDeMotCop = aide(mot,x,y,dico)
+				listeDeMotCop = aide(mot,x,y,dico,langue)
 			elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
 				boucle = False
 			else:
@@ -303,7 +302,7 @@ def aideContrepetrie(historique):
 		# affichage affiné sur contrepetrie choisie
 		if selection == 1 or selection == 5 or selection == 6 or selection == 7:
 
-			listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum)
+			listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig)
 
 			# en cas de liste vide, affichant qu'aucune possibilité n'est trouvé
 			if listeAffichage != []:
@@ -315,7 +314,7 @@ def aideContrepetrie(historique):
 				print("Aucune correspondance trouvée")
 
 		elif selection == 2:
-			(listeAffichage, compteur, diconfig) = aideSonRechDico(selectMot, listeDeMotCop)
+			(listeAffichage, compteur, diconfig) = aideSonRechDico(selectMot, listeDeMotCop,diconfig)
 
 			# en cas de liste vide, affichant qu'aucune possibilité n'est trouvé
 			if listeAffichage != []:
@@ -323,7 +322,7 @@ def aideContrepetrie(historique):
 					listeAffichage = GramFiltre(listeAffichage, mot)
 				# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 
-				continuer = affiRechSon(listeAffichage, compteur, mot)
+				continuer = affiRechSon(listeAffichage, compteur, mot,langue)
 			else:
 				print("Aucune correspondance trouvée")
 
@@ -341,14 +340,14 @@ def aideContrepetrie(historique):
 			if (diconfig["FiltreGrammatical"] == "Oui"):
 				listeAffichage = GramFiltre(listeAffichage, mot)
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
-			continuer = affiRechSon(listeAffichage, compteur, mot)
+			continuer = affiRechSon(listeAffichage, compteur, mot,langue)
 
 		elif selection == 8:
-			listeAffichage, compteur, diconfig = aideSonRechDico(selectMot, listeDeMotCop)
+			listeAffichage, compteur, diconfig = aideSonRechDico(selectMot, listeDeMotCop,diconfig)
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 			if (diconfig["FiltreGrammatical"] == "Oui"):
 				listeAffichage = GramFiltre(listeAffichage, mot)
-			continuer = affiRechSon(listeAffichage, compteur, mot)
+			continuer = affiRechSon(listeAffichage, compteur, mot,langue)
 
 		
 

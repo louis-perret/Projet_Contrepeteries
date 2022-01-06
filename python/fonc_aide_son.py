@@ -24,13 +24,10 @@ mot2'-> mot contenant son2
 """
 
 
-def aideSonRechDico(index, listeDeMotCop):
+def aideSonRechDico(index, listeDeMotCop,diconfig):
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
-
-	with open('data/config.json') as diconfig_:
-		diconfig = json.load(diconfig_)
-
+	langue=dicoConfig['langue']
 	index -= 1
 	NombreDeMot = len(listeDeMotCop)
 	compteur = 0
@@ -38,7 +35,7 @@ def aideSonRechDico(index, listeDeMotCop):
 	listeDeRacines = []
 	listeAffichage = []
 
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
+	tsv_file = open(f"data/{langue}/dico{langue.capitalize()}.csv", encoding="utf-8")
 	lignes = csv.reader(tsv_file, delimiter=",")
 
 	# lit ligne par ligne du DICO (près de 100k lignes)
@@ -79,8 +76,8 @@ Affiche les quadruplets trouvés suite à la recherche de façon jolie.
 et permet de voir les orthographes différents des phonèmes du quadruplets en
 appelant affiOrthoPhon
 """
-def affiRechSon(listeAffichage, compteur, mot_origine):
-	with open('data/fr/dicoPhoncomFr.json') as tmp:
+def affiRechSon(listeAffichage, compteur, mot_origine,langue):
+	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupuère la syntaxe phonétique du mot d'origine
@@ -129,7 +126,7 @@ def affiRechSon(listeAffichage, compteur, mot_origine):
 				clear()
 				return 1
 			elif selecteur <= len(listeAffichage) and selecteur > 0:
-				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine)
+				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue)
 				boucle = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
@@ -142,9 +139,9 @@ de listeAffichage à l'index donnée en entrée.
 """
 
 
-def affiOrthoPhon(listeAffichage, index, mot_origine):
+def affiOrthoPhon(listeAffichage, index, mot_origine,langue):
 	clear()
-	with open('data/fr/dicoPhoncomFr.json') as tmp:
+	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine)
