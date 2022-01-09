@@ -242,15 +242,15 @@ def aideContrepetrie(historique):
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
 
-		print("Veuillez sélectionner la longueur des résultats souhaités")
-		minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
-		maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
 		if continuer == -1:
 			continuer = 1
 			continue
 		elif continuer == 0:
 			continue
 
+		print("Veuillez sélectionner la longueur des résultats souhaités")
+		minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
+		maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
 #-------------------------------------------------------
 		"""
 		elif selection == 8:
@@ -308,7 +308,7 @@ def aideContrepetrie(historique):
 			if listeAffichage != []:
 				# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 				if (diconfig["FiltreGrammatical"] == "Oui"):
-					listeAffichage = GramFiltre(listeAffichage, mot)
+					listeAffichage = GramFiltre(listeAffichage, mot,langue,"word")
 				continuer = affiRechLettre(listeAffichage, compteur, mot)
 			else:
 				print("Aucune correspondance trouvée")
@@ -319,7 +319,7 @@ def aideContrepetrie(historique):
 			# en cas de liste vide, affichant qu'aucune possibilité n'est trouvé
 			if listeAffichage != []:
 				if (diconfig["FiltreGrammatical"] == "Oui"):
-					listeAffichage = GramFiltre(listeAffichage, mot)
+					listeAffichage = GramFiltre(listeAffichage, mot,langue,"phon")
 				# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 
 				continuer = affiRechSon(listeAffichage, compteur, mot,langue)
@@ -329,7 +329,7 @@ def aideContrepetrie(historique):
 		elif selection == 3:
 			(listeAffichage, compteur, diconfig) = aideSyllRechDico(mot, selectMot, syllOrigine)
 			if (diconfig["FiltreGrammatical"] == "Oui"):
-				listeAffichage = GramFiltre(listeAffichage, mot)
+				listeAffichage = GramFiltre(listeAffichage, mot,langue,"word")
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 			continuer = affiRechLettre(listeAffichage, compteur, mot)
 
@@ -338,7 +338,7 @@ def aideContrepetrie(historique):
 			(listeAffichage, compteur, diconfig) = aideMultiSonRechDico(mot, selectMot, syllOrigine)
 
 			if (diconfig["FiltreGrammatical"] == "Oui"):
-				listeAffichage = GramFiltre(listeAffichage, mot)
+				listeAffichage = GramFiltre(listeAffichage, mot,langue,"phon")
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 			continuer = affiRechSon(listeAffichage, compteur, mot,langue)
 
@@ -346,7 +346,7 @@ def aideContrepetrie(historique):
 			listeAffichage, compteur, diconfig = aideSonRechDico(selectMot, listeDeMotCop,diconfig)
 			# ici enlever if(filtregrammaticale) ->listeAffichage =  f('listeAffichage')
 			if (diconfig["FiltreGrammatical"] == "Oui"):
-				listeAffichage = GramFiltre(listeAffichage, mot)
+				listeAffichage = GramFiltre(listeAffichage, mot,langue,"phon")
 			continuer = affiRechSon(listeAffichage, compteur, mot,langue)
 
 		

@@ -266,17 +266,25 @@ Paramètres :
 	-Sortie :
 		liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 """
-def GramFiltre(listeOrigine, mot_origine):
+def GramFiltre(listeOrigine, mot_origine,langue,mode):
 	nouvelleListe = []
-	with open('data/fr/dicoClassGrammFr.json') as tmp:
+	with open(f'data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
 			dicoClassGramm = json.load(tmp)
 	#arbre_mot = arbre qui contient tous les mots
 	for pack in listeOrigine:
-		#On rcécupère les classes grammaticales des réponses
-		classGramMot1 = dicoClassGramm[mot_origine]
-		classGramMot2 = dicoClassGramm[pack[4]]
-		classGramMot3 = dicoClassGramm[pack[2]]
-		classGramMot4 = dicoClassGramm[pack[3]]
+		#On récupère les classes grammaticales des réponses
+		if(mode == "word"):
+			classGramMot1 = dicoClassGramm[mot_origine]
+			classGramMot2 = dicoClassGramm[pack[4]]
+			classGramMot3 = dicoClassGramm[pack[2]]
+			classGramMot4 = dicoClassGramm[pack[3]]
+		if(mode == "phon"):
+			with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
+				dicoPhon = json.load(tmp)
+			classGramMot1 = dicoClassGramm[mot_origine]
+			classGramMot2 = dicoClassGramm[dicoPhon[pack[4]][0]]
+			classGramMot3 = dicoClassGramm[dicoPhon[pack[2]][0]]
+			classGramMot4 = dicoClassGramm[dicoPhon[pack[3]][0]]
 		for i in range(len(classGramMot1)): #On parcours les classes grammaticales du mot entré par l'utilisateur
 			if(classGramMot1[i] in classGramMot2 and classGramMot1[i] in classGramMot3 and classGramMot1[i] in classGramMot4): #s'ils ont la même classe grammaticale
 					nouvelleListe.append(pack) #on l'ajoute aux réponses
