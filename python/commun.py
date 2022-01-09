@@ -68,6 +68,8 @@ def recupCoupleLettre(y,a,liste,listeSource):
 
 """
 fonction vérifiant si une contrepétries est valide avec des espaces
+
+Complexité : O(N^2)
 """
 
 def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico, dicoPhon):

@@ -6,6 +6,7 @@ import sys
 import json
 import re
 import os
+from tempsExecution import * 
 
 #les afficheurs encollent les murs (a faire mélange de lettres et phonème)
 #l'apache recrute
@@ -36,7 +37,7 @@ def aide(mot,x,y,mode,langue):
 		phon_file = open(f"data/{langue}/BD_phoneme{langue.capitalize()}.txt", encoding="utf-8")
 		BD_phoneme = phon_file.read()
 		BD_phoneme = BD_phoneme.split("\n")
-		del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
+		#del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
 		listeSource=BD_phoneme
 
 		mot = Mot_to_Phon_Only(arbre_mot, mot) #On récupère l'écriture phonétique du mot
@@ -51,6 +52,7 @@ def aide(mot,x,y,mode,langue):
 	listeMotCop=[]
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
 	choix = int(input("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :"))
+	calculTempsExecution(len(mot),y)
 	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger

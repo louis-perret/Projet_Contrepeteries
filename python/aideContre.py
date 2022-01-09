@@ -187,8 +187,8 @@ def aideContrepetrie(historique):
 		elif selection == 7:
 			x = int(input("longueur de la syllabe enlevée : "))
 			y = int(input("longueur de la syllabe ajoutée : "))
-			print("Recherche des contrepétries possibles ...")
 			dico = 'word'
+			#print(timeit.timeit('[aide(mot,x,y,dico,langue)]', globals=globals()))
 			listeDeMotCop = aide(mot,x,y,dico,langue)
 				
 
