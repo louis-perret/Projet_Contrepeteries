@@ -108,24 +108,41 @@ def mainMixSyllables(phrase, mode):
 circulaireMixSyllabes
 effectue des recherches circulaires dans une phrase
 """
-"""
+
 def circulaireMixSyllabes (phrase, mode):
 	results = []
 	for i in range(3, len(phrase)):
 		for j in range(min(len(enumerate(phrase)))):
-			for k in range(j, min(len(enumerate(phrase)))):
-				results.extends(circulaire(i,j,k,phrase,mode,[]))
+			for k in range(j, min(len(enumerate(phrase))))
+				results.extends(circulaire(i,j,phrase,mode,[]))
 	return results
 
 
 def circulaire (i,j,k,phrase,mode,sylabePrec):
 	results = []
 	for mot in enumerate(phrase):
-		for lettre in enumerate(mot): #Pour chaque lettre du mot
-			coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
-			if coupleLettre[0]:
-				sylabePrec.append(coupleLettre)
-"""
+		for x in range(j, k) :
+			for lettre in enumerate(mot): #Pour chaque lettre du mot
+				coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
+				if coupleLettre[0] :
+					if sylabePrec is not None :
+						nvtMot=replacer(mot,sylabePrec,lettre[0],x) #On remplace
+						if coupleLettre[1] != couple and isInDico(mode, nvtMot):
+							if i == 0 :
+								results = [nvMot, coupleLettre]
+								return results
+							else :
+								results = [nvMot].extend(circulaire(i-1,j,k,phrase.remove(mot),mode,coupleLettre))
+								return results
+					else :
+						tmpResults = circulaire(i-1,j,k,phrase.remove(mot),mode,coupleLettre)
+						nvMot = replacer(mot, results.pop(-1), lettre[0], x)
+						if coupleLettre[1] != couple and isInDico(mode, nvtMot):
+							results = [nvMot].extend(tmpResults)
+							return results
+				
+
+
 
 
 

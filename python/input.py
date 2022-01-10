@@ -96,7 +96,9 @@ while boucle:
 			if phraseOrigine == 1:
 				continue
 
-			liste = mainMixSyllables(phraseOrigine, mode[n])
+			#liste = mainMixSyllables(phraseOrigine, mode[n])
+			phrase = phraseOrigine.split()
+			liste = circulaireMixSyllabes(phrase, 'word')
 			liste = affiRechFiltre(liste,'word')
 			count = 0
 			print("\nLes contrepétries possibles sont :\n")
