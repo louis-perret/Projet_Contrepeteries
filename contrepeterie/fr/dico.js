@@ -72,148 +72,103 @@ function loadDico(){
 }
 
 
-function processData(allText) {
-    var record_num = 2;  // or however many elements there are in each row
-    var allTextLines = allText.split(/\r\n|\n/);
-    var entries = allTextLines[0].split(',');
-    var lines = [];
 
-    var headings = entries.splice(0,record_num);
-    while (entries.length>0) {
-        var tarr = [];
-        for (var j=0; j<record_num; j++) {
-            tarr.push(headings[j]+":"+entries.shift());
-        }
-        lines.push(tarr);
-    }
-    console.log(line);
+function mainRecherchePhrase() {
+	var phrase=document.getElementById('phrase').value;
+	mainMixSyllabes(phrase,"lettre");
 }
 
+//Debut de la fonction pour trouver resultat dans phrases //
 
+function mainMixSyllabes(phrase,mode) {
+	var phrase = phrase.split(' ')
+	var Lphrases = []
+	var tmp = []
+	Lphrases.push(phrase) //ohrase contient elle meme
+	console.log(Lphrases)
+	console.log(phrase)
 
-function charge(data) {
+	//Pour chaque mot dans la phrase
+	for (var i in phrase) {
+		//console.log(i)
+		var j=parseInt(i) + 1;
 
-	arr = data.split(/\r?\n/);
+		for (j;j<phrase.length;j++) {
+			var WordsContreP = mixSyllableWord(phrase[i], phrase[j], phrase,mode)
+			console.log("wordsContreP = " + WordsContreP)
+			for (k in WordsContreP) {
+				console.log("k = " + k)
+				tmp = [].concat(phrase)
+				console.log("tmp i = " + tmp[i])
+				console.log("WordsContreP[k] = " + WordsContreP[k][0])
+				console.log("tmp j = " + tmp[j])
+				console.log("WordsContreP[k] = " + WordsContreP[k][1])
 
-	var dic = {};
-	for(let index in arr){
-		var line = arr[index];
-		line = line.split(',');
-		var word = line[0];
-		console.log(line);
-		if(line[0] == '')
-			continue;
-		var pron = line[1].split(' ');
-		dic[word]=pron;
-	}
-	genererContrepeterie("Elle a le choix dans la date".split(" "), dic);
-}
-
-function generer(){
-
-}
-
-
-
-function genererContrepeterie(){
-	console.log(dic);
-	//pour chaque mot de la phrase
-	let phrase = document.getElementById('phrase').value;
-	console.log(phrase);
-	phrase=phrase.trim();
-	let phrA = phrase.split(' ');
-	let index = [];
-	for(let i=0; i<phrA.length; i++){
-		if(dicMot.includes(phrA[i])){
-			index.push(dicMot.indexOf(phrA[i]))
-		}
-		else{
-			console.log('mot existe pas' + phrA[i]);
-		}
-	}
-	console.log(index);
-	let pronList = [];
-	let son2;
-
-	index.forEach( ind => {
-		
-		let son=dicPhon[ind].split(' ');
-		son.forEach(s => pronList.push(s.split('')));
-		});
-	console.log("pronlist " + pronList);
-	
-	for(let wI=0; wI<pronList.length; wI++){
-		console.log('Wi' + wI);
-		for(let sI=1; sI<pronList[wI].length; sI++){
-			console.log('si '+ sI);
-			for(let sif=0; sif<(pronList[wI].length-sI+1); sif++){
-				console.log("sif " + sif);
-				for(let rwi=wI+1; rwi<pronList.length; rwi++){
-					console.log("rwi " + rwi);
-
-
-
-					if(sI <= pronList[rwi].length){
-						console.log("si < pronlist[rwi].length OKOK");
-
-
-						for(let sis=0; sis<pronList[rwi].length-sI+1; sis++){
-							console.log("sis " + sis);
-							let pronListTest= pronList.slice();
-							console.log("PronListTest " + pronListTest);
-							for(let index1=sis; index1<sis+sI; index1++){
-								for(let index2=sif; index2<sif+sI;index2++){
-									if(pronListTest[rwi][index1] == pronListTest[wI][index2]){
-										continue;
-									}
-
-									
-									 for (let i = 0; i < sI; i++) {
-                                        tmp = pronListTest[wI][index1+i];
-                                        pronListTest[wI][index1+i] = pronListTest[rwi][index2+i];
-                                        pronListTest[rwi][index2+i] = tmp;
-                                    }
-									
-
-
-									if (pronListTest[wI] in dicPhon && pronListTest[rwi] in dicPhon) {
-										console.log("debug 5");
-										console.log(pronListTest[wI]);
-										let keys1 = getRes(pronListTest[wI]);
-										let keys2 = getRes(pronListTest[wI]);
-										console.log("son " + keys1, keys2);
-										let p = phrase.slice();
-										console.log("phrase " + p);
-										p = p.split(' ');
-										console.log("phrase " + p);
-										p[wI] = keys1;
-										p[rwi] = keys2;
-										p = p.join();
-										console.log("normal " + p);
-									}
-									/*if(pronListTest[rwi].values()){
-										if (wI > 0) {
-											
-										}
-									}*/
-
-
-								}
-						}
-					}
-				}
+				tmp[i] = WordsContreP[k][0]
+				tmp[j] = WordsContreP[k][1]
+				console.log("nouvelle phrase = " + tmp)
+				//a continuer
 			}
 		}
-	}	
-}}
-
-function getRes(pw1){
-	if(pw1 in dicPhon){
-		let ind=dicPhon.indexOf(pw1);
-		console.log("ind " + ind);
-		console.log(dicMot[ind]);
-		return dicMot[ind];
 	}
 }
+
+function mixSyllableWord(word1,word2,phrase,mode) {
+	listeWord = [];
+	tmp = [];
+	i = 0;
+	j = 1;
+	while(i<word1.length) {
+		//console.log(word1)
+		//console.log(word1.length)
+		//console.log(i)
+
+		tmp = mixSyllableWord2(word1.slice(i,j),word2,phrase,mode)
+		console.log("----------------------------------------- " )
+		console.log("Voici la liste tmp  : " + tmp)
+
+		for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
+			console.log("mot de tmp  : " + word1.slice(0,i) + tmp[k][1] + word1.slice(j-1))
+			if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j-1),dicMot)) {
+				listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j-1), tmp[k][0],[i,j-1],tmp[k[2]]])
+				console.log("le mot " + word1.slice(0,i)+tmp[k][1]+word1.slice(j-1) + " a été ajouté")
+			}
+		}
+		j+=1
+		if (j>word1.length) {
+			i+=1
+			j=i+1
+		}
+		return listeWord
+	}
+}
+
+function mixSyllableWord2(sy,word2,phrase,mode) {
+	i = 0;
+	j = 1;
+	liste = [];
+	while(i<word2.length) {
+
+		mot = word2.slice(0,i) + sy + word2.slice(j)
+		if (motExiste(mot,dicMot)) {
+			liste.push([mot,word2.slice(i,j),[i,j]])
+		}
+		j+=1;
+		if (j>word2.length) {
+			i+=1
+			j=i+1
+		}
+		return liste
+
+	}
+}
+
+	function motExiste(mot, dic){
+		if(dic.includes(mot))
+			return true;
+		return false;
+	}
+
+
 
 
