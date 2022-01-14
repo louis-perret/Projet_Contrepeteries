@@ -113,7 +113,7 @@ function motExiste(mot, dic){
 }
 
 //-----------------------------------------------------------------------------------
-//--------------------------------document.getElementById('choixDeY').addEventListener('input', afficheStats);---------------------------------------------------
+//-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
@@ -433,6 +433,7 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 	var diffXY = x - y;
 	var longueurMax= document.getElementById("choixLongueurMax").value
 	var longueurMin= document.getElementById("choixLongueurMin").value
+
 	for(let i=0;i<dicMot.length;i++){ //Pour chaque mots du dico
 		let mot1=dicMot[i]; //On prend le ieme mot du dico
 		lg1=mot1.length;

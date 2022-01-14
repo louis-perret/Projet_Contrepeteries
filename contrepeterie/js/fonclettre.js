@@ -4,21 +4,11 @@
 //vérifie si une contrepétrie est valide avec espaces
 function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
 	listeMot = []
-	/*
-	console.log("###"+ancienneLettre)
-	console.log("'''" + nouvelleLettre)
-	console.log("---" + index)
-	*/
 	for (var l = 0; l < mot.length; l++) {
 		if (l >= 2 && l <= mot.length - 2) {
 			motEspace1 = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre+' ');
 			motSplit = motEspace1.split(' ');
-			/*
-			console.log("!!!!!!!!- motEspace1 : " + motEspace1)
-			console.log("!!!!!!!!- motSplit : " + motSplit)
-			console.log("!!!!!!!!- motSplit0 : " + motSplit[0])
-			console.log("!!!!!!!!- motSplit1 : " + motSplit[1])
-			*/
+
 			if (motExiste(motSplit[0], dicMot) && motExiste(motSplit[1], dicMot) && !motExiste(motEspace1, listeMot)) {
 				listeMot.push(motEspace1);
 			}
@@ -132,8 +122,10 @@ function aideLettreRechDico(mot1, mot2) {
 	}
 	console.log("lettres1 " + lettreMot1)
 	console.log("lettres2 " + lettreMot2)
+
 	var resMot1=[]; //on crée 2 tableaux pour accueuillir tous les mots qui vont etre trouvés
 	var resMot2=[];
+
 	chercheMotDico(lettreMot1,lettreMot2,saveX,saveY,resMot1,resMot2);//fonction pour trouver les 4 mots
 	document.getElementById("loadingStats").style.visibility="collapse";
 	//On prepare l'affichage des 4 mots un à un
