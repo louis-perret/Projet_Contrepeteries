@@ -41,10 +41,6 @@ while boucle:
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
 	elif n == 1:
-
-		#if 'aide' not in memoireImport:
-		#	from aideContre import *
-		#memoireImport.add('aide')
 		if 'aide' not in memoireImport:
 			from menuAideContre import *
 		memoireImport.add('aide')

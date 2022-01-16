@@ -201,7 +201,7 @@ Paramètres :
 """
 def selectionMotCoupe(message):
 	l=inputInt(message)
-	while(l!=0 or l!=1):
+	while(l!=0 and l!=1):
 		print("Vous n'avez pas entré un entier convenable. Ressayer")
 		l=inputInt(message)
 	return l
