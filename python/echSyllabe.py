@@ -19,13 +19,11 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		tmp = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		print(tmp)
+
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
-			
 			if isInDico(mode, Word1[:i] + k[1] + Word1[j:]):
-
 				listeWord.append([Word1[:i]+k[1]+Word1[j:], k[0], [i, j], k[2]])
 
 		j += 1
@@ -47,7 +45,7 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 	while(i < len(Word2)):
 		# test si retour de Word_to_Phon est une chaîne de caractère
 		# et si le Word trouvé n'est pas déjà dans la phrase d'origine.
-		if isInDico(mode, Word2[:i]+sy+Word2[j:]) : #and Word2[:i]+sy+Word2[j:] not in phrase: #le nouveau mot qu'on forme existe et n'est pas dans la phrase
+		if isInDico(mode, Word2[:i]+sy+Word2[j:]) and Word2[:i]+sy+Word2[j:] not in phrase: #le nouveau mot qu'on forme existe et n'est pas dans la phrase
 			liste.append([Word2[:i]+sy+Word2[j:], Word2[i:j], [i, j]])
 		# gestion de l'intervalle [i:j] section du Word2
 		j += 1
@@ -81,8 +79,6 @@ def mainMixSyllables(phrase, mode):
 		for j in range(i+1, len(phrase)):
 
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
-			print("wordcontreP : "+"\n")
-			print(WordsContreP)
 			# remplace les contreP trouvees dans la phrase
 			for k in WordsContreP:
 				tmp = phrase[:] #tous les éléments de phrase
@@ -112,7 +108,7 @@ def mainMixSyllables(phrase, mode):
 circulaireMixSyllabes
 effectue des recherches circulaires dans une phrase
 """
-"""
+
 def circulaireMixSyllabes (phrase, mode):
 	results = []
 	for i in range(3, len(phrase)):
@@ -144,7 +140,6 @@ def circulaire (i,j,k,phrase,mode,sylabePrec):
 						if coupleLettre[1] != couple and isInDico(mode, nvtMot):
 							results = [nvMot].extend(tmpResults)
 							return results
-"""
 				
 
 

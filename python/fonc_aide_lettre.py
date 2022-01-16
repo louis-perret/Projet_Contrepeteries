@@ -51,7 +51,7 @@ def aide(mot,x,y,mode,langue):
 
 	listeMotCop=[]
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
-	choix = int(input("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :"))
+	choix = selectionMotCoupe("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
 	calculTempsExecution(len(mot),y)
 	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
@@ -601,39 +601,6 @@ def motIsInBorne(minimum,maximum,mot):
 	return False
 
 
-"""
-Objectif : Renvoie la longueur sélectionner par l'utilisateur
-Paramètres :
-	-Entrée :
-		-message : Message à afficher
-	-Sortie : 
-		un entier
-"""
-def selectionLongueurMot(message):
-	l=inputInt(message)
-	while(l<-1):
-		print("Vous n'avez pas entré un entier convenable. Ressayer")
-		l=inputInt(message)
-	return l
-
-
-"""
-Objectif : Vérifie et renvoie l'entier entré par l'utilisateur
-Paramètres :
-	-Entrée :
-		-message : Message à afficher
-	-Sortie : 
-		un entier
-"""
-def inputInt(message):
-	entier=input(message)
-	while(True):
-		try:
-			entier=int(entier)
-			return entier
-		except:
-			print("Vous n'avez pas entré un entier. Ressayer")
-			entier=input(message)
 
 
 

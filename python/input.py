@@ -1,13 +1,10 @@
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
-import time
-import progressbar
 
 tabLanguesDispo=["fr"]#définit les langues admises par l'application
 configLangue(tabLanguesDispo) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
-for i in progressbar.progressbar(range(1)):
-	from arbin import * #on charge le dico
+from arbin import * #on charge le dico
 
 boucle = True
 memoireImport = set()
@@ -19,25 +16,25 @@ while boucle:
 	test = True
 	n = 0
 	# selecteur type de programme:
-	while test:
-
-		print(
+	print(
 """\nSelectionnez le mode que vous souhaitez : \n
 1. Aide à la contrepéterie
 2. Recherche de contrepéterie
 3. Configuration des filtres
 0. Quitter\n""")
+	while test:
 		try:
 			n = int(input()) #Récupère ce que rentre l'utilisateur
+			if n == 0:
+				sys.exit()
+			elif n in range(1,4): #de 1 à 4 exclu
+				test = False
+			else:
+				print("Votre saisie n'est pas valide\n")
 		except ValueError:
 			print("Vous n'avez pas saisie un nombre.\n")
 
-		if n == 0:
-			sys.exit()
-		elif n in range(1,4): #de 1 à 4 exclu
-			test = False
-		else:
-			print("Votre saisie n'est pas valide\n")
+		
 # ------------------------------------------------------------------------------
 	if n == 3:
 		configFiltre()
@@ -45,8 +42,11 @@ while boucle:
 	# aide à contrepeterie
 	elif n == 1:
 
+		#if 'aide' not in memoireImport:
+		#	from aideContre import *
+		#memoireImport.add('aide')
 		if 'aide' not in memoireImport:
-			from aideContre import *
+			from menuAideContre import *
 		memoireImport.add('aide')
 		clear()
 		historique = aideContrepetrie(historique)

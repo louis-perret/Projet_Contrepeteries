@@ -2,7 +2,6 @@ import language_tool_python
 import json
 import os
 import collections
-
 """
 Efface le terminal ou met une série de \n pour simuler un éffacement du terminal
 selon fichier config.json
@@ -88,11 +87,16 @@ def configLangue(tabLanguesDispo):
 
 		print("\nChoisissez la langue :\n")
 		for i in range(len(tabLanguesDispo)):
-			print(f"-{tabLanguesDispo[i]}\n")
-		n = input()
-		while(n not in tabLanguesDispo): #on s'assure qu'il sélectionne une langue qui existe
-			n = input("\nChoisissez la langue :\n")
-		diconfig['langue']=n
+			print(f"{i+1} - {tabLanguesDispo[i]}\n")
+		while(True):
+			try:
+				n = int(input("\nEntré le numéro de la langue voulue : "))
+				if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
+					diconfig['langue']=tabLanguesDispo[n-1]
+					break
+				print("Numéro de langue incorrect")
+			except:
+				print("Vous n'avez pas entré un entier. Réessayer")
 	with open("data/config.json","w") as file:
 		json.dump(diconfig,file) #on écrit dans le fichier
 		

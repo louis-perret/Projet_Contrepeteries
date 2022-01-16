@@ -4,6 +4,7 @@ import csv #permet de lire les fichiers .tsv
 sys.stdout.reconfigure(encoding='utf-8')
 import json
 import string
+import progressbar
 # ----------------------------------------------------------------------------
 """
 fonctions de navigations et création de la classe d'arbre binaire 
@@ -225,7 +226,12 @@ def Constructeur_Arbre_Mot(langue):
 	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
 	tsv_file = open(cheminFichier, encoding="utf-8")
 	read_tsv = csv.reader(tsv_file, delimiter=",")
+	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength) #barre de progression
+	print("Chargement de l'arbre des mots")
+	i=0
 	for lignes in read_tsv:
+		bar.update(i)
+		i=i+1
 		if " " not in lignes[0]:
 			mot = lignes[0] + "," + lignes[1] + "," + lignes[2] + "," + lignes[3]
 			insert(a, mot)
@@ -245,7 +251,12 @@ def Constructeur_Arbre_Phon(langue):
 	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
 	tsv_file = open(cheminFichier, encoding="utf-8")
 	read_tsv = csv.reader(tsv_file, delimiter=",")
+	print("Chargement de l'arbre des phonèmes")
+	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength) #barre de progression
+	i=0
 	for lignes in read_tsv:
+		bar.update(i)
+		i=i+1
 		if " " not in lignes[0]:
 			mot = lignes[1] + "," + lignes[0] + "," + lignes[2] + lignes[3]
 			insert(a, mot)
