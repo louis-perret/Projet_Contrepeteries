@@ -255,6 +255,7 @@ def Constructeur_Arbre_Phon(langue):
 
 # ----------------------------------------------------------------------------
 #on charge le dico dans deux arbres suivant la langue choisie par l'utilisateur
+
 with open("data/config.json","r") as file:
 	dicoConfig=json.load(file)
 	

@@ -1,10 +1,13 @@
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
+import time
+import progressbar
 
 tabLanguesDispo=["fr"]#définit les langues admises par l'application
 configLangue(tabLanguesDispo) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
-from arbin import * #on charge le dico
+for i in progressbar.progressbar(range(1)):
+	from arbin import * #on charge le dico
 
 boucle = True
 memoireImport = set()
@@ -96,9 +99,9 @@ while boucle:
 			if phraseOrigine == 1:
 				continue
 
-			#liste = mainMixSyllables(phraseOrigine, mode[n])
-			phrase = phraseOrigine.split()
-			liste = circulaireMixSyllabes(phrase, 'word')
+			liste = mainMixSyllables(phraseOrigine, mode[n])
+			#phrase = phraseOrigine.split()
+			#liste = circulaireMixSyllabes(phrase, 'word')
 			liste = affiRechFiltre(liste,'word')
 			count = 0
 			print("\nLes contrepétries possibles sont :\n")
