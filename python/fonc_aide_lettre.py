@@ -204,8 +204,12 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig):
 	# bd filtres
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
-
+	print("recherche des résultats\n")
+	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+	i=0
 	for mot in lignes:
+		i = i+1
+		bar.update(i)
 		mot = mot[0] #On recupère le mot qu'on veut tester
 
 		if(motIsInBorne(minimum,maximum,mot)):
@@ -254,41 +258,55 @@ pretty print des resultats de l'aide sur les lettres et les syllabes.
 
 def affiRechLettre(listeAffichage, compteur, mot_origine):
 
+	nbMotPage = 25  # nombre de mots par pages
+	nbPage = (len(listeAffichage)//nbMotPage)+1  # nombre total de pages.
+	numPage = 1                          # numéro page en cours
 	listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0])) #key = fonction qui prend lettre en param et ressort lettre[0] -> la liste sera trié par rapport à ça
-	clear()
 
-	while(True):
-		compt = 1
-
-		for pack in listeAffichage: #pack = (lettre1,lettre2,mot1',mot2',mot2)
+	continuer = True
+	while(continuer):
+		clear()
+		compt = (numPage-1)*nbMotPage+1
+		min = (numPage-1)*nbMotPage
+		if numPage == nbPage :
+			max = len(listeAffichage)
+		else :
+			max = numPage*nbMotPage
+		for pack in listeAffichage[min:max]: #pack = (lettre1,lettre2,mot1',mot2',mot2)
 
 			marge = len(str(compt))+2
 			print(marge*" "+f"{mot_origine} - {pack[4]}")
 			print(compt)
 			print(marge*" "+f"{pack[2]} - {pack[3]}")
 			print("\n"+"-"*30+"\n")
-			compt += 1
+			compt = compt+1
 
-		print(f"Nombre de combinaisons : {compt-1}")
+		print("page: "+str(numPage)+"/"+str(nbPage))
+		print(f"Nombre de combinaisons : {len(listeAffichage)}")
 
 		selecteur = None
 		boucle = True
 		while(boucle):
 			try:
 				selecteur = int(input(
-					"\n0 = quitter l'aide,-1 revenir au début de l'aide :\n"))
+					"\n0 = quitter l'aide,-3 revenir au début de l'aide :\n-1: page précédente; -2: page suivante"))
+				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
-			if selecteur == 0:
-				return 0
-			elif selecteur == -1:
-				clear()
-				return 1
+		if selecteur == 0:
+			return 0
+		elif selecteur == -3:
+			clear()
+			return 1
+		elif selecteur == -2:
+			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
+		elif selecteur == -1:
+			numPage = numPage-1 if numPage-1 >= 0 else numPage #Pas en dessous 0 pages
 
-			else:
-				print("\nL'entrée n'est pas valide, réessayez")
+		else:
+			print("\nL'entrée n'est pas valide, réessayez")
 
 
 """
