@@ -251,7 +251,7 @@ def Constructeur_Arbre_Phon(langue):
 	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
 	tsv_file = open(cheminFichier, encoding="utf-8")
 	read_tsv = csv.reader(tsv_file, delimiter=",")
-	print("Chargement de l'arbre des phonèmes")
+	print("\nChargement de l'arbre des phonèmes")
 	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength) #barre de progression
 	i=0
 	for lignes in read_tsv:
