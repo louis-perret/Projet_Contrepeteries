@@ -179,9 +179,9 @@ def modePersonnalisé(dico,mot,langue,diconfig):
 	maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
 
 	if(dico=='word'):
-		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig)
+		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig,dico)
 	else:
-		listeAffichage, compteur, diconfig = aideSonRechDico(selectMot, listeDeMotCop,diconfig)
+		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig,dico)
 
 	# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
 	if listeAffichage != []:

@@ -186,7 +186,7 @@ def aideLettreRechDico(index, listeDeMotCop):
 """
 effectue la recherche de quadruplet de manière générale
 """
-def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig):
+def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode):
 	index -= 1
 	NombreDeMot = len(listeDeMotCop)
 	compteur = 0
@@ -204,14 +204,18 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig):
 	# bd filtres
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
+	with open(f"data/dicoPhoncom.json") as Phon :
+		dicoPhon = json.load(Phon)
 	print("recherche des résultats\n")
 	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
 	i=0
 	for mot in lignes:
 		i = i+1
 		bar.update(i)
-		mot = mot[0] #On recupère le mot qu'on veut tester
-
+		if mode == 'word' :
+			mot = mot[0] #On recupère le mot qu'on veut tester
+		elif mode == 'phon' :
+			mot = mot[1]
 		if(motIsInBorne(minimum,maximum,mot)):
 			for ChaqueLettre in range(len(listeDeMotCop)):
 
@@ -222,12 +226,21 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig):
 					#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
 					testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if isInDico('word', testDansMot):
+					if isInDico(mode, testDansMot):
 						# test we need
 						if(motIsInBorne(minimum,maximum,testDansMot)):
 							if diconfig["FiltreGrossier"] == "Oui":
 
-								if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+								if mode == "phon" :
+									testGrossier1 = dicoPhon[listeDeMotCop[ChaqueLettre][0]]
+									testGrossier2 = dicoPhon[testDansMot]
+									testGrossier3 = dicoPhon[mot]
+								elif mode == "word" :
+									testGrossier1 = listeDeMotCop[ChaqueLettre][0]
+									testGrossier2 = testDansMot
+									testGrossier3 = mot
+
+								if (testGrossier1 in BDvulgaire or testGrossier2 in BDvulgaire or testGrossier3 in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
 									listeDeRacines.append(mot[:5])
 
 									listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
