@@ -6,7 +6,12 @@
       <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
       <link rel="stylesheet" href="../css/style.css">
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="https://rawgit.com/mholt/PapaParse/master/papaparse.min.js"></script>
+      <script src="https://code.jquery.com/jquery-latest.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+      <script src="../js/suggestion.js"></script>
+      <script src="../js/fonclettre.js"></script>
+      <script src="../js/foncphoneme.js"></script>
 
       <title>The art of shifting sounds</title>
    </head>
@@ -59,11 +64,11 @@
                 <ul  class="navbar-nav navbar-tabs">
 
                <li class="nav-item">
-                    <a class="nav-link font langue" href="../en/index.html"><img class="langue2" src="../image/en.png"></a>
+                    <a id="btnEN" class="nav-link font langue" href="../en/index.html"><img class="langue2" src="../image/en.png"></a>
                 </li>
 
                 <li class="nav-item ">
-                    <a class="nav-link font langue" href="../fr/index.html"><img class="langue1" src="../image/fr.png"/></a>
+                    <a id="btnFR" class="nav-link font langue" href="../fr/index.html"><img class="langue1" src="../image/fr.png"/></a>
                 </li>
                  
                 </ul>
@@ -77,17 +82,105 @@
             <h2 id="titrePr">Spoonerism aid</h2>
          </div >
 
-      <div id="aide">   
-      <div id="chargementDico">
-                <button id="genener" onclick="load()">Load the dictionnary</button>
-                <span id="chargement"></span>
+         <a style="float: right; margin: 10px;" href="spoonerism_aid_help.html">Need some help?</a>
 
-      </div>
-      
-      <div id="generation">
-        <input type="text" name="phrase" id="phrase">
-        <button id="gen" onclick="genererContrepeterie()">Launch the search</button>
-      </div>
+         <div id="aide">
+            <div class="row">
+                    <button id="choixLettre" class="m-2" onclick="choixLettre()" value="true">Letters</button>
+                    <button id="choixPhoneme" class="m-2"onclick="choixPhoneme()" value="false">Phonemes</button>
+                    <p id="pSelectLettrePhon" class="m-2">Selected : Letters</p>
+            </div>
+         
+            <div id="chargementDico">
+                <button id="loadSugg" onclick="loadSuggestion()">Load the Dictionnary </button>
+                <span id="chargement"></span>
+            </div>
+            
+           
+         
+            <div style="display: flex; justify-content: space-between;">           
+                <div id="choixXY" class="blackOutline">
+                    <div class="divPadding20px">
+                        <h3 id="h3textToChange" style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Number of letters to exchange:</h3>
+                        <div>
+                            <p>(word entered)</p>
+                            <input type="text" id="choixDeX" value="1"/>
+                        </div>
+         
+                        <div>
+                            <p>(word researched)</p>
+                            <input type="text" id="choixDeY" value="1"/>
+                        </div>
+                    </div>
+                </div>
+         
+                <div id="choixLongueurMinMax" class="blackOutline">
+                    <div class="divPadding20px">
+                        <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Min / max length of the 2 couples:</h3>
+                        <div margin="10">
+                            <p>(minimum)</p>
+                            <input type="text" id="choixLongueurMin" value="3"/>
+                        </div>
+                        <div>
+                            <p>(maximum)</p>
+                            <input type="text" id="choixLongueurMax" value="5"/> 
+                        </div>
+                    </div>
+                </div>
+         
+                <div class="statsDiv p-1 shadow bg-light">
+                    <h2  class="p-2 bg-white shadow-sm" id="h2ofstats">Research stats</h2>
+         
+                    <div id="divStatsToHide">
+                        <div id="loadingStats"></div>
+                        <h5 id="tempsExecution" style="padding: 10%;"></h5>
+                    </div>
+                
+                    <div class="m-2"style="display: flex; justify-content: right;">
+                        <button class="bg-secondary" id="btnInfoProc" onclick="afficheInfoProc()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-lg" viewBox="0 0 16 16">
+                            <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0Z"/>
+                        </svg></button>
+                        <p class="text-dark" id="pInfoProc">For an Intel Core i7-8700K processor</p>
+                    </div>
+                </div>
+            </div> 
+            
+            <p id="tempsExecution"></p>
+            <div>
+                <input type="checkbox" id="couperMots" name="couperMots" value="couperMots">
+                <label for="couperMots">Enable cut word search</label>
+            </div>
+            
+            <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">
+                <div style="display:flex;">
+                <input  type="text" name="phrase" id="mot"/>
+                <button id="gen" onclick="redirigeLettreOuPhoneme()"> Start a reseach</button>
+                <button id="gen2" onclick="aideLettreRechDico(document.getElementById('mot').value,document.getElementById('motDirect').value); afficheStats();"> Start a reseach for 2 words</button>
+         
+                </div>
+         
+                <div id="generationDirect" >
+                    <input type="text" placeholder="Facultatif" name="phraseDirect" id="motDirect"/>           
+                </div>
+            </div>
+         
+            <button id="bRetour" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [true])">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                  </svg>
+                  Return
+            </button>
+            
+            <div id="div1"></div>
+            <button id="bRetour2" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [true])">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                  </svg>
+                  Return
+            </button>
+         </div>
+         
+         </section>
     </div>
        </section>
        <footer class="bg-dark bandeN">   
@@ -104,3 +197,4 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </html>
+

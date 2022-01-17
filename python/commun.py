@@ -5,6 +5,7 @@ import sys
 import json
 import re
 import os
+import csv
 
 """
 Remplace une lettre dans la chaine s à la position "index"
@@ -63,3 +64,180 @@ def recupCoupleLettre(y,a,liste,listeSource):
 			listeCouple=recupCoupleLettre(y-1,a+l,listeCouple,listeSource) 
 	return listeCouple
 
+#--------------------------------------------------------------------------
+
+"""
+fonction vérifiant si une contrepétries est valide avec des espaces
+
+Complexité : O(N^2)
+"""
+
+def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico, dicoPhon):
+
+	listeMot = []
+	for l in enumerate(mot): #pour chaque lettre du mot
+		if l[0] >= 2 and l[0] <= len(mot)-2: #bornes pour la taille minimum des mot (ici 2 lettres)
+			motEspace1 = replacer(mot, ' ', l[0], 0) #ajout d'un espace
+			motSplit = motEspace1.split(' ') #séparation des mots à l'espace
+			if isInDico(dico, motSplit[0]) and isInDico(dico, motSplit[1]): #vérification des deux mots
+				if dico == 'word' :
+					listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,dico))
+				if dico == 'phon' :
+					try : #alors... on test si les deux mots sont dans le dico juste avant mais ça arrive à passer à travers et génère une keyerror dans certains cas
+						exemple = dicoPhon[motSplit[0]][0]+" "+dicoPhon[motSplit[1]][0]
+						listeMot.append((motEspace1, ancienneLettre, nouvelleLettre,exemple))
+					except(KeyError) : 
+						continue
+			for l in enumerate(motSplit[0]): #recherche dans le premier mot apres une séparation
+				if l[0] >= 2 and l[0] <= len(motSplit[0])-2:
+					motEspace2 = replacer(motSplit[0], ' ', l[0], 0) #ajout d'un espace
+					motSplit2 = motEspace2.split(' ') #séparation des mots à l'espace
+					if isInDico(dico, motSplit2[0]) and isInDico(dico, motSplit2[1]) and isInDico(dico, motSplit[1]): #vérification des deux mots
+						if (motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre) not in listeMot:
+							if dico == 'word' :
+								listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,dico))
+							if dico == 'phon' :
+								exemple = dicoPhon[motSplit2[0]][0]+" "+dicoPhon[motSplit2[1]][0]+" "+dicoPhon[motSplit[1]][0]
+								listeMot.append((motEspace2+' '+motSplit[1], ancienneLettre, nouvelleLettre,exemple))
+			for l in enumerate(motSplit[1]): #recherche dans le second mot apres une séparation
+				if l[0] >= 2 and l[0] <= len(motSplit[1])-2:
+					motEspace3 = replacer(motSplit[1], ' ', l[0], 0) #ajout d'un espace
+					motSplit3 = motEspace3.split(' ') #séparation des mots à l'espace
+					if isInDico(dico, motSplit3[0]) and isInDico(dico, motSplit3[1]) and isInDico(dico, motSplit[0]): #vérification des deux mots
+						if (motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre) not in listeMot:
+							if dico == 'word' :
+								listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,dico))
+							if dico == 'phon' :
+								exemple = dicoPhon[motSplit[0]][0]+" "+dicoPhon[motSplit3[0]][0]+" "+dicoPhon[motSplit3[1]][0]
+								listeMot.append((motSplit[0]+' '+motEspace3, ancienneLettre, nouvelleLettre,exemple))
+				
+		
+	return listeMot
+
+#-------------------------------------------------------------------------
+"""
+fonction pour l'affichage dans le menu
+"""
+def affichageBase (listeDeMotCop) : 
+	for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
+		tmp = i[1][2] if i[1][2] != "" else chr(32)
+		if i[1][3] == 'word' :
+			print(f" {i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]}")
+		else :
+			print(f"{i[0]+1}  {i[1][1]} - {tmp}    {i[1][0]} ex : {i[1][3]}")
+
+"""
+Objectif : Créer un fichier qui contient un dico : key -> une écriture phonétique, value -> toutes ses orthographes possibles
+Paramètres :
+	-Entrée :
+		fichierSrc : fichier source
+		fichierDest : fichier destination
+	-Sortie :
+		aucun
+"""
+def creerFichierPhon(fichierSrc,fichierDest):
+	file = open(fichierSrc, encoding="utf-8")
+	read_file = csv.reader(file, delimiter=",")
+	dicoPhon={}
+	for ligne in read_file:
+		if(ligne[1] in dicoPhon):
+			dicoPhon[ligne[1]].append(ligne[0])
+		else:
+			dicoPhon[ligne[1]]=list()
+			dicoPhon[ligne[1]].append(ligne[0])
+	with open(fichierDest,'w') as file2:
+		json.dump(dicoPhon,file2)
+
+
+
+"""
+Objectif : Créer un fichier qui contient un dico : key -> un mot, value -> toutes ses classes grammaticales possibles
+Paramètres :
+	-Entrée :
+		fichierSrc : fichier source
+		fichierDest : fichier destination
+	-Sortie :
+		aucun
+"""
+def creerFichierClassGramm(fichierSrc,fichierDest):
+	file = open(fichierSrc, encoding="utf-8")
+	read_file = csv.reader(file, delimiter=",")
+	dicoClassGramm={}
+	for ligne in read_file:
+		if(ligne[0] in dicoClassGramm):
+			dicoClassGramm[ligne[0]]=ligne[3][2:-2].replace('\'','').split(',')
+		else:
+			dicoClassGramm[ligne[0]]=ligne[3][2:-2].replace('\'','').split(',')
+	with open(fichierDest,'w') as file2:
+		json.dump(dicoClassGramm,file2)
+
+#creerFichierClassGramm("data/fr/dicoFr.csv","data/fr/dicoClassGrammFr.json")
+#creerFichierPhon("data/fr/dicoFr.csv","data/fr/dicoPhoncomFr.json")
+
+
+"""
+Objectif : Renvoie la longueur sélectionner par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
+def selectionLongueurMot(message):
+	l=inputInt(message)
+	while(l<-1):
+		print("Vous n'avez pas entré un entier convenable. Ressayer")
+		l=inputInt(message)
+	return l
+
+
+"""
+Objectif : Renvoie la longueur sélectionner par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
+def selectionMotCoupe(message):
+	l=inputInt(message)
+	while(l!=0 and l!=1):
+		print("Vous n'avez pas entré un entier convenable. Ressayer")
+		l=inputInt(message)
+	return l
+
+"""
+Objectif : Vérifie et renvoie l'entier entré par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
+def inputInt(message):
+	entier=input(message)
+	while(True):
+		try:
+			entier=int(entier)
+			return entier
+		except:
+			print("Vous n'avez pas entré un entier. Réessayer")
+			entier=input(message)
+
+"""
+Objectif : chercher des contrepèterie circulaires
+Paramètres :
+	-Entrée :
+		x : taille enlevée
+		y : taille du rajout
+		w : nombre de mot dans la boucle
+		dico : type du dictionnaire
+		motDepart : mot de départ
+		motPrec : mots précédents dans la boucle
+		sylabe : sylabe échangée dans le mot de départ
+		index : index de la sylabe échangée dans le mot de départ
+	-Sortie :
+		listeCirculaires : liste des contrepèterie circulaires fonctionelles 
+"""
+
+#def rechercheCirculaire (motDepart, x, y, w, dico, motPrec, sylabe, index):

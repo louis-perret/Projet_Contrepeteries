@@ -1,0 +1,2 @@
+//évite l'envoi sur le git des fichiers de cache python
+*.pyc
