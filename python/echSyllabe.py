@@ -108,7 +108,7 @@ def mainMixSyllables(phrase, mode):
 circulaireMixSyllabes
 effectue des recherches circulaires dans une phrase
 """
-
+"""
 def circulaireMixSyllabes (phrase, mode):
 	results = []
 	for i in range(3, len(phrase)):
@@ -116,8 +116,8 @@ def circulaireMixSyllabes (phrase, mode):
 			for k in range(j, min(len(enumerate(phrase))))
 				results.extends(circulaire(i,j,phrase,mode,[]))
 	return results
-
-
+"""
+"""
 def circulaire (i,j,k,phrase,mode,sylabePrec):
 	results = []
 	for mot in enumerate(phrase):
@@ -141,7 +141,7 @@ def circulaire (i,j,k,phrase,mode,sylabePrec):
 							results = [nvMot].extend(tmpResults)
 							return results
 				
-
+"""
 
 
 

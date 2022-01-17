@@ -52,7 +52,7 @@ def aide(mot,x,y,mode,langue):
 	listeMotCop=[]
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
 	choix = selectionMotCoupe("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
-	calculTempsExecution(len(mot),y)
+	#calculTempsExecution(len(mot),y)
 	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
@@ -204,7 +204,7 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 	# bd filtres
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
-	with open(f"data/dicoPhoncom.json") as Phon :
+	with open(f"data/{langue}/dicoPhoncom{langue.capitalize()}.json") as Phon :
 		dicoPhon = json.load(Phon)
 	print("recherche des résultats\n")
 	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
