@@ -5,30 +5,49 @@ function test(){
 
         var br = document.createElement("BR");
 
+        var divM = document.createElement("div");
+        var divR = document.createElement("div");
+        var divCT = document.createElement("div");
+        var divCS = document.createElement("div");
 
-        var div = document.createElement("DIV");
+        divR.appendChild(divCT);
+        divR.appendChild(divCS);
+        divM.appendChild(divR);
+
+        var divT = document.createElement("DIV");
         var h = document.createTextNode("01 : 00");
-        div.id='timer';
-        div.appendChild(h); 
-        div.appendChild(br);                               
-        document.getElementById("myDIV").appendChild(div);
 
-        var btn1 = document.createElement("BUTTON");        
+        var divS = document.createElement("DIV");
+        var s = document.createTextNode("Score : 00");
+
+        divS.id='score';
+        divT.id='timer';
+        divM.id='menu';
+
+        divT.appendChild(h);
+        divS.appendChild(s);
+        divCT.appendChild(divT);
+        divCS.appendChild(divS);
+        divM.appendChild(br);
+        document.getElementById("myDIV").appendChild(divM);
+
+
+        var btn1 = document.createElement("BUTTON");
         var t1 = document.createTextNode("Start");
         btn1.id='play';       
         btn1.appendChild(t1);                                
-        document.getElementById("timer").appendChild(btn1); 
+        document.getElementById("menu").appendChild(btn1);
 
         var btn2 = document.createElement("BUTTON");        
         var t2 = document.createTextNode("Restart");
+
         btn2.id='reset';       
         btn2.appendChild(t2);                                
         document.getElementById("myDIV").appendChild(btn2);
         btn2.style.visibility="hidden"; 
 
-        timer.style.textAlign="center";
-        myDIV.style.textAlign="center";
 
+        menu.style.textAlign="center";
 
         $("#play").click(function(){
           Start();
@@ -43,6 +62,7 @@ function test(){
           selection1=null;
           selection2=null;
           Reset();
+          indexj = 0;
           Start();
           jouer(0);
         });
@@ -92,7 +112,9 @@ function test(){
         
         this.style.margin= "0px auto 100px auto";
         this.style.borderRadius= "25px";
-        test();
+          affHighscore();
+
+          test();
      }
 
     const target = document.getElementById('jeu'),
@@ -175,11 +197,14 @@ function test(){
       var br = document.createElement("BR");      
       var t = document.createTextNode("Temps écoulé !");
       var t2 = document.createTextNode("Bravo vous avez trouvé " + indexj + " contrepèteries sur "+ tabContrepeterie.length + " contrepèteries disponibles");
-      p.id = 'rep';     
+      highscore(indexj)
+      p.id = 'rep';
       p.appendChild(t);
       p.appendChild(br);
       p.appendChild(t2);                                
       document.getElementById("myDIV").appendChild(p);
+      rep.style.textAlign="center";
+
     }
   }
   
@@ -246,9 +271,77 @@ function test(){
       secondes = 0;
       minutes = 1;
       $("#timer").html("01 : 00");
+      $("#score").html("Score : 00");
       let supp = document.getElementById('rep');
       supp.parentNode.removeChild(supp);
       reset = true;
     }
     on = false;
   }
+
+  function affHighscore(){
+      if(localStorage.score1f == null || localStorage.score1f == 'undefined'){
+          $("#unF").html("1ere place : 00");
+      }
+      else{
+          $("#unF").html("1ere place : "+ localStorage.score1f);
+      }
+      if(localStorage.score2f == null || localStorage.score2f == 'undefined'){
+          $("#deuxF").html("2eme place : 00");
+      }
+      else{
+          $("#deuxF").html("2eme place : "+ localStorage.score2f);
+      }
+      if(localStorage.score3f == null || localStorage.score3f == 'undefined'){
+          $("#troisF").html("3eme place : 00");
+      }
+      else{
+          $("#troisF").html("3eme place : "+ localStorage.score3f);
+      }
+      if(localStorage.score4f == null || localStorage.score4f == 'undefined'){
+          $("#quatreF").html("4eme place : 00");
+      }
+      else{
+          $("#quatreF").html("4eme place : "+ localStorage.score4f);
+      }
+      if(localStorage.score5f == null || localStorage.score5f == 'undefined'){
+          $("#cinqF").html("5eme place : 00");
+      }
+      else{
+          $("#cinqF").html("5eme place : "+ localStorage.score5f);
+      }
+
+  }
+
+function highscore(indexj){
+      if (localStorage.score1f == null){
+          localStorage.score1f = indexj;
+      }
+      if (indexj > localStorage.score1f){
+          localStorage.score5f = localStorage.score4f;
+          localStorage.score4f = localStorage.score3f;
+          localStorage.score3f = localStorage.score2f;
+          localStorage.score2f = localStorage.score1f;
+          localStorage.score1f = indexj;
+      }
+      else if (indexj > localStorage.score2f){
+          localStorage.score5f = localStorage.score4f;
+          localStorage.score4f = localStorage.score3f;
+          localStorage.score3f = localStorage.score2f;
+          localStorage.score2f = indexj;
+      }
+      else if (indexj > localStorage.score3f){
+          localStorage.score5f = localStorage.score4f;
+          localStorage.score4f = localStorage.score3f;
+          localStorage.score3f = indexj;
+      }
+      else if (indexj > localStorage.score4f){
+          localStorage.score5f = localStorage.score4f;
+          localStorage.score4f = indexj;
+      }
+      else if (indexj > localStorage.score5f){
+          localStorage.score5f = indexj;
+      }
+      affHighscore();
+}
+affHighscore();

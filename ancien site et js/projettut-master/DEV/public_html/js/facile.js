@@ -63,8 +63,10 @@ function jouer(index){
 		$('#span'+j).click(function(){
 			selection(j);
 			verif(index);
+
 		});
 	}
+
 }
 
 
@@ -84,10 +86,15 @@ function verif(index){
 			document.getElementById('divSpan').append(bouton);
 			$('#btnNext').click(function(){
 				console.log('erhh');
-				jouer(index+1);
+				//document.getElementById('score').innerHTML('Score :' +indexj);
+				index++;
+				affScore(index);
+				console.log(localStorage.score1f);
+				jouer(index);
 				selection1=null;
 				selection2=null;
 			});
+
 
 	}
 
@@ -118,4 +125,15 @@ function selection(j){
 				selection2=null;
 			}
 }
+
+function affScore(index){
+	if(index<10){
+		$("#score").html("Score: 0"+index);
+	}
+	else{
+		$("#score").html("Score: "+index);
+	}
+}
+
+
 	

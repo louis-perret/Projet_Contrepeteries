@@ -47,9 +47,8 @@
                     Jeu
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="facile.html">Facile</a>
-                    <a class="dropdown-item" href="moyen.html">Moyen</a>
-                    <a class="dropdown-item" href="difficile.html">Difficile</a>
+                      <a class="dropdown-item" href="facile.html">Solo</a>
+                      <a class="dropdown-item" href="multijoueur.html">Multijoueur</a>
                   </div>
                 </li>
             
@@ -73,8 +72,7 @@
 
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Êtes-vous un professionnel des contrepèteries ?</h2>
-            <br/>
-              <h2>(Moyen)</h2>
+
          </div >
         
       <style> 
@@ -170,7 +168,24 @@
       
           <p id="jeu"></p>
       <a id="aidej" href="aide.html">Besoin d'aide ?</a>
-      <div id="divJeu">
+          <div class="nav-difficultes">
+              <div class="row">
+                  <div class="col">
+                      <a id="flechegauche" href="facile.html">
+                          <img src="../image/arrow_left.png">
+                      </a>
+                  </div>
+                  <div class="col">
+                      <h2 id="diffculte" >Moyen</h2>
+                  </div>
+                  <div class="col">
+                      <a id="flechedroite" href="difficile.html">
+                          <img src="../image/arrow_right.png">
+                      </a>
+                  </div>
+              </div>
+          </div>
+          <div id="divJeu">
         <h1 id="text"></h1>
 
         <div id="myDIV">
@@ -179,6 +194,25 @@
             <button id="myButton" onclick="myFunction();removeButton();writeText()">Commencez la partie !</button>
         </div>
       </div>
+          <div id="highScore">
+              <div class="row">
+                  <div class="col">
+                      <div id="unF">1ere place : 34</div>
+                  </div>
+                  <div class="col">
+                      <div id="deuxF">2eme place : 34</div>
+                  </div>
+                  <div class="col">
+                      <div id="troisF">3eme place : 34</div>
+                  </div>
+                  <div class="col">
+                      <div id="quatreF">4eme place : 34</div>
+                  </div>
+                  <div class="col">
+                      <div id="cinqF">5eme place : 34</div>
+                  </div>
+              </div>
+          </div>
 
 
 
@@ -193,7 +227,7 @@
          </div>
        </footer>
    </body>
-   <script src="../js/jeu.js"></script>
+   <script src="../js/jeu2.js"></script>
     <script src="../js/moyen.js"></script>   
    <script src="https://code.jquery.com/jquery-3.3.1.min.js"crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>

@@ -71,7 +71,7 @@ function jouer(index){
 function verif(index){
 	if(selection1==document.getElementById('span'+tabContrepeterie[index][1][0])&&selection2==document.getElementById('span'+tabContrepeterie[index][1][1])||selection2==document.getElementById('span'+tabContrepeterie[index][1][0])&&selection1==document.getElementById('span'+tabContrepeterie[index][1][1])){
 			$('span').unbind("click");
-			indexj++;
+			//indexj++;
 			secondes+=5;
 			let soluce= document.createElement('p');
 			soluce.innerText=tabContrepeterie[index][2];
@@ -84,7 +84,9 @@ function verif(index){
 			document.getElementById('divSpan').append(bouton);
 			$('#btnNext').click(function(){
 				console.log('erhh');
-				jouer(index+1);
+				index++;
+				affScore(index);
+				jouer(index);
 				selection1=null;
 				selection2=null;
 			});
@@ -117,5 +119,14 @@ function selection(j){
 				selection2.style.color='black';
 				selection2=null;
 			}
+}
+
+function affScore(index){
+	if(index<10){
+		$("#score").html("Score: 0"+index);
+	}
+	else{
+		$("#score").html("Score: "+index);
+	}
 }
 	

@@ -60,24 +60,19 @@ function Penalite(){
   if(minutes == 0 && secondes <= 0){
     Stop();
     end=true;
-    
-
-}
-if(minutes==0 && secondes < 3){
-  secondes=0;
-  Stop();
+  }
+  if(minutes==0 && secondes < 3){
+    secondes=0;
+    Stop();
     end=true;
-}
-
-  else if(minutes>= 1 && secondes==0){
+  }
+  else if(minutes >= 1 && secondes==0){
     minutes-=1;
     secondes=57;
   }
   else
     secondes -= 3;
-
   affTimer();
-
 }
   
 

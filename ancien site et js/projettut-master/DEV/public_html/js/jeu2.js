@@ -6,28 +6,48 @@ function test(){
         var br = document.createElement("BR");
 
 
-        var div = document.createElement("DIV");
-        var h = document.createTextNode("00 : 30");
-        div.id='timer';
-        div.appendChild(h); 
-        div.appendChild(br);                               
-        document.getElementById("myDIV").appendChild(div);
+        var divM = document.createElement("div");
+        var divR = document.createElement("div");
+        var divCT = document.createElement("div");
+        var divCS = document.createElement("div");
+
+        divR.appendChild(divCT);
+        divR.appendChild(divCS);
+        divM.appendChild(divR);
+
+        var divT = document.createElement("DIV");
+        var h = document.createTextNode("01 : 00");
+
+        var divS = document.createElement("DIV");
+        var s = document.createTextNode("Score : 00");
+
+        divS.id='score';
+        divT.id='timer';
+        divM.id='menu';
+
+        divT.appendChild(h);
+        divS.appendChild(s);
+        divCT.appendChild(divT);
+        divCS.appendChild(divS);
+        divM.appendChild(br);
+        document.getElementById("myDIV").appendChild(divM);
 
         var btn1 = document.createElement("BUTTON");        
         var t1 = document.createTextNode("Start");
         btn1.id='play';       
         btn1.appendChild(t1);                                
-        document.getElementById("timer").appendChild(btn1); 
+        document.getElementById("menu").appendChild(btn1);
 
         var btn2 = document.createElement("BUTTON");        
         var t2 = document.createTextNode("Restart");
+
         btn2.id='reset';       
         btn2.appendChild(t2);                                
         document.getElementById("myDIV").appendChild(btn2);
-        btn2.style.visibility="hidden"; 
+        btn2.style.visibility="hidden";
 
-        timer.style.textAlign="center";
-        myDIV.style.textAlign="center";
+
+        menu.style.textAlign="center";
 
 
         $("#play").click(function(){
@@ -252,3 +272,70 @@ function test(){
     }
     on = false;
   }
+
+function affHighscore(){
+    if(localStorage.score1m == null || localStorage.score1m == 'undefined'){
+        $("#unF").html("1ere place : 00");
+    }
+    else{
+        $("#unF").html("1ere place : "+ localStorage.score1m);
+    }
+    if(localStorage.score2m == null || localStorage.score2m == 'undefined'){
+        $("#deuxF").html("2eme place : 00");
+    }
+    else{
+        $("#deuxF").html("2eme place : "+ localStorage.score2f);
+    }
+    if(localStorage.score3m == null || localStorage.score3m == 'undefined'){
+        $("#troisF").html("3eme place : 00");
+    }
+    else{
+        $("#troisF").html("3eme place : "+ localStorage.score3m);
+    }
+    if(localStorage.score4m == null || localStorage.score4m == 'undefined'){
+        $("#quatreF").html("4eme place : 00");
+    }
+    else{
+        $("#quatreF").html("4eme place : "+ localStorage.score4m);
+    }
+    if(localStorage.score5m == null || localStorage.score5m == 'undefined'){
+        $("#cinqF").html("5eme place : 00");
+    }
+    else{
+        $("#cinqF").html("5eme place : "+ localStorage.score5m);
+    }
+
+}
+
+function highscore(indexj){
+    if (localStorage.score1m == null){
+        localStorage.score1m = indexj;
+    }
+    if (indexj > localStorage.score1m){
+        localStorage.score5m = localStorage.score4m;
+        localStorage.score4m = localStorage.score3m;
+        localStorage.score3m = localStorage.score2m;
+        localStorage.score2m = localStorage.score1m;
+        localStorage.score1m = indexj;
+    }
+    else if (indexj > localStorage.score2m){
+        localStorage.score5m = localStorage.score4m;
+        localStorage.score4m = localStorage.score3m;
+        localStorage.score3m = localStorage.score2m;
+        localStorage.score2m = indexj;
+    }
+    else if (indexj > localStorage.score3m){
+        localStorage.score5m = localStorage.score4m;
+        localStorage.score4m = localStorage.score3m;
+        localStorage.score3m = indexj;
+    }
+    else if (indexj > localStorage.score4m){
+        localStorage.score5m = localStorage.score4m;
+        localStorage.score4m = indexj;
+    }
+    else if (indexj > localStorage.score5f){
+        localStorage.score5f = indexj;
+    }
+    affHighscore();
+}
+affHighscore();

@@ -17,6 +17,7 @@ var selection1=null;
 var selection2=null;
 var temp=null;
 
+
 function jouer(index){
 	
 	let divS = document.getElementById('divSpan');
