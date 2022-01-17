@@ -155,6 +155,20 @@ a{
 	color: black;
 }
 
+.nav-difficultes {
+    margin: 0 auto;
+    width: 350px;
+
+    border-radius: 3px;
+}
+
+.nav-mode {
+    margin: 0 auto;
+    width: 200px;
+
+    border-radius: 3px;
+}
+
 .bandeN{
  	height: 100px;
  }
@@ -334,6 +348,10 @@ header{
 	font-family: "ChopinScript";
 	font-size: 1.5rem;
 	padding-top: 25px;
+}
+
+#diffculte{
+    color: black;
 }
 
 #envoie{
@@ -586,6 +604,13 @@ span.c0 {
   --hue: var(--hue-wrong);
 }
 
+#highScore{
+    font-family: 'ChopinScript';
+    font-size: 24px;
+    margin: 0 auto;
+    width: 800px;
+    border-radius: 3px;
+}
 
 #start, #next {
   font-size: 1.5rem;

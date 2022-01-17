@@ -5,6 +5,7 @@ function test(){
 
     var br = document.createElement("BR");
 
+
     var divM = document.createElement("div");
     var divR = document.createElement("div");
     var divCT = document.createElement("div");
@@ -15,7 +16,7 @@ function test(){
     divM.appendChild(divR);
 
     var divT = document.createElement("DIV");
-    var h = document.createTextNode("01 : 00");
+    var h = document.createTextNode("00 : 30");
 
     var divS = document.createElement("DIV");
     var s = document.createTextNode("Score : 00");
@@ -31,7 +32,6 @@ function test(){
     divM.appendChild(br);
     document.getElementById("myDIV").appendChild(divM);
 
-
     var btn1 = document.createElement("BUTTON");
     var t1 = document.createTextNode("Start");
     btn1.id='play';
@@ -46,8 +46,8 @@ function test(){
     document.getElementById("myDIV").appendChild(btn2);
     btn2.style.visibility="hidden";
 
-
     menu.style.textAlign="center";
+
 
     $("#play").click(function(){
         Start();
@@ -62,7 +62,7 @@ function test(){
         selection1=null;
         selection2=null;
         Reset();
-        indexj = 0;
+        indexj = 0
         Start();
         jouer(0);
     });
@@ -112,8 +112,6 @@ function myEndFunction() {
 
     this.style.margin= "0px auto 100px auto";
     this.style.borderRadius= "25px";
-    affHighscore();
-
     test();
 }
 
@@ -197,14 +195,11 @@ function Stop(){
         var br = document.createElement("BR");
         var t = document.createTextNode("Temps écoulé !");
         var t2 = document.createTextNode("Bravo vous avez trouvé " + indexj + " contrepèteries sur "+ tabContrepeterie.length + " contrepèteries disponibles");
-        highscore(indexj)
         p.id = 'rep';
         p.appendChild(t);
         p.appendChild(br);
         p.appendChild(t2);
         document.getElementById("myDIV").appendChild(p);
-        rep.style.textAlign="center";
-
     }
 }
 
@@ -268,10 +263,9 @@ function Reset(){
         let btn2 = document.getElementById("reset");
         btn2.style.visibility="hidden";
         clearInterval(timerID);
-        secondes = 0;
-        minutes = 1;
-        $("#timer").html("01 : 00");
-        $("#score").html("Score : 00");
+        secondes = 30;
+        minutes = 0;
+        $("#timer").html("00 : 30");
         let supp = document.getElementById('rep');
         supp.parentNode.removeChild(supp);
         reset = true;
@@ -280,67 +274,67 @@ function Reset(){
 }
 
 function affHighscore(){
-    if(localStorage.score1f == null || localStorage.score1f == 'undefined'){
+    if(localStorage.score1d == null || localStorage.score1d == 'undefined'){
         $("#unF").html("1ere place : 00");
     }
     else{
-        $("#unF").html("1ere place : "+ localStorage.score1f);
+        $("#unF").html("1ere place : "+ localStorage.score1d);
     }
-    if(localStorage.score2f == null || localStorage.score2f == 'undefined'){
+    if(localStorage.score2d == null || localStorage.score2d == 'undefined'){
         $("#deuxF").html("2eme place : 00");
     }
     else{
-        $("#deuxF").html("2eme place : "+ localStorage.score2f);
+        $("#deuxF").html("2eme place : "+ localStorage.score2d);
     }
-    if(localStorage.score3f == null || localStorage.score3f == 'undefined'){
+    if(localStorage.score3d == null || localStorage.score3d == 'undefined'){
         $("#troisF").html("3eme place : 00");
     }
     else{
-        $("#troisF").html("3eme place : "+ localStorage.score3f);
+        $("#troisF").html("3eme place : "+ localStorage.score3d);
     }
-    if(localStorage.score4f == null || localStorage.score4f == 'undefined'){
+    if(localStorage.score4d == null || localStorage.score4d == 'undefined'){
         $("#quatreF").html("4eme place : 00");
     }
     else{
-        $("#quatreF").html("4eme place : "+ localStorage.score4f);
+        $("#quatreF").html("4eme place : "+ localStorage.score4d);
     }
-    if(localStorage.score5f == null || localStorage.score5f == 'undefined'){
+    if(localStorage.score5d == null || localStorage.score5d == 'undefined'){
         $("#cinqF").html("5eme place : 00");
     }
     else{
-        $("#cinqF").html("5eme place : "+ localStorage.score5f);
+        $("#cinqF").html("5eme place : "+ localStorage.score5d);
     }
 
 }
 
 function highscore(indexj){
-    if (localStorage.score1f == null){
-        localStorage.score1f = indexj;
+    if (localStorage.score1d == null){
+        localStorage.score1d = indexj;
     }
-    if (indexj > localStorage.score1f){
-        localStorage.score5f = localStorage.score4f;
-        localStorage.score4f = localStorage.score3f;
-        localStorage.score3f = localStorage.score2f;
-        localStorage.score2f = localStorage.score1f;
-        localStorage.score1f = indexj;
+    if (indexj > localStorage.score1d){
+        localStorage.score5d = localStorage.score4d;
+        localStorage.score4d = localStorage.score3d;
+        localStorage.score3d = localStorage.score2d;
+        localStorage.score2d = localStorage.score1d;
+        localStorage.score1d = indexj;
     }
-    else if (indexj > localStorage.score2f){
-        localStorage.score5f = localStorage.score4f;
-        localStorage.score4f = localStorage.score3f;
-        localStorage.score3f = localStorage.score2f;
-        localStorage.score2f = indexj;
+    else if (indexj > localStorage.score2d){
+        localStorage.score5d = localStorage.score4d;
+        localStorage.score4d = localStorage.score3d;
+        localStorage.score3d = localStorage.score2d;
+        localStorage.score2d = indexj;
     }
-    else if (indexj > localStorage.score3f){
-        localStorage.score5f = localStorage.score4f;
-        localStorage.score4f = localStorage.score3f;
-        localStorage.score3f = indexj;
+    else if (indexj > localStorage.score3d){
+        localStorage.score5d = localStorage.score4d;
+        localStorage.score4d = localStorage.score3d;
+        localStorage.score3d = indexj;
     }
-    else if (indexj > localStorage.score4f){
-        localStorage.score5f = localStorage.score4f;
-        localStorage.score4f = indexj;
+    else if (indexj > localStorage.score4d){
+        localStorage.score5d = localStorage.score4d;
+        localStorage.score4d = indexj;
     }
-    else if (indexj > localStorage.score5f){
-        localStorage.score5f = indexj;
+    else if (indexj > localStorage.score5d){
+        localStorage.score5d = indexj;
     }
     affHighscore();
 }
