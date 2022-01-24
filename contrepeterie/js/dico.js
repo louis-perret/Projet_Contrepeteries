@@ -84,40 +84,69 @@ function mainMixSyllabes(phrase,mode) {
 	var phrase = phrase.split(' ')
 	var Lphrases = []
 	var tmp = []
-	Lphrases.push(phrase) //ohrase contient elle meme
-	console.log(Lphrases)
-	console.log(phrase)
+	var taille
+	var test
+
+	Lphrases.push() //ohrase contient elle meme
+	//console.log(Lphrases)
+	//console.log(phrase)
 
 	//Pour chaque mot dans la phrase
 	for (var i in phrase) {
 		//console.log(i)
 		var j=parseInt(i) + 1;
 
-		for (j;j<phrase.length;j++) {
+		for (var j;j<phrase.length;j++) {
 			var WordsContreP = mixSyllableWord(phrase[i], phrase[j], phrase,mode)
-			console.log("wordsContreP = " + WordsContreP)
+			//console.log("WordContreP :")
+			//console.log(WordsContreP)
 			for (k in WordsContreP) {
-				console.log("k = " + k)
+				//console.log("k = " + k)
 				tmp = [].concat(phrase)
+				/*
 				console.log("tmp i = " + tmp[i])
 				console.log("WordsContreP[k] = " + WordsContreP[k][0])
 				console.log("tmp j = " + tmp[j])
 				console.log("WordsContreP[k] = " + WordsContreP[k][1])
-
+				*/
 				tmp[i] = WordsContreP[k][0]
 				tmp[j] = WordsContreP[k][1]
-				console.log("nouvelle phrase = " + tmp)
-				//a continuer
+				taille = phrase.length
+				test = true
+				for(let l=0;l<taille;l++) {
+					if(phrase == tmp) {
+						test = false
+					}
+					if(test) {
+						var L1 = ([parseInt(i),WordsContreP[k][2][0],WordsContreP[k][2][1]])
+						var L2 = ([j,WordsContreP[k][3][0],WordsContreP[k][3][1]])
+						console.log(tmp)
+						console.log(L1)
+						console.log(L2)
+						console.log("lphrase :")	
+						console.log(Lphrases)
+						if(!Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')) {
+							Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')
+						}
+						
+					}
+				}
+				
 			}
 		}
 	}
+	affichageMot(Lphrases)
+		
+	
 }
+
+
 
 function mixSyllableWord(word1,word2,phrase,mode) {
 	listeWord = [];
-	tmp = [];
-	i = 0;
-	j = 1;
+	tmp = Array();
+	var i = 0;
+	var j = 1;
 	while(i<word1.length) {
 		//console.log(word1)
 		//console.log(word1.length)
@@ -125,13 +154,24 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 
 		tmp = mixSyllableWord2(word1.slice(i,j),word2,phrase,mode)
 		console.log("----------------------------------------- " )
-		console.log("Voici la liste tmp  : " + tmp)
+		//console.log(tmp)
 
 		for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
-			console.log("mot de tmp  : " + word1.slice(0,i) + tmp[k][1] + word1.slice(j-1))
-			if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j-1),dicMot)) {
-				listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j-1), tmp[k][0],[i,j-1],tmp[k[2]]])
-				console.log("le mot " + word1.slice(0,i)+tmp[k][1]+word1.slice(j-1) + " a été ajouté")
+			//console.log("tmp : " + tmp)
+			//console.log("mot de tmp  : " + word1.slice(0,i) + tmp[k][1] + word1.slice(j))
+			if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j),dicMot)) {
+				listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j), tmp[k][0],[i,j],tmp[k][2]])
+				//console.log("le mot " + word1.slice(0,i) + " " + tmp[k][1] + " " + word1.slice(j-1) + " a été ajouté")
+				/*
+				console.log(k + "----------------------")
+				console.log("word 1 ? : " + word1) 
+				console.log("i : " + i)
+				console.log(word1.slice(0,i))
+				console.log(tmp[k][1])
+				console.log(word1.slice(j))
+				console.log(tmp[k][0])
+				console.log([i,j])
+				console.log(tmp[k][2])*/
 			}
 		}
 		j+=1

@@ -70,7 +70,7 @@ function loadSuggestion(){
 			langue = "fr";
 		}
 		else if (fichierActuel == "spoonerism_aid.html") {
-			pathToDictionary = "../debut_dico_en.csv";
+			pathToDictionary = "../dicoEn.csv";
 			langue = "en";
 		}
 
@@ -526,6 +526,8 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 
 //Fonction qui affiche les groupes de 4 mots
 function affichageMot(l){
+	console.log("l : ----------------")
+	console.log(l)
 	var element = document.getElementById("div1");
 	while (element.firstChild){
   		element.removeChild(element.firstChild);

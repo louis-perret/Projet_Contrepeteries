@@ -12,8 +12,8 @@
       <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
-      <script src="../suggestion.js"></script>
-      <script src="dico.js"></script>
+      <script src="../js/suggestion.js"></script>
+      <script src="../js/dico.js"></script>
 
       <title>L'art de décaler les sons</title>
    </head>
@@ -81,10 +81,6 @@
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Génération de contrepèteries</h2>
          </div >
-
-         <div id="file">
-            <input type="file" id="csv-file" name="files"/>
-        </div>
          <div id="chargementDico">
           <button id="loadDico" onclick="loadDico()">Charger le dictionnaire </button>
           <span id="chargement"></span>
@@ -95,7 +91,11 @@
           <input type="text" name="phrase" id="phrase">
           <button id="gen" onclick="mainRecherchePhrase()"> Lancer la recherche</button>
         </div>
+        <div id="div1">
+
+      </div>
        </section>
+       
 
     </body>
 
