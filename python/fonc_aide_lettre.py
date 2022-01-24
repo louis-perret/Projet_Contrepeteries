@@ -52,7 +52,7 @@ def aide(mot,x,y,mode,langue):
 	listeMotCop=[]
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
 	choix = selectionMotCoupe("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
-	#calculTempsExecution(len(mot),y)
+	calculTempsExecution(len(mot),y)
 	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
