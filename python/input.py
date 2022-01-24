@@ -1,7 +1,7 @@
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
 
-tabLanguesDispo=["fr"]#définit les langues admises par l'application
+tabLanguesDispo=["fr","en"]#définit les langues admises par l'application
 configLangue(tabLanguesDispo) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
 from arbin import * #on charge le dico
@@ -54,6 +54,8 @@ while boucle:
 			from echSyllabe import *
 		memoireImport.add('rech')
 
+		with open('data/config.json','r') as diconfig_:
+			langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
 		test = True
 		mode = {1: 'word', 2: 'phon'}
 		n = 0
@@ -146,7 +148,7 @@ while boucle:
 				pos1 = i[1][0] #index 1
 				pos2 = i[2][0] #index 2
 				# Phon_to_Phrase ("phrase phon" + phrase origine(l))
-				nvListe[tmp] = Phon_to_Phrase(tmp, phraseOrigine.split(" "), pos1, pos2) #Pour chaque phrase, on ressort toutes ses écritures possibles
+				nvListe[tmp] = Phon_to_Phrase(tmp, phraseOrigine.split(" "), pos1, pos2,langue) #Pour chaque phrase, on ressort toutes ses écritures possibles
 
 			test = affiRechFiltre(nvListe,'phon')
 			if test == 0:

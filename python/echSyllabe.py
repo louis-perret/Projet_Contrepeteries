@@ -45,7 +45,8 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 	while(i < len(Word2)):
 		# test si retour de Word_to_Phon est une chaîne de caractère
 		# et si le Word trouvé n'est pas déjà dans la phrase d'origine.
-		if isInDico(mode, Word2[:i]+sy+Word2[j:]) and Word2[:i]+sy+Word2[j:] not in phrase: #le nouveau mot qu'on forme existe et n'est pas dans la phrase
+		#if isInDico(mode, Word2[:i]+sy+Word2[j:]) and Word2[:i]+sy+Word2[j:] not in phrase: #le nouveau mot qu'on forme existe et n'est pas dans la phrase
+		if isInDico(mode, Word2[:i]+sy+Word2[j:]):
 			liste.append([Word2[:i]+sy+Word2[j:], Word2[i:j], [i, j]])
 		# gestion de l'intervalle [i:j] section du Word2
 		j += 1
@@ -173,12 +174,12 @@ on l'utilise pour filtrer les resultats des combinaisons
 selon un % de mots recurrent entre la nvlle et l'ancienne phrase
 '''
 
-def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2):
+def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue):
 
 	listeretour = []
 	listePhon = PhrasePhoneme.split()
 	# PhrasePhoneme(str)
-	with open('data/fr/dicoPhoncomFr.json') as tmp:
+	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
 		dicoPhon = json.load(tmp)
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée
