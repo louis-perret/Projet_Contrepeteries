@@ -201,23 +201,47 @@ function afficheStats() {
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if (y>4 || x > 12 || max > 10) {
 		divStatsToHide.style.backgroundColor = 'black';
-		text='indéterminable   temps ∞';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='indéterminable   temps ∞';
+			tExec.innerText="Temps d'execution : " + text;
+		}	
+		else if(langue == "en") {
+			text='infinite ∞';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else if (x>7 || y>3) {
 		divStatsToHide.style.backgroundColor = 'darkred';
-		text='très   lent au moins 60 sec';
-		tExec.innerText="Temps : " + text;
+		if(langue == "fr") {
+			text='très   lent au moins 60 sec';
+			tExec.innerText="Temps : " + text;
+		}
+		else if(langue == "en") {
+			text='very slow, at least 60sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) {
 		divStatsToHide.style.backgroundColor = 'orange';
-		text='lent   10 à 60 sec';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='lent   10 à 60 sec';
+			tExec.innerText="Temps d'execution : " + text;
+		}
+		else if(langue == "en") {
+			text='slow 10 to 60 sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
-		text='rapide   2 à 10 sec';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='rapide   2 à 10 sec';
+			tExec.innerText="Temps d'execution : " + text;
+		}
+		else if(langue == "en") {
+			text='fast, 2 à 10 sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 }
 
@@ -239,23 +263,47 @@ function afficheStats2() {
 	//En fonction du nombre de lettres à échanger, on determine si la requete est rapide ou non
 	if(max >8 || y>4) {
 		divStatsToHide.style.backgroundColor = 'black';
-		text='impossible   temps : ∞';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='impossible   temps : ∞';
+			tExec.innerText="Temps d'execution : " + text;
+		}
+		else if(langue == "en") {
+			text='infinite ∞';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else if (x>7 || y>3 || (max <=8 && max >6)){
 		divStatsToHide.style.backgroundColor = 'darkred';
-		text='très lent   au moins 60 sec';
-		tExec.innerText="Temps : " + text;
+		if(langue == "fr") {
+			text='très lent   au moins 60 sec';
+			tExec.innerText="Temps : " + text;
+		}
+		else if(langue == "en") {
+			text='very slow, at least 60sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3) ||  max==6) {
 		divStatsToHide.style.backgroundColor = 'orange';
-		text='lent   10 à 60 sec';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='lent   10 à 60 sec';
+			tExec.innerText="Temps d'execution : " + text;
+		}
+		else if(langue == "en") {
+			text='slow 10 to 60 sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
-		text='rapide   2 à 10 sec';
-		tExec.innerText="Temps d'execution : " + text;
+		if(langue == "fr") {
+			text='rapide   2 à 10 sec';
+			tExec.innerText="Temps d'execution : " + text;
+		}
+		else if(langue == "en") {
+			text='fast, 2 à 10 sec';
+			tExec.innerText="Execution time : " + text;
+		}
 	}
 }
 
