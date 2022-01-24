@@ -131,7 +131,7 @@ while boucle:
 						print("\nLa saisie n'est pas valide")
 			if phraseOrigine == 1:
 				continue
-			phraseOrigine = phraseOrigine.lower()
+			phraseOrigine = phraseOrigine.lower().replace("'"," ")
 			phrasePhon = Phrase_to_Phon(phraseOrigine)
 
 			#si un mot n'a pas pu être traduire

@@ -49,6 +49,6 @@ def creerFichierClassGramm(fichierSrc,fichierDest):
 
 
 
-langue="en"
+langue="fr"
 creerFichierClassGramm(f"data/{langue}/dico{langue.capitalize()}.csv",f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
 creerFichierPhon(f"data/{langue}/dico{langue.capitalize()}.csv",f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")

@@ -71,6 +71,7 @@ du deuxième mot que l'on échange
 def mainMixSyllables(phrase, mode):
 
 	phrase = phrase.split()
+	print(phrase)
 	Lphrases = [[phrase]] #phrase se contient elle même
 	i = 0
 
@@ -155,8 +156,9 @@ Retourne liste de phonème de la phrase :
 def Phrase_to_Phon(phrase):
 	string = ''
 	for mot in phrase.split():
-		if Mot_to_Phon_Only(arbre_mot, mot) != False:
-			string += Mot_to_Phon_Only(arbre_mot, mot) + ' '
+		b=Mot_to_Phon_Only(arbre_mot, mot)
+		if b != False:
+			string += b + ' '
 		else:
 			print('\nLe mot', mot, '''de la phrase n\'est pas dans notre dictonnaire.
 			Veuillez essayer avec une autre orthographe.''')
