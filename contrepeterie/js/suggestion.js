@@ -70,7 +70,7 @@ function loadSuggestion(){
 			langue = "fr";
 		}
 		else if (fichierActuel == "spoonerism_aid.html") {
-			pathToDictionary = "../debut_dico_en.csv";
+			pathToDictionary = "../dicoEn.csv";
 			langue = "en";
 		}
 
