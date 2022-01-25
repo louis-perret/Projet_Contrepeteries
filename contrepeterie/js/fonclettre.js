@@ -132,7 +132,7 @@ function aideLettreRechDico(mot1, mot2) {
 	for (let j = 0; j <resMot1.length ; j++) { //Pour chaque mot de resMot1
 		if(mot1 != resMot1[j]) {
 			//affichResultat.push("<div style ='margin: 10px;'><div class='card p-2 shadow-sm'>"+ dicMot[indexMotDic1] + ' - ' + dicMot[indexRes2] + '</div>' + '<div class="card p-2 shadow-sm">' + dicMot[indexMotDic2] + ' - ' + dicMot[indexRes1] +'</div></div>')
-			affichResultat.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ mot1 + ' - ' + resMot2[j] + '</div>' + '<div class="card p-2 shadow-sm">' + mot2 + ' - ' + resMot1[j] +'</div></div>')
+			affichResultat.push("<div class='p-2 shadow-sm'>"+ mot1 + ' - ' + resMot2[j] + '</div>' + '<div class="p-2 shadow-sm">' + mot2 + ' - ' + resMot1[j] +'</div>')
 		}
 	}
 	affichageMot(affichResultat);

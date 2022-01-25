@@ -120,6 +120,10 @@ a{
   margin: 25px;
 }
 
+.myCardPadding {
+  padding: 20px;
+}
+
 #titrePr{
 	text-shadow: 0px 0px 15px black;
 	font-family: 'ChopinScript';

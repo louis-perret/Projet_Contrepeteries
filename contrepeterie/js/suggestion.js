@@ -1,6 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
+var dicVulgaire = [];
 var affichResultat=[];
 var saveTuple=[];
 var langue = "fr";
@@ -44,6 +45,15 @@ $("#csv-file").change(handleFileSelect);
 
 function loadSuggestion(){
 	if(!dicoLoaded) {
+		//chargement du dico Vulgaire
+		$(function () {
+			$.getJSON('../DicoVulgaire.json', function (data) {
+				//console.log(data)
+				dicVulgaire = data
+			});
+		});
+
+
 		//ajoute un event listener qui déclenche afficheStats() lorsque l'utilisateur change
 		//les valeurs des champs x et y (contrepétries d'un nombre x et y de lettres interchangées)
 		afficheStats(); //appelle aussi la fonction au chargement du dico
@@ -574,16 +584,31 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 
 //Fonction qui affiche les groupes de 4 mots
 function affichageMot(l){
-	console.log("l : ----------------")
-	console.log(l)
 	var element = document.getElementById("div1");
 	while (element.firstChild){
   		element.removeChild(element.firstChild);
 	}
+
+	var actualDivRow =  document.createElement('div');
+	actualDivRow.setAttribute("class", "row");
 	for(var i=0; i<l.length; i++){
-		let div = document.createElement('div');
-		div.innerHTML=l[i];
-		document.getElementById('div1').append(div);
+		if(i%5 == 0) {
+			document.getElementById('div1').append(actualDivRow);
+			let divRow = document.createElement('div');
+			divRow.setAttribute("class", "row");
+			actualDivRow = divRow;
+			actualDivRow.setAttribute("style","margin: 20px;");
+			let divCol = document.createElement('div');
+			divCol.setAttribute("class", "col");
+			divCol.innerHTML=l[i];
+			actualDivRow.append(divCol);
+		}
+		else {
+			let divCol = document.createElement('div');
+			divCol.setAttribute("class", "col");
+			divCol.innerHTML=l[i];
+			actualDivRow.append(divCol);
+		}
 	}
 }
 //-----------------------------------------------------------------------------------
