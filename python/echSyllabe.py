@@ -15,7 +15,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	listeWord = []
 	tmp = []
 	i = 0
-	j = 1
+	j = 0
 	while(i < len(Word1)):
 
 		tmp = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
@@ -23,6 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
+			listeWord.extend(mixSyllabeCoupe(Word1[:i] + k[1] + Word1[j:], k[0], mode, [i, j], k[2]))
 			if isInDico(mode, Word1[:i] + k[1] + Word1[j:]):
 				listeWord.append([Word1[:i]+k[1]+Word1[j:], k[0], [i, j], k[2]])
 
@@ -39,7 +40,7 @@ Retourne une liste de résultat de type : (nouveauMot,ancienneSyllabe, le couple
 """
 def mixSyllablesWord2(sy, Word2, phrase, mode):
 	i = 0
-	j = 1
+	j = 0
 	liste = []
 
 	while(i < len(Word2)):
@@ -101,6 +102,29 @@ def mainMixSyllables(phrase, mode):
 					L2 = (j, k[3][0], k[3][1])
 					Lphrases.append((tmp, L1, L2))
 	return Lphrases
+
+#------------------------------------------------------------------------------
+"""
+mixSyllabeCoupe
+ajoute des espaces au mot échangé dans mixSyllablesWord1
+"""
+
+def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
+	liste = []
+	for i in range(len(word1)) :
+		if i < 2 and i > 0 or i > len(word1)-2 :
+			continue
+		tmp11 = word1[i:]
+		tmp12 = word1[:i]
+		if isInDico(tmp11, mode) and isInDico(tmp12, mode) :
+			for j in range(len(Word2)) :
+				if j < 2 and j > 0 or j > len(word2)-2 :
+					continue
+				tmp21 = word2[j:]
+				tmp22 = word2[:j]
+				if isInDico(tmp21, mode) and isInDico(tmp22, mode) :
+					liste.append([tmp11+" "+tmp21, tmp21+" "+tmp22, ij, ij2])
+	return liste
 
 
 #------------------------------------------------------------------------------
