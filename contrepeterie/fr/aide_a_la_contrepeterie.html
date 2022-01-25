@@ -18,7 +18,7 @@
 
     <title>L'art de décaler les sons</title>
 </head>
-<body style="min-width: 1000px;">
+<body onload="loadSuggestion()" style="min-width: 1000px;">
     <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon my-toggler"></span>
@@ -93,7 +93,7 @@
             </div>
 
             <div id="chargementDico">
-                <button id="loadSugg" onclick="loadSuggestion()">Charger le dictionnaire </button>
+                <div class="blackOutline"> Dictionnaire chargé :     </div>
                 <span id="chargement"></span>
             </div>
             
