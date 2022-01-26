@@ -64,14 +64,17 @@ function loadSuggestion(){
 		//ajoute un event listener qui déclenche afficheLoadStats() lorsque l'utilisateur clique sur un des boutons.
 		//l'icone de chargement sera cachée au moment de l'affichage des résultats (voir fonction choixMotCompatible dans le cas du click sur gen1)
 		//(voir fonction aideLettreRechDico dans le cas du click sur gen2)
-		document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
-		document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
+		if(document.querySelector('#gen') && document.querySelector('#gen2')) {
+			document.getElementById('gen').addEventListener('mousedown', affichLoadStats);
+			document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
+		}
 
 		//ajoute un event listener permettrant de mettre à jour le langage choisi
 		document.getElementById('btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
 		document.getElementById('btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
 
 		document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
+
 
 		let pathActuel = window.location.pathname;
 		let fichierActuel = pathActuel.split("/").pop();
@@ -83,6 +86,7 @@ function loadSuggestion(){
 			pathToDictionary = "../dicoEn.csv";
 			langue = "en";
 		}
+
 
 		Papa.parse(pathToDictionary, {
 		download: true,
@@ -144,7 +148,8 @@ au click de l'utilisateur sur "Lancer la recherche" : redirigeLettreOuPhoneme() 
 //l'utilisateur a sélectionné choixLettre ou choixPhoneme
 //Cette fonction sera modifiée au niveau de la partie recupération des x et y
 function redirigeLettreOuPhoneme() {
-
+	filtreGrossier = document.querySelector('#filtreGrossier');
+	isFiltreGrossierActivated = filtreGrossier.checked;
 
 	var x=document.getElementById('choixDeX').value;
 	var y=document.getElementById('choixDeY').value;
@@ -166,10 +171,10 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-			aideMultiLettre(x,y);
+			aideMultiLettre(x,y,dicVulgaire,isFiltreGrossierActivated);
         }
 		else
-			aideMultiLettre(x, y);
+			aideMultiLettre(x,y,dicVulgaire,isFiltreGrossierActivated);
 	}
 	else //l'utilisateur a choisi les phonèmes
 	{
@@ -186,10 +191,11 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-			aideMultiPhon(x,y, "fr"); //mettre l'anglais aussi + tard
+
+			aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated); //mettre l'anglais aussi + tard
         }
 		else
-			aideMultiPhon(x, y, "fr");
+			aideMultiPhon(x, y,"fr",dicVulgaire,isFiltreGrossierActivated);
 	}
 }
 

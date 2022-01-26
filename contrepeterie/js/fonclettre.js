@@ -23,7 +23,7 @@ function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
 //Fonction qui rend une liste de mot compatible -> pour code = gode, cote, iode...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiLettre(x, y) {
+function aideMultiLettre(x, y, dicVulgaire, filtreGrossierActivated) {
 
   //replaceBetween(document.getElementById('mot').value, "ch", x, 2);
   affichResultat = [];
@@ -65,22 +65,29 @@ function aideMultiLettre(x, y) {
           console.log(coupleLettre[1] + " , ");
           for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
           {
-              couple = listeCouple[j]
-              var nvtMot = mot.replacerAvecIndex(i, x, couple)
-              console.log("NvMot = " + nvtMot)
-              //var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
+			couple = listeCouple[j]
+			var nvtMot = mot.replacerAvecIndex(i, x, couple)
+			console.log("NvMot = " + nvtMot)
+			//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
 
-			  nvtMot=nvtMot.replace(" ","");
-			  console.log("Mot a tester : " + nvtMot)	
-			  var lengthmot = mot.length
-			  lMot=lengthmot-(x-y);
-			  console.log("longueur mot saisi - diffxy = " + lMot);
-			  
-              if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-                  console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-                  l.push(nvtMot);
-              }
-
+			nvtMot=nvtMot.replace(" ","");
+			console.log("Mot a tester : " + nvtMot)	
+			var lengthmot = mot.length
+			lMot=lengthmot-(x-y);
+			console.log("longueur mot saisi - diffxy = " + lMot);
+			
+			if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
+				if(filtreGrossierActivated) {
+					if(!dicVulgaire.includes(nvtMot)) {
+						console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+						l.push(nvtMot);
+					}
+				}
+				else {
+					console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+					l.push(nvtMot);
+				}
+			}
           }
       }
   }

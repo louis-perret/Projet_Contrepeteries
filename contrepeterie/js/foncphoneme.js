@@ -4,7 +4,7 @@ var alph = []
 //Fonction qui rend une liste de mot compatible -> pour code = comme, cognent, cochent,...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiPhon(x, y, langue) {
+function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 	affichResultat = [];
 	var l = [];
 	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
@@ -82,8 +82,16 @@ function aideMultiPhon(x, y, langue) {
 						console.log("Le mot existe !!!!!!!" + nvtMot)
 						var indexMotDic = dicPhon.indexOf(nvtMot)
 						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-							console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-							l.push(dicPhon[indexMotDic]);
+							if(filtreGrossierActivated) {
+								if(!dicVulgaire.includes(dicMot[indexMotDic])) {
+									console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+									l.push(dicPhon[indexMotDic]);
+								}
+							}
+							else {
+								console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+								l.push(dicPhon[indexMotDic]);
+							}
 						}	
 					
 					}
