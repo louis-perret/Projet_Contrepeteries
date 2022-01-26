@@ -18,12 +18,14 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	j = 0
 	while(i < len(Word1)):
 
-		tmp = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
+		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
+
+		for x in allResults :
+						listeWord.extend(mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], x[0], mode, [i, j], x[2]))
 
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
-			listeWord.extend(mixSyllabeCoupe(Word1[:i] + k[1] + Word1[j:], k[0], mode, [i, j], k[2]))
 			if isInDico(mode, Word1[:i] + k[1] + Word1[j:]):
 				listeWord.append([Word1[:i]+k[1]+Word1[j:], k[0], [i, j], k[2]])
 
@@ -42,6 +44,7 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 	i = 0
 	j = 0
 	liste = []
+	allResults = []
 
 	while(i < len(Word2)):
 		# test si retour de Word_to_Phon est une chaîne de caractère
@@ -50,12 +53,13 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 		if isInDico(mode, Word2[:i]+sy+Word2[j:]):
 			liste.append([Word2[:i]+sy+Word2[j:], Word2[i:j], [i, j]])
 		# gestion de l'intervalle [i:j] section du Word2
+		allResults.append([Word2[:i]+sy+Word2[j:], Word2[i:j], [i, j]])
 		j += 1
 		if j > len(Word2):
 			i += 1
 			j = i+1
 
-	return liste
+	return liste, allResults
 ###############################################################################
 """
 prend en entrée la phrase de l'utilisateur,et le mode
@@ -114,16 +118,17 @@ def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
 	for i in range(len(word1)) :
 		if i < 2 and i > 0 or i > len(word1)-2 :
 			continue
-		tmp11 = word1[i:]
-		tmp12 = word1[:i]
-		if isInDico(tmp11, mode) and isInDico(tmp12, mode) :
-			for j in range(len(Word2)) :
+		tmp11 = word1[0:i]
+		tmp12 = word1[i:len(word1)]
+		if (isInDico(mode, tmp11) and isInDico(mode, tmp12)) or (tmp11=="" and isInDico(mode, tmp12)):
+			for j in range(len(word2)) :
 				if j < 2 and j > 0 or j > len(word2)-2 :
 					continue
-				tmp21 = word2[j:]
-				tmp22 = word2[:j]
-				if isInDico(tmp21, mode) and isInDico(tmp22, mode) :
-					liste.append([tmp11+" "+tmp21, tmp21+" "+tmp22, ij, ij2])
+				tmp21 = word2[0:j]
+				tmp22 = word2[j:len(word2)]
+				if (isInDico(mode, tmp21) and isInDico(mode, tmp22)) or (tmp21=="" and isInDico(mode, tmp22)) :
+					if tmp12 != word1 and tmp22 != word2 :
+						liste.append([tmp11+" "+tmp12, tmp21+" "+tmp22, ij, ij2])
 	return liste
 
 
