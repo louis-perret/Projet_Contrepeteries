@@ -76,18 +76,30 @@
             </div>
       </nav>
 
-
       <section style="min-height: 600px;">
+
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Recherche de contrepèteries dans des phrases</h2>
          </div >
+          <div id="aide">
+          <div class="row">
+              <button id="choixLettreP" class="m-2" onclick="choixLettreP()" value="true">Lettres</button>
+              <button id="choixPhonemeP" class="m-2"onclick="choixPhonemeP()" value="false">Phonèmes</button>
+              <p id="pSelectLettrePhonP" class="m-2">Sélectionné : Lettres</p>
+          </div>
+          </div>
          <div id="chargementDico">
              <div class="blackOutline"> Dictionnaire chargé :     </div>
           <span id="chargement"></span>
 
        </div>
-        
-        <div id="generation">
+
+
+
+
+
+
+          <div id="generation">
           <input type="text" name="phrase" id="phrase">
           <button id="gen" onclick="mainRecherchePhrase()"> Lancer la recherche</button>
         </div>

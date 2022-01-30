@@ -135,10 +135,25 @@ function mainMixSyllabes(phrase,mode) {
 			}
 		}
 	}
-	affichageMot(Lphrases)
+	affichageMotPhrase(Lphrases)
 		
 	
 }
+
+function affichageMotPhrase(l){
+	console.log("l : ----------------")
+	console.log(l)
+	var element = document.getElementById("div1");
+	while (element.firstChild){
+		element.removeChild(element.firstChild);
+	}
+	for(var i=0; i<l.length; i++){
+		let div = document.createElement('div');
+		div.innerHTML=l[i];
+		document.getElementById('div1').append(div);
+	}
+}
+
 
 
 
@@ -209,6 +224,44 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 		return false;
 	}
 
+
+	//----------------------------------------------------------------------------
+
+function choixLettreP() {
+	console.log("lettee !!!")
+	if (document.getElementById('choixLettreP').value == 'false')
+	{
+		document.getElementById('choixLettreP').value = 'true';
+		document.getElementById('choixPhonemeP').value = 'false';
+		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Lettres';
+	}
+}
+
+function choixPhonemeP() {
+
+	console.log("phonem !!!")
+	if (document.getElementById('choixPhonemeP').value == 'false')
+	{
+		document.getElementById('choixPhonemeP').value = 'true';
+		document.getElementById('choixLettreP').value = 'false';
+		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Phonèmes';
+
+
+	}
+}
+
+function redirigeLettreOuPhonemePhrase() {
+
+	if (document.getElementById('choixLettreP').value == 'true')
+	{
+		//mainMixSyllabes(,"lettre")
+	}
+	else //l'utilisateur a choisi les phonèmes
+	{
+		//mainMixSyllabes(,"phon")
+
+	}
+}
 
 
 
