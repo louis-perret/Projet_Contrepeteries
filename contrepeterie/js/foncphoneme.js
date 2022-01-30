@@ -45,7 +45,7 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 			});
 		}	
 		else if (langue == "en") {
-			jQuery.get("../fr/alphPhonemeEN.txt", function(data) {
+			jQuery.get("../en/alphPhonemeEN.txt", function(data) {
 				alph = data.split(",");
 			});
 		}

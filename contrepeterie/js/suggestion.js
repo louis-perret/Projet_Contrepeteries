@@ -191,11 +191,18 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-
-			aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated); //mettre l'anglais aussi + tard
+			
+			if(langue == 'fr')
+				aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated);
+			else if(langue == 'en')
+				aideMultiPhon(x,y,"en",dicVulgaire,isFiltreGrossierActivated);
         }
-		else
-			aideMultiPhon(x, y,"fr",dicVulgaire,isFiltreGrossierActivated);
+		else {
+			if(langue == 'fr')
+				aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated);
+			else if(langue == 'en')
+				aideMultiPhon(x,y,"en",dicVulgaire,isFiltreGrossierActivated);
+		}
 	}
 }
 
@@ -255,7 +262,7 @@ function afficheStats() {
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='fast, 2 à 10 sec';
+			text='fast, 2 to 10 sec';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
@@ -317,7 +324,7 @@ function afficheStats2() {
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='fast, 2 à 10 sec';
+			text='fast, 2 to 10 sec';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
