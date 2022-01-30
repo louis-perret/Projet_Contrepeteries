@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup #Permet de parser du XML & HTML
 import re as regex #Permet d'utiliser les expressions rationnelles
 import time
 import csv #Permet de manipuler des fichiers csv
+import json
+import string
 
 #Retourne une liste ordonné tel le fichier dictionnaire.txt
 def getDictAsList(fichierSource):
@@ -154,6 +156,7 @@ fichier='nomsFr.csv'
 """
 
 #Pour la langue anglaise
+"""
 fichierSourceAng='nomsEn.txt'
 listeMotAng=getDictAsList(fichierSourceAng) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
 urlAng="https://en.wiktionary.org/wiki/" #l'url de la page à parser
@@ -163,10 +166,78 @@ dicoInfosAng={"phon" : ['span','IPA'], "genre" : ['span','API'], "classe" : ["sp
 infosAEnleverAng=["/"]#["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='en'
 fichier='dicoFr.csv'
+"""
 #crawler(listeMotAng,urlAng,dicoInfosAng,infosAEnleverAng,langue,fichier,True)
 
-lireCSV(fichier)
+#lireCSV(fichier)
 #print(len(listeMotAng))
 #print(listeMotAng)
 
 #cat data/fr/dicoFr.csv | sed -re 's/pronom [1-9]/pronom/g' > test.csv 
+
+
+#Partie : création des dictionnnaires par thème : 
+
+"""
+Récupère tous les prénoms d'une langue.
+Paramaètres :
+	En entrée : 
+		-url : url de la page web sur laquelle on va récupérer les informations
+		-fichier : chemin du fichier dans lequel sera écris les résultats
+		-dicoInfos : clé -> info à récupérer, valeurs -> contient les balises et leurs classes qui contienne l'infos
+"""
+def crawlerDicoTheme(url,fichierDestination,dicoInfos,langue,infosAEnlever):
+	dico=[]
+	for lettre in list(string.ascii_lowercase):
+		newUrl=url+lettre #pour récupérer les mots de chaque lettre
+		r = requete.get(newUrl) #On exécute une requête get
+		page = r.content #On récupère le contenu de la réponse
+		soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+		#noms=soup.find_all(dicoInfos['nom'][0], {"id": dicoInfos['nom'][1]})
+		noms=soup.find_all(dicoInfos['nom'][0], {"class": dicoInfos['nom'][1]})
+		for n in noms:
+			try:
+				n=n.string.strip().lower()
+				for info in infosAEnlever: #pour enlever les apostrophes
+					n=n.replace(info,"")
+				n=n.split()
+				#print(n)
+				for i in range(len(n)):
+					#recupererConjugaison(n[i],langue)
+					if(n[i] not in dico):
+						dico.append(n[i])
+			except:
+				print("Problème dans la recherche")
+	with open(fichierDestination,'w') as file2:
+		json.dump(dico,file2)
+	#print(len(dico))
+
+
+"""
+def recupererConjugaison(langue,fichierSource):
+	with open(fichierSource) as vulgaire:
+		BDInfo = json.load(vulgaire)
+	with open(f'../data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
+		dicoClassGramm = json.load(tmp)
+	verbe=""
+	if(langue=='fr'):
+		verbe="verbe"
+	for word in BDInfo:
+		try:
+			if verbe in dicoClassGramm[word]:
+				print(n + " est un verbe")
+		except:
+			print(word + " n'est pas un verbe")
+			continue
+"""
+
+
+#url="https://www.apollo-formation.com/lexiques/lexique-it-dictionnaire-informatique.html"
+url="https://fr.wiktionary.org/w/index.php?title=Catégorie:Lexique_en_français_de_l'informatique&from="
+langue="fr"
+fichierDestination=f"DicoInformatique{langue}.json"
+#dicoInfos={"nom":['strong',""]}
+dicoInfos={"nom":['li',""]}
+infosAEnlever=["d\u2019","j\u2019","l\u2019","m\u2019","s\u2019"]
+#crawlerDicoTheme(url,fichierDestination,dicoInfos,langue,infosAEnlever)
+#recupererConjugaison(langue,fichierDestination)
