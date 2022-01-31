@@ -74,8 +74,8 @@ function loadDico(){
 
 
 function mainRecherchePhrase() {
-	var phrase=document.getElementById('phrase').value;
-	mainMixSyllabes(phrase,"lettre");
+	return document.getElementById('phrase').value;
+	//mainMixSyllabes(phrase,"lettre");
 }
 
 //Debut de la fonction pour trouver resultat dans phrases //
@@ -120,15 +120,23 @@ function mainMixSyllabes(phrase,mode) {
 					if(test) {
 						var L1 = ([parseInt(i),WordsContreP[k][2][0],WordsContreP[k][2][1]])
 						var L2 = ([j,WordsContreP[k][3][0],WordsContreP[k][3][1]])
+						console.log("------------phrase :")
+						console.log(phrase)
+						console.log("------------tmp :")
 						console.log(tmp)
-						console.log(L1)
-						console.log(L2)
-						console.log("lphrase :")	
-						console.log(Lphrases)
+						//console.log(L1)
+						//console.log(L2)
+						//console.log("lphrase :")	
+						//console.log(Lphrases)
+						console.log(phrase)
+						console.log(tmp)
+						if(mode === "phon") {
+							phrase = phonToPhrase(phrase)
+							tmp = phonToPhrase(tmp)
+						}
 						if(!Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')) {
 							Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')
 						}
-						
 					}
 				}
 				
@@ -169,13 +177,43 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 
 		tmp = mixSyllableWord2(word1.slice(i,j),word2,phrase,mode)
 		console.log("----------------------------------------- " )
-		//console.log(tmp)
+		console.log(tmp)
 
 		for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
+			/*
+			let monMot = word1.slice(0,i)+tmp[k][1]+word1.slice(j);
+			if(mode === "lettre") {
+				listeWord.push([monMot, tmp[k][0],[i,j],tmp[k][2]])
+			}
+			else if(mode === "phon") {
+				let ind;
+				for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
+					if (dicMot[j] == monMot) {
+						ind = j;
+					}
+				}
+				if(ind != 0) { //si mot non trouvé, ind = 0 normalement
+					monMotPhon = dicPhon[ind]
+					listeWord.push([dicMot.indexOf(monMotPhon), tmp[k][0],[i,j],tmp[k][2]])
+				}
+			}
+			*/
+			let mot = word1.slice(0,i)+tmp[k][1]+word1.slice(j)
+			if (motExiste(mot,dicMot) && mode === "lettre") {
+				listeWord.push([mot, tmp[k][0],[i,j],tmp[k][2]])
+				console.log("existe lettre :"+mot)
+			}
+			if (motExiste(mot,dicPhon) && mode === "phon") {
+				listeWord.push([mot, tmp[k][0],[i,j],tmp[k][2]])
+				console.log("existe phon :"+mot)
+			}
+		}
+		
+		//for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
 			//console.log("tmp : " + tmp)
 			//console.log("mot de tmp  : " + word1.slice(0,i) + tmp[k][1] + word1.slice(j))
-			if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j),dicMot)) {
-				listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j), tmp[k][0],[i,j],tmp[k][2]])
+			//if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j),dicMot)) {
+				//listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j), tmp[k][0],[i,j],tmp[k][2]])
 				//console.log("le mot " + word1.slice(0,i) + " " + tmp[k][1] + " " + word1.slice(j-1) + " a été ajouté")
 				/*
 				console.log(k + "----------------------")
@@ -187,13 +225,15 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 				console.log(tmp[k][0])
 				console.log([i,j])
 				console.log(tmp[k][2])*/
-			}
-		}
+			//}
+		//}
 		j+=1
 		if (j>word1.length) {
 			i+=1
 			j=i+1
 		}
+		console.log("listeWord :")
+		console.log(listeWord)
 		return listeWord
 	}
 }
@@ -205,30 +245,94 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 	while(i<word2.length) {
 
 		mot = word2.slice(0,i) + sy + word2.slice(j)
-		if (motExiste(mot,dicMot)) {
+		/* CE QUON A FAIT
+		
+		if(mode === "lettre") {
+			listeWord.push([mot, word2.slice(i,j),[i,j]])
+		}
+		else if(mode === "phon") {
+			let ind;
+			for (let w = 0; w < dicMot.length; w++) { //On trouve l'index de ce mot dans le dico
+				if (dicMot[w] == mot) {
+					ind = w;
+				}
+			}
+			if(ind != 0) { //si mot non trouvé, ind = 0 normalement
+				motPhon = dicPhon[ind]
+				listeWord.push([dicMot.indexOf(motPhon), word2.slice(i,j),[i,j]])
+			}
+		}
+		*/
+		console.log("mot : "+mot)
+		if (motExiste(mot,dicMot) && mode === "lettre") {
 			liste.push([mot,word2.slice(i,j),[i,j]])
+			console.log("existe lettre :"+mot)
+		}
+		if (motExiste(mot,dicPhon) && mode === "phon") {
+			liste.push([mot,word2.slice(i,j),[i,j]])
+			console.log("existe phon :"+mot)
 		}
 		j+=1;
 		if (j>word2.length) {
 			i+=1
 			j=i+1
 		}
+		console.log("liste miwSyllabeWord2 : ")
+		console.log(liste)
 		return liste
-
 	}
 }
 
-	function motExiste(mot, dic){
-		if(dic.includes(mot))
-			return true;
-		return false;
+
+
+function phraseToPhon(phrase) {
+	let str;
+	let mots = phrase.split(' ')
+	for(let i=0; i<mots.length; i++) {
+		let ind;
+		for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
+			if (dicMot[j] == mots[i]) {
+				ind = j;
+			}
+		}
+		if(ind != 0) {
+			str += (dicPhon[ind] + ' ')
+			console.log("Trouvé dans phraseToPhon : "+dicPhon[ind])
+		}
+		else
+			console.log("Mot pas dans le dico ( dans phraseToPhon) : "+mots[i])
 	}
+	return str;
+}
 
 
-	//----------------------------------------------------------------------------
+function phonToPhrase(phrase) {
+	let str = ''
+	let mots = phrase
+	console.log("mots : ")
+	console.log(mots)
+	for(let i=0; i<mots.length; i++) {
+		console.log(i)
+		let ind;
+		for (let j = 0; j < dicPhon.length; j++) { //On trouve l'index de ce mot dans le dico
+			if (dicPhon[j] == mots[i]) {
+				ind = j;
+			}
+		}
+		if(ind != 0)
+			str += (dicMot[ind] + ' ')
+		else
+			console.log("Mot pas dans le dico ( dans phonToPhrase) : "+mots[i])
+	}
+	return str.split(' ');
+}
+
+
+
+//----------------------------------------------------------------------------
 
 function choixLettreP() {
-	console.log("lettee !!!")
+	console.log("lettre !!!")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
 		document.getElementById('choixLettreP').value = 'true';
@@ -254,12 +358,12 @@ function redirigeLettreOuPhonemePhrase() {
 
 	if (document.getElementById('choixLettreP').value == 'true')
 	{
-		//mainMixSyllabes(,"lettre")
+		mainMixSyllabes(mainRecherchePhrase(),"lettre")
 	}
 	else //l'utilisateur a choisi les phonèmes
 	{
-		//mainMixSyllabes(,"phon")
-
+		let phrase = mainRecherchePhrase()
+		mainMixSyllabes(phraseToPhon(phrase),"phon")
 	}
 }
 
