@@ -102,6 +102,10 @@ a{
 	padding: 75px;
 }
 
+.bgWhite {
+  background-color: white;
+}
+
 .jumbotron{
 	font-family: 'ChopinScript';
 	/*background-image: fixed;

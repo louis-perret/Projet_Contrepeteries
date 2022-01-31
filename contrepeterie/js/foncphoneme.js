@@ -149,7 +149,7 @@ function aidePhonemRechDico(mot1, mot2) {
 			var indexMotDic2 = dicPhon.indexOf(mot2)
 			var indexRes1 = dicPhon.indexOf(resMot2[j])
 			var indexRes2 = dicPhon.indexOf(resMot1[j])
-			affichResultat.push("<div style ='margin: 10px;'><div class='card p-2 shadow-sm'>"+ dicMot[indexMotDic1] + ' - ' + dicMot[indexRes2] + '</div>' + '<div class="card p-2 shadow-sm">' + dicMot[indexMotDic2] + ' - ' + dicMot[indexRes1] +'</div></div>')
+			affichResultat.push("<div class='card p-2 shadow-sm bgWhite'>"+ dicMot[indexMotDic1] + ' - ' + dicMot[indexRes2] + '</div>' + '<div class="card p-2 shadow-sm bgWhite">' + dicMot[indexMotDic2] + ' - ' + dicMot[indexRes1] +'</div>')
 		}
 	}
 	affichageMot(affichResultat);
