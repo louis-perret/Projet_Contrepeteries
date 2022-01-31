@@ -2,6 +2,7 @@ from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
 
 tabLanguesDispo=["fr","en"]#définit les langues admises par l'application
+tabDicoThemeDispo=["Vulgaire","Informatique"]
 configLangue(tabLanguesDispo) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
 from arbin import * #on charge le dico
@@ -37,7 +38,7 @@ while boucle:
 		
 # ------------------------------------------------------------------------------
 	if n == 3:
-		configFiltre()
+		configFiltre(tabDicoThemeDispo)
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
 	elif n == 1:

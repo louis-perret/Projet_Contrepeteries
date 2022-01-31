@@ -84,10 +84,18 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue):
 	listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0]))
 	son1,son2 = "",""
 	clear()
+	nbMotPage = 25  # nombre de mots par pages
+	nbPage = (len(listeAffichage)//nbMotPage)+1  # nombre total de pages.
+	numPage = 1     
 	while(True):
-		compt = 1
+		compt = (numPage-1)*nbMotPage+1
 		if listeAffichage != [] :
-			for pack in listeAffichage:
+			min = (numPage-1)*nbMotPage
+			if numPage == nbPage :
+				max = len(listeAffichage)
+			else :
+				max = numPage*nbMotPage
+			for pack in listeAffichage[min:max]: #pack = (lettre1,lettre2,mot1',mot2',mot2)
 
 				espace = 40 - len(mot_origine) - len(pack[4])
 				marge = len(str(compt))+2
@@ -106,7 +114,8 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue):
 				son2 = pack[1]
 				compt += 1
 			print("Échange entre : ",son1,"-",son2)
-			print(f"Nombre de combinaisons : {compt-1}")
+			print("page: "+str(numPage)+"/"+str(nbPage))
+			print(f"Nombre de combinaisons : {len(listeAffichage)}")
 		else :
 			print("Aucun résultat\n")
 
@@ -115,16 +124,22 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue):
 		while(boucle):
 			try:
 				selecteur = int(input(
-					"\n0 = quitter l'aide,-1 revenir au début de l'aide \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n"))
+					"\n0 = quitter l'aide,-3 revenir au début de l'aide,\n-1: page précédente; -2: page suivante, \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n"))
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
 			if selecteur == 0:
 				return 0
-			elif selecteur == -1:
+			elif selecteur == -3:
 				clear()
 				return 1
+			elif selecteur == -2:
+				numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
+				boucle = False
+			elif selecteur == -1:
+				numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
+				boucle = False
 			elif selecteur <= len(listeAffichage) and selecteur > 0:
 				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue)
 				boucle = False

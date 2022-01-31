@@ -2,6 +2,7 @@ import language_tool_python
 import json
 import os
 import collections
+
 """
 Efface le terminal ou met une série de \n pour simuler un éffacement du terminal
 selon fichier config.json
@@ -19,22 +20,17 @@ def clear():
 """
 Modifie le fichier de configuration des filtres.
 """
-def configFiltre():
+def configFiltre(tabDicoThemeDispo):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
-		n = input("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
+		n = selectionChoix("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
 		if n == '1':
 			diconfig["FiltreGrammatical"] = "Oui"
 		elif n == '0':
 			diconfig["FiltreGrammatical"] = "Non"
 
-		n = input("\nActiver filtre Grossier\n(1:Oui/0:Non/autre:defaut):")
-		if n == '1':
-			diconfig["FiltreGrossier"] = "Oui"
-		elif n == '0':
-			diconfig["FiltreGrossier"] = "Non"
-
-		n = input("\nActiver effaçage définitif (empêche de voir les saisies précèdantes)\n(1:Oui/0:Non/autre:defaut):")
+		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
+		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(1:Oui/0:Non/autre:defaut):")
 		if n == '1':
 			diconfig["EffacerComplétement"] = "Oui"
 		elif n == '0':
@@ -48,28 +44,42 @@ def configFiltre():
 #-------------------------------------------------------------------------------
 
 """
-Objectif : Met à jour les filtres
+Objectif : Met à jour les thèmes choisis par l'utilisateur
 Paramètres :
 	-Entrée :
-		-diconfig : dictionnaire qui contient la configuration
+		-tabDicoThemeDispo : thèmes disponibles dans l'applications
 	-Sortie : 
-		-diconfig : dictionnaire qui contient la configuration
+		-un tableau contenant les thèmes sélectionnés
 """
-def changerfiltre(diconfig):
-	n = input("\nActiver filtre Grammaticale\n(1:Oui/0:Non/n'importe quelle clef:défaut):")
-	if n == '1':
-		diconfig["FiltreGrammatical"] = "Oui"
-	elif n == '0':
-		diconfig["FiltreGrammatical"] = "Non"
+def changerDicoTheme(tabDicoThemeDispo):
+	tabChoix=[] #contiendra les choix de l'utilisateurs
+	for theme in tabDicoThemeDispo:
+		choix=selectionChoix(f"Appliquer le thème {theme} ? (1=oui/0=non) :") #gère ce qui est entré
+		if(choix == 1): #s'il a sélectionné le thème
+			tabChoix.append(theme) #on l'ajoute dans les réponses
+	return tabChoix
 
-	n = input("\nActiver filtre Grossier\n(1:Oui/0:Non/n'importe quelle clef:défaut):")
-	if n == '1':
-		diconfig["FiltreGrossier"] = "Oui"
-	elif n == '0':
-		diconfig["FiltreGrossier"] = "Non"
 
-	print("\n")
-	return diconfig
+"""
+Objectif : Renvoie le choix entré par l'utilisateur
+Paramètres :
+	-Entrée :
+		-message : Message à afficher
+	-Sortie : 
+		un entier
+"""
+def selectionChoix(message):
+	while(True):
+		try:
+			entier=int(input(message))
+			if(entier == 0 or entier==1):
+				return entier
+		except:
+			print("Vous n'avez pas entré un entier. Réessayer")
+			entier=input(message)
+		print("Vous n'avez pas entré un entier convenable. Ressayer")
+
+
 #-------------------------------------------------------------------------------
 
 
@@ -297,3 +307,22 @@ def GramFiltre(listeOrigine, mot_origine,langue,mode):
 			if(classGramMot1[i] in classGramMot2 and classGramMot1[i] in classGramMot3 and classGramMot1[i] in classGramMot4): #s'ils ont la même classe grammaticale
 					nouvelleListe.append(pack) #on l'ajoute aux réponses
 	return nouvelleListe
+
+"""
+Renvoie True si le mot est dans au moins un des dico de listeDico
+Paramètre :
+	-Entrée :
+		-mot : mot à vérifier
+		-listeDico : tableau contenant les dico par thèmes sélectionnés par l'utilisateur
+	-Sortie :
+		-un boolean
+"""
+def filtreTheme(mot,listeDico):
+	boolean=False
+	if(len(listeDico)==0):
+		return True
+	for dico in listeDico:
+		if(mot in dico):
+			boolean=True
+			break
+	return boolean

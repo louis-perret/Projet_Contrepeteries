@@ -9,5 +9,11 @@ def fonction (y, a):
 		else:
 			fonction(y-1, a+l)
 
-fonction(3,'')
+#fonction(3,'')
 
+
+def FiltreTheme(mot,listeMotTheme):
+	return mot in listeMotTheme
+
+tab=['verbe','nom','proposition','adverbe']
+print(FiltreTheme("adverbe",tab))

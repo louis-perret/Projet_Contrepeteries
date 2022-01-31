@@ -199,11 +199,12 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 	tsv_file = open(f"data/{langue}/dico{langue.capitalize()}.csv", encoding="utf-8")
 	lignes = csv.reader(tsv_file, delimiter=",")
 	# lit ligne par ligne du DICO (près de 100k lignes)
-	# changer filtres
-	diconfig = changerfiltre(diconfig)
-	# bd filtres
-	with open('data/DicoVulgaire.json') as vulgaire:
-		BDvulgaire = json.load(vulgaire)
+
+	listeDico=[] #liste qui contiendra les dictionnaires par thème sélectionnés par l'utilisateur
+	for theme in diconfig['Themes']:
+		with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
+			listeDico.append(json.load(dicoTheme))
+
 	with open(f"data/{langue}/dicoPhoncom{langue.capitalize()}.json") as Phon :
 		dicoPhon = json.load(Phon)
 	print("recherche des résultats\n")
@@ -226,36 +227,24 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 					#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
 					testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if isInDico(mode, testDansMot):
-						# test we need
-						if(motIsInBorne(minimum,maximum,testDansMot)):
-							if diconfig["FiltreGrossier"] == "Oui":
+					if isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot):
+						if mode == "phon" :
+							testTheme1 = dicoPhon[listeDeMotCop[ChaqueLettre][0]]
+							testTheme2 = dicoPhon[testDansMot]
+							testTheme3 = dicoPhon[mot]
+						elif mode == "word" :
+							testTheme1 = listeDeMotCop[ChaqueLettre][0]
+							testTheme2 = testDansMot
+							testTheme3 = mot
 
-								if mode == "phon" :
-									testGrossier1 = dicoPhon[listeDeMotCop[ChaqueLettre][0]]
-									testGrossier2 = dicoPhon[testDansMot]
-									testGrossier3 = dicoPhon[mot]
-								elif mode == "word" :
-									testGrossier1 = listeDeMotCop[ChaqueLettre][0]
-									testGrossier2 = testDansMot
-									testGrossier3 = mot
-
-								if (testGrossier1 in BDvulgaire or testGrossier2 in BDvulgaire or testGrossier3 in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
-									listeDeRacines.append(mot[:5])
-
-									listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-														   listeDeMotCop[ChaqueLettre][2],
-														   listeDeMotCop[ChaqueLettre][0],
-														   testDansMot, mot))
-
-							else:
-								listeDeRacines.append(mot[:5])
-
-								listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-													   listeDeMotCop[ChaqueLettre][2],
-													   listeDeMotCop[ChaqueLettre][0],
-													   testDansMot, mot))
-							compteur += 1
+						if (filtreTheme(testTheme1,listeDico) or filtreTheme(testTheme2,listeDico) or filtreTheme(testTheme3,listeDico)): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+							listeDeRacines.append(mot[:5])
+							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
+											   listeDeMotCop[ChaqueLettre][2],
+											   listeDeMotCop[ChaqueLettre][0],
+											   testDansMot, mot))
+						compteur += 1
+	print("\n")
 	return (listeAffichage, compteur, diconfig)
 
 
@@ -302,7 +291,7 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		while(boucle):
 			try:
 				selecteur = int(input(
-					"\n0 = quitter l'aide,-3 revenir au début de l'aide :\n-1: page précédente; -2: page suivante"))
+					"\n0 = quitter l'aide,-3 revenir au début de l'aide :\n-1: page précédente; -2: page suivante : "))
 				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
@@ -316,7 +305,7 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		elif selecteur == -2:
 			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
 		elif selecteur == -1:
-			numPage = numPage-1 if numPage-1 >= 0 else numPage #Pas en dessous 0 pages
+			numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")

@@ -76,6 +76,6 @@ def creerFichierConjugaisonVerbe(fichierSrc,fichierDest):
 
 langue="fr"
 fichierSrc=f"data/{langue}/dico{langue.capitalize()}.csv"
-#creerFichierClassGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
-#creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
+creerFichierClassGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
+creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
 #creerFichierConjugaisonVerbe(fichierSrc,f"data/{langue}/dicoConjugaison{langue.capitalize()}.csv")
