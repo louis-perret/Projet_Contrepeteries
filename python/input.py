@@ -1,11 +1,12 @@
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
 
-tabLanguesDispo=["fr","en"]#définit les langues admises par l'application
-tabDicoThemeDispo=["Vulgaire","Informatique"]
-configLangue(tabLanguesDispo) #on met à jour la langue choisie
+dicoDispo={"fr": ["Vulgaire","Informatique"],"en": []} #initialise les langues disponibles ainsi que ls thèmes disponibles pour chaque langue
+configLangue(list(dicoDispo.keys())) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
 from arbin import * #on charge le dico
+with open("data/config.json","r") as file:	
+	diconfig = json.load(file) #on charge le fichier
 
 boucle = True
 memoireImport = set()
@@ -38,7 +39,7 @@ while boucle:
 		
 # ------------------------------------------------------------------------------
 	if n == 3:
-		configFiltre(tabDicoThemeDispo)
+		configFiltre(dicoDispo[diconfig['langue']])
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
 	elif n == 1:

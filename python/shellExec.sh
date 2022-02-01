@@ -8,4 +8,4 @@ cpu=$(($cpu*100000))
 complex=$((26**$longueurCouple))
 complex=$(($complex*$longueurMot*$log))
 tpsExec=$(($complex/$cpu))
-echo "temps d'exécution : $tpsExec secondes"
+echo "Temps d'exécution : $tpsExec secondes"

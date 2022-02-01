@@ -184,7 +184,7 @@ def modePersonnalisé(dico,mot,langue,diconfig):
 		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig,dico)
 
 	# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
-	if listeAffichage != []:
+	if len(listeAffichage) >0:
 		if (diconfig["FiltreGrammatical"] == "Oui"):
 			listeAffichage = GramFiltre(listeAffichage, mot,langue,dico)
 		if(dico=='word'):
@@ -192,8 +192,11 @@ def modePersonnalisé(dico,mot,langue,diconfig):
 		else:
 			return affiRechSon(listeAffichage, compteur, mot,langue)
 	else:
-		print("Aucune correspondance n'a été trouvée")
-
+		if(dico=="word"):
+			mot2=listeDeMotCop[selectMot-1][0]
+		else:
+			mot2=listeDeMotCop[selectMot-1][3]
+		affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,dico)
 
 
 """
@@ -254,3 +257,31 @@ def modePLusieurs(mode,mot,langue):
 			return affiRechLettre(listeAffichage, compteur, mot)
 		if(mode=="phon"):
 			return affiRechSon(listeAffichage, compteur, mot,langue)
+
+
+
+def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,dico):
+	message="Aucune correspondance n'a été trouvée\n"
+	if(dico=="phon"):
+		message1="phonème(s)"
+	else:
+		message1="lettre(s)"
+	message+=f"Voici les options sélectionnées : \n\t-Recherche au sein du mot : {mot} \n\t-Echange de {x} {message1} par {y} {message1}"
+	message+=f"\n\t-Recherche de quadruplé entre {mot} et {mot2}"
+	if(minimum == -1):
+		message+="\n\t-Longueur minimum des résultats : aucune"
+	else:
+		message+=f"\n\t-Longueur minimum des résultats : {minimum}"
+	if(maximum == -1):
+		message+="\n\t-Longueur maximmu des résultats : aucune"
+	else:
+		message+=f"\n\t-Longueur maximum des résultats : {maximum}"
+
+	if(len(diconfig['Themes'])==0):
+		message+="\n\tAucun thème d'appliqué"
+	else:
+		message+="\n\t-Thème(s) appliqué(s) : "
+		for theme in diconfig['Themes']:
+			message += theme + ", "
+	message+=f"\n\t-Filtre grammatical : {diconfig['FiltreGrammatical']}\n"
+	print(message)

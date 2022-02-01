@@ -24,16 +24,16 @@ def configFiltre(tabDicoThemeDispo):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
 		n = selectionChoix("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
-		if n == '1':
+		if n == 1:
 			diconfig["FiltreGrammatical"] = "Oui"
-		elif n == '0':
+		elif n == 0:
 			diconfig["FiltreGrammatical"] = "Non"
 
 		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
 		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(1:Oui/0:Non/autre:defaut):")
-		if n == '1':
+		if n == 1:
 			diconfig["EffacerComplétement"] = "Oui"
-		elif n == '0':
+		elif n == 0:
 			diconfig["EffacerComplétement"] = "Non"
 	print("\n")
 	for i in diconfig.keys():
@@ -53,6 +53,9 @@ Paramètres :
 """
 def changerDicoTheme(tabDicoThemeDispo):
 	tabChoix=[] #contiendra les choix de l'utilisateurs
+	if(len(tabDicoThemeDispo) == 0):
+		print("Aucun thème pour cette langue")
+		return list()
 	for theme in tabDicoThemeDispo:
 		choix=selectionChoix(f"Appliquer le thème {theme} ? (1=oui/0=non) :") #gère ce qui est entré
 		if(choix == 1): #s'il a sélectionné le thème
@@ -73,6 +76,7 @@ def selectionChoix(message):
 		try:
 			entier=int(input(message))
 			if(entier == 0 or entier==1):
+				print(entier)
 				return entier
 		except:
 			print("Vous n'avez pas entré un entier. Réessayer")
