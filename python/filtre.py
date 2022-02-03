@@ -130,11 +130,10 @@ def affiRechFiltre(nvDico,mode):
 		diconfig = json.load(diconfig_)
 
 	print('\nTraitement en cours ...')
-	diconfig = changerfiltre(diconfig)
 
 
 	if mode == 'phon':
-		if diconfig["FiltreGrossier"] == "Oui":
+		if False:
 			nvDico = filtreMix(nvDico) #On filtre en ne gardant que ce qui est grossier
 		count1 = 0
 		count2 = 0
@@ -209,7 +208,7 @@ def affiRechFiltre(nvDico,mode):
 		#attention, ici nvDico est une liste de tuple, plus un dico
 		#filtrage par grammaire de la phrase
 		nvListe = [nvDico[0]]
-		if diconfig["FiltreGrossier"] == "Non" and diconfig["FiltreGrammatical"] == "Non":
+		if diconfig["FiltreGrammatical"] == "Non":
 			for i in nvDico[1:]: #On renvoie les résultats qu'on avaient de base
 				nvListe.append(" ".join(i[0]))
 			return nvListe
@@ -233,7 +232,7 @@ def affiRechFiltre(nvDico,mode):
 			tmpListe =  nvDico[:]
 		#filtrage par mot vulgaires
 		for contrepet in tmpListe[1:]:
-			if diconfig["FiltreGrossier"] == "Oui":
+			if False:
 				test = False
 				for i in contrepet[0]:
 					if i in BDvulgaire:
