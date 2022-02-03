@@ -23,11 +23,12 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 
 		for x in allResults :
 			#listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
-			#listemot2 = mixSyllabeCoupe(k[0], mode)
-			for j in listemot1 :
+			#listemot2 = mixSyllabeCoupe(x[0], mode)
+"""
+			for l in listemot1 :
 				for k in listemot2 :
-					listeWord.append([j,k,[i,j],k[2]])
-
+					listeWord.append([l,k,[i,j],x[2]])
+"""
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
@@ -64,7 +65,7 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 			i += 1
 			j = i+1
 
-	return liste, allResults
+	return liste, list(allResults)
 ###############################################################################
 """
 prend en entrée la phrase de l'utilisateur,et le mode
@@ -91,6 +92,7 @@ def mainMixSyllables(phrase, mode):
 		for j in range(i+1, len(phrase)):
 
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
+			WordsContreP = list(WordsContreP)
 			# remplace les contreP trouvees dans la phrase
 			for k in WordsContreP:
 				tmp = phrase[:] #tous les éléments de phrase
@@ -121,24 +123,24 @@ ajoute des espaces au mot échangé dans mixSyllablesWord1
 
 def mixSyllabeCoupe (word1, mode) :
 	liste = []
-	"""
 	if len(word1) <= 1 :
 		if isInDico(mode, word1) :
 			liste.append(word1)
 		return liste
-	"""
-	for i in range(len(word1)) :
+	for i in range(1,len(word1)) :
 		moitié1 = word1[0:i]
 		moitié2 = word1[i:len(word1)]
 		if isInDico(mode, moitié1) and isInDico(mode, moitié2) :
-			liste.append(moitié1+" "+moitié2)
-		if len(moitié1) > 1 : # ligne a échangé éventuellement par la prtie commentée
-			moitié1 = mixSyllabeCoupe(moitié1, mode)
-		if len(moitié2) > 1 : # ligne a échanger éventuellement par la partie commentée
-			moitié2 = mixSyllabeCoupe(moitié2, mode)
-		for j in enumerate(moitié1) :
-			for k in enumerate(moitié2) :
-				liste.append(i+" "+k)
+			if moitié1+" "+moitié2 not in liste :
+				liste.append(moitié1+" "+moitié2)
+		#if len(moitié1) > 1 : # ligne a échangé éventuellement par la prtie commentée
+		moitié1 = mixSyllabeCoupe(moitié1, mode)
+		#if len(moitié2) > 1 : # ligne a échanger éventuellement par la partie commentée
+		moitié2 = mixSyllabeCoupe(moitié2, mode)
+		for j in moitié1 :
+			for k in moitié2 :
+				if j+" "+k not in liste :
+					liste.append(j+" "+k)
 	return liste
 
 
