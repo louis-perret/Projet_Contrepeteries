@@ -2,6 +2,7 @@ from arbin import *
 import json
 import itertools
 import sys
+from commun import *
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -21,7 +22,11 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
 
 		for x in allResults :
-						listeWord.extend(mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], x[0], mode, [i, j], x[2]))
+			#listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
+			#listemot2 = mixSyllabeCoupe(k[0], mode)
+			for j in listemot1 :
+				for k in listemot2 :
+					listeWord.append([j,k,[i,j],k[2]])
 
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
@@ -113,25 +118,105 @@ mixSyllabeCoupe
 ajoute des espaces au mot échangé dans mixSyllablesWord1
 """
 
-def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
+
+def mixSyllabeCoupe (word1, mode) :
 	liste = []
+	"""
+	if len(word1) <= 1 :
+		if isInDico(mode, word1) :
+			liste.append(word1)
+		return liste
+	"""
 	for i in range(len(word1)) :
-		if i < 2 and i > 0 or i > len(word1)-2 :
-			continue
-		tmp11 = word1[0:i]
-		tmp12 = word1[i:len(word1)]
-		if (isInDico(mode, tmp11) and isInDico(mode, tmp12)) or (tmp11=="" and isInDico(mode, tmp12)):
-			for j in range(len(word2)) :
-				if j < 2 and j > 0 or j > len(word2)-2 :
-					continue
-				tmp21 = word2[0:j]
-				tmp22 = word2[j:len(word2)]
-				if (isInDico(mode, tmp21) and isInDico(mode, tmp22)) or (tmp21=="" and isInDico(mode, tmp22)) :
-					if tmp12 != word1 and tmp22 != word2 :
-						liste.append([tmp11+" "+tmp12, tmp21+" "+tmp22, ij, ij2])
+		moitié1 = word1[0:i]
+		moitié2 = word1[i:len(word1)]
+		if isInDico(mode, moitié1) and isInDico(mode, moitié2) :
+			liste.append(moitié1+" "+moitié2)
+		if len(moitié1) > 1 : # ligne a échangé éventuellement par la prtie commentée
+			moitié1 = mixSyllabeCoupe(moitié1, mode)
+		if len(moitié2) > 1 : # ligne a échanger éventuellement par la partie commentée
+			moitié2 = mixSyllabeCoupe(moitié2, mode)
+		for j in enumerate(moitié1) :
+			for k in enumerate(moitié2) :
+				liste.append(i+" "+k)
 	return liste
 
 
+"""
+def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
+	listefinal = []
+	liste1 = []
+	for j in range(len(word1)) :
+		if (j < 1 and j > 0) or (j > len(word1)-1) :
+			continue
+		tmp10 = replacer(word1," ",j,0)
+		tmp10 = tmp10.split(" ")
+		tmp11 = tmp10[0]
+		tmp12 = tmp10[1]
+		for i in range(len(tmp11)) :
+			if i < 1 and i > 0 or i > len(tmp11)-1 :
+				continue
+			tmp110 = replacer(tmp11," ",i,0)
+			tmp110 = tmp110.split(" ")
+			tmp111 = tmp110[0]
+			tmp112 = tmp110[1]
+			for k in range(len(tmp12)) :
+				if k < 1 and k > 0 or k > len(tmp12)-1 :
+					continue
+				tmp120 = replacer(tmp12," ",k,0)
+				tmp120 = tmp120.split(" ")
+				tmp121 = tmp120[0]
+				tmp122 = tmp120[1]
+				if isInDico(mode, tmp11) and isInDico(mode, tmp121) and isInDico(mode, tmp122) :
+					liste1.append(tmp11+" "+tmp121+" "+tmp122)
+				if isInDico(mode, tmp111) and isInDico(mode, tmp112) and isInDico(mode, tmp121) and isInDico(mode, tmp122) :
+					liste1.append(tmp111+" "+tmp112+" "+tmp121+" "+tmp122)
+			if isInDico(mode, tmp111) and isInDico(mode, tmp112) and isInDico(mode, tmp12) :
+				liste1.append(tmp111+" "+tmp112+" "+tmp12)
+		if (isInDico(mode, tmp11) and isInDico(mode, tmp12)) or (tmp11 == "" and isInDico(mode, tmp12)) :
+			liste1.append(tmp11+" "+tmp12)
+	liste2 = secondeVerif(word2, mode)
+	liste1 = list(set(liste1))
+	liste2 = list(set(liste2))
+	for l in enumerate(liste1) :
+		for m in enumerate(liste2) :
+			listefinal.append([l[1],m[1],ij,ij2])
+	return listefinal
+
+
+def secondeVerif (word2,mode) :
+	liste = []
+	for j in range(len(word2)) :
+		if (j < 1 and j > 0) or (j > len(word2)-1) :
+			continue
+		tmp20 = replacer(word2," ",j,0)
+		tmp20 = tmp20.split(" ")
+		tmp21 = tmp20[0]
+		tmp22 = tmp20[1]
+		for i in range(len(tmp21)) :
+			if i < 1 and i > 0 or i > len(tmp21)-1 :
+				continue
+			tmp210 = replacer(tmp21," ",i,0)
+			tmp210 = tmp210.split(" ")
+			tmp211 = tmp210[0]
+			tmp212 = tmp210[1]
+			for k in range(len(tmp22)) :
+				if k < 1 and k > 0 or k > len(tmp22)-1 :
+					continue
+				tmp220 = replacer(tmp22," ",k,0)
+				tmp220 = tmp220.split(" ")
+				tmp221 = tmp220[0]
+				tmp222 = tmp220[1]
+				if isInDico(mode, tmp21) and isInDico(mode, tmp221) and isInDico(mode, tmp222) :
+					liste.append(tmp21+" "+tmp221+" "+tmp222)
+				if isInDico(mode, tmp211) and isInDico(mode, tmp212) and isInDico(mode, tmp221) and isInDico(mode, tmp222) :
+					liste.append(tmp211+" "+tmp212+" "+tmp221+" "+tmp222)
+			if isInDico(mode, tmp211) and isInDico(mode, tmp212) and isInDico(mode, tmp22) :
+				liste.append(tmp211+" "+tmp212+" "+tmp22)
+		if (isInDico(mode, tmp21) and isInDico(mode, tmp22)) or (tmp21 == "" and isInDico(mode, tmp22)) :
+			liste.append(tmp21+" "+tmp22)
+	return liste
+"""
 #------------------------------------------------------------------------------
 
 
