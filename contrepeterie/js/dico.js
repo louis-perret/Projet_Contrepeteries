@@ -96,7 +96,7 @@ function mainMixSyllabes(phrase,mode) {
 		//console.log(i)
 		var j=parseInt(i) + 1;
 
-		for (var j;j<phrase.length;j++) {
+		for (j;j<phrase.length;j++) {
 			var WordsContreP = mixSyllableWord(phrase[i], phrase[j], phrase,mode)
 			//console.log("WordContreP :")
 			//console.log(WordsContreP)
@@ -176,28 +176,10 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 		//console.log(i)
 
 		tmp = mixSyllableWord2(word1.slice(i,j),word2,phrase,mode)
-		console.log("----------------------------------------- " )
+		console.log("--------------------tmp--------------------- " )
 		console.log(tmp)
 
-		for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
-			/*
-			let monMot = word1.slice(0,i)+tmp[k][1]+word1.slice(j);
-			if(mode === "lettre") {
-				listeWord.push([monMot, tmp[k][0],[i,j],tmp[k][2]])
-			}
-			else if(mode === "phon") {
-				let ind;
-				for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
-					if (dicMot[j] == monMot) {
-						ind = j;
-					}
-				}
-				if(ind != 0) { //si mot non trouvé, ind = 0 normalement
-					monMotPhon = dicPhon[ind]
-					listeWord.push([dicMot.indexOf(monMotPhon), tmp[k][0],[i,j],tmp[k][2]])
-				}
-			}
-			*/
+		for (k in tmp) {
 			let mot = word1.slice(0,i)+tmp[k][1]+word1.slice(j)
 			if (motExiste(mot,dicMot) && mode === "lettre") {
 				listeWord.push([mot, tmp[k][0],[i,j],tmp[k][2]])
@@ -208,25 +190,7 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 				console.log("existe phon :"+mot)
 			}
 		}
-		
-		//for (k in tmp) { //Pour cette partie j'ai fais j-1 mais coté python c'est juste j mais j'ai l'impression que ca ne marche pas si je fais pas j-1
-			//console.log("tmp : " + tmp)
-			//console.log("mot de tmp  : " + word1.slice(0,i) + tmp[k][1] + word1.slice(j))
-			//if (motExiste(word1.slice(0,i)+tmp[k][1]+word1.slice(j),dicMot)) {
-				//listeWord.push([word1.slice(0,i)+tmp[k][1]+word1.slice(j), tmp[k][0],[i,j],tmp[k][2]])
-				//console.log("le mot " + word1.slice(0,i) + " " + tmp[k][1] + " " + word1.slice(j-1) + " a été ajouté")
-				/*
-				console.log(k + "----------------------")
-				console.log("word 1 ? : " + word1) 
-				console.log("i : " + i)
-				console.log(word1.slice(0,i))
-				console.log(tmp[k][1])
-				console.log(word1.slice(j))
-				console.log(tmp[k][0])
-				console.log([i,j])
-				console.log(tmp[k][2])*/
-			//}
-		//}
+
 		j+=1
 		if (j>word1.length) {
 			i+=1
@@ -234,8 +198,9 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 		}
 		console.log("listeWord :")
 		console.log(listeWord)
-		return listeWord
+
 	}
+	return listeWord
 }
 
 function mixSyllableWord2(sy,word2,phrase,mode) {
@@ -245,24 +210,6 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 	while(i<word2.length) {
 
 		mot = word2.slice(0,i) + sy + word2.slice(j)
-		/* CE QUON A FAIT
-		
-		if(mode === "lettre") {
-			listeWord.push([mot, word2.slice(i,j),[i,j]])
-		}
-		else if(mode === "phon") {
-			let ind;
-			for (let w = 0; w < dicMot.length; w++) { //On trouve l'index de ce mot dans le dico
-				if (dicMot[w] == mot) {
-					ind = w;
-				}
-			}
-			if(ind != 0) { //si mot non trouvé, ind = 0 normalement
-				motPhon = dicPhon[ind]
-				listeWord.push([dicMot.indexOf(motPhon), word2.slice(i,j),[i,j]])
-			}
-		}
-		*/
 		console.log("mot : "+mot)
 		if (motExiste(mot,dicMot) && mode === "lettre") {
 			liste.push([mot,word2.slice(i,j),[i,j]])
@@ -279,8 +226,9 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 		}
 		console.log("liste miwSyllabeWord2 : ")
 		console.log(liste)
-		return liste
+
 	}
+	return liste
 }
 
 
