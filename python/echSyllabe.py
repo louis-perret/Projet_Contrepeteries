@@ -22,13 +22,12 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
 
 		for x in allResults :
-			#listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
-			#listemot2 = mixSyllabeCoupe(x[0], mode)
-			"""
+			listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
+			listemot2 = mixSyllabeCoupe(x[0], mode)
+
 			for l in listemot1 :
 				for k in listemot2 :
 					listeWord.append([l,k,[i,j],x[2]])
-			"""
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
@@ -301,16 +300,21 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue):
 		dicoPhon = json.load(tmp)
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée
+	string = ""
 	for i in range(len(listePhon)):
 		listePhon[i] = dicoPhon[listePhon[i]] #Pour chaque phonème de la phrase, on récupère tous les mots qui s'écrivent pareil
+		string = string+" "+listePhon[i][0]
 
+	listeretour.append(string)
+	"""
 	for i in range(len(listePhon[pos1])):
 		for j in range(len(listePhon[pos2])):
 			string = phraseOrigine[:]
 			string[pos1] = listePhon[pos1][i]
 			string[pos2] = listePhon[pos2][j]
+	"""
 
-			listeretour.append(string)
+		
 
 
 # Produit de toutes les combinaisons possibles des mots

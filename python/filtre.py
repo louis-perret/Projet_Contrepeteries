@@ -143,19 +143,18 @@ def affiRechFiltre(nvDico,mode):
 		StockPourkey = ""
 		compteur = -1
 		dicores = []
-
 		for key in nvDico:
 
 			if diconfig["FiltreGrammatical"] == "Oui":
 
 				for j in nvDico[key]:
-					j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
+					#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
 					if j[0] == " ":
 						j = j[1:] #Si la phrase commence par un espace, on l'enlève
 					j = j.capitalize() #Met la première en majuscule et toutes les autres en minuscules
 					compteur += 1
 
-					if StockPourkey != key and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
+					if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
 						print(compteur, " -->", j)
 						StockPourkey = key
 						dicores.append(key)
