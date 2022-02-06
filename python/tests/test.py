@@ -1,5 +1,6 @@
 import string
 import numpy as np
+import nltk
 
 def fonction (y, a):
 	listeMot = []
@@ -17,3 +18,5 @@ def FiltreTheme(mot,listeMotTheme):
 
 tab=['verbe','nom','proposition','adverbe']
 print(FiltreTheme("adverbe",tab))
+
+

@@ -24,11 +24,11 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 		for x in allResults :
 			#listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 			#listemot2 = mixSyllabeCoupe(x[0], mode)
-"""
+			"""
 			for l in listemot1 :
 				for k in listemot2 :
 					listeWord.append([l,k,[i,j],x[2]])
-"""
+			"""
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant

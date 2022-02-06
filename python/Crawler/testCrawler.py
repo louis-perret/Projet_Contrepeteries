@@ -58,6 +58,33 @@ def recupClassGramEn(soup,dicoInfos):
 	return categ
 
 
+
+def crawlerLettre(listeMots,url,fichierDestination,dicoInfos):
+	with open(fichier,'a') as dico: #on ouvre le fichier dans lequel on va écrire les résultats
+		dicoWriter=csv.writer(dico,delimiter=',')
+		for mot in listeMots:
+			if(True):
+			#try:
+				r = requete.get(url) #On exécute une requête get
+				page = r.content #On récupère le contenu de la réponse
+				soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+				prononciation = soup.find(dicoInfos['phon'][0], {"class": dicoInfos['phon'][1]}) # ( pour le français par exemple -> On recherche la première balise span qui a une class API )
+				pron = prononciation.string.strip() #On enlève les balises html de la chaine
+				pron = pron[1:-1] #On enlève les '\' en début et fin
+				dicoWriter.writerow([mot,pron,"",list(dicoInfos['categLettre'])]) #écrit dans le fichier
+
+				mot=mot + "'"
+				r = requete.get(url) #On exécute une requête get
+				page = r.content #On récupère le contenu de la réponse
+				soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+				prononciation = soup.find(dicoInfos['phon'][0], {"class": dicoInfos['phon'][1]}) # ( pour le français par exemple -> On recherche la première balise span qui a une class API )
+				pron = prononciation.string.strip() #On enlève les balises html de la chaine
+				pron = pron[1:-1] #On enlève les '\' en début et fin
+				dicoWriter.writerow([mot,pron,"",list(dicoInfos['categPronom'])]) #écrit dans le fichier
+			#except:
+			else:
+				print('Problème dans la recherche des noms' + mot)
+
 """
 Récupère tous les prénoms/noms d'une langue.
 Paramaètres :
@@ -69,7 +96,7 @@ Paramaètres :
 def crawlerNom(url,fichierDestination,dicoInfos):
 	with open(fichierDestination,'a') as file: #'a'-> écrit à partir de la fin du fichier sans effacer ce qu'il y avait déjà d'écris
 		try:
-			r = requete.get(url) #On exécute une requête get
+			r = requete.get(url+mot) #On exécute une requête get
 			page = r.content #On récupère le contenu de la réponse
 			soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
 			noms=soup.find_all(dicoInfos['nom'][0], {"class": dicoInfos['nom'][1]})
@@ -99,6 +126,7 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 	with open(fichier,'a') as dico: #on ouvre le fichier dans lequel on va écrire les résultats
 		dicoWriter=csv.writer(dico,delimiter=',')
 		for mot in listeMot:
+			#if(True):
 			try:
 				r = requete.get(url+mot) #On exécute une requête get
 				page = r.content #On récupère le contenu de la réponse
@@ -144,6 +172,7 @@ def crawler(listeMot,url,dicoInfos,infosAEnlever,langue,fichier,isNom):
 						time.sleep(60) #S'endort 0.1 seconde (permet d'éviter de se faire ban du site)
 					else:
 						time.sleep(30)
+			#else:
 			except:
 				#Dans le cas où le mot n'est pas référencé sur wikitionnary, s'il n'a pas d'écriture phonétique etc...
 				print("Dernier mot : ",compteur)
@@ -167,7 +196,8 @@ urlPrenom="https://fr.wikipedia.org/wiki/Liste_de_prénoms_en_français"
 dicoInfos={"nom":['a','mw-disambig']}
 urlNom="https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courants_en_France"
 #crawlerNom(urlNom,fichierDestination,dicoInfos)
-
+"""
+"""
 #Pour la langue française
 fichierSource='nomsFr.txt'
 listeMot=getDictAsList(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
@@ -177,7 +207,9 @@ dicoInfos={"phon" : ['span','API'], "genre" : ['span','ligne-de-forme'], "classe
 infosAEnlever=["forme de ","forme d’"," commun"] #On récupère 'forme de verbe' -> on aura 'verbe' à la fin
 langue='fr'
 fichier='nomsFr.csv'
+"""
 
+"""
 #-> utile pour nettoyer le dictionnaire de certaines informations
 #Ici, on enlève les 'pronom 1','pronom 2' ... 'pronom 9' par juste 'pronom', n'hésitez pas à vous renseigner sur la commande système sed (qui est très pratique pour faire des modifications rapidement sur le contenu d'un fichier !)
 #cat data/fr/dicoFr.csv | sed -re 's/pronom [1-9]/pronom/g' > test.csv 
@@ -201,12 +233,24 @@ fichier='dicoFr.csv'
 #lireCSV(fichier)
 #print(len(listeMotAng))
 #print(listeMotAng)
-
-
-
-
-
 """
+
+
+
+listeMot= list(string.ascii_lowercase) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
+for i in range(len(listeMot)):
+	listeMot[i]=listeMot[i] + "'"
+
+url="https://fr.wiktionary.org/wiki/" #l'url de la page à parser
+dicoInfos={"phon" : ['span','API'],"nom": "lettre", "genre": ['div','div']}
+fichier='dicoFr2.csv'
+langue="fr"
+crawler(listeMot,url,dicoInfos,[],langue,fichier,True)
+
+
+
+
+
 #Partie : création des dictionnnaires par thème : 
 
 """

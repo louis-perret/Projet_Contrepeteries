@@ -1960,7 +1960,7 @@ asymmetric,ˌeɪsəˈmɛtrɪk,,['adjective']
 asymmetrical,ˌeɪsɪˈmɛtɹɪk(ə)l,,['adjective']
 asymmetry,eɪˈsɪmɪtɹi,,['noun']
 asymptomatic,ætɪ,,"['adjective', 'noun']"
-asymptotic,ˌæsəm(p)ˈtɒtɪk,,['adjective']
+asymptotic,ˌæsəmˈtɒtɪk,,['adjective']
 asynchronous,eɪˈsɪŋkɹənəs,,['adjective']
 at,æt,,"['conjunction', 'adverb', 'preposition', 'noun', 'verb', 'pronoun']"
 atavism,ˈætəˌvɪzəm,,['noun']
@@ -2858,7 +2858,7 @@ behavior,bɪˈheɪvjɚ,,['noun']
 behaviorist,ˌbiɦeːviɔˈrɪst,,['noun']
 behead,bɪˈhɛd,,['verb']
 beheld,bɪˈhɛld,,['verb']
-behemoth,bəˈhi(ː)məθ,,['noun']
+behemoth,bəˈhiməθ,,['noun']
 behest,biˈhɛst,,"['verb', 'noun']"
 behind,bɪˈhaɪnd,,"['adverb', 'preposition', 'adjective', 'noun']"
 behold,bɪˈhəʊld,,"['verb', 'interjection', 'noun']"
@@ -14403,9 +14403,9 @@ hazing,ˈheɪzɪŋ,,"['verb', 'noun']"
 hazmat,ˈhæzˌmæt,,['noun']
 hazy,ˈheɪzi,,['adjective']
 he,ˈhiː,,"['noun', 'conjunction', 'verb', 'interjection', 'adjective', 'pronoun', 'adverb']"
-he'd,hiːd,,[]
-he'll,hiːl,,[]
-he's,ˈhiːz,,[]
+he'd,hiːd,,['verb']
+he'll,hiːl,,['verb']
+he's,ˈhiːz,,['verb']
 head,hɛd,,"['verb', 'adjective', 'noun']"
 headache,ˈhɛdeɪk,,['noun']
 headband,ˈhɛdˌbænd,,['noun']
@@ -26948,9 +26948,9 @@ shawl,ʃɔːl,,"['verb', 'noun']"
 shay,ʃeɪ,,['noun']
 shays,eɪ,,['noun']
 she,ʃi:,,"['noun', 'pronoun']"
-she'd,ʃiːd,,['pronoun']
-she'll,ʃiːl,,['pronoun']
-she's,ʃiz,,['pronoun']
+she'd,ʃiːd,,['verb']
+she'll,ʃiːl,,['verb']
+she's,ʃiz,,['verb']
 sheaf,ʃiːf,,"['verb', 'noun']"
 shear,ʃɪə(ɹ),,"['verb', 'adjective', 'noun']"
 sheared,ˈʃiɹd,,['verb']
@@ -30087,10 +30087,10 @@ theta,ˈθiːtə,,"['adjective', 'noun']"
 thew,θjuː,,"['verb', 'adjective', 'noun']"
 thews,θjuːz,,"['verb', 'noun']"
 they,ðeɪ,,"['adverb', 'pronoun', 'noun', 'conjunction']"
-they'd,ðeɪd,,[]
-they'll,ðeɪl,,[]
-they're,ðɛə(ɹ),,['adverb']
-they've,ðeɪv,,[]
+they'd,ðeɪd,,['verb']
+they'll,ðeɪl,,['verb']
+they're,ðɛə,,['adverb']
+they've,ðeɪv,,['verb']
 thick,θɪk,,"['adverb', 'verb', 'adjective', 'noun']"
 thicken,ˈθɪkən,,['verb']
 thicker,ɪkə(ɹ,,"['adjective', 'adverb']"
@@ -32551,16 +32551,16 @@ way,weɪ,,"['adverb', 'interjection', 'verb', 'noun']"
 wayfarer,ˈweɪˌfɛəɹə(ɹ),,['noun']
 waylaid,ˌweɪˈleɪd,,['verb']
 waylay,ˌweɪˈleɪ,,['verb']
-waylayer,weɪˈleɪə(ɹ),,['noun']
+waylayer,weɪˈleɪə,,['noun']
 ways,weɪz,,['noun']
 wayward,ˈweɪwɚd,,['adjective']
 waywardness,ˈweɪwə(ɹ)dnəs,,['noun']
 wazoo,wæˈzuː,,['noun']
 we,wiː,,"['conjunction', 'pronoun', 'noun', 'preposition', 'adjective', 'adverb']"
-we'd,wiːd,,[]
-we'll,wiːl,,[]
-we're,wɪə(ɹ),,[]
-we've,wiːv,,[]
+we'd,wiːd,,['verb']
+we'll,wiːl,,['verb']
+we're,wɪə(ɹ),,['verb']
+we've,wiːv,,['verb']
 weak,wiːk,,['adjective']
 weaken,ˈwikən,,['verb']
 weakened,wiːˈkɛnd,,"['verb', 'adjective']"
@@ -33311,16 +33311,16 @@ yonder,ˈjɒndə(ɹ),,"['adverb', 'adjective', 'noun']"
 yonks,jɒŋks,,['noun']
 yore,jɔː,,"['adverb', 'noun']"
 you,juː,,"['verb', 'noun', 'pronoun']"
-you'd,juːd,,[]
-you'll,juːl,,[]
-you're,jʊə(ɹ),,[]
-you've,juːv,,[]
+you'd,juːd,,['verb']
+you'll,juːl,,['verb']
+you're,jʊə,,['verb']
+you've,juːv,,['verb']
 young,jʌŋ,,"['adjective', 'verb', 'noun']"
 younger,ˈjʌŋɡɚ,,"['adjective', 'noun']"
 youngest,ˈjʌŋɡəst,,"['adjective', 'noun']"
 youngster,ˈjʌŋstə,,['noun']
-your,jɔː,,[]
-yours,jɔː(ɹ)z,,['pronoun']
+your,jɔː,,['pronoun']
+yours,jɔːz,,['pronoun']
 yourself,jɔːˈsɛlf,,['pronoun']
 yourselves,jɔɹˈsɛlvz,,['pronoun']
 yous,juːz,,"['verb', 'noun', 'pronoun']"

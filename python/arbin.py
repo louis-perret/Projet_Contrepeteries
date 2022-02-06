@@ -39,7 +39,7 @@ def insert(tree, value):
 			insert(tree.right, value)
 			tree.hauteurD = 1 + max(tree.right.hauteurG,
 									tree.right.hauteurD)
-
+	
 	eq = equilibre(tree)
 	if eq > 1:
 		if equilibre(tree.left) < 0:
@@ -52,6 +52,7 @@ def insert(tree, value):
 			rotate_right(tree.right)
 
 		rotate_left(tree)
+
 # ----------------------------------------------------------------------------
 
 
@@ -173,8 +174,10 @@ def Mot_to_Phon(tree, value):
 	if (tree.value.split(",")[0]) == value: #Si c'est le mot que je recherche
 		return (tree.value.split(",")[1] + "," + tree.value.split(",")[2]) #renvoie son phonème et sa classe grammaticale
 	if (tree.value.split(",")[0]) is not None and value < (tree.value.split(",")[0]):
+		#print(tree.value.split(",")[0])
 		return Mot_to_Phon(tree.left, value)
 	elif (tree.value.split(",")[0]) is not None:
+		#print(tree.value.split(",")[0])
 		return Mot_to_Phon(tree.right, value)
 # ----------------------------------------------------------------------------
 """
@@ -232,6 +235,8 @@ def Constructeur_Arbre_Mot(langue):
 	for lignes in read_tsv:
 		bar.update(i)
 		i=i+1
+		if i>3000000:
+			break
 		if " " not in lignes[0]:
 			mot = lignes[0] + "," + lignes[1] + "," + lignes[2] + "," + lignes[3]
 			insert(a, mot)

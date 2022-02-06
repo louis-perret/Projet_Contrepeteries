@@ -213,8 +213,8 @@ def affiRechFiltre(nvDico,mode):
 				nvListe.append(" ".join(i[0]))
 			return nvListe
 
-		with open('data/DicoVulgaire.json') as vulgaire:
-			BDvulgaire = json.load(vulgaire)
+		#with open('data/DicoVulgaire.json') as vulgaire:
+		#	BDvulgaire = json.load(vulgaire)
 
 		if diconfig["FiltreGrammatical"] == "Oui":
 			for contrepet in nvDico[1:]:
