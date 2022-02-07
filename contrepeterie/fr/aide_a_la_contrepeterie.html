@@ -156,9 +156,15 @@
                 </div>
 
                 <div class="m-3">
-                    <input type="checkbox" id="filtreGrossier">
-                    <label for="couperMots">Activer le filtre grossier</label>
+                    <input type="checkbox" id="filtreClassesGram">
+                    <label for="filtreClassesGram">Seulement les mêmes classes grammaticales</label>
                 </div>
+
+                <select id="filtreGrossier">
+                    <option value="filtreGrossUnabled">Filtre Grossier désactivé</option>
+                    <option value="filtreGrossOnly">Seulement les mots grossiers</option>
+                    <option value="filtreGrossNone">Supprimer les mots grossiers</option>
+                </select>
             </div>
             
             <div id="generation" style="display: flex;flex-direction:column;align-items:flex-start;">

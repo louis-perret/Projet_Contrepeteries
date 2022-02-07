@@ -23,7 +23,7 @@ function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
 //Fonction qui rend une liste de mot compatible -> pour code = gode, cote, iode...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiLettre(x, y, dicVulgaire, filtreGrossierActivated) {
+function aideMultiLettre(x, y, dicVulgaire, valueFiltreGrossier, isClassesGramChecked) {
 
   //replaceBetween(document.getElementById('mot').value, "ch", x, 2);
   affichResultat = [];
@@ -67,7 +67,7 @@ function aideMultiLettre(x, y, dicVulgaire, filtreGrossierActivated) {
           {
 			couple = listeCouple[j]
 			var nvtMot = mot.replacerAvecIndex(i, x, couple)
-			console.log("NvMot = " + nvtMot)
+			console.log("NvtMot = " + nvtMot)
 			//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
 
 			nvtMot=nvtMot.replace(" ","");
@@ -77,15 +77,34 @@ function aideMultiLettre(x, y, dicVulgaire, filtreGrossierActivated) {
 			console.log("longueur mot saisi - diffxy = " + lMot);
 			
 			if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-				if(filtreGrossierActivated) {
-					if(!dicVulgaire.includes(nvtMot)) {
-						console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-						l.push(nvtMot);
+				if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(nvtMot)] != "undefined") {
+					let isSameClasseGram = false;
+					console.log(dicClassesGram[dicMot.indexOf(mot)])
+					let substr1 = dicClassesGram[dicMot.indexOf(mot)].substring(2,dicMot.indexOf(mot).length-2)
+					let substr2 = dicClassesGram[dicMot.indexOf(nvtMot)].substring(2,dicMot.indexOf(nvtMot).length-2)
+					console.log(substr1)
+					console.log(substr2)
+					let classeGramMot = substr1.split("', '");
+					let classeGramNvtMot = substr2.split("', '");
+					classeGramMot.forEach(element => {
+						if(classeGramNvtMot.includes(element))
+							isSameClasseGram = true;
+					});
+
+					if((isClassesGramChecked && isSameClasseGram) || !isClassesGramChecked) {
+						console.log(isClassesGramChecked)
+						console.log(classeGramMot)
+						console.log(classeGramNvtMot)
+						if(valueFiltreGrossier == "filtreGrossOnly" && dicVulgaire.includes(nvtMot)) {
+							l.push(nvtMot);
+						}
+						else if(valueFiltreGrossier == "filtreGrossNone" && !dicVulgaire.includes(nvtMot)) {
+							l.push(nvtMot);
+						}
+						else if(valueFiltreGrossier == "filtreGrossUnabled"){
+							l.push(nvtMot);
+						}
 					}
-				}
-				else {
-					console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-					l.push(nvtMot);
 				}
 			}
           }
