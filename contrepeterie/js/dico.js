@@ -81,7 +81,12 @@ function mainRecherchePhrase() {
 //Debut de la fonction pour trouver resultat dans phrases //
 
 function mainMixSyllabes(phrase,mode) {
-	var phrase = phrase.split(' ')
+	console.log("phrase a passer à phonToPhrase (avant) :")
+	console.log(phrase)
+	phrase = phrase.trimEnd();
+	var phrase = phrase.split(" ")
+	console.log("phrase a passer à phonToPhrase (apres) :")
+	console.log(phrase)
 	var Lphrases = []
 	var tmp = []
 	var taille
@@ -98,8 +103,7 @@ function mainMixSyllabes(phrase,mode) {
 
 		for (j;j<phrase.length;j++) {
 			var WordsContreP = mixSyllableWord(phrase[i], phrase[j], phrase,mode)
-			//console.log("WordContreP :")
-			//console.log(WordsContreP)
+			//console.log("WordContreP : " + WordsContreP)
 			for (k in WordsContreP) {
 				//console.log("k = " + k)
 				tmp = [].concat(phrase)
@@ -109,8 +113,14 @@ function mainMixSyllabes(phrase,mode) {
 				console.log("tmp j = " + tmp[j])
 				console.log("WordsContreP[k] = " + WordsContreP[k][1])
 				*/
+
+				
 				tmp[i] = WordsContreP[k][0]
 				tmp[j] = WordsContreP[k][1]
+				console.log("------------phrase :")
+				console.log(phrase)
+				console.log("------------tmp :")
+				console.log(tmp)
 				taille = phrase.length
 				test = true
 				for(let l=0;l<taille;l++) {
@@ -118,23 +128,26 @@ function mainMixSyllabes(phrase,mode) {
 						test = false
 					}
 					if(test) {
-						var L1 = ([parseInt(i),WordsContreP[k][2][0],WordsContreP[k][2][1]])
-						var L2 = ([j,WordsContreP[k][3][0],WordsContreP[k][3][1]])
-						console.log("------------phrase :")
-						console.log(phrase)
-						console.log("------------tmp :")
-						console.log(tmp)
+						//console.log("------------phrase :")
+						//console.log(phrase)
+						//console.log("------------tmp :")
+						//console.log(tmp)
 						//console.log(L1)
 						//console.log(L2)
 						//console.log("lphrase :")	
 						//console.log(Lphrases)
-						console.log(phrase)
-						console.log(tmp)
+						//console.log(phrase)
+						//console.log(tmp)
 						if(mode === "phon") {
-							phrase = phonToPhrase(phrase)
-							tmp = phonToPhrase(tmp)
+							//console.log("phrase a passer à phonToPhrase : " + phrase)
+							//console.log("tmp a passer à phonToPhrase : " + tmp)
+							//phrase = phonToPhrase(phrase)
+							//tmp = phonToPhrase(tmp)
+							if(!Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phonToPhrase(phrase).join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + phonToPhrase(tmp).join(' ') +'</div></div>')) {
+								Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phonToPhrase(phrase).join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + phonToPhrase(tmp).join(' ') +'</div></div>')
+							}
 						}
-						if(!Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')) {
+						if(mode === "lettre" && !Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')) {
 							Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')
 						}
 					}
@@ -144,13 +157,11 @@ function mainMixSyllabes(phrase,mode) {
 		}
 	}
 	affichageMotPhrase(Lphrases)
-		
-	
 }
 
 function affichageMotPhrase(l){
-	console.log("l : ----------------")
-	console.log(l)
+	//console.log("l : ----------------")
+	//console.log(l)
 	var element = document.getElementById("div1");
 	while (element.firstChild){
 		element.removeChild(element.firstChild);
@@ -166,6 +177,7 @@ function affichageMotPhrase(l){
 
 
 function mixSyllableWord(word1,word2,phrase,mode) {
+	console.log("PASSE-----------------------------------------------------")
 	listeWord = [];
 	tmp = Array();
 	var i = 0;
@@ -176,18 +188,18 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 		//console.log(i)
 
 		tmp = mixSyllableWord2(word1.slice(i,j),word2,phrase,mode)
-		console.log("--------------------tmp--------------------- " )
-		console.log(tmp)
+		//console.log("--------------------tmp--------------------- " )
+		//console.log(tmp)
 
 		for (k in tmp) {
 			let mot = word1.slice(0,i)+tmp[k][1]+word1.slice(j)
 			if (motExiste(mot,dicMot) && mode === "lettre") {
 				listeWord.push([mot, tmp[k][0],[i,j],tmp[k][2]])
-				console.log("existe lettre :"+mot)
+				//console.log("existe lettre :"+mot)
 			}
 			if (motExiste(mot,dicPhon) && mode === "phon") {
 				listeWord.push([mot, tmp[k][0],[i,j],tmp[k][2]])
-				console.log("existe phon :"+mot)
+				//console.log("existe phon :"+mot)
 			}
 		}
 
@@ -196,8 +208,8 @@ function mixSyllableWord(word1,word2,phrase,mode) {
 			i+=1
 			j=i+1
 		}
-		console.log("listeWord :")
-		console.log(listeWord)
+		//console.log("listeWord :")
+		//console.log(listeWord)
 
 	}
 	return listeWord
@@ -210,22 +222,22 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 	while(i<word2.length) {
 
 		mot = word2.slice(0,i) + sy + word2.slice(j)
-		console.log("mot : "+mot)
+		//console.log("mot : "+mot)
 		if (motExiste(mot,dicMot) && mode === "lettre") {
 			liste.push([mot,word2.slice(i,j),[i,j]])
-			console.log("existe lettre :"+mot)
+			//console.log("existe lettre :"+mot)
 		}
 		if (motExiste(mot,dicPhon) && mode === "phon") {
 			liste.push([mot,word2.slice(i,j),[i,j]])
-			console.log("existe phon :"+mot)
+			//console.log("existe phon :"+mot)
 		}
 		j+=1;
 		if (j>word2.length) {
 			i+=1
 			j=i+1
 		}
-		console.log("liste miwSyllabeWord2 : ")
-		console.log(liste)
+		//console.log("liste miwSyllabeWord2 : ")
+		//console.log(liste)
 
 	}
 	return liste
@@ -234,8 +246,10 @@ function mixSyllableWord2(sy,word2,phrase,mode) {
 
 
 function phraseToPhon(phrase) {
-	let str;
+	let str=""
 	let mots = phrase.split(' ')
+	//console.log("phrase avant dans phraseToPhon: ")
+	//console.log(mots)
 	for(let i=0; i<mots.length; i++) {
 		let ind;
 		for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
@@ -250,17 +264,18 @@ function phraseToPhon(phrase) {
 		else
 			console.log("Mot pas dans le dico ( dans phraseToPhon) : "+mots[i])
 	}
+	console.log("phrase apres dans phraseToPhon: ")
+	console.log(str)
 	return str;
 }
 
 
 function phonToPhrase(phrase) {
-	let str = ''
+	let str = ""
 	let mots = phrase
-	console.log("mots : ")
-	console.log(mots)
+	//console.log("phrase avant dans phonToPhrase : ")
+	//console.log(phrase)
 	for(let i=0; i<mots.length; i++) {
-		console.log(i)
 		let ind;
 		for (let j = 0; j < dicPhon.length; j++) { //On trouve l'index de ce mot dans le dico
 			if (dicPhon[j] == mots[i]) {
