@@ -1,6 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
+var dicCle=[];
 
 
 function handleFileSelect(evt) {
@@ -68,6 +69,13 @@ function loadDico(){
 			splitdic(dic);
 
 		}
+	});
+
+	$(function () {
+		$.getJSON('../dicoPhoncomFr.json', function (data) {
+			console.log(data)
+			dicCle = data
+		});
 	});
 }
 
@@ -294,7 +302,7 @@ function phonToPhrase(phrase) {
 //----------------------------------------------------------------------------
 
 function choixLettreP() {
-	trouverOrthographePhonem("la poule qui mue")
+	trouverOrthographePhonem("la moule qui pue")
 	console.log("lettre !!!")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
@@ -333,13 +341,13 @@ function redirigeLettreOuPhonemePhrase() {
 function trouverOrthographePhonem(phrase) {
 	phrasePhon = phraseToPhon(phrase).trimEnd().split(" ")
 	console.log(phrasePhon)
-	var tabResult = []
+	var listeRetour = []
 
 	for(let i in phrasePhon) {
-		console.log(phrasePhon[i])
-		
+		phrasePhon[i] = dicCle[phrasePhon[i]]
 	}
-
+	listeRetour.push(phrasePhon)
+	console.log(listeRetour)
 }
 
 
