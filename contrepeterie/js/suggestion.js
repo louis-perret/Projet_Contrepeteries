@@ -151,7 +151,7 @@ function redirigeLettreOuPhoneme() {
 	filtreGrossier = document.querySelector('#filtreGrossier');
 	valueFiltreGrossier = filtreGrossier.value;
 	filtreClassesGram = document.querySelector('#filtreClassesGram');
-	isClassesGramChecked = filtreGrossier.checked;
+	isClassesGramChecked = filtreClassesGram.checked;
 
 	var x=document.getElementById('choixDeX').value;
 	var y=document.getElementById('choixDeY').value;

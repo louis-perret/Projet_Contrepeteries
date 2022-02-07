@@ -79,11 +79,8 @@ function aideMultiLettre(x, y, dicVulgaire, valueFiltreGrossier, isClassesGramCh
 			if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
 				if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(nvtMot)] != "undefined") {
 					let isSameClasseGram = false;
-					console.log(dicClassesGram[dicMot.indexOf(mot)])
-					let substr1 = dicClassesGram[dicMot.indexOf(mot)].substring(2,dicMot.indexOf(mot).length-2)
-					let substr2 = dicClassesGram[dicMot.indexOf(nvtMot)].substring(2,dicMot.indexOf(nvtMot).length-2)
-					console.log(substr1)
-					console.log(substr2)
+					let substr1 = dicClassesGram[dicMot.indexOf(mot)].replace("['", "").replace("']","");
+					let substr2 = dicClassesGram[dicMot.indexOf(nvtMot)].replace("['", "").replace("']","");
 					let classeGramMot = substr1.split("', '");
 					let classeGramNvtMot = substr2.split("', '");
 					classeGramMot.forEach(element => {
@@ -92,9 +89,9 @@ function aideMultiLettre(x, y, dicVulgaire, valueFiltreGrossier, isClassesGramCh
 					});
 
 					if((isClassesGramChecked && isSameClasseGram) || !isClassesGramChecked) {
-						console.log(isClassesGramChecked)
-						console.log(classeGramMot)
-						console.log(classeGramNvtMot)
+						//console.log(isClassesGramChecked)
+						//console.log(classeGramMot)
+						//console.log(classeGramNvtMot)
 						if(valueFiltreGrossier == "filtreGrossOnly" && dicVulgaire.includes(nvtMot)) {
 							l.push(nvtMot);
 						}

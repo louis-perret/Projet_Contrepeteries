@@ -4,7 +4,7 @@ var alph = []
 //Fonction qui rend une liste de mot compatible -> pour code = comme, cognent, cochent,...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiPhon(x, y, langue, dicVulgaire, valueFiltreGrossier) {
+function aideMultiPhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked) {
 	let trouveDansDico = false;
 	affichResultat = [];
 	var l = [];
@@ -79,26 +79,31 @@ function aideMultiPhon(x, y, langue, dicVulgaire, valueFiltreGrossier) {
 						//console.log("Le mot existe !!!!!!!" + nvtMot)
 						var indexMotDic = dicPhon.indexOf(nvtMot)
 						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-							if(valueFiltreGrossier == "filtreGrossOnly") {
-								if(dicVulgaire.includes(dicMot[indexMotDic])) {
-									//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-									l.push(dicPhon[indexMotDic]);
-								}
-							}
-							else if(valueFiltreGrossier == "filtreGrossNone") {
-								if(!dicVulgaire.includes(dicMot[indexMotDic])) {
-									//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-									l.push(dicMot[indexMotDic]);
-								}
-							}
-							else if(valueFiltreGrossier == "filtreGrossUnabled"){
-								//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-								l.push(dicMot[indexMotDic]);
-							}
-						}	
-					
-					}
+							if(typeof dicClassesGram[dicPhon.indexOf(mot2)] != "undefined" && typeof dicClassesGram[dicPhon.indexOf(nvtMot)] != "undefined") {
+								let isSameClasseGram = false;
+								let substr1 = dicClassesGram[dicPhon.indexOf(mot2)].replace("['", "").replace("']","");
+								let substr2 = dicClassesGram[dicPhon.indexOf(nvtMot)].replace("['", "").replace("']","");
+								let classeGramMot = substr1.split("', '");
+								let classeGramNvtMot = substr2.split("', '");
+								classeGramMot.forEach(element => {
+									if(classeGramNvtMot.includes(element))
+										isSameClasseGram = true;
+								});
 
+								if((isClassesGramChecked && isSameClasseGram) || !isClassesGramChecked) {
+									if(valueFiltreGrossier == "filtreGrossOnly" && dicVulgaire.includes(dicMot[indexMotDic])) {
+										l.push(dicPhon[indexMotDic]);
+									}
+									else if(valueFiltreGrossier == "filtreGrossNone" && !dicVulgaire.includes(dicMot[indexMotDic])) {
+										l.push(dicPhon[indexMotDic]);
+									}
+									else if(valueFiltreGrossier == "filtreGrossUnabled"){
+										l.push(dicPhon[indexMotDic]);
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
