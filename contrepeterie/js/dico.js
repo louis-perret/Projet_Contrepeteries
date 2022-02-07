@@ -83,7 +83,7 @@ function loadDico(){
 
 function mainRecherchePhrase() {
 	let phrase =  document.getElementById('phrase').value;
-	return phrase.toLowerCase()
+	return phrase.toLowerCase().trim()
 	//mainMixSyllabes(phrase,"lettre");
 }
 
