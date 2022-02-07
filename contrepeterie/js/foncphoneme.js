@@ -4,7 +4,8 @@ var alph = []
 //Fonction qui rend une liste de mot compatible -> pour code = comme, cognent, cochent,...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
 //Traduction de la fonction de généralisation python en JS
-function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
+function aideMultiPhon(x, y, langue, dicVulgaire, valueFiltreGrossier) {
+	let trouveDansDico = false;
 	affichResultat = [];
 	var l = [];
 	let mot = document.getElementById('mot').value.toLowerCase(); //On recuperer en minuscule le mot saisi au clavier
@@ -14,6 +15,7 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 	for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
 		if (dicMot[j] == mot) {
 			ind = j;
+			trouveDansDico = true;
 		}
 	}
 
@@ -29,14 +31,9 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 		langue = "en";
 	}
 
-	if(ind == 0) {
-		if(langue == "fr")
-			document.getElementById('div1').innerHTML = "Pas de résultat";
-		else if(langue == "en")
-			document.getElementById('div1').innerHTML = "No result";
-		document.getElementById('loadingStats').style.visibility = "collapse";
-	}
-	else {
+	if(trouveDansDico) {
+		console.clear
+		console.log("indice = "+ind)
 		var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
 		if (langue == "fr") {
 			//lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
@@ -52,7 +49,7 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 
 		let motSave = mot2; //On garde le mot en memoire
 		let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-		console.log(" ########## motSave :  " + motSave.length);
+		//console.log(" ########## motSave :  " + motSave.length);
 		for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
 		{
 			//console.log("!!!!! i : " + i)
@@ -65,37 +62,43 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 				{
 					couple = listeCouple[j]
 					var nvtMot = mot2.replacerAvecIndex(i, x, couple)
-					console.log("mot2 = " + mot2)
+					//console.log("mot2 = " + mot2)
 
-					console.log("i = " + i)
-					console.log("x = " + x)
-					console.log("couple = " + couple)
-					console.log("NvMot = " + nvtMot)
+					//console.log("i = " + i)
+					//console.log("x = " + x)
+					//console.log("couple = " + couple)
+					//console.log("NvMot = " + nvtMot)
 					//var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
-	
+
 					nvtMot=nvtMot.replace(" ","");
-					console.log("Mot a tester : " + nvtMot)	
+					//console.log("Mot a tester : " + nvtMot)	
 					var lengthmot = mot2.length
 					lMot=lengthmot-(x-y);
-					console.log("longueur mot saisi - diffxy = " + lMot);
+					//console.log("longueur mot saisi - diffxy = " + lMot);
 					if(motExiste(nvtMot,dicPhon)) {
-						console.log("Le mot existe !!!!!!!" + nvtMot)
+						//console.log("Le mot existe !!!!!!!" + nvtMot)
 						var indexMotDic = dicPhon.indexOf(nvtMot)
 						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
-							if(filtreGrossierActivated) {
-								if(!dicVulgaire.includes(dicMot[indexMotDic])) {
-									console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+							if(valueFiltreGrossier == "filtreGrossOnly") {
+								if(dicVulgaire.includes(dicMot[indexMotDic])) {
+									//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
 									l.push(dicPhon[indexMotDic]);
 								}
 							}
-							else {
-								console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
-								l.push(dicPhon[indexMotDic]);
+							else if(valueFiltreGrossier == "filtreGrossNone") {
+								if(!dicVulgaire.includes(dicMot[indexMotDic])) {
+									//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+									l.push(dicMot[indexMotDic]);
+								}
+							}
+							else if(valueFiltreGrossier == "filtreGrossUnabled"){
+								//console.log("++++++++++++++++++++++++++++++++++++Mot ajouté : " + nvtMot)
+								l.push(dicMot[indexMotDic]);
 							}
 						}	
 					
 					}
-	
+
 				}
 			}
 		}
@@ -103,7 +106,8 @@ function aideMultiPhon(x, y, langue, dicVulgaire, filtreGrossierActivated) {
 		//console.log("--------------------------Ma liste compatible : " + l)
 		choixMotCompatible(motSave, l);
 	}
-  }
+}
+
 
 //Fonction qui va trouver la difference de lettres entre deux mots, essentiel pour permettre de trouver le groupe de 4 mots
 function aidePhonemRechDico(mot1, mot2) {

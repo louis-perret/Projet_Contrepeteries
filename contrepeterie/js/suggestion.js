@@ -1,6 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
+var dicClassesGram = [];
 var dicVulgaire = [];
 var affichResultat=[];
 var saveTuple=[];
@@ -36,10 +37,6 @@ $("#csv-file").change(handleFileSelect);
 		dicMot.push(dic[0]['data'][i][0]);
 		dicPhon.push(dic[0]['data'][i][1]);
 	}
-  	console.log("Affichage du dictionaire de mots");
-  	console.log(dicMot);
-  	console.log("Affichage du dictionaire de sons");
-  	console.log(dicPhon);
 }
 
 
@@ -111,12 +108,15 @@ function loadSuggestion(){
 function splitdic(){
 	for(let i=0; i<dic.length; i++){
 		dicMot.push(dic[i]['data'][0]);
-		dicPhon.push(dic[i]['data'][1]);	
+		dicPhon.push(dic[i]['data'][1]);
+		dicClassesGram.push(dic[i]['data'][3]);
 	}
   	console.log("Affichage du dictionaire de mots");
   	console.log(dicMot);
   	console.log("Affichage du dictionaire de sons");
   	console.log(dicPhon);
+	console.log("Affichage du dictionnaire grammatical");
+  	console.log(dicClassesGram);
 }
 
 //Fonction qui permet de savoir si un mot donné est contenu dans un dictionnaire donné
@@ -149,7 +149,9 @@ au click de l'utilisateur sur "Lancer la recherche" : redirigeLettreOuPhoneme() 
 //Cette fonction sera modifiée au niveau de la partie recupération des x et y
 function redirigeLettreOuPhoneme() {
 	filtreGrossier = document.querySelector('#filtreGrossier');
-	isFiltreGrossierActivated = filtreGrossier.checked;
+	valueFiltreGrossier = filtreGrossier.value;
+	filtreClassesGram = document.querySelector('#filtreClassesGram');
+	isClassesGramChecked = filtreGrossier.checked;
 
 	var x=document.getElementById('choixDeX').value;
 	var y=document.getElementById('choixDeY').value;
@@ -171,10 +173,10 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-			aideMultiLettre(x,y,dicVulgaire,isFiltreGrossierActivated);
+			aideMultiLettre(x,y,dicVulgaire,valueFiltreGrossier,isClassesGramChecked);
         }
 		else
-			aideMultiLettre(x,y,dicVulgaire,isFiltreGrossierActivated);
+			aideMultiLettre(x,y,dicVulgaire,valueFiltreGrossier,isClassesGramChecked);
 	}
 	else //l'utilisateur a choisi les phonèmes
 	{
@@ -191,18 +193,12 @@ function redirigeLettreOuPhoneme() {
 				document.getElementById("choixDeX").value = 1;
 			x = document.getElementById("choixDeX").value;
 			y = document.getElementById("choixDeY").value;
-			
-			if(langue == 'fr')
-				aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated);
-			else if(langue == 'en')
-				aideMultiPhon(x,y,"en",dicVulgaire,isFiltreGrossierActivated);
         }
-		else {
-			if(langue == 'fr')
-				aideMultiPhon(x,y,"fr",dicVulgaire,isFiltreGrossierActivated);
-			else if(langue == 'en')
-				aideMultiPhon(x,y,"en",dicVulgaire,isFiltreGrossierActivated);
-		}
+
+		if(langue == 'fr')
+			aideMultiPhon(x,y,"fr",dicVulgaire,valueFiltreGrossier,isClassesGramChecked);
+		else if(langue == 'en')
+			aideMultiPhon(x,y,"en",dicVulgaire,valueFiltreGrossier,isClassesGramChecked);
 	}
 }
 
@@ -448,7 +444,7 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 		if(langue == "fr")
 			document.getElementById("div1").innerHTML = "Pas de résultat";
 		else if(langue == "en")
-		document.getElementById("div1").innerHTML = "No result";
+			document.getElementById("div1").innerHTML = "No result";
 	}
 		
 
