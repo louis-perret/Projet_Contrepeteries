@@ -265,8 +265,6 @@ function phraseToPhon(phrase) {
 		else
 			console.log("Mot pas dans le dico ( dans phraseToPhon) : "+mots[i])
 	}
-	console.log("phrase apres dans phraseToPhon: ")
-	console.log(str)
 	return str;
 }
 
@@ -296,6 +294,7 @@ function phonToPhrase(phrase) {
 //----------------------------------------------------------------------------
 
 function choixLettreP() {
+	trouverOrthographePhonem("la poule qui mue")
 	console.log("lettre !!!")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
@@ -329,6 +328,18 @@ function redirigeLettreOuPhonemePhrase() {
 		let phrase = mainRecherchePhrase()
 		mainMixSyllabes(phraseToPhon(phrase),"phon")
 	}
+}
+
+function trouverOrthographePhonem(phrase) {
+	phrasePhon = phraseToPhon(phrase).trimEnd().split(" ")
+	console.log(phrasePhon)
+	var tabResult = []
+
+	for(let i in phrasePhon) {
+		console.log(phrasePhon[i])
+		
+	}
+
 }
 
 
