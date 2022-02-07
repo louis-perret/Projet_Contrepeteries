@@ -151,27 +151,36 @@ def affiRechFiltre(nvDico,mode):
 					#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
 					if j[0] == " ":
 						j = j[1:] #Si la phrase commence par un espace, on l'enlève
-					j = j.capitalize() #Met la première en majuscule et toutes les autres en minuscules
+					for k in range(len(j[0])) :
+						j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
 					compteur += 1
 
 					if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
-						print(compteur, " -->", j)
+						print(compteur, " -->", end=" ")
+						for k in range(len(j)) :
+							print(j[k][0], end = ' ')
 						StockPourkey = key
 						dicores.append(key)
+						print()
 					else:
 						compteur -= 1
 
 			else:
 				for j in nvDico[key]:
-					j = ' '.join(j)
+					#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
 					if j[0] == " ":
-						j = j[1:]
-					j = j.capitalize()
+						j = j[1:] #Si la phrase commence par un espace, on l'enlève
+					for k in range(len(j[0])) :
+						j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
 					compteur += 1
-					if StockPourkey != key:
-						print(compteur, " -->", j)
+
+					if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
+						print(compteur, " -->", end=" ")
+						for k in range(len(j)) :
+							print(j[k][0], end = ' ')
 						StockPourkey = key
 						dicores.append(key)
+						print()
 					else:
 						compteur -= 1
 
@@ -185,16 +194,28 @@ def affiRechFiltre(nvDico,mode):
 				continue
 			if (choixutilisateur) <= compteur and choixutilisateur > -1:
 				for j in nvDico[dicores[choixutilisateur]]:
-					j = ' '.join(j)
-					if j[0] == " ":
-						j = j[1:]
-					j = j.capitalize()
-					if diconfig["FiltreGrammatical"] == "Oui":
-						matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
-						if len(matches) == 0:
-							print(j)
-					else:
-						print(j)
+					maxlen = 0
+					phrase = []	
+					for k in range(len(j)) :
+						phrase.append(j[k])
+						if len(j[k]) > maxlen :
+							maxlen = len(j[k])
+						for l in range(len(phrase[0])) :
+							phrase[0][l] = phrase[0][l].capitalize()
+					#if diconfig["FiltreGrammatical"] == "Oui":
+							#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
+							#if len(matches) == 0:
+					for m in range(maxlen) :
+						for n in range(len(phrase)) :
+							if len(phrase[n]) > m :
+								print(phrase[n][m], end=" ")
+							else :
+								print(phrase[n][0], end=" ")
+						print()
+
+
+						#else:
+						#	print(j)
 
 			elif choixutilisateur == -1:
 				return 0

@@ -88,14 +88,29 @@ def mainMixSyllables(phrase, mode):
 	# Pour chaque mot dans la phrase
 	for i in range(len(phrase)):
 		# Pour chaque autre mot que tmp dans la phrase on permutra
-		for j in range(i+1, len(phrase)):
-
+		#for m in range(i,len(phrase)) :
+		for j in range(i+1, len(phrase)) :
+				#for l in range(j, len(phrase)) :
+			"""
+			if i != m :
+				if j != l :
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[m], phrase[j]+phrase[l], phrase, mode)
+					WordsContreP = list(WordsContreP)
+				else :
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[m], phrase[j], phrase, mode)
+					WordsContreP = list(WordsContreP)
+			else :
+				if j != l :
+					WordsContreP = mixSyllablesWord1(phrase[i], phrase[j]+phrase[l], phrase, mode)
+					WordsContreP = list(WordsContreP)
+				else :
+					"""
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
 			WordsContreP = list(WordsContreP)
 			# remplace les contreP trouvees dans la phrase
 			for k in WordsContreP:
 				tmp = phrase[:] #tous les éléments de phrase
-		#ajoute les nouveaux mots au même endroit que les anciens
+		#ajoute les nouveaux mots au même endroit que les anciensdd
 				tmp[i] = k[0] 
 				tmp[j] = k[1]
 
@@ -130,16 +145,16 @@ def mixSyllabeCoupe (word1, mode) :
 		moitié1 = word1[0:i]
 		moitié2 = word1[i:len(word1)]
 		if isInDico(mode, moitié1) and isInDico(mode, moitié2) :
-			if moitié1+" "+moitié2 not in liste :
-				liste.append(moitié1+" "+moitié2)
-		#if len(moitié1) > 1 : # ligne a échangé éventuellement par la prtie commentée
-		moitié1 = mixSyllabeCoupe(moitié1, mode)
-		#if len(moitié2) > 1 : # ligne a échanger éventuellement par la partie commentée
-		moitié2 = mixSyllabeCoupe(moitié2, mode)
-		for j in moitié1 :
-			for k in moitié2 :
-				if j+" "+k not in liste :
-					liste.append(j+" "+k)
+			liste.append(moitié1+' '+moitié2)
+		remoitié1 = mixSyllabeCoupe(moitié1, mode)
+		remoitié2 = mixSyllabeCoupe(moitié2, mode)
+		if isInDico(mode, moitié1) :
+			remoitié1.append(moitié1)
+		if isInDico(mode, moitié2) :
+			remoitié2.append(moitié2)
+		for j in remoitié1 :
+			for k in remoitié2 :
+				liste.append(j+' '+k)
 	return liste
 
 
@@ -298,14 +313,15 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue):
 	# PhrasePhoneme(str)
 	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
 		dicoPhon = json.load(tmp)
+	#print(dicoPhon["e"])
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée
-	string = ""
 	for i in range(len(listePhon)):
 		listePhon[i] = dicoPhon[listePhon[i]] #Pour chaque phonème de la phrase, on récupère tous les mots qui s'écrivent pareil
-		string = string+" "+listePhon[i][0]
 
-	listeretour.append(string)
+		#string = string+" "+listePhon[i][0]
+
+	listeretour.append(listePhon)
 	"""
 	for i in range(len(listePhon[pos1])):
 		for j in range(len(listePhon[pos2])):
