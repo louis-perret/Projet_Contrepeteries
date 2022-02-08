@@ -28,6 +28,8 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 			for l in listemot1 :
 				for k in listemot2 :
 					listeWord.append([l,k,[i,j],x[2]])
+
+
 		for k in tmp:
 			# test si retour de Word_to_Phon est une chaîne de caractère,
 			# Si oui, alors le mélange est un mot existant
@@ -90,22 +92,17 @@ def mainMixSyllables(phrase, mode):
 		# Pour chaque autre mot que tmp dans la phrase on permutra
 		#for m in range(i,len(phrase)) :
 		for j in range(i+1, len(phrase)) :
-				#for l in range(j, len(phrase)) :
-			"""
-			if i != m :
-				if j != l :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[m], phrase[j]+phrase[l], phrase, mode)
-					WordsContreP = list(WordsContreP)
-				else :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[m], phrase[j], phrase, mode)
-					WordsContreP = list(WordsContreP)
-			else :
-				if j != l :
-					WordsContreP = mixSyllablesWord1(phrase[i], phrase[j]+phrase[l], phrase, mode)
-					WordsContreP = list(WordsContreP)
-				else :
-					"""
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
+			"""
+			if j != i+1 and i < len(phrase)-1:
+				if j < len(phrase)-1 :
+					WordsContreP.extend(mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode))
+				else :
+					WordsContreP.extend(mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode))
+			else :
+				if j < len(phrase)-1 :
+					WordsContreP.extend(mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode))
+			"""
 			WordsContreP = list(WordsContreP)
 			# remplace les contreP trouvees dans la phrase
 			for k in WordsContreP:
@@ -137,23 +134,15 @@ ajoute des espaces au mot échangé dans mixSyllablesWord1
 
 def mixSyllabeCoupe (word1, mode) :
 	liste = []
+	if isInDico(mode,word1) :
+		liste.append(word1)
 	if len(word1) <= 1 :
-		if isInDico(mode, word1) :
-			liste.append(word1)
 		return liste
 	for i in range(1,len(word1)) :
-		moitié1 = word1[0:i]
-		moitié2 = word1[i:len(word1)]
-		if isInDico(mode, moitié1) and isInDico(mode, moitié2) :
-			liste.append(moitié1+' '+moitié2)
-		remoitié1 = mixSyllabeCoupe(moitié1, mode)
-		remoitié2 = mixSyllabeCoupe(moitié2, mode)
-		if isInDico(mode, moitié1) :
-			remoitié1.append(moitié1)
-		if isInDico(mode, moitié2) :
-			remoitié2.append(moitié2)
-		for j in remoitié1 :
-			for k in remoitié2 :
+		moitié1 = mixSyllabeCoupe(word1[0:i], mode)
+		moitié2 = mixSyllabeCoupe(word1[i:len(word1)], mode)
+		for j in moitié1 :
+			for k in moitié2 :
 				liste.append(j+' '+k)
 	return liste
 
