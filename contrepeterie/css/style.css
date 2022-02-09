@@ -639,3 +639,15 @@ span.c0 {
   align-items: center;
 }
 
+#myDIV {
+    display: flex;
+    flex-direction:column;
+    color: white;
+    width: 550px;
+    height: 200px;
+    background: black;
+    position: relative;
+    font-size: 20px;
+    margin: 100px auto ;
+}
+

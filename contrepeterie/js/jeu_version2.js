@@ -2,6 +2,10 @@ var dic=[];
 var dicMot=[];
 var dicPhon=[];
 var dicCle=[];
+var alph = []
+
+
+var motATrouver=["code","manger"]
 
 
 function handleFileSelect(evt) {
@@ -77,4 +81,122 @@ function loadDico(){
             dicCle = data
         });
     });
+}
+
+function removeButton() {
+    var elem = document.getElementById('myButton');
+    elem.parentNode.removeChild(elem);
+}
+
+function writeText(id){
+    document.getElementById("myH1").textContent = motATrouver[id];
+}
+
+function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
+    let trouveDansDico = false;
+    affichResultat = [];
+    var l = [];
+
+    if (mot.length == 0)
+        return;
+    let ind = 0;
+    for (let j = 0; j < dicMot.length; j++) { //On trouve l'index de ce mot dans le dico
+        if (dicMot[j] == mot) {
+            ind = j;
+            trouveDansDico = true;
+        }
+    }
+
+    //récupère le nom de la vue actuelle
+    let pathActuel = window.location.pathname;
+    let fichierActuel = pathActuel.split("/").pop();
+    if(fichierActuel == "aide_a_la_contrepeterie.html") {
+        pathToDictionary = "../dict_fr_ok.csv";
+        langue = "fr";
+    }
+    else if (fichierActuel == "spoonerism_aid.html") {
+        pathToDictionary = "../debut_dico_en.csv";
+        langue = "en";
+    }
+
+    if(trouveDansDico) {
+        console.clear
+        console.log("indice = "+ind)
+        var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
+        if (langue == "fr") {
+            //lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
+            jQuery.get("../fr/alphPhonemeFR.txt", function(data) {
+                alph = data.split(",");
+            });
+        }
+        else if (langue == "en") {
+            jQuery.get("../en/alphPhonemeEN.txt", function(data) {
+                alph = data.split(",");
+            });
+        }
+
+        let motSave = mot2; //On garde le mot en memoire
+        let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
+        console.log("liste couple " + listeCouple)
+        for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
+        {
+            //console.log("!!!!! i : " + i)
+            var coupleLettre = recupCouple(mot2, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
+            //console.log("true ou false ? : " + coupleLettre[0])
+            if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
+            {
+                console.log(coupleLettre[1] + " , ");
+                for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
+                {
+                    couple = listeCouple[j]
+                    var nvtMot = mot2.replacerAvecIndex(i, x, couple)
+
+                    nvtMot=nvtMot.replace(" ","");
+                    var lengthmot = mot2.length
+                    lMot=lengthmot-(x-y);
+                    if(motExiste(nvtMot,dicPhon)) {
+                        console.log("Le mot existe !!!!!!!" + nvtMot)
+                        var indexMotDic = dicPhon.indexOf(nvtMot)
+                        if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
+                            if(typeof dicClassesGram[dicPhon.indexOf(mot2)] != "undefined" && typeof dicClassesGram[dicPhon.indexOf(nvtMot)] != "undefined") {
+                                let isSameClasseGram = false;
+                                let substr1 = dicClassesGram[dicPhon.indexOf(mot2)].replace("['", "").replace("']","");
+                                let substr2 = dicClassesGram[dicPhon.indexOf(nvtMot)].replace("['", "").replace("']","");
+                                let classeGramMot = substr1.split("', '");
+                                let classeGramNvtMot = substr2.split("', '");
+                                classeGramMot.forEach(element => {
+                                    if(classeGramNvtMot.includes(element))
+                                        isSameClasseGram = true;
+                                });
+
+                                if((isClassesGramChecked && isSameClasseGram) || !isClassesGramChecked) {
+                                    if(valueFiltreGrossier == "filtreGrossOnly" && dicVulgaire.includes(dicMot[indexMotDic])) {
+                                        l.push(dicPhon[indexMotDic]);
+                                    }
+                                    else if(valueFiltreGrossier == "filtreGrossNone" && !dicVulgaire.includes(dicMot[indexMotDic])) {
+                                        l.push(dicPhon[indexMotDic]);
+                                    }
+                                    else if(valueFiltreGrossier == "filtreGrossUnabled"){
+                                        l.push(dicPhon[indexMotDic]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        console.log(" ]")
+        //console.log("--------------------------Ma liste compatible : " + l)
+        return l;
+    }
+}
+
+function deroulementJeu()
+{
+    var id=0;
+    var listeReponse=[]
+    writeText(id)
+    listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motATrouver[id])
+    console.log(" l " + listeReponse)
 }
