@@ -2,7 +2,7 @@ var dic=[];
 var dicMot=[];
 var dicPhon=[];
 var dicCle=[];
-var alph = [];
+var alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
 let score = 0;
 let timeRemaining = 30; //sec
 
@@ -265,19 +265,9 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 
 	if(trouveDansDico) {
 		var mot2 = dicPhon[ind]; //On copie ce mot dans mot2
-		if (langue == "fr") {
-			//lit le fichier ../fr/alphPhonemeFR.txt et rentre le résultat dans la variable globale alph
-			jQuery.get("../fr/alphPhonemeFR.txt", function(data) {
-				alph = data.split(",");
-			});
-		}	
-		else if (langue == "en") {
-			jQuery.get("../en/alphPhonemeEN.txt", function(data) {
-				alph = data.split(",");
-			});
-		}
 
 		let motSave = mot2; //On garde le mot en memoire
+        console.log(alph)
 		let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
 		//console.log(" ########## motSave :  " + motSave.length);
 		for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
@@ -289,17 +279,18 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 			{
                 console.log("hehoçapasselà")
 				console.log(coupleLettre[1] + " , ");
+                console.log(listeCouple.length)
 				for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
 				{
 					couple = listeCouple[j]
 					var nvtMot = mot2.replacerAvecIndex(i, x, couple)
 					nvtMot=nvtMot.replace(" ","");
-					//console.log("Mot a tester : " + nvtMot)	
+					console.log("Mot a tester : " + nvtMot)	
 					var lengthmot = mot2.length
 					lMot=lengthmot-(x-y);
 					//console.log("longueur mot saisi - diffxy = " + lMot);
 					if(motExiste(nvtMot,dicPhon)) {
-						console.log("Le mot existe !!!!!!!" + nvtMot)
+						//console.log("Le mot existe !!!!!!!" + nvtMot)
 						var indexMotDic = dicPhon.indexOf(nvtMot)
 						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
 							l.push(dicMot[indexMotDic]);
