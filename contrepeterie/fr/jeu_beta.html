@@ -88,14 +88,34 @@
         <span id="chargement"></span>
     </div>
 
-    <div id="divJeu">
-        <h1 id="text"></h1>
-        <div id="myDIV">
-            <h1 id="myH1">Trouver les contrepèteries du mot !</h1>
-            <button id="myButton" onclick="removeButton();deroulementJeu()">Commencez la partie !</button>
-            <input id="reponse" value="Saisir la réponse...">
+    <div class="flexAllCenter">
+        <button id="myButton" onclick="removeButton();deroulementJeu()">Un click ici pour commencer la partie !</button>
+        <p>(attention ça va vite)</p>
+    </div>
+
+    <div class="flexAllCenter">
+        <div id="divJeu">
+            <h3 id="text"></h3>
+            <div id="myDIV">
+                <h1 id="myH1">Trouver les contrepèteries du mot !</h1>
+                <div class="flexAllCenter">
+                    <input id="reponse" placeholder="Saisir la réponse...">
+                    <button id="btnValidate">Valider</button>
+                </div>
+            </div>
         </div>
 
+        <div style="border-radius: 4px; background-color: slategray;"">
+            <div style="display: flex;">
+                <h3>Timer : </h3>
+                <h3 id="displayTimer">30</h3>
+            </div>
+
+            <div style="display: flex;">
+                <h3>Score : </h3>
+                <h3 id="displayScore"></h3>
+            </div>
+        </div>
     </div>
 
 </section>

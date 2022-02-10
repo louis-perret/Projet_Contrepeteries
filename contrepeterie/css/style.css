@@ -128,6 +128,13 @@ a{
   padding: 20px;
 }
 
+#myButton {
+  border-radius: 8px;
+  background-color: rgb(8, 197, 40);
+  color:rgb(5, 29, 29);
+  font-weight: bold;
+  padding: 5px;
+}
 
 #titrePr{
 	text-shadow: 0px 0px 15px black;
@@ -406,7 +413,7 @@ span.c0 {
     text-decoration: underline;
 }
 
-#contrepetrieDiv{
+#contrepetrie{
 	padding-top: 30px;
 	padding-bottom: 30px;
 }
@@ -540,6 +547,12 @@ span.c0 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.flexAllCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #btnInfoProc {
