@@ -90,7 +90,7 @@
 
     <div class="flexAllCenter">
         <button id="myButton" onclick="removeButton();deroulementJeu()">Un click ici pour commencer la partie !</button>
-        <p>(attention ça va vite)</p>
+        <p>(le chargement du 1er mot prends un peu de temps)</p>
     </div>
 
     <div class="flexAllCenter">
@@ -105,7 +105,7 @@
             </div>
         </div>
 
-        <div style="border-radius: 4px; background-color: slategray;"">
+        <div style="border-radius: 4px; background-color: slategray;">
             <div style="display: flex;">
                 <h3>Timer : </h3>
                 <h3 id="displayTimer">30</h3>
@@ -115,10 +115,14 @@
                 <h3>Score : </h3>
                 <h3 id="displayScore"></h3>
             </div>
-        <div style="display: flex;">
-            <h3 id="bonneRep">0</h3><h3 id="nombreRep"></h3>
+            <div style="display: flex;">
+                <h3 id="bonneRep">Bonnes réponses : </h3><h3 id="nombreBonnesRep">0</h3>
+            </div>
         </div>
-        </div>
+    </div>
+
+    <div class="flexAllCenter">
+        <h3 id="messageSuccess"></h3>
     </div>
 
 </section>

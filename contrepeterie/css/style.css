@@ -555,6 +555,11 @@ span.c0 {
   justify-content: center;
 }
 
+#messageSuccess {
+  font-weight: bold;
+  margin: 15px;
+}
+
 #btnInfoProc {
   background-color: aquamarine;
   border-radius: 4px;
@@ -574,7 +579,6 @@ span.c0 {
 .divPadding20px {
   padding: 20px;
 }
-
 
 .toTheRight {
   float: right;
@@ -653,14 +657,14 @@ span.c0 {
 }
 
 #myDIV {
-    display: flex;
-    flex-direction:column;
-    color: white;
-    width: 550px;
-    height: 200px;
-    background: black;
-    position: relative;
-    font-size: 20px;
-    margin: 100px auto ;
+  display: flex;
+  flex-direction:column;
+  color: white;
+  width: 550px;
+  height: 200px;
+  background: black;
+  position: relative;
+  font-size: 20px;
+  margin: 100px auto ;
 }
 

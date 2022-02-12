@@ -1,15 +1,16 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
-var dicCle=[];
-var alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
+let dicCle=[];
+let dicMot4a8lettres=[];
+let alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
 let score = 0;
 let timeRemaining = 30; //sec
+let nbSoumissionReponse = 0;
 
+let listeReponse=[]
 
-var listeReponse=[]
-
-var motATrouver=["code","manger"]
+let motATrouver=[]
 
 
 function handleFileSelect(evt) {
@@ -46,12 +47,16 @@ function splitdicSelector(){
 function splitdic(){
     for(let i=0; i<dic.length; i++){
         dicMot.push(dic[i]['data'][0]);
-        dicPhon.push(dic[i]['data'][1]);
+        dicPhon.push(dic[i]['data'][1]);     
+        if(dic[i]['data'][0].length >= 4 && dic[i]['data'][0].length <= 8)
+            dicMot4a8lettres.push(dic[i]['data'][0]);
     }
     console.log("Affichage du dictionaire de mots");
     console.log(dicMot);
     console.log("Affichage du dictionaire de sons");
     console.log(dicPhon);
+    console.log("Affichage du dictionaire des mots de 4 à 8 lettres");
+    console.log(dicMot4a8lettres);
 }
 
 
@@ -87,13 +92,17 @@ function loadDico(){
     });
 }
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
 function removeButton() {
     var elem = document.getElementById('myButton');
     elem.parentNode.removeChild(elem);
 }
 
-function writeText(id){
-    document.getElementById("myH1").innerText = motATrouver[id];
+function writeText(motToDisplay){
+    document.getElementById("myH1").innerText = motToDisplay;
 }
 
 function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
@@ -243,6 +252,7 @@ function aideMultiLettreModifViteFait(x, y, monMot) {
             }
         }
     }
+    //document.getElementById("nombreBonnesRep").innerText = "/"+l.length;
     return l;
 }
   
@@ -301,7 +311,7 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 				}
 			}
 		}
-        document.getElementById("nombreRep").innerText = "/"+l.length
+        //document.getElementById("nombreBonnesRep").innerText = "/"+l.length;
 		return l;
 	}
 }
@@ -340,10 +350,16 @@ function testReponse(motDonne, motEntre) {
 
 function deroulementJeu()
 {   
-    var id=0;
-    writeText(id)
+    //création liste de mots aléatoire de 10 mots
+    for(let id=0; id<9; id++) {
+        posRandom = getRandomInt(dicMot4a8lettres.length);
+        console.log(dicMot4a8lettres[posRandom])
+        listeReponseNoId = aideMultiLettreModifViteFait(1, 1, dicMot4a8lettres[posRandom]).concat(aideMultiPhonModifViteFait(1, 1, "fr", dicMot4a8lettres[posRandom]));
+        listeReponse.push(listeReponseNoId);
+        motATrouver.push(dicMot4a8lettres[posRandom]);
+    }
+    writeText(motATrouver[0])
     //listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motATrouver[id])
-    listeReponse=aideMultiPhonModifViteFait(1, 1, "fr", motATrouver[id])
     console.log(listeReponse)
 
 
@@ -355,19 +371,27 @@ function deroulementJeu()
 
 function soumettreReponse()
 {
-    var nombreBonneReponse=0
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(soumettre réponse)")
     let mot = document.getElementById('reponse').value.toLowerCase();
     console.log(mot)
-    if (listeReponse.includes(mot)) {
-        let nb = parseInt(document.getElementById('bonneRep').innerText);
+    if (listeReponse[nbSoumissionReponse].includes(mot)) {
+        let nb = parseInt(document.getElementById('nombreBonnesRep').innerText);
         console.log(nb)
         nb++
-        document.getElementById("bonneRep").innerText = nb
+        document.getElementById("nombreBonnesRep").innerText = nb
+        document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
+        document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
         console.log("gagné")
     }
     else
     {
+        document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
+        document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         console.log("perdu")
-    }
+    } 
+    nbSoumissionReponse++;
+
+    //pour prochain mot
+    writeText(motATrouver[nbSoumissionReponse]);
+    document.getElementById('reponse').value = '';
 }
