@@ -44,9 +44,10 @@ def lireCSV(fichier):
         dicoReader=csv.reader(dico,delimiter=',')
         i=0
         for row in dicoReader:
-            if(i>100):
-                break
-            listMot.append(row)
+            if(i>300000):
+                if(i>310000):
+                    break
+                listMot.append(row)
             i=i+1
             """
             print(row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3])
@@ -336,31 +337,36 @@ Paramaètres :
 """
 def verifierPhonemeFr(listeMot,url,fichierMotsModifies,fichierDestination):
     compteur=0
-    with open(fichierMotsModifies,'a') as file:
-        for mot in listeMot:
-            try:
-                compteur=compteur+1
-                r = requete.get(url+mot[0]) #On exécute une requête get
-                page = r.content #On récupère le contenu de la réponse
-                soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
-                baliseMere= soup.find("b",string=mot[0])
-                prononciation=baliseMere.find_next("span", {"class": "API"})
-                pron = prononciation.string.strip()[1:-1].replace(".","").replace("(","").replace(")","") #On enlève les balises html de la chaine
-                pluriel=recupererPlurielFr(soup,mot)
-                print("Compteur : ",compteur)
-                if pron!=mot[1]:
-                    mot[1]=pron
-                    file.write(mot[0] + '\n')
-                mot.append(pluriel)
-            except Exception as exc:
-                print(mot[0] + " n'a pas de tableau dans sa page html")
-                pluriel=recupererPlurielFr(soup,mot)
-                mot.append(pluriel)
+    with open(fichierDestination,'a') as dico: #on ouvre le fichier dans lequel on va écrire les résultats
+        dicoWriter=csv.writer(dico,delimiter=',')
+        with open(fichierMotsModifies,'a') as file:
+            for mot in listeMot:
+                try:
+                    compteur=compteur+1
+                    r = requete.get(url+mot[0]) #On exécute une requête get
+                    page = r.content #On récupère le contenu de la réponse
+                    soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+                    pluriel=recupererPlurielFr(soup,mot[0])
+                    baliseMere= soup.find("b",string=mot[0])
+                    prononciation=baliseMere.find_next("span", {"class": "API"})
+                    pron = prononciation.string.strip()[1:-1].replace("(","").replace(")","") #On enlève les balises html de la chaine
+                    print("Compteur : ",compteur)
+                    if pron!=mot[1]:
+                        mot[1]=pron
+                        file.write(mot[0] + '\n')
+                    mot.append(pluriel)
+                except Exception as exc:
+                    print(mot[0] + " n'a pas de tableau dans sa page html")
+                    pluriel=recupererPlurielFr(soup,mot[0])
+                    mot.append(pluriel)
+                finally:
+                    dicoWriter.writerow(mot)
+    """
     with open(fichierDestination,'a') as dico: #on ouvre le fichier dans lequel on va écrire les résultats
         dicoWriter=csv.writer(dico,delimiter=',')
         for mot in listeMot:
             dicoWriter.writerow(mot)
-
+    """
 
 
 """
@@ -398,21 +404,26 @@ def recupererPlurielFr(soup,mot):
                         else: #colonne impaire
                             return "p"
                     break
+            return "sp"
     except Exception as e: #si le mot n'a pas le tableau des genres et nombre dans sa page html
-        baliseMere= soup.find("b",string=mot)
-        enfant=baliseMere.find_next("ol").getText().lower()
-        if("singulier" in enfant):
-            return "s"
-        else:
-            if("pluriel" in enfant):
-                return "p"
+        try:
+            baliseMere= soup.find("b",string=mot)
+            enfant=baliseMere.find_next("ol").getText().lower()
+            if("singulier" in enfant):
+                return "s"
             else:
-                return "sp"
+                if("pluriel" in enfant):
+                    return "p"
+                else:
+                    return "sp"
+        except:
+            return "sp"
 
 
-fichierSource='../data/fr/dicoFr.csv'
-#listeMot=lireCSV(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
-listeMot=[]
+#fichierSource='../data/fr/dicoFr.csv'
+fichierSource='dicoFr.csv'
+listeMot=lireCSV(fichierSource) #Liste qui contient les mots pour lesquels on veut récupérer leurs informations
+#listeMot=[]
 """
 listeMot.append("prise")
 listeMot.append("belle")
@@ -447,7 +458,34 @@ listeMot.append("baliveaux")
 listeMot.append("chichiteuse")
 listeMot.append("chichiteux")
 """
+
 fichierMotsModifies="dicoMotMotPhonModifiés.txt"
-fichierDestination="dicoFr4.csv"
+fichierDestination="dicoFr2.csv"
 url="https://fr.wiktionary.org/wiki/"
-#verifierPhonemeFr(listeMot,url,fichierMotsModifies,fichierDestination)
+verifierPhonemeFr(listeMot,url,fichierMotsModifies,fichierDestination)
+
+
+def testRecupPluriel():
+    listeMot=[]
+    listeMot.append("aeschne")
+    listeMot.append("a-t-elle")
+    """
+    listeMot.append("abaissable")
+    listeMot.append("abaissé")
+    listeMot.append("abaissée")
+    listeMot.append("abaisse")
+    listeMot.append("abaissement")
+    listeMot.append("abajoue")
+    listeMot.append("abandonnataire")
+    listeMot.append("abandonné")
+    listeMot.append("abandonnée")
+    listeMot.append("abaque")
+    """
+    for mot in listeMot:
+        r = requete.get(url+mot) #On exécute une requête get
+        page = r.content #On récupère le contenu de la réponse
+        soup = BeautifulSoup(page,features="html.parser") #Va nous servir à parser la page
+        pluriel=recupererPlurielFr(soup,mot)
+        print(mot + " : " + pluriel)
+
+#testRecupPluriel()
