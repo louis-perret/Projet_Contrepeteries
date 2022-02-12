@@ -7,6 +7,8 @@ let score = 0;
 let timeRemaining = 30; //sec
 
 
+var listeReponse=[]
+
 var motATrouver=["code","manger"]
 
 
@@ -139,7 +141,7 @@ function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClass
 
         let motSave = mot2; //On garde le mot en memoire
         let listeCouple = recupCoupleLettre(y, '', [], alph); //Récupère la liste de combinaisons possibles de longueur y
-        console.log("liste couple " + listeCouple)
+        //console.log("liste couple " + listeCouple)
         for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
         {
             //console.log("!!!!! i : " + i)
@@ -157,7 +159,7 @@ function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClass
                     var lengthmot = mot2.length
                     lMot=lengthmot-(x-y);
                     if(motExiste(nvtMot,dicPhon)) {
-                        console.log("Le mot existe !!!!!!!" + nvtMot)
+                        //console.log("Le mot existe !!!!!!!" + nvtMot)
                         var indexMotDic = dicPhon.indexOf(nvtMot)
                         if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
                             if(typeof dicClassesGram[dicPhon.indexOf(mot2)] != "undefined" && typeof dicClassesGram[dicPhon.indexOf(nvtMot)] != "undefined") {
@@ -188,7 +190,7 @@ function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClass
                 }
             }
         }
-        console.log(" ]")
+        //console.log(" ]")
         //console.log("--------------------------Ma liste compatible : " + l)
         return l;
     }
@@ -226,14 +228,14 @@ function aideMultiLettreModifViteFait(x, y, monMot) {
             {
               couple = listeCouple[j]
               var nvtMot = mot.replacerAvecIndex(i, x, couple)
-              console.log("NvtMot = " + nvtMot)
+              //console.log("NvtMot = " + nvtMot)
               //var nvtMot = replaceBetween(mot, couple, i, x); //On remplace
   
               nvtMot=nvtMot.replace(" ","");
-              console.log("Mot a tester : " + nvtMot)	
+              //console.log("Mot a tester : " + nvtMot)
               var lengthmot = mot.length
               lMot=lengthmot-(x-y);
-              console.log("longueur mot saisi - diffxy = " + lMot);
+              //console.log("longueur mot saisi - diffxy = " + lMot);
               
               if (nvtMot != mot && motExiste(nvtMot, dicMot) && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
                 l.push(nvtMot);
@@ -277,9 +279,9 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 			//console.log("true ou false ? : " + coupleLettre[0])
 			if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
 			{
-                console.log("hehoçapasselà")
-				console.log(coupleLettre[1] + " , ");
-                console.log(listeCouple.length)
+                //console.log("hehoçapasselà")
+				//console.log(coupleLettre[1] + " , ");
+                //console.log(listeCouple.length)
 				for (j = 0; j < listeCouple.length; j++) //Pour chaque combinaison possible
 				{
 					couple = listeCouple[j]
@@ -299,6 +301,7 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 				}
 			}
 		}
+        document.getElementById("nombreRep").innerText = "/"+l.length
 		return l;
 	}
 }
@@ -338,13 +341,33 @@ function testReponse(motDonne, motEntre) {
 function deroulementJeu()
 {   
     var id=0;
-    var listeReponse=[]
     writeText(id)
-    listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motATrouver[id])
-    console.log(" l " + listeReponse)
+    //listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motATrouver[id])
+    listeReponse=aideMultiPhonModifViteFait(1, 1, "fr", motATrouver[id])
+    console.log(listeReponse)
 
-    document.querySelector("#btnValidate").addEventListener("click", testReponse(motATrouver[id], document.querySelector("input#reponse").value));
+
+    //document.querySelector("#btnValidate").addEventListener("click", testReponse(motATrouver[id], document.querySelector("input#reponse").value));
     
-    setInterval(updateTimeRemaining(), 1000); //fonction appelée toutes les 1000ms
+    //setInterval(updateTimeRemaining(), 1000); //fonction appelée toutes les 1000ms
     //while(timeRemaining > 0) {}
+}
+
+function soumettreReponse()
+{
+    var nombreBonneReponse=0
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    let mot = document.getElementById('reponse').value.toLowerCase();
+    console.log(mot)
+    if (listeReponse.includes(mot)) {
+        let nb = parseInt(document.getElementById('bonneRep').innerText);
+        console.log(nb)
+        nb++
+        document.getElementById("bonneRep").innerText = nb
+        console.log("gagné")
+    }
+    else
+    {
+        console.log("perdu")
+    }
 }

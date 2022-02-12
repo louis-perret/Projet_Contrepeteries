@@ -100,7 +100,7 @@
                 <h1 id="myH1">Trouver les contrepèteries du mot !</h1>
                 <div class="flexAllCenter">
                     <input id="reponse" placeholder="Saisir la réponse...">
-                    <button id="btnValidate">Valider</button>
+                    <button id="btnValidate" onclick="soumettreReponse()">Valider</button>
                 </div>
             </div>
         </div>
@@ -115,6 +115,9 @@
                 <h3>Score : </h3>
                 <h3 id="displayScore"></h3>
             </div>
+        <div style="display: flex;">
+            <h3 id="bonneRep">0</h3><h3 id="nombreRep"></h3>
+        </div>
         </div>
     </div>
 
