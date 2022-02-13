@@ -44,8 +44,8 @@ def lireCSV(fichier):
         dicoReader=csv.reader(dico,delimiter=',')
         i=0
         for row in dicoReader:
-            if(i>300000):
-                if(i>310000):
+            if(i>330000):
+                if(i>340000):
                     break
                 listMot.append(row)
             i=i+1
@@ -459,11 +459,10 @@ listeMot.append("chichiteuse")
 listeMot.append("chichiteux")
 """
 
-fichierMotsModifies="dicoMotMotPhonModifiés.txt"
-fichierDestination="dicoFr2.csv"
+fichierMotsModifies="dicoMotMotPhonModifié3.txt"
+fichierDestination="dicoFr4.csv"
 url="https://fr.wiktionary.org/wiki/"
-verifierPhonemeFr(listeMot,url,fichierMotsModifies,fichierDestination)
-
+#verifierPhonemeFr(listeMot,url,fichierMotsModifies,fichierDestination)
 
 def testRecupPluriel():
     listeMot=[]
