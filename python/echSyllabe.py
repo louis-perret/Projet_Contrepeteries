@@ -93,7 +93,6 @@ def mainMixSyllables(phrase, mode):
 		#for m in range(i,len(phrase)) :
 		for j in range(i+1, len(phrase)) :
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
-			"""
 			if j != i+1 and i < len(phrase)-1:
 				if j < len(phrase)-1 :
 					WordsContreP.extend(mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode))
@@ -102,7 +101,6 @@ def mainMixSyllables(phrase, mode):
 			else :
 				if j < len(phrase)-1 :
 					WordsContreP.extend(mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode))
-			"""
 			WordsContreP = list(WordsContreP)
 			# remplace les contreP trouvees dans la phrase
 			for k in WordsContreP:

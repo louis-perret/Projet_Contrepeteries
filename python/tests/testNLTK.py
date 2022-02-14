@@ -9,7 +9,7 @@ from nltk.tokenize import word_tokenize,sent_tokenize
 
 """
 from nltk.corpus import stopwords
-from nltk import word_tokenize
+from nltk import word_tokenizey
 from nltk.tokenize import sent_tokenize
 """
 sentence="j'ai de belles frites et vous "
