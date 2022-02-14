@@ -1,7 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
-let dicCle=[];
+var dicCle=[];
 let dicMot4a8lettres=[];
 let alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
 let score = 0;
@@ -99,10 +99,17 @@ function getRandomInt(max) {
 function removeButton() {
     var elem = document.getElementById('myButton');
     elem.parentNode.removeChild(elem);
+    var elemI = document.getElementById('info');
+    elemI.remove();
 }
 
 function writeText(motToDisplay){
-    document.getElementById("myH1").innerText = motToDisplay;
+
+    var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
+    console.log(anchor)
+
+    let lienWiki = "https://fr.wiktionary.org/wiki/" + motToDisplay
+    document.getElementById("myH1").innerHTML =anchor
 }
 
 function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
@@ -311,7 +318,6 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 				}
 			}
 		}
-        //document.getElementById("nombreBonnesRep").innerText = "/"+l.length;
 		return l;
 	}
 }
@@ -386,6 +392,15 @@ function soumettreReponse()
     else
     {
         document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
+
+        //var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
+
+        document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse]
+        listeReponse[nbSoumissionReponse].forEach(element => {
+            let anchor = "<a href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> "
+            document.querySelector('h3#solution').innerHTML += anchor
+        });
+        //document.querySelector('h3#solution').innerText = "solutions : " +listeReponse[nbSoumissionReponse]
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         console.log("perdu")
     } 
