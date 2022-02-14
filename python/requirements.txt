@@ -118,9 +118,12 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==8.3.1
 preshed==3.0.5
+progressbar==2.5
+progressbar2==4.0.0
 prometheus-client==0.11.0
 prompt-toolkit==3.0.19
 protobuf==3.17.3
+psycopg2==2.7.7
 ptyprocess==0.7.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -142,6 +145,7 @@ python-apt==1.8.4.3
 python-dateutil==2.8.2
 python-debian==0.1.35
 python-slugify==5.0.2
+python-utils==3.1.0
 pytz==2021.1
 pywinrm==0.3.0
 pyxdg==0.25
