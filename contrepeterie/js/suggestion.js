@@ -72,6 +72,7 @@ function loadSuggestion(){
 
 		document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
+		document.getElementById('choixLettre').setAttribute('style','border: 4px solid #7ac142;');
 
 		let pathActuel = window.location.pathname;
 		let fichierActuel = pathActuel.split("/").pop();
@@ -470,10 +471,14 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 function choixLettre() {
 	if (document.getElementById('choixLettre').value == 'false')
 	{
+		document.getElementById('choixLettre').setAttribute('style','border: 4px solid #7ac142;');
+		document.getElementById('choixPhoneme').setAttribute('style','border: 4px solid transparent;');
+		//document.getElementById('choixLettre').classList.add('choixLettreRedBorder');
+		//document.getElementById('choixPhoneme').classList.remove('choixPhonemeRedBorder');
 		document.getElementById('choixLettre').value = 'true';
 		document.getElementById('choixPhoneme').value = 'false';
-		document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Lettres';
-		document.getElementById("h3textToChange").innerText = "Nombre de lettres à échanger :";
+		//document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Lettres';
+		//document.getElementById("h3textToChange").innerText = "Nombre de lettres à échanger :";
 		saveTuple = [];
     }
 }
@@ -481,8 +486,13 @@ function choixLettre() {
 function choixPhoneme() {
 	if (document.getElementById('choixPhoneme').value == 'false')
 	{
+		document.getElementById('choixLettre').setAttribute('style','border: 4px solid transparent;');
+		document.getElementById('choixPhoneme').setAttribute('style','border: 4px solid #7ac142;');
+		//document.getElementById('choixLettre').classList.remove('choixLettreRedBorder');
+		//document.getElementById('choixPhoneme').classList.add('choixPhonemeRedBorder');
 		document.getElementById('choixPhoneme').value = 'true';
 		document.getElementById('choixLettre').value = 'false';
+		/*
 		if(langue == "fr") {
 			document.getElementById("h3textToChange").innerText = "Nombre de phonèmes à échanger :";	
 			document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
@@ -491,6 +501,7 @@ function choixPhoneme() {
 			document.getElementById("h3textToChange").innerText = "Number of phonemes to exchange :";
 			document.getElementById('pSelectLettrePhon').innerHTML = 'Selected : Phonemes';
 		}
+		*/
 		saveTuple = [];
     }
 }

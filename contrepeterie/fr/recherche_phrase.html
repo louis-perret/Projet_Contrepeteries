@@ -38,9 +38,9 @@ $(function(){
             <h2 id="titrePr">Recherche de contrepèteries dans des phrases</h2>
          </div >
           <div id="aide">
-          <div class="row">
-              <button id="choixLettreP" class="m-2" onclick="choixLettreP()" value="true">Lettres</button>
-              <button id="choixPhonemeP" class="m-2"onclick="choixPhonemeP()" value="false">Phonèmes</button>
+          <div class="flexAllCenter">
+              <button id="choixLettreP" class="btnLettreOrPhoneme m-2" onclick="choixLettreP()" value="true">Lettres</button>
+              <button id="choixPhonemeP" class="btnLettreOrPhoneme m-2"onclick="choixPhonemeP()" value="false">Phonèmes</button>
               <p id="pSelectLettrePhonP" class="m-2">Sélectionné : Lettres</p>
           </div>
           </div>
@@ -57,6 +57,9 @@ $(function(){
 
           <div id="generation">
           <input type="text" name="phrase" id="phrase">
+          <script>
+             document.querySelector('#phrase').addEventListener('keyup', () => { if(event.keyCode === 13) redirigeLettreOuPhonemePhrase();});
+          </script>
           <button id="gen" onclick="redirigeLettreOuPhonemePhrase()"> Lancer la recherche</button>
         </div>
         <div id="div1">
