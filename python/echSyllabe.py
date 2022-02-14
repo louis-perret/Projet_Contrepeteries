@@ -3,6 +3,8 @@ import json
 import itertools
 import sys
 from commun import *
+import threading
+import time
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -20,7 +22,6 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-
 		for x in allResults :
 			listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 			listemot2 = mixSyllabeCoupe(x[0], mode)
@@ -93,34 +94,21 @@ def mainMixSyllables(phrase, mode):
 		#for m in range(i,len(phrase)) :
 		for j in range(i+1, len(phrase)) :
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
+			Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 1,1))
+			"""
 			if j != i+1 and i < len(phrase)-1:
 				if j < len(phrase)-1 :
-					WordsContreP.extend(mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode))
+					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode))
+					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 0,0))
 				else :
-					WordsContreP.extend(mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode))
+					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i]+phrase[i+1],phrase[j],phrase,mode))
+					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 0,1))
 			else :
 				if j < len(phrase)-1 :
-					WordsContreP.extend(mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode))
-			WordsContreP = list(WordsContreP)
+					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i],phrase[j]+phrase[j+1],phrase, mode))
+					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 1,0))
+			"""
 			# remplace les contreP trouvees dans la phrase
-			for k in WordsContreP:
-				tmp = phrase[:] #tous les éléments de phrase
-		#ajoute les nouveaux mots au même endroit que les anciensdd
-				tmp[i] = k[0] 
-				tmp[j] = k[1]
-
-				# pour chaque nouvelles combinaisons trouvées,
-				# on vérifie que la nouvelles n'a pas déjà été trouvée
-				taille = len(Lphrases)
-				test = True
-				for l in range(taille):
-					if Lphrases[l][0] == tmp:
-						test = False
-
-				if test:
-					L1 = (i, k[2][0], k[2][1])
-					L2 = (j, k[3][0], k[3][1])
-					Lphrases.append((tmp, L1, L2))
 	return Lphrases
 
 #------------------------------------------------------------------------------
@@ -144,6 +132,48 @@ def mixSyllabeCoupe (word1, mode) :
 				liste.append(j+' '+k)
 	return liste
 
+
+"""
+création liste phrase
+"""
+
+def createLPhrase (WordsContreP, phrase, i, j, asupI, asupJ) : 
+	Lphrases = []
+	for k in WordsContreP:
+		tmp = []
+		tmp.extend(phrase) #tous les éléments de phrase
+		#ajoute les nouveaux mots au même endroit que les anciensdd
+		
+		if i+1 < len(phrase) :
+			if asupI == 1 :
+				tmp[i+1] = phrase[i+1]
+			else :
+				tmp[i+1] = "" 
+		tmp[i] = k[0]
+		
+		if j+1 < len(phrase) :
+			if asupJ == 1 :
+				tmp[j+1] = phrase[j+1]
+			else :
+				tmp[j+1] = ""
+		tmp[j] = k[1]
+
+		# pour chaque nouvelles combinaisons trouvées,
+		# on vérifie que la nouvelles n'a pas déjà été trouvée
+		taille = len(Lphrases)
+		test = True
+		for l in range(taille):
+			if Lphrases[l][0] == tmp:
+				test = False
+			if test:
+				L1 = (i, k[2][0], k[2][1])
+				L2 = (j, k[3][0], k[3][1])
+				Lphrases.append((tmp, L1, L2))
+		if len(Lphrases) == 0 :
+			L1 = (i, k[2][0], k[2][1])
+			L2 = (j, k[3][0], k[3][1])
+			Lphrases.append((tmp, L1, L2))
+	return Lphrases
 
 """
 def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
