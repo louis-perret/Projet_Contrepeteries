@@ -99,6 +99,8 @@ function getRandomInt(max) {
 function removeButton() {
     var elem = document.getElementById('myButton');
     elem.parentNode.removeChild(elem);
+    var elemI = document.getElementById('info');
+    elemI.remove();
 }
 
 function writeText(motToDisplay){
@@ -390,6 +392,15 @@ function soumettreReponse()
     else
     {
         document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
+
+        //var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
+
+        document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse]
+        listeReponse[nbSoumissionReponse].forEach(element => {
+            let anchor = "<a href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> "
+            document.querySelector('h3#solution').innerHTML += anchor
+        });
+        //document.querySelector('h3#solution').innerText = "solutions : " +listeReponse[nbSoumissionReponse]
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         console.log("perdu")
     } 
