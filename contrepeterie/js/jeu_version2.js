@@ -1,7 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
-let dicCle=[];
+var dicCle=[];
 let dicMot4a8lettres=[];
 let alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
 let score = 0;
@@ -102,7 +102,12 @@ function removeButton() {
 }
 
 function writeText(motToDisplay){
-    document.getElementById("myH1").innerText = motToDisplay;
+
+    var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
+    console.log(anchor)
+
+    let lienWiki = "https://fr.wiktionary.org/wiki/" + motToDisplay
+    document.getElementById("myH1").innerHTML =anchor
 }
 
 function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
@@ -311,7 +316,6 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 				}
 			}
 		}
-        //document.getElementById("nombreBonnesRep").innerText = "/"+l.length;
 		return l;
 	}
 }

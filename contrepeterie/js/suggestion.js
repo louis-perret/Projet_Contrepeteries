@@ -67,8 +67,8 @@ function loadSuggestion(){
 		}
 
 		//ajoute un event listener permettrant de mettre à jour le langage choisi
-		document.getElementById('btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
-		document.getElementById('btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
+		document.querySelector('#btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
+		document.querySelector('#btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
 
 		document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
