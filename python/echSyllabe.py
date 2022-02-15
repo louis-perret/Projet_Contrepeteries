@@ -3,6 +3,7 @@ import json
 import itertools
 import sys
 from commun import *
+from utilitaires import *
 import threading
 import time
 
@@ -22,13 +23,14 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		for x in allResults :
-			listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
-			listemot2 = mixSyllabeCoupe(x[0], mode)
+		if(False):
+			for x in allResults :
+				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
+				listemot2 = mixSyllabeCoupe(x[0], mode)
 
-			for l in listemot1 :
-				for k in listemot2 :
-					listeWord.append([l,k,[i,j],x[2]])
+				for l in listemot1 :
+					for k in listemot2 :
+						listeWord.append([l,k,[i,j],x[2]])
 
 
 		for k in tmp:
@@ -85,7 +87,7 @@ def mainMixSyllables(phrase, mode):
 
 	phrase = phrase.split()
 	WordsContreP = []
-	print(phrase)
+	#print(phrase)
 	Lphrases = [[phrase]] #phrase se contient elle même
 	i = 0
 

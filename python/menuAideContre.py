@@ -6,6 +6,7 @@ from arbin import *
 from fonc_aide_son import *
 from fonc_aide_lettre import *
 from commun import *
+from utilitaires import *
 
 sys.stdout.reconfigure(encoding='utf-8')
 

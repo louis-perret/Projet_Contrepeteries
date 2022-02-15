@@ -124,7 +124,7 @@ def configLangue(tabLanguesDispo):
 Applique les filtres et affiche les résultats en fonctions de la config
 donnée par l'utilisateur
 """
-def affiRechFiltre(nvDico,mode):
+def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
@@ -185,10 +185,14 @@ def affiRechFiltre(nvDico,mode):
 						compteur -= 1
 
 		choixutilisateur = 1
+		print("\nVoici les résultats en échangeants les phonèmes.")
 		while choixutilisateur in range(compteur):
 			try:
-				choixutilisateur = int(input(
-				"\n-1 : quitter/ -2 revenir au menu principal ou \nChiffre pour ortographe\n"))
+				if(isAllContrepeterie):
+					choixutilisateur = int(input("\n-1 / quitter la recherche par phonèmes, ou saisissez un des index pour obtenir toutes les ortographes : "))
+				else:
+					choixutilisateur = int(input(
+				"\n-1 : quitter/ -2 revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : "))
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
