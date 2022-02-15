@@ -84,6 +84,7 @@ du deuxième mot que l'on échange
 def mainMixSyllables(phrase, mode):
 
 	phrase = phrase.split()
+	WordsContreP = []
 	print(phrase)
 	Lphrases = [[phrase]] #phrase se contient elle même
 	i = 0
@@ -94,20 +95,18 @@ def mainMixSyllables(phrase, mode):
 		#for m in range(i,len(phrase)) :
 		for j in range(i+1, len(phrase)) :
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
-			Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 1,1))
-			"""
+			Lphrases.extend(createLPhrase1(WordsContreP,phrase, i, j))
 			if j != i+1 and i < len(phrase)-1:
 				if j < len(phrase)-1 :
-					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode))
-					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 0,0))
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode)
+					Lphrases.extend(createLPhrase2(WordsContreP,phrase, i, j))		
 				else :
-					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i]+phrase[i+1],phrase[j],phrase,mode))
-					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 0,1))
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode)
+					Lphrases.extend(createLPhrase3(WordsContreP,phrase, i, j))	
 			else :
 				if j < len(phrase)-1 :
-					WordsContreP = threading.Thread(target=mixSyllablesWord1,args=(phrase[i],phrase[j]+phrase[j+1],phrase, mode))
-					Lphrases.extend(createLPhrase(WordsContreP,phrase, i, j, 1,0))
-			"""
+					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode)
+					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))	
 			# remplace les contreP trouvees dans la phrase
 	return Lphrases
 
@@ -137,39 +136,102 @@ def mixSyllabeCoupe (word1, mode) :
 création liste phrase
 """
 
-def createLPhrase (WordsContreP, phrase, i, j, asupI, asupJ) : 
+def createLPhrase1 (WordsContreP, phrase, i, j) : 
 	Lphrases = []
+	tmp = []
 	for k in WordsContreP:
 		tmp = []
-		tmp.extend(phrase) #tous les éléments de phrase
+		tmp.extend(phrase)
+		 #tous les éléments de phrase
+		#ajoute les nouveaux mots au même endroit que les anciensdd
+		tmp[i] = k[0]
+		tmp[j] = k[1]
+		test = True
+		for l in Lphrases:
+			if l[0] == tmp:
+				test = False
+		if test:
+			L1 = (i, k[2][0], k[2][1])
+			L2 = (j, k[3][0], k[3][1])
+			Lphrases.append((tmp, L1, L2))
+	return Lphrases
+
+def createLPhrase2 (WordsContreP, phrase, i, j) : 
+	Lphrases = []
+	tmp = []
+	for k in WordsContreP:
+		tmp = []
+		tmp.extend(phrase)
+		#tous les éléments de phrase
 		#ajoute les nouveaux mots au même endroit que les anciensdd
 		
-		if i+1 < len(phrase) :
-			if asupI == 1 :
-				tmp[i+1] = phrase[i+1]
-			else :
-				tmp[i+1] = "" 
+		tmp.pop(i+1)
+		j = j - 1
 		tmp[i] = k[0]
 		
-		if j+1 < len(phrase) :
-			if asupJ == 1 :
-				tmp[j+1] = phrase[j+1]
-			else :
-				tmp[j+1] = ""
+		tmp.pop(j+1)
 		tmp[j] = k[1]
 
 		# pour chaque nouvelles combinaisons trouvées,
 		# on vérifie que la nouvelles n'a pas déjà été trouvée
-		taille = len(Lphrases)
 		test = True
-		for l in range(taille):
-			if Lphrases[l][0] == tmp:
+		for l in Lphrases:
+			if l[0] == tmp:
 				test = False
-			if test:
-				L1 = (i, k[2][0], k[2][1])
-				L2 = (j, k[3][0], k[3][1])
-				Lphrases.append((tmp, L1, L2))
-		if len(Lphrases) == 0 :
+		if test:
+			L1 = (i, k[2][0], k[2][1])
+			L2 = (j, k[3][0], k[3][1])
+			Lphrases.append((tmp, L1, L2))
+	return Lphrases
+
+def createLPhrase3 (WordsContreP, phrase, i, j) : 
+	Lphrases = []
+	for k in WordsContreP:
+		tmp = []
+		tmp.extend(phrase)
+		#tous les éléments de phrase
+		#ajoute les nouveaux mots au même endroit que les anciensdd
+		
+		tmp.pop(i+1)
+		j = j - 1
+		tmp[i] = k[0]
+		
+		tmp[j] = k[1]
+
+		# pour chaque nouvelles combinaisons trouvées,
+		# on vérifie que la nouvelles n'a pas déjà été trouvée
+		test = True
+		for l in Lphrases:
+			if l[0] == tmp:
+				test = False
+		if test:
+			L1 = (i, k[2][0], k[2][1])
+			L2 = (j, k[3][0], k[3][1])
+			Lphrases.append((tmp, L1, L2))
+	return Lphrases
+
+def createLPhrase4 (WordsContreP, phrase, i, j) : 
+	Lphrases = []
+	tmp = []
+	for k in WordsContreP:
+		tmp = []
+		tmp.extend(phrase)
+		#tous les éléments de phrase
+		#ajoute les nouveaux mots au même endroit que les anciensdd
+		
+
+		tmp[i] = k[0]
+		
+		tmp.pop(j+1)
+		tmp[j] = k[1]
+
+		# pour chaque nouvelles combinaisons trouvées,
+		# on vérifie que la nouvelles n'a pas déjà été trouvée
+		test = True
+		for l in Lphrases:
+			if l[0] == tmp:
+				test = False
+		if test:
 			L1 = (i, k[2][0], k[2][1])
 			L2 = (j, k[3][0], k[3][1])
 			Lphrases.append((tmp, L1, L2))
