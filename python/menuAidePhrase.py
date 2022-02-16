@@ -95,13 +95,14 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 		liste = mainMixSyllables(phrasePhon, mode)
 
 		nvListe = {}
-
+		with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
+			dicoPhon = json.load(tmp)
 		for i in liste[1:]:
 			tmp = " ".join(i[0])#L'écriture phonétique de la phrase
 			pos1 = i[1][0] #index 1
 			pos2 = i[2][0] #index 2
 			# Phon_to_Phrase ("phrase phon" + phrase origine(l))
-			nvListe[tmp] = Phon_to_Phrase(tmp, phrase.split(" "), pos1, pos2,langue) #Pour chaque phrase, on ressort toutes ses écritures possibles
+			nvListe[tmp] = Phon_to_Phrase(tmp, phrase.split(" "), pos1, pos2,langue, dicoPhon) #Pour chaque phrase, on ressort toutes ses écritures possibles
 
 		if(isAllContrepeterie): #si l'utilisateur a choisi le mode qui fait tout
 			return nvListe #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite

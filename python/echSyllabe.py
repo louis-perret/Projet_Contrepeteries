@@ -23,7 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		if(False):
+		if(True):
 			for x in allResults :
 				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 				listemot2 = mixSyllabeCoupe(x[0], mode)
@@ -108,8 +108,9 @@ def mainMixSyllables(phrase, mode):
 			else :
 				if j < len(phrase)-1 :
 					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode)
-					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))	
+					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))
 			# remplace les contreP trouvees dans la phrase
+	print("fini")
 	return Lphrases
 
 #------------------------------------------------------------------------------
@@ -149,9 +150,11 @@ def createLPhrase1 (WordsContreP, phrase, i, j) :
 		tmp[i] = k[0]
 		tmp[j] = k[1]
 		test = True
+		"""
 		for l in Lphrases:
 			if l[0] == tmp:
 				test = False
+        """
 		if test:
 			L1 = (i, k[2][0], k[2][1])
 			L2 = (j, k[3][0], k[3][1])
@@ -164,51 +167,58 @@ def createLPhrase2 (WordsContreP, phrase, i, j) :
 	for k in WordsContreP:
 		tmp = []
 		tmp.extend(phrase)
+		a = j
 		#tous les éléments de phrase
 		#ajoute les nouveaux mots au même endroit que les anciensdd
 		
 		tmp.pop(i+1)
-		j = j - 1
+		a = a - 1
 		tmp[i] = k[0]
 		
-		tmp.pop(j+1)
-		tmp[j] = k[1]
+		tmp.pop(a+1)
+		tmp[a] = k[1]
 
 		# pour chaque nouvelles combinaisons trouvées,
 		# on vérifie que la nouvelles n'a pas déjà été trouvée
+		
 		test = True
+		"""
 		for l in Lphrases:
 			if l[0] == tmp:
 				test = False
+		"""
 		if test:
 			L1 = (i, k[2][0], k[2][1])
-			L2 = (j, k[3][0], k[3][1])
+			L2 = (a, k[3][0], k[3][1])
 			Lphrases.append((tmp, L1, L2))
 	return Lphrases
 
 def createLPhrase3 (WordsContreP, phrase, i, j) : 
 	Lphrases = []
 	for k in WordsContreP:
+		a = j
 		tmp = []
 		tmp.extend(phrase)
 		#tous les éléments de phrase
 		#ajoute les nouveaux mots au même endroit que les anciensdd
-		
 		tmp.pop(i+1)
-		j = j - 1
+		a = a - 1
 		tmp[i] = k[0]
 		
-		tmp[j] = k[1]
+
+		tmp[a] = k[1]
 
 		# pour chaque nouvelles combinaisons trouvées,
 		# on vérifie que la nouvelles n'a pas déjà été trouvée
 		test = True
+		"""
 		for l in Lphrases:
 			if l[0] == tmp:
 				test = False
+		"""
 		if test:
 			L1 = (i, k[2][0], k[2][1])
-			L2 = (j, k[3][0], k[3][1])
+			L2 = (a, k[3][0], k[3][1])
 			Lphrases.append((tmp, L1, L2))
 	return Lphrases
 
@@ -230,9 +240,11 @@ def createLPhrase4 (WordsContreP, phrase, i, j) :
 		# pour chaque nouvelles combinaisons trouvées,
 		# on vérifie que la nouvelles n'a pas déjà été trouvée
 		test = True
+		"""
 		for l in Lphrases:
 			if l[0] == tmp:
 				test = False
+		"""
 		if test:
 			L1 = (i, k[2][0], k[2][1])
 			L2 = (j, k[3][0], k[3][1])
@@ -387,13 +399,11 @@ on l'utilise pour filtrer les resultats des combinaisons
 selon un % de mots recurrent entre la nvlle et l'ancienne phrase
 '''
 
-def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue):
+def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue,dicoPhon):
 
 	listeretour = []
 	listePhon = PhrasePhoneme.split()
 	# PhrasePhoneme(str)
-	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
-		dicoPhon = json.load(tmp)
 	#print(dicoPhon["e"])
 
 # Extraction du dico de phonème les mots possible a partir des phonèmes en entrée
