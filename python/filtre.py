@@ -20,7 +20,7 @@ def clear():
 """
 Modifie le fichier de configuration des filtres.
 """
-def configFiltre(tabDicoThemeDispo):
+def configFiltre(tabDicoThemeDispo,dicoDico):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
 		n = selectionChoix("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
@@ -40,6 +40,12 @@ def configFiltre(tabDicoThemeDispo):
 		print(f"{i}  -  {diconfig[i]}")
 	with open('data/config.json','w') as diconfig_:
 		json.dump(diconfig,diconfig_) #écrit dans le fichier
+
+	listeDicoTheme=[]
+	for theme in diconfig['Themes']:
+		with open(f'data/{dicoDico["config"]["langue"]}/dico{theme}{dicoDico["config"]["langue"].capitalize()}.json') as dicoTheme:
+			listeDicoTheme.append(json.load(dicoTheme))
+	dicoDico['Themes']=listeDicoTheme
 
 #-------------------------------------------------------------------------------
 
@@ -144,45 +150,22 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 		compteur = -1
 		dicores = []
 		for key in nvDico:
-
-			if diconfig["FiltreGrammatical"] == "Oui":
-
-				for j in nvDico[key]:
-					#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
-					if j[0] == " ":
-						j = j[1:] #Si la phrase commence par un espace, on l'enlève
-					for k in range(len(j[0])) :
-						j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
-					compteur += 1
-
-					if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
-						print(compteur, " -->", end=" ")
-						for k in range(len(j)) :
-							print(j[k][0], end = ' ')
-						StockPourkey = key
-						dicores.append(key)
-						print()
-					else:
-						compteur -= 1
-
-			else:
-				for j in nvDico[key]:
-					#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
-					if j[0] == " ":
-						j = j[1:] #Si la phrase commence par un espace, on l'enlève
-					for k in range(len(j[0])) :
-						j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
-					compteur += 1
-
-					if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
-						print(compteur, " -->", end=" ")
-						for k in range(len(j)) :
-							print(j[k][0], end = ' ')
-						StockPourkey = key
-						dicores.append(key)
-						print()
-					else:
-						compteur -= 1
+			for j in nvDico[key]:
+				#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
+				if j[0] == " ":
+					j = j[1:] #Si la phrase commence par un espace, on l'enlève
+				for k in range(len(j[0])) :
+					j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
+				compteur += 1
+				if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
+					print(compteur, " -->", end=" ")
+					for k in range(len(j)) :
+						print(j[k][0], end = ' ')
+					StockPourkey = key
+					dicores.append(key)
+					print()
+				else:
+					compteur -= 1
 
 		choixutilisateur = 1
 		print("\nVoici les résultats en échangeants les phonèmes.")
@@ -232,28 +215,9 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 		#attention, ici nvDico est une liste de tuple, plus un dico
 		#filtrage par grammaire de la phrase
 		nvListe = [nvDico[0]]
-		if diconfig["FiltreGrammatical"] == "Non":
-			for i in nvDico[1:]: #On renvoie les résultats qu'on avaient de base
-				nvListe.append(" ".join(i[0]))
-			return nvListe
-
-		#with open('data/DicoVulgaire.json') as vulgaire:
-		#	BDvulgaire = json.load(vulgaire)
-
-		if diconfig["FiltreGrammatical"] == "Oui":
-			for contrepet in nvDico[1:]:
-				str = " ".join(contrepet[0])
-				j = str.capitalize()
-
-				if len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
-					nvListe.append(contrepet)
 
 		tmpListe = []
-		if diconfig["FiltreGrammatical"] == "Oui":
-			tmpListe = nvListe[:]
-			nvListe = [nvListe[0]]
-		else:
-			tmpListe =  nvDico[:]
+		tmpListe =  nvDico[:]
 		#filtrage par mot vulgaires
 		for contrepet in tmpListe[1:]:
 			if False:
@@ -311,6 +275,7 @@ Paramètres :
 	-Sortie :
 		liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 """
+"""
 def GramFiltre(listeOrigine, mot_origine,langue,mode):
 	nouvelleListe = []
 	with open(f'data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
@@ -334,9 +299,22 @@ def GramFiltre(listeOrigine, mot_origine,langue,mode):
 			if(classGramMot1[i] in classGramMot2 and classGramMot1[i] in classGramMot3 and classGramMot1[i] in classGramMot4): #s'ils ont la même classe grammaticale
 					nouvelleListe.append(pack) #on l'ajoute aux réponses
 	return nouvelleListe
+"""
+
+def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
+	if(diconfig["FiltreGrammatical"] == "Non"):
+		return True
+	if(mode == "phon"):
+		mot2=dicoPhon[mot2][0]
+
+	classGramMot2 = dicoGram[mot2]
+	for classGram in classGramMotOrigine:
+		if(classGram in classGramMot2):
+			return True
+	return False
 
 """
-Renvoie True si le mot est dans au moins un des dico de listeDico
+Objectif : Renvoie True si le mot est dans au moins un des dico de listeDico
 Paramètre :
 	-Entrée :
 		-mot : mot à vérifier

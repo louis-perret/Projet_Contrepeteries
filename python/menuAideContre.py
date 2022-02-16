@@ -18,10 +18,11 @@ Paramètres :
 	-Sortie : 
 		-historique : un tableau
 """
-def aideContrepetrie(historique):
+def aideContrepetrie(dicoDico,historique):
 	with open('data/config.json','r') as diconfig_:
 		dicoConfig = json.load(diconfig_)
 		langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
+		dicoDico['config']=dicoConfig
 	# boucle "tant que" pour le recommencer aide avec un autre mot.
 	tabMode=["Recherche personnalisée pour les lettres","Recherche personnalisée pour les phonèmes","Plusieurs lettres","Plusieurs sons"]
 	continuer = 1
@@ -51,16 +52,16 @@ def aideContrepetrie(historique):
 			continue
 
 		elif choix == 1: #recherche personnalisée pour les lettres
-			continuer=modePersonnalisé("word",mot,langue,dicoConfig)
+			continuer=modePersonnalisé("word",mot,langue,dicoDico)
 
 		elif choix == 2: #recherche personnalisée pour les sons
-			continuer=modePersonnalisé("phon",mot,langue,dicoConfig)
+			continuer=modePersonnalisé("phon",mot,langue,dicoDico)
 
 		elif choix == 3: #'nimporte quel nombre de lettre
-			continuer=modePLusieurs("word",mot,langue)
+			continuer=modePlusieurs("word",mot,langue,dicoDico)
 
 		elif choix == 4: #n'importe quel nombre de phonèmes
-			continuer=modePLusieurs("phon",mot,langue)
+			continuer=modePlusieurs("phon",mot,langue,dicoDico)
 
 	return historique
 
@@ -146,13 +147,16 @@ Paramètres :
 	-Sortie : 
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
-def modePersonnalisé(dico,mot,langue,diconfig):
+def modePersonnalisé(mode,mot,langue,dicoDico):
 	x = longueurSyllabe("Longueur de la syllabe à enlever : ")
 	y = longueurSyllabe("Longueur de la syllabe à ajouter : ")
 	print("Recherche des contrepétries possibles ...")
-	listeDeMotCop = aide(mot,x,y,dico,langue)
+	listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
 
-	if(dico == 'word'):
+	if(len(listeDeMotCop) == 0 ):
+		affichagePasResultat(mot,"",x,y,"","",dicoDico['config'],mode)
+		return
+	if(mode == 'word'):
 		message="effectuer la recherche avec les phonèmes"
 	else:
 		message="effectuer la recherche avec les lettres"
@@ -165,11 +169,11 @@ def modePersonnalisé(dico,mot,langue,diconfig):
 		elif selectMot == -1:
 			return 1
 		elif selectMot == -2:
-			if dico == 'word' :
-				dico = 'phon'
+			if mode == 'word' :
+				mode = 'phon'
 			else :
-				dico = 'word'
-			listeDeMotCop = aide(mot,x,y,dico,langue)
+				mode = 'word'
+			listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
 		elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
 			boucle = False
 		else:
@@ -178,26 +182,22 @@ def modePersonnalisé(dico,mot,langue,diconfig):
 	print("Veuillez sélectionner la longueur des résultats souhaités")
 	minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
 	maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
-
-	if(dico=='word'):
-		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig,dico)
-	else:
-		listeAffichage, compteur, diconfig = aideLettreRechDicoGeneral(selectMot, listeDeMotCop,minimum,maximum,diconfig,dico)
+	listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,minimum,maximum,dicoDico,mode)
 
 	# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
 	if len(listeAffichage) >0:
-		if (diconfig["FiltreGrammatical"] == "Oui"):
-			listeAffichage = GramFiltre(listeAffichage, mot,langue,dico)
-		if(dico=='word'):
+		#if (diconfig["FiltreGrammatical"] == "Oui"):
+		#	listeAffichage = gramFiltre(listeAffichage, mot,langue,mode)
+		if(mode=='word'):
 			return affiRechLettre(listeAffichage, compteur, mot)
 		else:
-			return affiRechSon(listeAffichage, compteur, mot,langue)
+			return affiRechSon(listeAffichage, compteur, mot,langue, dicoDico)
 	else:
-		if(dico=="word"):
+		if(mode=="word"):
 			mot2=listeDeMotCop[selectMot-1][0]
 		else:
 			mot2=listeDeMotCop[selectMot-1][3]
-		affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,dico)
+		affichagePasResultat(mot,mot2,x,y,minimum,maximum,dicoDico['config'],mode)
 
 
 """
@@ -210,7 +210,7 @@ Paramètres :
 	-Sortie : 
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
-def modePLusieurs(mode,mot,langue):
+def modePlusieurs(mode,mot,langue,dicoDico):
 	print("Recherche des échanges possibles sur les différentes tranches :")
 	print("\nChargement en cours...\n")
 
@@ -261,25 +261,27 @@ def modePLusieurs(mode,mot,langue):
 
 
 
-def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,dico):
+def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):
 	message="Aucune correspondance n'a été trouvée\n"
-	if(dico=="phon"):
+	if(mode=="phon"):
 		message1="phonème(s)"
 	else:
 		message1="lettre(s)"
-	message+=f"Voici les options sélectionnées : \n\t-Recherche au sein du mot : {mot} \n\t-Echange de {x} {message1} par {y} {message1}"
-	message+=f"\n\t-Recherche de quadruplé entre {mot} et {mot2}"
-	if(minimum == -1):
-		message+="\n\t-Longueur minimum des résultats : aucune"
-	else:
-		message+=f"\n\t-Longueur minimum des résultats : {minimum}"
-	if(maximum == -1):
-		message+="\n\t-Longueur maximmu des résultats : aucune"
-	else:
-		message+=f"\n\t-Longueur maximum des résultats : {maximum}"
+	message+=f"Voici les options sélectionnées : \n\t-Recherche au sein du mot : {mot} en échangeant des {message1}"
+	if mot2 != "":
+		message+="f\n\t-Echange de {x} {message1} par {y} {message1}"
+		message+=f"\n\t-Recherche de quadruplé entre {mot} et {mot2}"
+		if(minimum == -1):
+			message+="\n\t-Longueur minimum des résultats : aucune"
+		else:
+			message+=f"\n\t-Longueur minimum des résultats : {minimum}"
+		if(maximum == -1):
+			message+="\n\t-Longueur maximum des résultats : aucune"
+		else:
+			message+=f"\n\t-Longueur maximum des résultats : {maximum}"
 
 	if(len(diconfig['Themes'])==0):
-		message+="\n\tAucun thème d'appliqué"
+		message+="\n\t-Aucun thème d'appliqué"
 	else:
 		message+="\n\t-Thème(s) appliqué(s) : "
 		for theme in diconfig['Themes']:

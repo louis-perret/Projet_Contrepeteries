@@ -8,6 +8,22 @@ from arbin import * #on charge le dico
 with open("data/config.json","r") as file:	
 	diconfig = json.load(file) #on charge le fichier
 
+langue=diconfig['langue']
+dicoDico={}
+listeDicoTheme=[]
+for theme in diconfig['Themes']:
+	with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
+		listeDicoTheme.append(json.load(dicoTheme))
+
+dicoDico['Themes']=listeDicoTheme
+with open(f"data/{langue}/dicoPhoncom{langue.capitalize()}.json") as Phon :
+	dicoPhon = json.load(Phon)
+	dicoDico['DicoPhon']=dicoPhon
+
+with open(f'data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
+			dicoClassGramm = json.load(tmp)
+			dicoDico['DicoGram']=dicoClassGramm
+
 boucle = True
 memoireImport = set()
 historique = []
@@ -39,7 +55,7 @@ while boucle:
 		
 # ------------------------------------------------------------------------------
 	if n == 3:
-		configFiltre(dicoDispo[diconfig['langue']])
+		configFiltre(dicoDispo[diconfig['langue']],dicoDico)
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
 	elif n == 1:
@@ -47,7 +63,7 @@ while boucle:
 			from menuAideContre import *
 		memoireImport.add('aide')
 		clear()
-		historique = aideContrepetrie(historique)
+		historique = aideContrepetrie(dicoDico,historique)
 
 # ------------------------------------------------------------------------------
 	# recherche de contrepeterie
@@ -59,7 +75,7 @@ while boucle:
 		with open('data/config.json','r') as diconfig_:
 			langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
 		
-		test = aideContrepetriePhrase(langue)
+		test = aideContrepetriePhrase(dicoDico,langue)
 		if test == 0:
 			sys.exit()
 		elif test == 1:

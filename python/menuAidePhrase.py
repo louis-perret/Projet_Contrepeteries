@@ -9,7 +9,7 @@ Paramètres :
 	-Sortie : 
 		-int : choix de l'utilisateur pour la navigation
 """
-def aideContrepetriePhrase(langue):
+def aideContrepetriePhrase(dicoDico,langue):
 	test = True
 	mode = {1: 'word', 2: 'phon', 3: 'wordPhon'}
 	n = 0
@@ -52,9 +52,9 @@ def aideContrepetriePhrase(langue):
 		return 1
 
 	if(mode[n] == 'word' or mode[n] == 'phon'):
-		return rechercheContrepeteriesPhrase(phraseOrigine,mode[n],langue,False)
+		return rechercheContrepeteriesPhrase(phraseOrigine,mode[n],langue,dicoDico,False)
 	else:
-		return rechercheToutesContrepeteriesPhrase(phraseOrigine,langue)
+		return rechercheToutesContrepeteriesPhrase(phraseOrigine,langue,dicoDico)
 # ------------------------------------------------------------------------------
 
 			
@@ -67,7 +67,7 @@ Paramètres :
 	-Sortie : 
 		-historique : un tableau
 """
-def rechercheContrepeteriesPhrase(phrase, mode, langue, isAllContrepeterie):
+def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepeterie):
 	if mode == 'word':
 		liste = mainMixSyllables(phrase, mode)
 		#phrase = phraseOrigine.split()
@@ -117,9 +117,9 @@ Paramètres :
 	-Sortie : 
 		-int : choix de l'utilisateur
 """
-def rechercheToutesContrepeteriesPhrase(phrase,langue):
-	listeResWord = rechercheContrepeteriesPhrase(phrase,'word',langue,True)
-	listeResPhon = rechercheContrepeteriesPhrase(phrase,'phon',langue, True)
+def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
+	listeResWord = rechercheContrepeteriesPhrase(phrase,'word',langue, dicoDico, True)
+	listeResPhon = rechercheContrepeteriesPhrase(phrase,'phon',langue, dicoDico, True)
 	continuer=2
 	modeActuel='word'
 	while(continuer == 2):

@@ -30,29 +30,27 @@ listeMotCop est de la forme : (nouveau mot, ancienne(s) lettre(s), nouvelle(s) l
 
 Complexité = O((26^y)*N) où N est la longueur du mot, et 26^y la longueur des combinaisons (si on veut échanger par 3 lettres, on aura 26^3)
 """
-def aide(mot,x,y,mode,langue):
+def aide(mot,x,y,mode,langue,dicoDico):
+	classGramMotOrigine=dicoDico["DicoGram"][mot]
 	if(mode=="phon"): #Seulement échanger des sons
-		dico='phon'
-		with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
-			dicoPhon = json.load(tmp)
+		dicoPhon = dicoDico['DicoPhon'] #récupère le dico des phonèmes
 		phon_file = open(f"data/{langue}/BD_phoneme{langue.capitalize()}.txt", encoding="utf-8")
 		BD_phoneme = phon_file.read()
 		BD_phoneme = BD_phoneme.split("\n")
 		#del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
 		listeSource=BD_phoneme
-
 		mot = Mot_to_Phon_Only(arbre_mot, mot) #On récupère l'écriture phonétique du mot
-		if not isinstance(mot, str):
-			print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
-			return 0
 		clear()
 	if(mode=="word"): #S'il veut seulement échanger des lettres
-		dico='word'
 		listeSource=list(string.ascii_lowercase)
 
+	dicoPhon=dicoDico['DicoPhon']
+	dicoGram=dicoDico['DicoGram']
+	listeDico=dicoDico['Themes']
 	listeMotCop=[]
+
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
-	choix = selectionMotCoupe("voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
+	choix = selectionMotCoupe("Voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
 	calculTempsExecution(len(mot),y)
 	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
@@ -62,21 +60,22 @@ def aide(mot,x,y,mode,langue):
 			for couple in listeCouple: #Pour chaque combinaison possible
 				
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
-				
-				if coupleLettre[1] != couple and isInDico(dico, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
-					if(mode=='phon'):
-						listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
-					if(mode=='word'):
-						listeMotCop.append((nvtMot,coupleLettre[1],couple,dico))
-					#circulaire(coupleLettre[1], couple, nvtMot, x)
+				if coupleLettre[1] != couple and isInDico(mode, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
+					if (filtreTheme(nvtMot,listeDico) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config'])):
+						if(mode=='phon'):
+							listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
+						if(mode=='word'):
+							listeMotCop.append((nvtMot,coupleLettre[1],couple,mode))
+						#circulaire(coupleLettre[1], couple, nvtMot, x)
 				if choix == 1:
 					if(mode=='phon'):
-						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, dico, dicoPhon))
+						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, mode, dicoPhon))
 					if(mode=='word'):
-						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, dico, None))
+						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, mode, None))
 	print('\n')
 	affichageBase(listeMotCop)
 	return listeMotCop
+
 #---------- a enlever plus tard
 def circulaire (ancLettre, nouvLettre, nouvMot, x):
 	listeSextup = []
@@ -187,7 +186,7 @@ def aideLettreRechDico(index, listeDeMotCop):
 """
 effectue la recherche de quadruplet de manière générale
 """
-def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode):
+def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dicoDico, mode):
 	index -= 1
 	NombreDeMot = len(listeDeMotCop)
 	compteur = 0
@@ -195,19 +194,18 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 	listeDeRacines = []
 	listeAffichage = []
 	# config filtres
-	
-	langue = diconfig['langue']
+
+	langue = dicoDico['config']['langue']
 	tsv_file = open(f"data/{langue}/dico{langue.capitalize()}.csv", encoding="utf-8")
 	lignes = csv.reader(tsv_file, delimiter=",")
 	# lit ligne par ligne du DICO (près de 100k lignes)
 
 	listeDico=[] #liste qui contiendra les dictionnaires par thème sélectionnés par l'utilisateur
-	for theme in diconfig['Themes']:
-		with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
-			listeDico.append(json.load(dicoTheme))
+	dicoPhon=dicoDico['DicoPhon']
+	dicoGram=dicoDico['DicoGram']
+	listeDico=dicoDico['Themes']
 
-	with open(f"data/{langue}/dicoPhoncom{langue.capitalize()}.json") as Phon :
-		dicoPhon = json.load(Phon)
+	classGramMotOrigine=dicoDico["DicoGram"][mot_origine]
 	print("recherche des résultats\n")
 	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
 	i=0
@@ -218,7 +216,7 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 			mot = mot[0] #On recupère le mot qu'on veut tester
 		elif mode == 'phon' :
 			mot = mot[1]
-		if(motIsInBorne(minimum,maximum,mot)):
+		if(motIsInBorne(minimum,maximum,mot) and gramFiltre(classGramMotOrigine,mot,mode,dicoGram,dicoPhon,dicoDico['config'])):
 			for ChaqueLettre in range(len(listeDeMotCop)):
 
 				test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
@@ -228,17 +226,15 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 					#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
 					testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot):
+					if isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
 						if mode == "phon" :
-							testTheme1 = dicoPhon[listeDeMotCop[ChaqueLettre][0]]
-							testTheme2 = dicoPhon[testDansMot]
-							testTheme3 = dicoPhon[mot]
+							testTheme1 = dicoPhon[testDansMot]
+							testTheme2 = dicoPhon[mot]
 						elif mode == "word" :
-							testTheme1 = listeDeMotCop[ChaqueLettre][0]
-							testTheme2 = testDansMot
-							testTheme3 = mot
+							testTheme1 = testDansMot
+							testTheme2 = mot
 
-						if (filtreTheme(testTheme1,listeDico) or filtreTheme(testTheme2,listeDico) or filtreTheme(testTheme3,listeDico)): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+						if (filtreTheme(testTheme1,listeDico) or filtreTheme(testTheme2,listeDico)): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
 							listeDeRacines.append(mot[:5])
 							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
 											   listeDeMotCop[ChaqueLettre][2],
@@ -246,7 +242,7 @@ def aideLettreRechDicoGeneral(index, listeDeMotCop,minimum,maximum,diconfig,mode
 											   testDansMot, mot))
 						compteur += 1
 	print("\n")
-	return (listeAffichage, compteur, diconfig)
+	return (listeAffichage, compteur)
 
 
 

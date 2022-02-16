@@ -77,10 +77,8 @@ Affiche les quadruplets trouvés suite à la recherche de façon jolie.
 et permet de voir les orthographes différents des phonèmes du quadruplets en
 appelant affiOrthoPhon
 """
-def affiRechSon(listeAffichage, compteur, mot_origine,langue):
-	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
-		dicoPhon = json.load(tmp)
-
+def affiRechSon(listeAffichage, compteur, mot_origine,langue, dicoDico):
+	dicoPhon = dicoDico['DicoPhon']
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine) #On récupuère la syntaxe phonétique du mot d'origine
 	listeAffichage = (sorted(listeAffichage, key=lambda lettre: lettre[0]))
 	son1,son2 = "",""
@@ -142,7 +140,7 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue):
 				numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 				boucle = False
 			elif selecteur <= len(listeAffichage) and selecteur > 0:
-				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue)
+				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue, dicoPhon)
 				boucle = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
@@ -155,10 +153,8 @@ de listeAffichage à l'index donnée en entrée.
 """
 
 
-def affiOrthoPhon(listeAffichage, index, mot_origine,langue):
+def affiOrthoPhon(listeAffichage, index, mot_origine,langue, dicoPhon):
 	clear()
-	with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
-		dicoPhon = json.load(tmp)
 
 	motOriPhon = Mot_to_Phon_Only(arbre_mot, mot_origine)
 	pack = listeAffichage[index]#Récupère le tuple voulu
