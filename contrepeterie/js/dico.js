@@ -302,8 +302,7 @@ function phonToPhrase(phrase) {
 //----------------------------------------------------------------------------
 
 function choixLettreP() {
-	trouverOrthographePhonem("la moule qui pue")
-	console.log("lettre !!!")
+	trouverOrthographePhonem("je carottes unes manges")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
 		document.getElementById('choixLettreP').value = 'true';
@@ -342,11 +341,60 @@ function trouverOrthographePhonem(phrase) {
 	phrasePhon = phraseToPhon(phrase).trimEnd().split(" ")
 	console.log(phrasePhon)
 	var listeRetour = []
+	var string = phrase.split(" ")
+	var longueurMax=0
+
 
 	for(let i in phrasePhon) {
 		phrasePhon[i] = dicCle[phrasePhon[i]]
 	}
-	listeRetour.push(phrasePhon)
+	console.log(phrasePhon)
+
+	/*
+	for(let j in string)
+	{
+		console.log("longueur : " + phrasePhon[j].length)
+		if (phrasePhon[j].length > longueurMax)
+		{
+			longueurMax=phrasePhon[j].length
+		}
+		console.log("valeur de j : " + j + " correspond a "+  phrasePhon[j])
+		console.log(phrasePhon[j])
+		for (let k in phrasePhon[j])
+		{
+			console.log("valeur de k : " + k + " correspond a "+  phrasePhon[j][k])
+			//string.push(phrasePhon[j][k])
+			string[j]=phrasePhon[j][k]
+		}
+	console.log("phrase a ajouter : " +string)
+	listeRetour.push(string)
+	string=phrase.split(" ")
+	//console.log("liste = " + listeRetour)
+	}
+	console.log(string)
+	//listeRetour.push(phrasePhon)
+	console.log(listeRetour)*/
+
+
+	for(let j in string) {
+		if (phrasePhon[j].length > longueurMax) {
+
+			longueurMax = phrasePhon[j].length
+		}
+
+		for (let k=0;k<longueurMax;k++) {
+			if (typeof(phrasePhon[j][k]) == "undefined") {
+				//string[j] = phrasePhon[j][k]
+				break
+			}
+			else
+			{
+				string[j] = phrasePhon[j][k]
+			}
+		listeRetour.push(string.join(" "))
+		}
+
+	}
 	console.log(listeRetour)
 }
 
