@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="brython.js"></script>
+<script type="text/javascript" src="brython_stdlib.js"></script>
+</head>
+
+<body onload="brython(1)">
+<div class="example" >
+    <button id="button">Recherche</button>
+    <p><div id="zone" class="zone"></div>
+
+    <p><div >
+      <p><input id="input" autocomplete="off" value="test">
+      <br><select id="select" autocomplete="off">
+          <option value="sons">sons
+          <option value="lettres">lettres
+      </select>
+      <br>
+    </div>
+
+    <script type="text/python" id="script16">
+    from browser import document, html
+
+    def show_values(event):
+        input = document["input"].value
+        select = document["select"]
+        option = select.options[select.selectedIndex].value
+        document["zone"].clear()
+        document["zone"] <= (f"Mot: {input}",
+            html.BR(), f"Mode choisi : {option}",
+            html.BR()
+            )
+
+    document["button"].bind("click", show_values)
+    </script>
+
+    <p>
+    <pre class="python"></pre>
+    <p>
+
+</div>
+</body>
+
+</html>
