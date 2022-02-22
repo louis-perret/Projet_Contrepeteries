@@ -20,16 +20,16 @@
    </head>
    <body onload="loadDico()">
       <!--Navigation bar-->
-<div id="nav-placeholder">
+      <div id="nav-placeholder">
 
-</div>
+      </div>
 
-<script>
-$(function(){
-  $("#nav-placeholder").load("navigation.html");
-});
-</script>
-<!--end of Navigation bar-->
+      <script>
+      $(function(){
+      $("#nav-placeholder").load("navigation.html");
+      });
+      </script>
+      <!--end of Navigation bar-->
 
 
       <section style="min-height: 600px;">
@@ -37,46 +37,40 @@ $(function(){
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Recherche de contrepèteries dans des phrases</h2>
          </div >
-          <div id="aide">
-          <div class="flexAllCenter">
-              <button id="choixLettreP" class="btnLettreOrPhoneme m-2" onclick="choixLettreP()" value="true">Lettres</button>
-              <button id="choixPhonemeP" class="btnLettreOrPhoneme m-2"onclick="choixPhonemeP()" value="false">Phonèmes</button>
-              <p id="pSelectLettrePhonP" class="m-2">Sélectionné : Lettres</p>
-          </div>
-          </div>
+
+         <div id="aide">
+            <div class="flexAllCenter">
+               <button id="choixLettreP" class="btnLettreOrPhoneme m-2" onclick="choixLettreP()" value="true">Lettres</button>
+               <button id="choixPhonemeP" class="btnLettreOrPhoneme m-2"onclick="choixPhonemeP()" value="false">Phonèmes</button>
+               <p id="pSelectLettrePhonP" class="m-2">Sélectionné : Lettres</p>
+            </div>
+         </div>
+
          <div id="chargementDico">
-             <div class="blackOutline"> Dictionnaire chargé :     </div>
-          <span id="chargement"></span>
-
-       </div>
-
+            <div class="blackOutline"> Dictionnaire chargé :     </div>
+            <span id="chargement"></span>
+         </div>
 
 
 
-
-
-          <div id="generation">
+         <div id="generation">
           <input type="text" name="phrase" id="phrase">
           <script>
              document.querySelector('#phrase').addEventListener('keyup', () => { if(event.keyCode === 13) redirigeLettreOuPhonemePhrase();});
           </script>
           <button id="gen" onclick="redirigeLettreOuPhonemePhrase()"> Lancer la recherche</button>
         </div>
-        <div id="div1">
 
-      </div>
-       </section>
-       
+        <div class="container" id="div1"></div>
+      </section>
 
-    </body>
+   </body>
 
-    <footer class="bg-dark bandeN">   
-      <div>
-         <p id="footer">
-            Copyright © 2020 L'art de décaler les sons / <a id="mentionL" href="mentions.html">Mentions</a>
-         </p>
-      </div>
-    </footer>
-
-          
+   <footer class="bg-dark bandeN">   
+   <div>
+      <p id="footer">
+         Copyright © 2020 L'art de décaler les sons / <a id="mentionL" href="mentions.html">Mentions</a>
+      </p>
+   </div>
+   </footer>     
 </html>

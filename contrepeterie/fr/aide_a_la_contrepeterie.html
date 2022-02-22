@@ -5,67 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-sale=1, schrink-to-fit=no">
     <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/style.css">
     <title>L'art de décaler les sons</title>
 </head>
 <body onload="loadSuggestion()" style="min-width: 1000px;">
-    <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon my-toggler"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav navbar-tabs">
-                <li class="nav-item mr-3">
-                    <a class="nav-link font" href="presentation.html">Présentation</a>
-                </li>
+    <!--Navigation bar-->
+    <div id="nav-placeholder"> </div>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Classification
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="contrepeterie_classique.html">Contrepèterie classique</a>
-                        <a class="dropdown-item" href="contrepeterie_decadente.html">Contrepèterie décadente</a>
-                        <a class="dropdown-item" href="contrepeterie_irreguliere.html">Contrepèterie irrégulière</a>
-                        <a class="dropdown-item" href="contrepeterie_enchevetree.html">Contrepèterie enchevêtrée</a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link font" href="recherche_phrase.html">Recherche dans une phrase</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link font" href="aide_a_la_contrepeterie.html">Recherche sur les mots</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Jeu
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="facile.html">Solo</a>
-                        <a class="dropdown-item" href="multijoueur.html">Multijoueur</a>
-                        <a class="dropdown-item" href="jeu_beta.html">Jeu v2</a>
-                    </div>
-                </li>
-
-
-            </ul>
-
-        </div>
-        <div class="justify-content-end">
-            <ul class="navbar-nav navbar-tabs">
-                <li class="nav-item ">
-                    <a id="btnFR" class="nav-link font langue" href="index.html"><img class="langue1" src="../image/fr.png" /></a>
-                </li>
-
-                <li class="nav-item">
-                    <a id="btnEN" class="nav-link font langue" href="../en/spoonerism_aid.html"><img class="langue2" src="../image/en.png"></a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <script>
+    $(function(){
+    $("#nav-placeholder").load("navigation.html");
+    });
+    </script>
+    <!--end of Navigation bar-->
 
 
     <section>

@@ -21,38 +21,36 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav navbar-tabs">
                 <li class="nav-item mr-3">
-                    <a class="nav-link font" href="presentation.html">Présentation</a>
+                    <a class="nav-link font" href="presentation.html">Presentation</a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Classification
+                        More examples
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="contrepeterie_classique.html">Contrepèterie classique</a>
-                        <a class="dropdown-item" href="contrepeterie_decadente.html">Contrepèterie décadente</a>
-                        <a class="dropdown-item" href="contrepeterie_irreguliere.html">Contrepèterie irrégulière</a>
-                        <a class="dropdown-item" href="contrepeterie_enchevetree.html">Contrepèterie enchevêtrée</a>
-
+                        <a class="dropdown-item" href="spooner_spoonerism.html">Spooner's Spoonerisms</a>
+                        <a class="dropdown-item" href="funny_spoonerism.html">Funny Spoonerisms</a>
+                        <a class="dropdown-item" href="cack_of_pards_spoonerism.html">Cack of Pards Spoonerisms</a>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link font" href="recherche_phrase.html">Recherche dans une phrase</a>
+                    <a class="nav-link font" href="generation_spoonerism.html">Research in a sentence</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link font" href="aide_a_la_contrepeterie.html">Recherche sur les mots</a>
+                    <a class="nav-link font" href="spoonerism_aid.html">Research in a word</a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Jeu
+                        Game
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="facile.html">Solo</a>
-                        <a class="dropdown-item" href="multijoueur.html">Multijoueur</a>
-                        <a class="dropdown-item" href="jeu_beta.html">Jeu v2</a>
+                        <a class="dropdown-item" href="easy.html">Easy</a>
+                        <a class="dropdown-item" href="medium.html">Medium</a>
+                        <a class="dropdown-item" href="difficult.html">Difficult</a>
                     </div>
                 </li>
 
@@ -67,7 +65,6 @@
                     <script>
                         let pathActuel = window.location.pathname;
                         let fichierActuel = pathActuel.split("/").pop();
-                        langue = "fr"
                         if (fichierActuel == "spoonerism_aid.html")
                             document.querySelector('#btnFR').href = '../fr/aide_a_la_contrepeterie.html';
                         else if (fichierActuel == "generation_spoonerism.html")
@@ -80,7 +77,6 @@
                 <li class="nav-item">
                     <a id="btnEN" class="nav-link font langue"><img class="langue2" src="../image/en.png"></a>
                     <script>
-                        langue = "en";
                         if (fichierActuel == "aide_a_la_contrepeterie.html")
                             document.querySelector('#btnEN').href = '../en/spoonerism_aid.html';
                         else if (fichierActuel == "recherche_phrase.html")

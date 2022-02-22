@@ -66,10 +66,6 @@ function loadSuggestion(){
 			document.getElementById('gen2').addEventListener('mousedown', affichLoadStats);
 		}
 
-		//ajoute un event listener permettrant de mettre à jour le langage choisi
-		document.querySelector('#btnFR').addEventListener('click', function changeLangueFR(){langue = "fr";});
-		document.querySelector('#btnEN').addEventListener('click',  function changeLangueEN(){langue = "en";})
-
 		document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
 		document.getElementById('choixLettre').setAttribute('style','border: 4px solid #7ac142;');

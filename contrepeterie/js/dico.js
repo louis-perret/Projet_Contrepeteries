@@ -51,6 +51,7 @@ function splitdic(){
 function loadDico(){
 	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
+	document.getElementById('choixLettreP').setAttribute('style','border: 4px solid #7ac142;');
 
 	let pathToDictionary = "../dict_fr_ok.csv";
 
@@ -100,6 +101,8 @@ function mainMixSyllabes(phrase,mode) {
 	var tmp = []
 	var taille
 	var test
+	let actualDivId = 0;
+	let LphrasesButOnlyThePhrase = []
 
 	Lphrases.push() //ohrase contient elle meme
 	//console.log(Lphrases)
@@ -148,16 +151,16 @@ function mainMixSyllabes(phrase,mode) {
 						//console.log(phrase)
 						//console.log(tmp)
 						if(mode === "phon") {
-							//console.log("phrase a passer à phonToPhrase : " + phrase)
-							//console.log("tmp a passer à phonToPhrase : " + tmp)
-							//phrase = phonToPhrase(phrase)
-							//tmp = phonToPhrase(tmp)
-							if(!Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phonToPhrase(phrase).join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + phonToPhrase(tmp).join(' ') +'</div></div>')) {
-								Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phonToPhrase(phrase).join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + phonToPhrase(tmp).join(' ') +'</div></div>')
+							let maPhrase = phonToPhrase(tmp).join(' ');
+							//LphrasesButOnlyThePhrase sert à éviter le problème lié aux id dans Lphrases
+							if(!LphrasesButOnlyThePhrase.includes(maPhrase)) {
+								Lphrases.push(`<div class='flexAllCenter' id='divID-${actualDivId}'><button style='padding: 5px; margin: 5px; border-radius: 8px; border: 2px solid #81c784; min-width: 150px; color: black; background-color: white; font-weight: bold;' onclick='trouverOrthographePhonem("${maPhrase}", ${actualDivId})'>${maPhrase}</button><p style='color: darkslategray; font-weight: bold; font-family: fantasy;'></p></div><hr>`)
+								LphrasesButOnlyThePhrase.push(maPhrase)
 							}
+							actualDivId += 1;
 						}
-						if(mode === "lettre" && !Lphrases.includes("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+ phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')) {
-							Lphrases.push("<div style='margin: 10px;'><div class='card p-2 shadow-sm'>"+phrase.join(' ') + '</div>' + '<div class="card p-2 shadow-sm">' + tmp.join(' ') +'</div></div>')
+						if(mode === "lettre" && !Lphrases.includes(`<p>${tmp.join(' ')}</p>`)) {
+							Lphrases.push(`<p>${tmp.join(' ')}</p>`)
 						}
 					}
 				}
@@ -305,6 +308,8 @@ function choixLettreP() {
 	trouverOrthographePhonem("je carottes unes manges")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
+		document.getElementById('choixLettreP').setAttribute('style','border: 4px solid #7ac142;');
+		document.getElementById('choixPhonemeP').setAttribute('style','border: 4px solid transparent;');
 		document.getElementById('choixLettreP').value = 'true';
 		document.getElementById('choixPhonemeP').value = 'false';
 		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Lettres';
@@ -312,15 +317,14 @@ function choixLettreP() {
 }
 
 function choixPhonemeP() {
-
 	console.log("phonem !!!")
 	if (document.getElementById('choixPhonemeP').value == 'false')
 	{
+		document.getElementById('choixPhonemeP').setAttribute('style','border: 4px solid #7ac142;');
+		document.getElementById('choixLettreP').setAttribute('style','border: 4px solid transparent;');
 		document.getElementById('choixPhonemeP').value = 'true';
 		document.getElementById('choixLettreP').value = 'false';
 		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Phonèmes';
-
-
 	}
 }
 
@@ -337,11 +341,11 @@ function redirigeLettreOuPhonemePhrase() {
 	}
 }
 
-function trouverOrthographePhonem(phrase) {
+function trouverOrthographePhonem(phrase ,divID) {
 	phrasePhon = phraseToPhon(phrase).trimEnd().split(" ")
 	console.log(phrasePhon)
 	var listeRetour = []
-	var string = phrase.split(" ")
+	var string = phrase.trimEnd().split(" ")
 	var longueurMax=0
 
 
@@ -375,10 +379,8 @@ function trouverOrthographePhonem(phrase) {
 	//listeRetour.push(phrasePhon)
 	console.log(listeRetour)*/
 
-
 	for(let j in string) {
 		if (phrasePhon[j].length > longueurMax) {
-
 			longueurMax = phrasePhon[j].length
 		}
 
@@ -395,7 +397,9 @@ function trouverOrthographePhonem(phrase) {
 		}
 
 	}
-	console.log(listeRetour)
+	let myP = document.querySelector(`div#divID-${divID}`).querySelector('p');
+	myP.innerText = listeRetour.join("  /  ");
+	//console.log(listeRetour)
 }
 
 
