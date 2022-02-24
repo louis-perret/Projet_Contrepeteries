@@ -365,8 +365,7 @@ function deroulementJeu()
         motATrouver.push(dicMot4a8lettres[posRandom]);
     }
     writeText(motATrouver[0])
-    //listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motATrouver[id])
-    console.log(listeReponse)
+    startGame();
 
 
     //document.querySelector("#btnValidate").addEventListener("click", testReponse(motATrouver[id], document.querySelector("input#reponse").value));
@@ -409,4 +408,63 @@ function soumettreReponse()
     //pour prochain mot
     writeText(motATrouver[nbSoumissionReponse]);
     document.getElementById('reponse').value = '';
+}
+
+//---------------------------------------
+//---------------------------------------
+//---------------------------------------
+
+var secondes = 30;
+var minutes = 0;
+var on = false;
+var reset = false;
+
+function startGame(){
+    console.log("start game")
+    if(on===false){
+        pts=0;
+        timerID = setInterval(chrono, 1000);
+        on = true;
+        reset = false;
+    }
+}
+
+function chrono(){
+
+
+    if(minutes>= 1 && secondes==0){
+        minutes-=1;
+        secondes=59;
+    }
+    else
+        secondes -= 1;
+
+    /*
+    if(minutes == 0 && secondes <= 0){
+        Stop();
+        $('span').unbind("click");
+        end=true;
+    } */
+
+    if(secondes>59){
+        minutes++;
+        secondes=secondes-60;
+    }
+
+    affTimer();
+}
+
+function affTimer(){
+    if(minutes<10 && secondes<10){
+        $("#displayTimer").html("0"+minutes+" : 0"+secondes);
+    }
+    else if(minutes<10 && secondes>=10){
+        $("#displayTimer").html("0"+minutes+" : "+secondes);
+    }
+    else if(minutes>=10 && secondes<10){
+        $("#displayTimer").html(+minutes+" : 0"+secondes);
+    }
+    else if(minutes>=10 && secondes>10){
+        $("#displayTimer").html(+minutes+" : "+secondes);
+    }
 }

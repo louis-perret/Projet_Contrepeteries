@@ -50,6 +50,7 @@ function test(){
     menu.style.textAlign="center";
 
     $("#play").click(function(){
+        console.log("ici !!!")
         Start();
         btn1.parentNode.removeChild(btn1);
         let divD = document.createElement("DIV");
