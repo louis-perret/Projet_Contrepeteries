@@ -125,15 +125,21 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 	modeActuel='word'
 	while(continuer == 2):
 		if(modeActuel == 'word'):
-			count=0
-			print("\nLes contrepétries possibles sont :\n")
-			for contrepet in listeResWord[1:]:
-				print(f" {contrepet}\n")
-				count += 1
-			print('\nNombre de résultats : ', count)
-			print("Voici les résultats en échangeant les lettres.")
+			if(len(listeResWord) != 0):
+				count=0
+				print("\nLes contrepétries possibles sont :\n")
+				for contrepet in listeResWord[1:]:
+					print(f" {contrepet}\n")
+					count += 1
+				print('\nNombre de résultats : ', count)
+				print("Voici les résultats en échangeant les lettres.")
+			else:
+				print("Pas de résultats pour l'échange avec les lettres")
 		else:
-			affiRechFiltre(listeResPhon,'phon',True)
+			if(listeResPhon != 1 ):
+				affiRechFiltre(listeResPhon,'phon',True)
+			else:
+				print("Pas de résultats pour l'échange avec les phonèmes")
 		if(modeActuel == 'word'):
 			message="phonèmes"
 			modeActuel='phon'

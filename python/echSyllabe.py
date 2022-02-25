@@ -23,7 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		if(True):
+		if(False):
 			for x in allResults :
 				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 				listemot2 = mixSyllabeCoupe(x[0], mode)

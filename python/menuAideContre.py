@@ -14,6 +14,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 Objectif : Gère le mode aide à la contrepèterie
 Paramètres :
 	-Entrée :
+		-dicoDico : dictionnaire contenant les fichiers + config de l'application
 		-historique : historique des 5 derniers mots entrés par l'utilisateur
 	-Sortie : 
 		-historique : un tableau
@@ -24,7 +25,7 @@ def aideContrepetrie(dicoDico,historique):
 		langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
 		dicoDico['config']=dicoConfig
 	# boucle "tant que" pour le recommencer aide avec un autre mot.
-	tabMode=["Recherche personnalisée pour les lettres","Recherche personnalisée pour les phonèmes","Plusieurs lettres","Plusieurs sons"]
+	tabMode=["Recherche personnalisée pour les lettres","Recherche personnalisée pour les phonèmes","Recherche complète"]
 	continuer = 1
 	while continuer == 1:
 		clear()
@@ -58,11 +59,7 @@ def aideContrepetrie(dicoDico,historique):
 			continuer=modePersonnalisé("phon",mot,langue,dicoDico)
 
 		elif choix == 3: #'nimporte quel nombre de lettre
-			continuer=modePlusieurs("word",mot,langue,dicoDico)
-
-		elif choix == 4: #n'importe quel nombre de phonèmes
-			continuer=modePlusieurs("phon",mot,langue,dicoDico)
-
+			continuer=recherchePlusieurs(mot,langue,dicoDico)
 	return historique
 
 
@@ -140,10 +137,10 @@ def longueurSyllabe(message):
 Objectif : Gère le mode personnalisée (lettre ou phonème)
 Paramètres :
 	-Entrée :
-		-dico : mode sélectionné par l'utilisateur (word => lettren, phon => lettre)
+		-mode : mode sélectionné par l'utilisateur (word => lettren, phon => lettre)
 		-mot : mot entré par l'utilisateur
 		-langue : langue choisie par l'utilisateur
-		-diconfig : dictionnaire de configuration
+		-dicoDico : dictionnaire contenant les fichiers + config de l'application
 	-Sortie : 
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
@@ -151,11 +148,16 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 	x = longueurSyllabe("Longueur de la syllabe à enlever : ")
 	y = longueurSyllabe("Longueur de la syllabe à ajouter : ")
 	print("Recherche des contrepétries possibles ...")
+	calculTempsExecution(len(mot),y,"seul")
 	listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
 
 	if(len(listeDeMotCop) == 0 ):
 		affichagePasResultat(mot,"",x,y,"","",dicoDico['config'],mode)
 		return
+	if(mode == "word"):
+		affichageBase(mot,listeDeMotCop,x)
+	else:
+		affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop,x)
 	if(mode == 'word'):
 		message="effectuer la recherche avec les phonèmes"
 	else:
@@ -204,61 +206,91 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 Objectif : Gère le mode plusieurs (lettre ou phonème)
 Paramètres :
 	-Entrée :
-		-mode: mode sélectionné par l'utilisateur (word => lettren, phon => lettre)
 		-mot : mot entré par l'utilisateur
 		-langue : langue choisie par l'utilisateur
+		-dicoDico : dictionnaire contenant les fichiers + config de l'application
 	-Sortie : 
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
-def modePlusieurs(mode,mot,langue,dicoDico):
-	print("Recherche des échanges possibles sur les différentes tranches :")
-	print("\nChargement en cours...\n")
+def recherchePlusieurs(mot,langue,dicoDico):
+	dicoResWord = {}
+	dicoResPhon = {}
+	longueurMot = len(mot)
 
-	if(mode=="word"):
-		sliceCorr = aideSyllSubs(mot) #récupère le dico qui a pour clé les lettres à changer et comme valeur tous les mots obtenus
-	if(mode=="phon"):
-		sliceCorr = aideMultiSonSubs(mot) #récupère le dico qui a pour clé les lettres à changer et comme valeur tous les mots obtenus
-	# si les tranches n'avait pas de correspondance:
-	if isinstance(sliceCorr, bool):
-		clear()
-		print("Ce mot n'est pas dans notre lexique, nous ne pouvons pas trouver son phonème.\n")
-		return 1
-	else:
+	#Ce mode met les mots coupés et active par défaut le filtre grammatical
+	oldMotCoupe=dicoDico['config']['MotCoupe']
+	dicoDico['config']['MotCoupe']="Non"
+	oldFiltreGram=dicoDico['config']['FiltreGrammatical']
+	dicoDico['config']['FiltreGrammatical']="Oui"
+	ecriturePhonMot = Mot_to_Phon_Only(arbre_mot, mot)
+
+	calculTempsExecution(len(mot),3,"plusieurs") #à revoir
+	for x in range(1,longueurMot): #pour chaque tranche possible du mot
+		dicoResWord[f"{x}"]=[]
+		dicoResPhon[f"{x}"]=[]
+		for y in range(1,4): #pour chaque longueur d'échange possible
+			listeRes = aide(mot,x,y,"word",langue,dicoDico)
+			if(len(listeRes) != 0):
+				dicoResWord[f"{x}"].extend(listeRes)
+			listeRes = aide(mot,x,y,"phon",langue,dicoDico)
+			if(len(listeRes) != 0):
+				dicoResPhon[f"{x}"].extend(listeRes)
+	boucle=True
+	while(boucle):
+		affichageBasePlusieurs(mot,dicoResWord,dicoResPhon)
 		while(True):
-			if(mode=="word"):
-				syllOrigine = affiNbCorrTranche(sliceCorr)
-			if(mode=="phon"):
-				syllOrigine = affiNbCorrTranche2(sliceCorr)
-			if syllOrigine == 0:
-				return 0
-			elif syllOrigine == -1:
-				clear()
+			choix = inputInt("\n0 -> Quitter l'aide, -1 -> Retour au menu, entrer le numéro des résultats à afficher : ")
+			if(choix == 0):
+				return choix
+			elif(choix == -1):
 				return 1
-
-			if(mode=="word"):
-				selectMot = affiPageParPage(sliceCorr[syllOrigine], syllOrigine, mot)
-			if(mode=="phon"):
-				selectMot = affiPageParPage2(sliceCorr[syllOrigine], syllOrigine, mot)
-			if selectMot == 0:
-				return 0
-			elif selectMot == -1:
-				return 1
-			elif isinstance(selectMot, str):
+			elif(choix < 0 or choix > (len(dicoResWord) + len(dicoResPhon))):
+				print("Vous n'avez pas entrer un entier qui fonctionne. Ressayer.")
+				continue
+			elif(choix <= len(dicoResWord)):
+				listeDeMotCop = dicoResWord[str(choix)]
+				mode="word"
 				break
+			else:
+				choix = abs(len(dicoResWord) - choix)
+				listeDeMotCop = dicoResPhon[str(choix)]
+				mode="phon"
+				break
+		if(mode=='word'):
+			affichageBase(mot,listeDeMotCop,choix)
+		else:
+			affichageBase(ecriturePhonMot,listeDeMotCop,choix)
+		boucle2 = True
+		while(boucle2):
+			selectMot = inputInt("\n0 -> Quitter l'aide, -1 -> Retour au menu, -2 -> Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
+			if selectMot == 0 or selectMot == -1:
+				return abs(selectMot)
+			elif selectMot == -2 or (selectMot <= len(listeDeMotCop) and selectMot > 0): #evite les erreurs de segmentations
+				boucle2 = False
+			else:
+				print("\nL'entrée n'est pas valide, réessayez")
 
+		if(selectMot == -2):
+			continue
+		listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,-1,-1,dicoDico,mode)
 
-		if(mode=="word"):
-			(listeAffichage, compteur, diconfig) = aideSyllRechDico(mot, selectMot, syllOrigine)
-		if(mode=="phon"):
-			(listeAffichage, compteur, diconfig) = aideMultiSonRechDico(mot, selectMot, syllOrigine)
-		if (diconfig["FiltreGrammatical"] == "Oui"):
-			listeAffichage = GramFiltre(listeAffichage, mot,langue,mode)
-
-		if(mode=="word"):
-			return affiRechLettre(listeAffichage, compteur, mot)
-		if(mode=="phon"):
-			return affiRechSon(listeAffichage, compteur, mot,langue)
-
+		# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
+		if len(listeAffichage) >0:
+			if(mode=='word'):
+				continuer = affiRechLettre(listeAffichage, compteur, mot)
+			else:
+				continuer = affiRechSon(listeAffichage, compteur, mot,langue, dicoDico)
+			if continuer == 0 or continuer == -1:
+				return abs(continuer)
+		else:
+			if(mode=="word"):
+				mot2=listeDeMotCop[selectMot-1][0]
+			else:
+				mot2=listeDeMotCop[selectMot-1][3]
+			affichagePasResultat(mot,mot2,x,y,-1,-1,dicoDico['config'],mode)
+	#faire la recherche des quadruplé
+	dicoDico['config']['MotCoupe']=oldMotCoupe
+	dicoDico['config']['FiltreGrammatical']=oldFiltreGram
 
 
 def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):

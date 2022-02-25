@@ -3,14 +3,14 @@ import os
 import json
 import platform
 
-def calculTempsExecution(longueurMot,longueurCoupleLettre):
+def calculTempsExecution(longueurMot,longueurCoupleLettre,mode):
 	if platform.system() == "Linux":
 		with open('data/config.json','r') as diconfig_:
 			dicoConfig = json.load(diconfig_)
 			langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
 		liste = getDictAsList(f"./data/{langue}/dico{langue.capitalize()}.csv")
 		loga = math.log(len(liste),10)
-		os.system(f"./shellExec.sh {longueurMot} {longueurCoupleLettre} {int(loga)}")
+		os.system(f"./shellExec.sh {longueurMot} {longueurCoupleLettre} {int(loga)} {mode}")
 
 
 def getDictAsList(fichierSource):

@@ -40,7 +40,6 @@ def aide(mot,x,y,mode,langue,dicoDico):
 		#del BD_phoneme[-1] #Enlève le caractère vide de la fin du tableau
 		listeSource=BD_phoneme
 		mot = Mot_to_Phon_Only(arbre_mot, mot) #On récupère l'écriture phonétique du mot
-		clear()
 	if(mode=="word"): #S'il veut seulement échanger des lettres
 		listeSource=list(string.ascii_lowercase)
 
@@ -50,15 +49,10 @@ def aide(mot,x,y,mode,langue,dicoDico):
 	listeMotCop=[]
 
 	listeCouple=recupCoupleLettre(y,'',[],listeSource) #Récupère la liste de combinaisons possibles de longueur y
-	choix = selectionMotCoupe("Voulez vous chercher dans les mots coupés (1 = oui, 0 = non) :")
-	calculTempsExecution(len(mot),y)
-	print('Voici donc les couples que l\'on peut changer : ')
 	for lettre in enumerate(mot): #Pour chaque lettre du mot
 		coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
-		if coupleLettre[0]: #S'il existe un couple possible à échanger
-			print(f'\'{coupleLettre[1]}\'',end=' ')			
+		if coupleLettre[0]: #S'il existe un couple possible à échanger		
 			for couple in listeCouple: #Pour chaque combinaison possible
-				
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
 				if coupleLettre[1] != couple and isInDico(mode, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
 					if (filtreTheme(nvtMot,listeDico) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config'])):
@@ -67,13 +61,11 @@ def aide(mot,x,y,mode,langue,dicoDico):
 						if(mode=='word'):
 							listeMotCop.append((nvtMot,coupleLettre[1],couple,mode))
 						#circulaire(coupleLettre[1], couple, nvtMot, x)
-				if choix == 1:
+				if dicoDico['config']['MotCoupe'] == "Oui":
 					if(mode=='phon'):
 						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, mode, dicoPhon))
 					if(mode=='word'):
 						listeMotCop.extend(verificationEspace(nvtMot, coupleLettre[1], couple, mode, None))
-	print('\n')
-	affichageBase(listeMotCop)
 	return listeMotCop
 
 #---------- a enlever plus tard
@@ -352,10 +344,10 @@ def aideSyllSubs(mot_origine):
 
 	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
 	Lexlignes = csv.reader(tsv_file, delimiter=",")
-
+	"""
 	with open('data/DicoVulgaire.json') as vulgaire:
 		BDvulgaire = json.load(vulgaire)
-
+	"""
 	dicoSliceCom = tranchesMot(mot_origine, 3)
 
 
@@ -388,6 +380,7 @@ def aideSyllSubs(mot_origine):
 			dicoTmp[i] = dicoSliceCom[i]
 
 	print(f"Mot saisie : {mot_origine}")
+	print(dicoSliceCom['c'])
 	return dicoSliceCom
 
 

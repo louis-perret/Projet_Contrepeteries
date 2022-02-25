@@ -118,13 +118,47 @@ def verificationEspace(mot, ancienneLettre, nouvelleLettre, dico, dicoPhon):
 """
 fonction pour l'affichage dans le menu
 """
-def affichageBase (listeDeMotCop) : 
+def affichageBase (mot,listeDeMotCop,x) : 
+	if(len(listeDeMotCop) == 0):
+		print("Aucun résultat pour cette recherche")
+		return
+	print('Voici donc les couples que l\'on peut changer : ')
+	for lettre in enumerate(mot): #Pour chaque lettre du mot
+		coupleLettre=recupCouple(mot,x,lettre[0])
+		if coupleLettre[0]: #S'il existe un couple possible à échanger
+			print(f'\'{coupleLettre[1]}\'',end=' ')
+	print("\n")
 	for i in enumerate(listeDeMotCop): #i[0] -> index, i[1][1] -> ancienne lettre, i[1][2] -> nouvelle lettre, i[1][0] -> nouveau mot
 		tmp = i[1][2] if i[1][2] != "" else chr(32)
 		if i[1][3] == 'word' :
 			print(f" {i[0]+1}   {i[1][1]} - {tmp}    {i[1][0]}")
 		else :
 			print(f"{i[0]+1}  {i[1][1]} - {tmp}    {i[1][0]} ex : {i[1][3]}")
+
+
+"""
+Objectif : Effectue l'affichage du nombre de résultats par tranche du mot pour le mode 'plusieurs'
+Paramètres :
+	-Entrée :
+		-mot : mot entré par l'utilisateur
+		-dicoResWord : dico des résultats des échanges de lettres (clé -> longueur échangée)
+		-dicoResWord : dico des résultats des échanges de phonèmes (clé -> longueur échangée)
+	-Sortie : 
+		aucun
+"""
+def affichageBasePlusieurs(mot,dicoResWord,dicoResPhon):
+	print("Voici les résultats pour chaque échange possible dans le mot : " + mot)
+	i=1
+	print("Voici les résultats pour les échanges entre lettres :")
+	for key in dicoResWord.keys():
+		print(f"-{i}   {key} lettre(s) - {key} lettre(s) --> {len(dicoResWord[key])} résultats")
+		i=i+1
+	print("\n")
+	print("Voici les résultats pour les échanges entre phonèmes : \n")
+	for key in dicoResPhon.keys():
+		print(f"-{i}   {key} phonème(s) - {key} phonème(s) --> {len(dicoResPhon[key])} résultats")
+		i=i+1
+
 
 
 

@@ -10,10 +10,12 @@ with open("data/config.json","r") as file:
 
 langue=diconfig['langue']
 dicoDico={}
+dicoDico["config"]=diconfig
 listeDicoTheme=[]
-for theme in diconfig['Themes']:
-	with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
-		listeDicoTheme.append(json.load(dicoTheme))
+if(langue == 'fr'):
+	for theme in diconfig['Themes']:
+		with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
+			listeDicoTheme.append(json.load(dicoTheme))
 
 dicoDico['Themes']=listeDicoTheme
 with open(f"data/{langue}/dicoPhoncom{langue.capitalize()}.json") as Phon :
@@ -89,7 +91,7 @@ while boucle:
 	while passeur != 0:
 		try:
 
-			tmp = int(input("0 : Quitter / 1 : Retour au début "))
+			tmp = int(input("0 : Quitter l'application / 1 : Retour au début "))
 			passeur = 0
 		except ValueError:
 			print("Entrée invalid veuillez réessayer (Vous devez utiliser des nombres).\n")

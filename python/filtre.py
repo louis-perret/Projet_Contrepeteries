@@ -30,6 +30,13 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 			diconfig["FiltreGrammatical"] = "Non"
 
 		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
+
+		n = selectionChoix("\nActiver les mots coupés\n(1:Oui/0:Non/autre:defaut):")
+		if n == 1:
+			diconfig["MotCoupe"] = "Oui"
+		elif n == 0:
+			diconfig["MotCoupe"] = "Non"
+
 		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(1:Oui/0:Non/autre:defaut):")
 		if n == 1:
 			diconfig["EffacerComplétement"] = "Oui"
@@ -46,6 +53,7 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 		with open(f'data/{dicoDico["config"]["langue"]}/dico{theme}{dicoDico["config"]["langue"].capitalize()}.json') as dicoTheme:
 			listeDicoTheme.append(json.load(dicoTheme))
 	dicoDico['Themes']=listeDicoTheme
+	dicoDico['Config']=diconfig
 
 #-------------------------------------------------------------------------------
 
@@ -180,7 +188,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 			if (choixutilisateur) <= compteur and choixutilisateur > -1:
-				for j in nvDico[dicores[choixutilisateur]]:
+				for j in nvDico[dicores[choixutilisateur]]: #pour chaque orthographe de la phrase
 					maxlen = 0
 					phrase = []	
 					for k in range(len(j)) :
@@ -275,32 +283,6 @@ Paramètres :
 	-Sortie :
 		liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 """
-"""
-def GramFiltre(listeOrigine, mot_origine,langue,mode):
-	nouvelleListe = []
-	with open(f'data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
-			dicoClassGramm = json.load(tmp)
-	#arbre_mot = arbre qui contient tous les mots
-	for pack in listeOrigine:
-		#On récupère les classes grammaticales des réponses
-		if(mode == "word"):
-			classGramMot1 = dicoClassGramm[mot_origine]
-			classGramMot2 = dicoClassGramm[pack[4]]
-			classGramMot3 = dicoClassGramm[pack[2]]
-			classGramMot4 = dicoClassGramm[pack[3]]
-		if(mode == "phon"):
-			with open(f'data/{langue}/dicoPhoncom{langue.capitalize()}.json') as tmp:
-				dicoPhon = json.load(tmp)
-			classGramMot1 = dicoClassGramm[mot_origine]
-			classGramMot2 = dicoClassGramm[dicoPhon[pack[4]][0]]
-			classGramMot3 = dicoClassGramm[dicoPhon[pack[2]][0]]
-			classGramMot4 = dicoClassGramm[dicoPhon[pack[3]][0]]
-		for i in range(len(classGramMot1)): #On parcours les classes grammaticales du mot entré par l'utilisateur
-			if(classGramMot1[i] in classGramMot2 and classGramMot1[i] in classGramMot3 and classGramMot1[i] in classGramMot4): #s'ils ont la même classe grammaticale
-					nouvelleListe.append(pack) #on l'ajoute aux réponses
-	return nouvelleListe
-"""
-
 def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
 	if(diconfig["FiltreGrammatical"] == "Non"):
 		return True
