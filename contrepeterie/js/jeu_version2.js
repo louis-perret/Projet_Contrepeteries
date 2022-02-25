@@ -5,8 +5,9 @@ var dicCle=[];
 let dicMot4a8lettres=[];
 let alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
 let score = 0;
-let timeRemaining = 30; //sec
 let nbSoumissionReponse = 0;
+let streak = 0;
+let nbMots = 10;
 
 let listeReponse=[]
 
@@ -110,6 +111,12 @@ function writeText(motToDisplay){
 
     let lienWiki = "https://fr.wiktionary.org/wiki/" + motToDisplay
     document.getElementById("myH1").innerHTML =anchor
+}
+
+function changeStreakPicture(relativePath) {
+    pic = document.querySelector('#streakPicture');
+    pic.setAttribute('src',relativePath);
+    pic.setAttribute('style','width: 40px; height: 40px;');
 }
 
 function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
@@ -330,6 +337,28 @@ function updateTimeRemaining () {
     document.querySelectorAll('#displayTimer').innerHTML = timeRemaining.toString();
 }
 
+function updateScore(streak) {
+    score += (10 + streak*10);
+    document.querySelector('#displayScore').innerText = score;
+}
+
+function resetAll() {
+    score = 0;
+    streak = 0;
+    secondes = 30;
+    minutes = 0;
+    nbSoumissionReponse = 0;
+    listeReponse=[];
+    motATrouver=[];
+    document.querySelector('h3#ancienMot').innerText = '';
+    document.querySelector('h3#solution').innerText = '';
+    document.querySelector('h3#messageSuccess').innerText = '';
+    document.querySelector('h3#displayScore').innerText = '0';
+    document.querySelector('h3#displayTimer').innerText = '00:30';
+    document.querySelector('h3#streak').innerText = '0';
+    changeStreakPicture('../image/ok.png');
+}
+
 function testReponse(motDonne, motEntre) {
     //listeReponse = returnTuplePhon(1, 1, "fr", dicVulgaire, "filtreGrossUnabled", "false",motDonne);
     //pour le moment listeReponse undefined
@@ -356,58 +385,75 @@ function testReponse(motDonne, motEntre) {
 
 function deroulementJeu()
 {   
-    //création liste de mots aléatoire de 10 mots
-    for(let id=0; id<9; id++) {
-        posRandom = getRandomInt(dicMot4a8lettres.length);
-        console.log(dicMot4a8lettres[posRandom])
-        listeReponseNoId = aideMultiLettreModifViteFait(1, 1, dicMot4a8lettres[posRandom]).concat(aideMultiPhonModifViteFait(1, 1, "fr", dicMot4a8lettres[posRandom]));
+    //création liste de mots aléatoire de nbMots mots
+    for(let id=0; id<nbMots; id++) {
+        let listeReponseNoId = [];
+        while(listeReponseNoId.length === 0) {
+            posRandom = getRandomInt(dicMot4a8lettres.length);
+            console.log(dicMot4a8lettres[posRandom])
+            listeReponseNoId = aideMultiLettreModifViteFait(1, 1, dicMot4a8lettres[posRandom]).concat(aideMultiPhonModifViteFait(1, 1, "fr", dicMot4a8lettres[posRandom]));
+        }
         listeReponse.push(listeReponseNoId);
         motATrouver.push(dicMot4a8lettres[posRandom]);
     }
     writeText(motATrouver[0])
     startGame();
-
-
-    //document.querySelector("#btnValidate").addEventListener("click", testReponse(motATrouver[id], document.querySelector("input#reponse").value));
-    
-    //setInterval(updateTimeRemaining(), 1000); //fonction appelée toutes les 1000ms
-    //while(timeRemaining > 0) {}
 }
 
 function soumettreReponse()
 {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(soumettre réponse)")
+    if(nbSoumissionReponse === nbMots-1) {
+        document.querySelector('h3#ancienMot').innerText = '';
+        document.querySelector('h3#solution').innerText = '';
+        document.querySelector('h3#messageSuccess').innerText = 'Jeu terminé';
+        document.querySelector('h3#messageSuccess').setAttribute('style','color: #95dabb;');
+        let playAgain = document.querySelector('button#playAgain');
+        playAgain.style.display = 'inline-block';
+        return;
+    }
+
     let mot = document.getElementById('reponse').value.toLowerCase();
     console.log(mot)
     if (listeReponse[nbSoumissionReponse].includes(mot)) {
         let nb = parseInt(document.getElementById('nombreBonnesRep').innerText);
-        console.log(nb)
         nb++
-        document.getElementById("nombreBonnesRep").innerText = nb
+        document.getElementById("nombreBonnesRep").innerText = nb;
+        document.querySelector('h3#ancienMot').innerText = '';
+        document.querySelector('h3#solution').innerText = '';
         document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
         console.log("gagné")
+        streak++;
+        updateScore(streak);
     }
     else
     {
         document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
 
-        //var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
-
-        document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse]
+        document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse];
+        document.querySelector('h3#solution').innerText = '';
         listeReponse[nbSoumissionReponse].forEach(element => {
-            let anchor = "<a href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> "
-            document.querySelector('h3#solution').innerHTML += anchor
+            let anchor = "<a href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
+            document.querySelector('h3#solution').innerHTML += anchor;
         });
-        //document.querySelector('h3#solution').innerText = "solutions : " +listeReponse[nbSoumissionReponse]
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         console.log("perdu")
+        streak = 0;
     } 
     nbSoumissionReponse++;
+
+    if(streak >= 3) 
+        changeStreakPicture('../image/flamme.png');
+    else if(streak >= 1)
+        changeStreakPicture('../image/thumbs_up.png');
+    else
+        changeStreakPicture('../image/ok.png');
+    document.querySelector('h3#streak').innerText = streak;
 
     //pour prochain mot
     writeText(motATrouver[nbSoumissionReponse]);
     document.getElementById('reponse').value = '';
+    secondes = 30;
 }
 
 //---------------------------------------
@@ -435,6 +481,14 @@ function chrono(){
     if(minutes>= 1 && secondes==0){
         minutes-=1;
         secondes=59;
+    }
+    else if(minutes == 0 && secondes == 0) {
+        document.querySelector('h3#ancienMot').innerText = '';
+        document.querySelector('h3#solution').innerText = '';
+        document.querySelector('h3#messageSuccess').innerText = 'Perdu ! il faut aller plus vite :)';
+        document.querySelector('h3#messageSuccess').setAttribute('style','color: goldenrod;');
+        playAgain = document.querySelector('button#playAgain');
+        playAgain.style.display = 'inline-block';
     }
     else
         secondes -= 1;
