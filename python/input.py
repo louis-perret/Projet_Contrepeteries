@@ -1,7 +1,7 @@
 from filtre import * #Importe toutes les fonctions du fichier filtre
 import sys #Importe fonctions système
 
-dicoDispo={"fr": ["Vulgaire","Informatique"],"en": []} #initialise les langues disponibles ainsi que ls thèmes disponibles pour chaque langue
+dicoDispo={"fr": ["Vulgaire","Non-Vulgaire","Informatique",],"en": []} #initialise les langues disponibles ainsi que ls thèmes disponibles pour chaque langue
 configLangue(list(dicoDispo.keys())) #on met à jour la langue choisie
 print("Chargement des dictionnaires")
 from arbin import * #on charge le dico
@@ -12,8 +12,10 @@ langue=diconfig['langue']
 dicoDico={}
 dicoDico["config"]=diconfig
 listeDicoTheme=[]
-if(langue == 'fr'):
-	for theme in diconfig['Themes']:
+if(dicoDispo[langue] != []): #si la langue choisie dispose de dico par thème
+	for theme in diconfig['Themes']: #on les charge un à un
+		if('Non' in theme): #pour éviter les problèmes de fichier qui n'existent pas
+			theme=theme.replace("Non-","")
 		with open(f'data/{langue}/dico{theme}{langue.capitalize()}.json') as dicoTheme:
 			listeDicoTheme.append(json.load(dicoTheme))
 

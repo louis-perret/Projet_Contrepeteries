@@ -2,7 +2,7 @@ import language_tool_python
 import json
 import os
 import collections
-
+from utilitaires import *
 """
 Efface le terminal ou met une série de \n pour simuler un éffacement du terminal
 selon fichier config.json
@@ -50,11 +50,12 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 
 	listeDicoTheme=[]
 	for theme in diconfig['Themes']:
+		if('Non' in theme): #pour éviter les problèmes de fichier qui n'existent pas
+			theme=theme.replace("Non-","")
 		with open(f'data/{dicoDico["config"]["langue"]}/dico{theme}{dicoDico["config"]["langue"].capitalize()}.json') as dicoTheme:
 			listeDicoTheme.append(json.load(dicoTheme))
 	dicoDico['Themes']=listeDicoTheme
 	dicoDico['Config']=diconfig
-
 #-------------------------------------------------------------------------------
 
 """
@@ -70,15 +71,21 @@ def changerDicoTheme(tabDicoThemeDispo):
 	if(len(tabDicoThemeDispo) == 0):
 		print("Aucun thème pour cette langue")
 		return list()
+	choix=0
 	for theme in tabDicoThemeDispo:
+		if(choix == 1): #si le thème possèdait un inverse (vulgaire -> non vulgaire par exemple)
+			choix=0 #on repasse le choix à 0
+			continue #et on saute le thème d'après qui est son inverse
 		choix=selectionChoix(f"Appliquer le thème {theme} ? (1=oui/0=non) :") #gère ce qui est entré
 		if(choix == 1): #s'il a sélectionné le thème
 			tabChoix.append(theme) #on l'ajoute dans les réponses
+		if("Non" in theme): #et si le thème était un thème inverse
+			choix=0 #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
 	return tabChoix
 
 
 """
-Objectif : Renvoie le choix entré par l'utilisateur
+Objectif : Renvoie le choix entré par l'utilisateur pour les
 Paramètres :
 	-Entrée :
 		-message : Message à afficher
@@ -87,14 +94,10 @@ Paramètres :
 """
 def selectionChoix(message):
 	while(True):
-		try:
-			entier=int(input(message))
-			if(entier == 0 or entier==1):
-				print(entier)
-				return entier
-		except:
-			print("Vous n'avez pas entré un entier. Réessayer")
-			entier=input(message)
+		entier=inputInt(message)
+		if(entier == 0 or entier==1):
+			print(entier)
+			return entier
 		print("Vous n'avez pas entré un entier convenable. Ressayer")
 
 
@@ -117,14 +120,11 @@ def configLangue(tabLanguesDispo):
 		for i in range(len(tabLanguesDispo)):
 			print(f"{i+1} - {tabLanguesDispo[i]}\n")
 		while(True):
-			try:
-				n = int(input("\nEntré le numéro de la langue voulue : "))
-				if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
-					diconfig['langue']=tabLanguesDispo[n-1]
-					break
-				print("Numéro de langue incorrect")
-			except:
-				print("Vous n'avez pas entré un entier. Réessayer")
+			n = inputInt("\nEntré le numéro de la langue voulue : ")
+			if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
+				diconfig['langue']=tabLanguesDispo[n-1]
+				break
+			print("Numéro de langue incorrect")
 	with open("data/config.json","w") as file:
 		json.dump(diconfig,file) #on écrit dans le fichier
 		
@@ -284,15 +284,15 @@ Paramètres :
 		liste de quadruplets dont tous les élèments sont de la même classe Grammaticale
 """
 def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
-	if(diconfig["FiltreGrammatical"] == "Non"):
-		return True
-	if(mode == "phon"):
-		mot2=dicoPhon[mot2][0]
+	if(diconfig["FiltreGrammatical"] == "Non"): #si filtre pas activé
+		return True #on renvoie true par défaut
+	if(mode == "phon"): #si le mode est phonétique -> mot2 est en écriture phonétique
+		mot2=dicoPhon[mot2][0] #on récupère son orthographe pour pouvoir ensuite récupérer correctement ses classes grammaticales
 
 	classGramMot2 = dicoGram[mot2]
 	for classGram in classGramMotOrigine:
-		if(classGram in classGramMot2):
-			return True
+		if(classGram in classGramMot2): #si ils ont au moins une classe grammticale en commun
+			return True #on renvoie true
 	return False
 
 """
@@ -304,12 +304,18 @@ Paramètre :
 	-Sortie :
 		-un boolean
 """
-def filtreTheme(mot,listeDico):
+def filtreTheme(mot,listeDico, listeTheme):
 	boolean=False
-	if(len(listeDico)==0):
-		return True
+	if(len(listeDico)==0): #si aucun thème n'a été choisi
+		return True #true par défaut
+	i=0
 	for dico in listeDico:
-		if(mot in dico):
-			boolean=True
-			break
+		if("Non" in listeTheme[0]):
+			if(mot not in dico):
+				boolean = True
+				break
+		else:
+			if(mot in dico): #si le mot correspond à au moins un des thèmes
+				boolean=True #on renvoie true
+				break
 	return boolean

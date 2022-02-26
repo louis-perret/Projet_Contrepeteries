@@ -55,7 +55,7 @@ def aide(mot,x,y,mode,langue,dicoDico):
 			for couple in listeCouple: #Pour chaque combinaison possible
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
 				if coupleLettre[1] != couple and isInDico(mode, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
-					if (filtreTheme(nvtMot,listeDico) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config'])):
+					if (filtreTheme(nvtMot,listeDico,dicoDico['config']['Themes']) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config'])):
 						if(mode=='phon'):
 							listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
 						if(mode=='word'):
@@ -226,7 +226,7 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 							testTheme1 = testDansMot
 							testTheme2 = mot
 
-						if (filtreTheme(testTheme1,listeDico) or filtreTheme(testTheme2,listeDico)): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
+						if (filtreTheme(testTheme1,listeDico,dicoDico['config']['Themes']) or filtreTheme(testTheme2,listeDico,dicoDico['config']['Themes'])): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
 							listeDeRacines.append(mot[:5])
 							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
 											   listeDeMotCop[ChaqueLettre][2],
