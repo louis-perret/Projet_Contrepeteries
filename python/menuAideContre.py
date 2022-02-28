@@ -25,7 +25,6 @@ def aideContrepetrie(dicoDico,historique):
 		langue=dicoConfig['langue'] #on récupère la langue entrée par l'utilisateur
 		dicoDico['config']=dicoConfig
 	# boucle "tant que" pour le recommencer aide avec un autre mot.
-	tabMode=["Recherche personnalisée pour les lettres","Recherche personnalisée pour les phonèmes","Recherche complète"]
 	continuer = 1
 	while continuer == 1:
 		clear()
@@ -45,20 +44,20 @@ def aideContrepetrie(dicoDico,historique):
 
 
 		listeDeMotCop = [] #contient les contrepétries du mot entré
-		choix=choixMode(tabMode) #sélection du mode
+		choix=choixMode() #sélection du mode
 
 		clear()
-		if(choix == 0 ):
+		if(choix == "r" ):
 			continuer=0
 			continue
 
-		elif choix == 1: #recherche personnalisée pour les lettres
+		elif choix == "a": #recherche personnalisée pour les lettres
 			continuer=modePersonnalisé("word",mot,langue,dicoDico)
 
-		elif choix == 2: #recherche personnalisée pour les sons
+		elif choix == "z": #recherche personnalisée pour les sons
 			continuer=modePersonnalisé("phon",mot,langue,dicoDico)
 
-		elif choix == 3: #'nimporte quel nombre de lettre
+		elif choix == "e": #'nimporte quel nombre de lettre
 			continuer=recherchePlusieurs(mot,langue,dicoDico)
 	return historique
 
@@ -104,14 +103,15 @@ Paramètres :
 	-Sortie : 
 		le mode choisi
 """
-def choixMode(tabChoix):
+def choixMode():
 	print("\nSélectionner le type de recherche : ")
-	for i in range(len(tabChoix)):
-		print(f"\t{i+1} - {tabChoix[i]}") #affiche les modes disponibles
-	print("\t0 - Retour au menu")
+	print("\ta - recherche par lettre")
+	print("\tz - recherche par phonèmes")
+	print("\te - recherche complète")
+	print("\tr - Retour au menu")
 	while(True):
-		selection=inputInt("Choix du mode : ")
-		if selection in range(len(tabChoix)+1): #si le mode choisi est bien dans le tableau
+		selection=input("Choix du mode : ")
+		if selection in ["a","z","e","r"]: #si le mode choisi est bien dans le tableau
 			return selection
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")
@@ -126,11 +126,17 @@ Paramètres :
 		la longueur selectionnée
 """
 def longueurSyllabe(message):
-	l=inputInt(message)
-	while(l<0): #on exige au moins 1
+	l=input(message)
+	x = True
+	while x :
 		print("Vous n'avez pas entré un nombre convenable. Ressayer")
-		l=inputInt(message)
-	return l
+		l=input(message)
+		if inputInt(l) :
+			if int(l)>0: #on exige au moins 1
+				x = False
+				
+		
+	return int(l)
 
 
 """
@@ -165,26 +171,28 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 	selectMot = None
 	boucle = True
 	while(boucle):
-		selectMot = inputInt(f"\n0 = quitter l'aide,-1 revenir au début de l'aide, -2 {message} \nou numéro de l'échange qui vous intéresse : \n")
-		if selectMot == 0:
+		selectMot = input(f"\na - quitter l'aide, z - revenir au début de l'aide, e - {message} \nou numéro de l'échange qui vous intéresse : \n")
+		if selectMot == "a":
 			return 0
-		elif selectMot == -1:
+		elif selectMot == "z":
 			return 1
-		elif selectMot == -2:
+		elif selectMot == "e":
 			if mode == 'word' :
 				mode = 'phon'
 			else :
 				mode = 'word'
 			listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
-		elif selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
-			boucle = False
+		elif inputInt(selectMot) :
+			selectMot = int(selectMot)
+			if selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
+				boucle = False
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")
 
-	print("Veuillez sélectionner la longueur des résultats souhaités")
-	minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
-	maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
-	listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,minimum,maximum,dicoDico,mode)
+		print("Veuillez sélectionner la longueur des résultats souhaités")
+		minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
+		maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
+		listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,minimum,maximum,dicoDico,mode)
 
 	# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
 	if len(listeAffichage) >0:

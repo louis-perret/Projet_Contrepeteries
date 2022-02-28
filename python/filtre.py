@@ -23,24 +23,24 @@ Modifie le fichier de configuration des filtres.
 def configFiltre(tabDicoThemeDispo,dicoDico):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
-		n = selectionChoix("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["FiltreGrammatical"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["FiltreGrammatical"] = "Non"
 
 		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
 
-		n = selectionChoix("\nActiver les mots coupés\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["MotCoupe"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["MotCoupe"] = "Non"
 
-		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["EffacerComplétement"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["EffacerComplétement"] = "Non"
 	print("\n")
 	for i in diconfig.keys():
@@ -76,11 +76,11 @@ def changerDicoTheme(tabDicoThemeDispo):
 		if(choix == 1): #si le thème possèdait un inverse (vulgaire -> non vulgaire par exemple)
 			choix=0 #on repasse le choix à 0
 			continue #et on saute le thème d'après qui est son inverse
-		choix=selectionChoix(f"Appliquer le thème {theme} ? (1=oui/0=non) :") #gère ce qui est entré
-		if(choix == 1): #s'il a sélectionné le thème
+		choix=selectionChoix(f"Appliquer le thème {theme} ? (a=oui/z=non) :") #gère ce qui est entré
+		if(choix == "a"): #s'il a sélectionné le thème
 			tabChoix.append(theme) #on l'ajoute dans les réponses
 		if("Non" in theme): #et si le thème était un thème inverse
-			choix=0 #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
+			choix="z" #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
 	return tabChoix
 
 
@@ -94,11 +94,11 @@ Paramètres :
 """
 def selectionChoix(message):
 	while(True):
-		entier=inputInt(message)
-		if(entier == 0 or entier==1):
+		entier=input(message)
+		if(entier == "a" or entier=="z"):
 			print(entier)
 			return entier
-		print("Vous n'avez pas entré un entier convenable. Ressayer")
+		print("Vous n'avez pas entré une lettre convenable. Ressayer")
 
 
 #-------------------------------------------------------------------------------
@@ -120,10 +120,12 @@ def configLangue(tabLanguesDispo):
 		for i in range(len(tabLanguesDispo)):
 			print(f"{i+1} - {tabLanguesDispo[i]}\n")
 		while(True):
-			n = inputInt("\nEntré le numéro de la langue voulue : ")
-			if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
-				diconfig['langue']=tabLanguesDispo[n-1]
-				break
+			n = input("\nEntré le numéro de la langue voulue : ")
+			if inputInt(n) :
+				n = int(n)
+				if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
+					diconfig['langue']=tabLanguesDispo[n-1]
+					break
 			print("Numéro de langue incorrect")
 	with open("data/config.json","w") as file:
 		json.dump(diconfig,file) #on écrit dans le fichier
@@ -177,47 +179,50 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 
 		choixutilisateur = 1
 		print("\nVoici les résultats en échangeants les phonèmes.")
+		print(compteur)
 		while choixutilisateur in range(compteur):
 			try:
 				if(isAllContrepeterie):
-					choixutilisateur = int(input("\n-1 / quitter la recherche par phonèmes, ou saisissez un des index pour obtenir toutes les ortographes : "))
+					choixutilisateur = input("\na / quitter la recherche par phonèmes, ou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
-					choixutilisateur = int(input(
-				"\n-1 : quitter/ -2 revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : "))
+					choixutilisateur = input(
+				"\na : quitter/ z revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : ")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
-			if (choixutilisateur) <= compteur and choixutilisateur > -1:
-				for j in nvDico[dicores[choixutilisateur]]: #pour chaque orthographe de la phrase
-					maxlen = 0
-					phrase = []	
-					for k in range(len(j)) :
-						phrase.append(j[k])
-						if len(j[k]) > maxlen :
-							maxlen = len(j[k])
-						for l in range(len(phrase[0])) :
-							phrase[0][l] = phrase[0][l].capitalize()
-					#if diconfig["FiltreGrammatical"] == "Oui":
-							#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
-							#if len(matches) == 0:
-					for m in range(maxlen) :
-						for n in range(len(phrase)) :
-							if len(phrase[n]) > m :
-								print(phrase[n][m], end=" ")
-							else :
-								print(phrase[n][0], end=" ")
-						print()
+			if inputInt(choixutilisateur) :
+				choixutilisateur = int(choixutilisateur)
+				if (choixutilisateur) <= compteur and choixutilisateur > -1:
+					for j in nvDico[dicores[choixutilisateur]]: #pour chaque orthographe de la phrase
+						maxlen = 0
+						phrase = []	
+						for k in range(len(j)) :
+							phrase.append(j[k])
+							if len(j[k]) > maxlen :
+								maxlen = len(j[k])
+							for l in range(len(phrase[0])) :
+								phrase[0][l] = phrase[0][l].capitalize()
+						#if diconfig["FiltreGrammatical"] == "Oui":
+								#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
+								#if len(matches) == 0:
+						for m in range(maxlen) :
+							for n in range(len(phrase)) :
+								if len(phrase[n]) > m :
+									print(phrase[n][m], end=" ")
+								else :
+									print(phrase[n][0], end=" ")
+							print()
 
 
 						#else:
 						#	print(j)
 
-			elif choixutilisateur == -1:
+			elif choixutilisateur == "a":
 				return 0
-			elif choixutilisateur == -2:
+			elif choixutilisateur == "z":
 				return 1
 			else:
-				print("Pas de résultat")
+				print("Mauvais caractère")
 
 	if mode == 'word':
 		#attention, ici nvDico est une liste de tuple, plus un dico
