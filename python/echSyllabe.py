@@ -23,7 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		if(False):
+		if(True):
 			for x in allResults :
 				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 				listemot2 = mixSyllabeCoupe(x[0], mode)
@@ -110,7 +110,6 @@ def mainMixSyllables(phrase, mode):
 					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode)
 					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))
 			# remplace les contreP trouvees dans la phrase
-	print("fini")
 	return Lphrases
 
 #------------------------------------------------------------------------------

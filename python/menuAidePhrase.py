@@ -11,50 +11,34 @@ Paramètres :
 """
 def aideContrepetriePhrase(dicoDico,langue):
 	test = True
-	mode = {1: 'word', 2: 'phon', 3: 'wordPhon'}
+	mode = {"a": 'word', "z": 'phon', "e": 'wordPhon'}
 	n = 0
 	while test:
 		print("""\nVoulez-vous échanger \n
-			1. Les lettres
-			2. Les sons
-			3. Tous les échanges possibles\n""")
+			a. Les lettres
+			z. Les sons
+			e. Tous les échanges possibles\n""")
 		try:
-			n = int(input())
+			n = input()
 		except ValueError:
-			print("Vous n'avez pas saisie un nombre.\n")
-		if n in range(1,4):
+			print("Vous n'avez pas saisie un caractère valide.\n")
+		if n in ["a","z","e"]:
 			test = False
 		else:
 			print("Votre saisie n'est pas valide\n")
-# ------------------------------------------------------------------------------
-	#clear()
 
 	while(True):
-		print("0 :quitter / 1 revenir au menu précédant")
+		print("a :quitter / z revenir au menu précédant")
 		phraseOrigine = input("Phrase à sonder :\n")
-		test = False
-		try :
-			phraseOrigine = int(phraseOrigine)
-			test = True
-		except:
-			break
+		if  phraseOrigine == "a" : #si la phrase est vide
+			sys.exit()
+		if phraseOrigine == "z":
+			return 1
 
-		if test:
-			if  phraseOrigine == 0 : #si la phrase est vide
-				sys.exit()
-
-			elif phraseOrigine == 1:
-				break
-
-			else:
-				print("\nLa saisie n'est pas valide")
-	if phraseOrigine == 1:
-		return 1
-
-	if(mode[n] == 'word' or mode[n] == 'phon'):
-		return rechercheContrepeteriesPhrase(phraseOrigine,mode[n],langue,dicoDico,False)
-	else:
-		return rechercheToutesContrepeteriesPhrase(phraseOrigine,langue,dicoDico)
+		if(mode[n] == 'word' or mode[n] == 'phon'):
+			return rechercheContrepeteriesPhrase(phraseOrigine,mode[n],langue,dicoDico,False)
+		else:
+			return rechercheToutesContrepeteriesPhrase(phraseOrigine,langue,dicoDico)
 # ------------------------------------------------------------------------------
 
 			
@@ -83,7 +67,7 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 				print(f" {contrepet}\n")
 				count += 1
 			print('\nNombre de résultats : ', count)
-	else:
+	else:																																			
 		phraseOrigine = phrase.lower().replace("'"," ")
 		phrasePhon = Phrase_to_Phon(phraseOrigine)
 
@@ -146,9 +130,11 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 		else:
 			message="lettres"
 			modeActuel='word'
-		continuer=choisirModeAffichage(f"0 -> Quitter l'application, 1 -> Retour au menu, 2-> afficher les résultats pour les {message} : ")
-		if(continuer < 2):
-			return continuer
+		continuer=choisirModeAffichage(f"a -> Quitter l'application, z -> Retour au menu, e-> afficher les résultats pour les {message} : ")
+		if inputInt(continuer) :
+			continuer = int(continuer)
+			if(continuer < 2):
+				return continuer
 
 
 """
@@ -160,7 +146,7 @@ Paramètres :
 		-int : choix de l'utilisateur
 """
 def choisirModeAffichage(message):
-	choix=inputInt(message)
-	while(choix != 0 and choix != 1 and choix != 2):
-		choix=inputInt(message)
+	choix=input(message)
+	while(choix != "a" and choix != "z" and choix != "e"):
+		choix=input(message)
 	return choix
