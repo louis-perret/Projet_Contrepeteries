@@ -110,7 +110,6 @@ def mainMixSyllables(phrase, mode):
 					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode)
 					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))
 			# remplace les contreP trouvees dans la phrase
-	print("fini")
 	return Lphrases
 
 #------------------------------------------------------------------------------
@@ -440,20 +439,19 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
 
-	print('\nTraitement en cours ...')
-
 	if mode == 'phon':
-		if False:
-			nvDico = filtreMix(nvDico) #On filtre en ne gardant que ce qui est grossier
 		count1 = 0
 		count2 = 0
 		for key in nvDico:
 			count1 += len(nvDico[key])
 
+		if(count1 == 0):
+			print("Pas de résultats pour la recherche avec les phonèmes.")
+			return
 		StockPourkey = ""
-		compteur = 1
+		compteur = 0
 		dicores = []
-		print("Voici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné\n.")
+		print("Voici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné.\n")
 		for key in nvDico:
 			for j in nvDico[key]:
 				#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
@@ -470,6 +468,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 					print()
 					compteur+=1
 
+		print('\nNombre de résultats pour les échanges avec les phonèmes : ', compteur)
 		choixutilisateur = 1
 		while True:
 			try:
@@ -537,4 +536,4 @@ def affichagePhraseLettre(listeRes):
 	for contrepet in listeRes[1:]:
 		print(f"{count} --> {contrepet}")
 		count += 1
-	print('\nNombre de résultats : ', count)
+	print('\nNombre de résultats pour les échanges avec les lettres : ', count)

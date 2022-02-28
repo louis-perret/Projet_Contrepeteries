@@ -9,10 +9,13 @@ Paramètres :
 		un entier
 """
 def selectionLongueurMot(message):
-	l=inputInt(message)
-	while(l<-1):
+	l=input(message)
+	while(not inputInt(l)):
 		print("Vous n'avez pas entré un entier convenable. Ressayer")
 		l=inputInt(message)
+		while(l<-1):
+			print("Vous n'avez pas entré un entier convenable. Ressayer")
+			l=input(message)
 	return l
 
 
@@ -25,10 +28,10 @@ Paramètres :
 		un entier
 """
 def selectionMotCoupe(message):
-	l=inputInt(message)
-	while(l!=0 and l!=1):
-		print("Vous n'avez pas entré un entier convenable. Ressayer")
-		l=inputInt(message)
+	l=input(message)
+	while(l!="a" and l!="z"):
+		print("Vous n'avez pas entré un caractère convenable. Ressayer")
+		l=input(message)
 	return l
 
 """
@@ -39,12 +42,20 @@ Paramètres :
 	-Sortie : 
 		un entier
 """
-def inputInt(message):
-	entier=input(message)
+def inputInt(input):
 	while(True):
 		try:
-			entier=int(entier)
-			return entier
+			entier=int(input)
+			return True
 		except:
-			print("Vous n'avez pas entré un entier. Réessayer")
-			entier=input(message)
+			return False
+
+def inputChar(message):
+	char=input(message)
+	while(True):
+		try:
+			char=char(entier)
+			return char
+		except:
+			print("Vous n'avez pas entré une lettre. Réessayer")
+			char=input(message)

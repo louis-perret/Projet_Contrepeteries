@@ -40,29 +40,29 @@ while boucle:
 	# selecteur type de programme:
 	print(
 """\nSelectionnez le mode que vous souhaitez : \n
-1. Recherche de contrepèteries dans un mot
-2. Recherche de contrepèteries dans une phrase
-3. Configuration des filtres
-0. Quitter\n""")
+a. Recherche de contrepèteries dans un mot
+z. Recherche de contrepèteries dans une phrase
+e. Configuration des filtres
+r. Quitter\n""")
 	while test:
 		try:
-			n = int(input()) #Récupère ce que rentre l'utilisateur
-			if n == 0:
+			n = input() #Récupère ce que rentre l'utilisateur
+			if n == "r":
 				sys.exit()
-			elif n in range(1,4): #de 1 à 4 exclu
+			elif n in ["a","z","e"]: #de 1 à 4 exclu
 				test = False
 			else:
 				print("Votre saisie n'est pas valide\n")
 		except ValueError:
-			print("Vous n'avez pas saisie un nombre.\n")
+			print("Vous n'avez pas saisie un caractère valide.\n")
 
 		
 # ------------------------------------------------------------------------------
-	if n == 3:
+	if n == "e":
 		configFiltre(dicoDispo[diconfig['langue']],dicoDico)
 # ------------------------------------------------------------------------------
 	# aide à contrepeterie
-	elif n == 1:
+	elif n == "a":
 		if 'aide' not in memoireImport:
 			from menuAideContre import *
 		memoireImport.add('aide')
@@ -71,7 +71,7 @@ while boucle:
 
 # ------------------------------------------------------------------------------
 	# recherche de contrepeterie
-	elif n == 2:
+	elif n == "z":
 		if 'rech' not in memoireImport:
 			from menuAidePhrase import *
 		memoireImport.add('rech')
@@ -92,15 +92,14 @@ while boucle:
 	passeur = 1
 	while passeur != 0:
 		try:
-
-			tmp = int(input("0 : Quitter l'application / 1 : Retour au début : "))
+			tmp = input("a : Quitter l'application / z : Retour au début ")
 			passeur = 0
 		except ValueError:
-			print("Entrée invalid veuillez réessayer (Vous devez utiliser des nombres).\n")
-		if tmp == 0:
+			print("Entrée invalid veuillez réessayer.\n")
+		if tmp == "a":
 			test2 = False
 			boucle = False
 
-		elif tmp == 1:
+		elif tmp == "z":
 			test2 = False
 			clear()

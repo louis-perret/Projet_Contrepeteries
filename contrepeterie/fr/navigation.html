@@ -69,7 +69,6 @@
                     <script>
                         let pathActuel = window.location.pathname;
                         let fichierActuel = pathActuel.split("/").pop();
-                        langue = "fr"
                         if (fichierActuel == "spoonerism_aid.html")
                             document.querySelector('#btnFR').href = '../fr/aide_a_la_contrepeterie.html';
                         else if (fichierActuel == "generation_spoonerism.html")
@@ -82,7 +81,6 @@
                 <li class="nav-item">
                     <a id="btnEN" class="nav-link font langue"><img class="langue2" src="../image/en.png"></a>
                     <script>
-                        langue = "en";
                         if (fichierActuel == "aide_a_la_contrepeterie.html")
                             document.querySelector('#btnEN').href = '../en/spoonerism_aid.html';
                         else if (fichierActuel == "recherche_phrase.html")

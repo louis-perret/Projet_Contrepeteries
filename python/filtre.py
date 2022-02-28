@@ -23,24 +23,24 @@ Modifie le fichier de configuration des filtres.
 def configFiltre(tabDicoThemeDispo,dicoDico):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
-		n = selectionChoix("\nActiver filtre Grammaticale\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["FiltreGrammatical"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["FiltreGrammatical"] = "Non"
 
 		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
 
-		n = selectionChoix("\nActiver les mots coupés\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["MotCoupe"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["MotCoupe"] = "Non"
 
-		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(1:Oui/0:Non/autre:defaut):")
-		if n == 1:
+		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
+		if n == "a":
 			diconfig["EffacerComplétement"] = "Oui"
-		elif n == 0:
+		elif n == "z":
 			diconfig["EffacerComplétement"] = "Non"
 	print("\n")
 	for i in diconfig.keys():
@@ -76,11 +76,11 @@ def changerDicoTheme(tabDicoThemeDispo):
 		if(choix == 1): #si le thème possèdait un inverse (vulgaire -> non vulgaire par exemple)
 			choix=0 #on repasse le choix à 0
 			continue #et on saute le thème d'après qui est son inverse
-		choix=selectionChoix(f"Appliquer le thème {theme} ? (1=oui/0=non) :") #gère ce qui est entré
-		if(choix == 1): #s'il a sélectionné le thème
+		choix=selectionChoix(f"Appliquer le thème {theme} ? (a=oui/z=non) :") #gère ce qui est entré
+		if(choix == "a"): #s'il a sélectionné le thème
 			tabChoix.append(theme) #on l'ajoute dans les réponses
 		if("Non" in theme): #et si le thème était un thème inverse
-			choix=0 #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
+			choix="z" #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
 	return tabChoix
 
 
@@ -94,11 +94,11 @@ Paramètres :
 """
 def selectionChoix(message):
 	while(True):
-		entier=inputInt(message)
-		if(entier == 0 or entier==1):
+		entier=input(message)
+		if(entier == "a" or entier=="z"):
 			print(entier)
 			return entier
-		print("Vous n'avez pas entré un entier convenable. Ressayer")
+		print("Vous n'avez pas entré une lettre convenable. Ressayer")
 
 
 #-------------------------------------------------------------------------------
@@ -120,14 +120,15 @@ def configLangue(tabLanguesDispo):
 		for i in range(len(tabLanguesDispo)):
 			print(f"{i+1} - {tabLanguesDispo[i]}\n")
 		while(True):
-			n = inputInt("\nEntré le numéro de la langue voulue : ")
-			if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
-				diconfig['langue']=tabLanguesDispo[n-1]
-				break
+			n = input("\nEntré le numéro de la langue voulue : ")
+			if inputInt(n) :
+				n = int(n)
+				if n in range(len(tabLanguesDispo)+1) and n>0: #on s'assure qu'il sélectionne une langue qui existe
+					diconfig['langue']=tabLanguesDispo[n-1]
+					break
 			print("Numéro de langue incorrect")
 	with open("data/config.json","w") as file:
 		json.dump(diconfig,file) #on écrit dans le fichier
-		
 
 # -------------------------------------------------------------------------------
 """
