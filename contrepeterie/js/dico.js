@@ -49,6 +49,11 @@ function splitdic(){
 
 
 function loadDico(){
+	document.querySelector('#gen').addEventListener('mousedown', event=>{
+		document.querySelector('#loadingJeuBeta').style.visibility = "visible";
+		document.body.style.cursor = 'wait';
+	});
+
 	document.getElementById('chargement').innerHTML = '<div class="loading"></div>';
 
 	document.getElementById('choixLettreP').setAttribute('style','border: 4px solid #7ac142;');
@@ -169,9 +174,12 @@ function mainMixSyllabes(phrase,mode) {
 		}
 	}
 	affichageMotPhrase(Lphrases)
+	document.querySelector('#loadingJeuBeta').style.visibility = "collapse";
+	document.body.style.cursor = 'default';
 }
 
 function affichageMotPhrase(l){
+
 	//console.log("l : ----------------")
 	//console.log(l)
 	var element = document.getElementById("div1");

@@ -440,20 +440,45 @@ function deroulementJeu()
 
 function soumettreReponse()
 {
+    var nb
+    let mot = document.getElementById('reponse').value.toLowerCase();
+
     if(nbSoumissionReponse === nbMots-1) {
-        document.querySelector('h3#ancienMot').innerText = '';
-        document.querySelector('h3#solution').innerText = '';
+        if (listeReponse[nbSoumissionReponse].includes(mot)) {
+            nb = parseInt(document.getElementById('nombreBonnesRep').innerText);
+            nb++
+            document.getElementById("nombreBonnesRep").innerText = nb;
+            streak++;
+            updateScore(streak);
+            document.querySelector('h3#messageFin').innerText = 'La dernière réponse était juste !';
+            document.querySelector('h3#messageFin').setAttribute('style', 'color: green;');
+        }
+        else
+        {
+            //document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
+            document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse];
+            document.querySelector('h3#solution').innerText = '';
+            listeReponse[nbSoumissionReponse].forEach(element => {
+                let anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
+                document.querySelector('h3#solution').innerHTML += anchor;
+            });
+            document.querySelector('h3#messageFin').innerText = 'La dernière réponse était fausse...';
+            document.querySelector('h3#messageFin').setAttribute('style', 'color: red;');
+        }
         document.querySelector('h3#messageSuccess').innerText = 'Jeu terminé';
         document.querySelector('h3#messageSuccess').setAttribute('style','color: #95dabb;');
         let playAgain = document.querySelector('button#playAgain');
+        document.querySelector('h3#timer').innerText = '';
+        document.querySelector('h3#displayTimer').innerText = '';
         playAgain.style.display = 'inline-block';
+        Stop();
         return;
     }
 
-    let mot = document.getElementById('reponse').value.toLowerCase();
+    //let mot = document.getElementById('reponse').value.toLowerCase();
     console.log(mot)
     if (listeReponse[nbSoumissionReponse].includes(mot)) {
-        let nb = parseInt(document.getElementById('nombreBonnesRep').innerText);
+        nb = parseInt(document.getElementById('nombreBonnesRep').innerText);
         nb++
         document.getElementById("nombreBonnesRep").innerText = nb;
         document.querySelector('h3#ancienMot').innerText = '';
@@ -547,6 +572,14 @@ function chrono(){
     }
 
     affTimer();
+}
+
+function Stop(){
+    if(on===true){
+        on = false;
+        clearTimeout(timerID);
+
+    }
 }
 
 function affTimer(){

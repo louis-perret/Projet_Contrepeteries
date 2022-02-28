@@ -64,7 +64,7 @@ $(function(){
 
                 <div class="blackOutline p-1 m-1 mt-3" style="border-radius: 4px;">
                     <div style="display: flex;">
-                        <h3>Timer : &nbsp </h3>
+                        <h3 id="timer">Timer : &nbsp </h3>
                         <h3 id="displayTimer">00:30</h3>
                     </div>
 
@@ -87,12 +87,17 @@ $(function(){
 
 
     <div class="flexAllCenter">
+
         <div style="display: flex; flex-direction: column; justify-content: center;">
             <button class="btn btn-dark" id="playAgain" style="display: none;">Rejouer</button>
+
             <h3 id="messageSuccess"></h3>
+
         </div>
         <h3 id="ancienMot"></h3>
-        <h3 id="solution"></h3>     
+        <h3 id="solution"></h3>
+        <h3 id="messageFin"></h3>
+
     </div>
 
 </section>
