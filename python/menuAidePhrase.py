@@ -69,25 +69,18 @@ Paramètres :
 """
 def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepeterie):
 	if mode == 'word':
-		liste = mainMixSyllables(phrase, mode)
+		listeRes = mainMixSyllables(phrase, mode)
 		#phrase = phraseOrigine.split()
 		#liste = circulaireMixSyllabes(phrase, 'word')
-		liste = affiRechFiltre(liste,'word',isAllContrepeterie)
-		count = 0
+		listeRes = affiRechFiltre(listeRes,'word',isAllContrepeterie)
 
 		if(isAllContrepeterie): #si l'utilisateur a choisi le mode qui fait tout
-			return liste #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
-		else:
-			print("\nLes contrepétries possibles sont :\n")
-			for contrepet in liste[1:]:
-				print(f" {contrepet}\n")
-				count += 1
-			print('\nNombre de résultats : ', count)
+			return listeRes #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
 	else:
 		phraseOrigine = phrase.lower().replace("'"," ")
 		phrasePhon = Phrase_to_Phon(phraseOrigine)
 
-		#si un mot n'a pas pu être traduire
+		#si un mot n'a pas pu être traduit
 		if phrasePhon == False:
 			input()
 			return 1
@@ -122,31 +115,16 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 	listeResWord = rechercheContrepeteriesPhrase(phrase,'word',langue, dicoDico, True)
 	listeResPhon = rechercheContrepeteriesPhrase(phrase,'phon',langue, dicoDico, True)
 	continuer=2
-	modeActuel='word'
 	while(continuer == 2):
-		if(modeActuel == 'word'):
-			if(len(listeResWord) != 0):
-				count=0
-				print("\nLes contrepétries possibles sont :\n")
-				for contrepet in listeResWord[1:]:
-					print(f" {contrepet}\n")
-					count += 1
-				print('\nNombre de résultats : ', count)
-				print("Voici les résultats en échangeant les lettres.")
-			else:
-				print("Pas de résultats pour l'échange avec les lettres")
+		print("\nLes contrepétries possibles sont :\n")
+		affichagePhraseLettre(listeResWord)
+		if(listeResPhon != 1 ):
+			print("\n")
+			affiRechFiltre(listeResPhon,'phon',True)
 		else:
-			if(listeResPhon != 1 ):
-				affiRechFiltre(listeResPhon,'phon',True)
-			else:
-				print("Pas de résultats pour l'échange avec les phonèmes")
-		if(modeActuel == 'word'):
-			message="phonèmes"
-			modeActuel='phon'
-		else:
-			message="lettres"
-			modeActuel='word'
-		continuer=choisirModeAffichage(f"0 -> Quitter l'application, 1 -> Retour au menu, 2-> afficher les résultats pour les {message} : ")
+			print("\n")
+			print("Pas de résultats pour l'échange avec les phonèmes")
+		continuer=choisirModeAffichage(f"0 -> Quitter l'application, 1 -> Retour au menu : ")
 		if(continuer < 2):
 			return continuer
 

@@ -93,7 +93,7 @@ while boucle:
 	while passeur != 0:
 		try:
 
-			tmp = int(input("0 : Quitter l'application / 1 : Retour au début "))
+			tmp = int(input("0 : Quitter l'application / 1 : Retour au début : "))
 			passeur = 0
 		except ValueError:
 			print("Entrée invalid veuillez réessayer (Vous devez utiliser des nombres).\n")

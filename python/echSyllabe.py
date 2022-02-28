@@ -427,3 +427,114 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue,dicoPhon):
 # Produit de toutes les combinaisons possibles des mots
 # qui ont changer par rapport à la phrase d'origine
 	return listeretour
+
+
+
+
+"""
+Applique les filtres et affiche les résultats en fonctions de la config
+donnée par l'utilisateur
+"""
+def affiRechFiltre(nvDico,mode,isAllContrepeterie):
+
+	with open('data/config.json') as diconfig_:
+		diconfig = json.load(diconfig_)
+
+	print('\nTraitement en cours ...')
+
+	if mode == 'phon':
+		if False:
+			nvDico = filtreMix(nvDico) #On filtre en ne gardant que ce qui est grossier
+		count1 = 0
+		count2 = 0
+		for key in nvDico:
+			count1 += len(nvDico[key])
+
+		StockPourkey = ""
+		compteur = 1
+		dicores = []
+		print("Voici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné\n.")
+		for key in nvDico:
+			for j in nvDico[key]:
+				#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
+				if j[0] == " ":
+					j = j[1:] #Si la phrase commence par un espace, on l'enlève
+				for k in range(len(j[0])) :
+					j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
+				if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
+					print(compteur, " -->", end=" ")
+					for k in range(len(j)) :
+						print(j[k][0], end = ' ')
+					StockPourkey = key
+					dicores.append(key)
+					print()
+					compteur+=1
+
+		choixutilisateur = 1
+		while True:
+			try:
+				if(isAllContrepeterie):
+					choixutilisateur = int(input("\n-1 / Quitter la recherche, ou saisissez un des index pour obtenir toutes les ortographes : "))
+				else:
+					choixutilisateur = int(input(
+				"\n-1 : quitter/ -2 revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : "))
+			except:
+				print("\nVous n'avez pas saisi un chiffre")
+				continue
+			if (choixutilisateur) < compteur and choixutilisateur > -1:
+				for j in nvDico[dicores[choixutilisateur-1]]: #pour chaque orthographe de la phrase
+					maxlen = 0
+					phrase = []	
+					for k in range(len(j)) :
+						phrase.append(j[k])
+						if len(j[k]) > maxlen :
+							maxlen = len(j[k])
+						for l in range(len(phrase[0])) :
+							phrase[0][l] = phrase[0][l].capitalize()
+					#if diconfig["FiltreGrammatical"] == "Oui":
+							#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
+							#if len(matches) == 0:
+					for m in range(maxlen) :
+						for n in range(len(phrase)) :
+							if len(phrase[n]) > m :
+								print(phrase[n][m], end=" ")
+							else :
+								print(phrase[n][0], end=" ")
+						print()
+
+
+						#else:
+						#	print(j)
+
+			elif choixutilisateur == -1:
+				return 0
+			elif choixutilisateur == -2:
+				return 1
+
+	if mode == 'word':
+		#attention, ici nvDico est une liste de tuple, plus un dico
+		#filtrage par grammaire de la phrase
+		nvListe = [nvDico[0]]
+
+		tmpListe = []
+		tmpListe =  nvDico[:]
+		#filtrage par mot vulgaires
+		for contrepet in tmpListe[1:]:
+			nvListe.append(" ".join(contrepet[0]))
+		if(isAllContrepeterie):
+			return nvListe
+		else:
+			print("a")
+			affichagePhraseLettre(nvListe)
+
+
+def affichagePhraseLettre(listeRes):
+	if(len(listeRes) == 0):
+		print("Pas de résultats pour l'échange avec les lettres")
+		return
+	print("Voici les résultats en échangeant les lettres.")
+	count=1
+	for contrepet in listeRes[1:]:
+		print(f"{count} --> {contrepet}")
+		count += 1
+	print('\nNombre de résultats : ', count)
