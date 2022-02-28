@@ -1,6 +1,7 @@
 var dic=[];
 var dicMot=[];
 var dicPhon=[];
+var dicClassesGram=[];
 var dicCle=[];
 let dicMot4a8lettres=[];
 let alph = "b,d,f,g,k,l,m,n,ŋ,ɲ,p,ʁ,s,ʃ,t,v,z,ʒ,j,w,ɥ,a,ɑ,e,ɛ,ː,ə,i,œ,ø,o,ɔ,u,y,ɑ̃,ɛ̃,œ̃,ɔ̃".split(",");
@@ -48,9 +49,15 @@ function splitdicSelector(){
 function splitdic(){
     for(let i=0; i<dic.length; i++){
         dicMot.push(dic[i]['data'][0]);
-        dicPhon.push(dic[i]['data'][1]);     
-        if(dic[i]['data'][0].length >= 4 && dic[i]['data'][0].length <= 8)
-            dicMot4a8lettres.push(dic[i]['data'][0]);
+        dicPhon.push(dic[i]['data'][1]);
+        dicClassesGram.push(dic[i]['data'][3]);         
+        if(dic[i]['data'][0].length >= 4 && dic[i]['data'][0].length <= 8 ) {
+            let classesGramMot = dicClassesGram[i].replace("['", "").replace("']","").split("', '");
+            classesGramMot.forEach(element => {
+                if(element !== "verbe")
+                    dicMot4a8lettres.push(dic[i]['data'][0]); 
+            });
+        }
     }
     console.log("Affichage du dictionaire de mots");
     console.log(dicMot);
@@ -90,6 +97,33 @@ function loadDico(){
             dicCle = data
         });
     });
+
+    document.querySelector('#myButton').disabled = false;
+    document.querySelector('#myButton').addEventListener('mousedown', ()=>{
+        document.body.style.cursor = 'wait';
+    }); 
+}
+
+
+
+
+
+
+
+
+function eventListeners() {
+    document.querySelector('#myButton').addEventListener('mousedown', event=>{
+        document.querySelector('#loadingJeuBeta').style.visibility = "visible";
+        document.body.style.cursor = 'wait';
+    }); 
+
+    document.querySelector('#playAgain').addEventListener('mousedown', event=>{
+        document.querySelector('#info').style.visibility = "visible";
+        document.querySelector('#loadingJeuBeta').style.visibility = "visible";
+        document.querySelector('#playAgain').style.display = 'none';
+        resetAll();
+        deroulementJeu();
+    });
 }
 
 function getRandomInt(max) {
@@ -100,12 +134,12 @@ function removeButton() {
     var elem = document.getElementById('myButton');
     elem.parentNode.removeChild(elem);
     var elemI = document.getElementById('info');
-    elemI.remove();
+    elemI.style.visibility = 'collapse';
 }
 
 function writeText(motToDisplay){
 
-    var anchor = "<a href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
+    var anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+motToDisplay +"'>" + motToDisplay + "</a>"
     console.log(anchor)
 
     let lienWiki = "https://fr.wiktionary.org/wiki/" + motToDisplay
@@ -117,6 +151,11 @@ function changeStreakPicture(relativePath) {
     pic.setAttribute('src',relativePath);
     pic.setAttribute('style','width: 40px; height: 40px;');
 }
+
+
+
+
+
 
 function returnTuplePhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClassesGramChecked,mot) {
     let trouveDansDico = false;
@@ -383,7 +422,7 @@ function testReponse(motDonne, motEntre) {
 
 
 function deroulementJeu()
-{   
+{
     //création liste de mots aléatoire de nbMots mots
     for(let id=0; id<nbMots; id++) {
         let listeReponseNoId = [];
@@ -432,7 +471,7 @@ function soumettreReponse()
         document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse];
         document.querySelector('h3#solution').innerText = '';
         listeReponse[nbSoumissionReponse].forEach(element => {
-            let anchor = "<a href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
+            let anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
             document.querySelector('h3#solution').innerHTML += anchor;
         });
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
@@ -455,6 +494,10 @@ function soumettreReponse()
     secondes = 30;
 }
 
+function waitcursor() {
+    document.body.style.cursor = 'wait';
+}
+
 //---------------------------------------
 //---------------------------------------
 //---------------------------------------
@@ -466,6 +509,9 @@ var reset = false;
 
 function startGame(){
     console.log("start game")
+    document.querySelector('#loadingJeuBeta').style.visibility = "collapse";
+    //curseur normal
+    document.body.style.cursor = 'default';
     document.getElementById('btnValidate').disabled=false;
     if(on===false){
         pts=0;
@@ -483,7 +529,7 @@ function chrono(){
         secondes=59;
     }
     else if(minutes == 0 && secondes == 0) {
-        playAgain()
+        rejouer()
     }
     else
         secondes -= 1;
@@ -518,9 +564,8 @@ function affTimer(){
     }
 }
 
-function playAgain()
+function rejouer()
 {
-
     document.querySelector('h3#ancienMot').innerText = '';
     document.querySelector('h3#solution').innerText = '';
     document.querySelector('h3#messageSuccess').innerText = 'Perdu ! il faut aller plus vite :)';

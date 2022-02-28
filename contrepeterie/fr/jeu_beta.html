@@ -17,7 +17,7 @@
 
     <title>L'art de décaler les sons</title>
 </head>
-<body onload="loadDico()">
+<body onload="loadDico(); eventListeners()">
 <!--Navigation bar-->
 <div id="nav-placeholder">
 
@@ -37,14 +37,15 @@ $(function(){
     </div >
 
     <div id="chargementDico">
-        <div class="blackOutline"> Dictionnaire chargé :     </div>
+        <div class="blackOutline"> Dictionnaire chargé &nbsp</div>
         <span id="chargement"></span>
     </div>
 
     <div  class="h-100 justify-content-center align-items-center">
         <div class="flexAllCenter">
-            <button id="myButton" class="btnLettreOrPhoneme m-2" onclick="removeButton();deroulementJeu()">Commencer la partie !</button>
+            <button id="myButton" class="btnLettreOrPhoneme m-2" autocomplete="off" disabled="true" onclick="removeButton();deroulementJeu()">Commencer la partie !</button>
             <p id="info" class="alert alert-dark">Le chargement peut prendre quelques secondes.</p>
+            <div id="loadingJeuBeta"></div>
         </div>
 
         <div class="flexAllCenter">
@@ -54,18 +55,21 @@ $(function(){
                     <h3 id="myH1" class="m-2 mb-4">Trouver les contrepèteries du mot !</h3>
                     <div class="flexAllCenter">
                         <input id="reponse" placeholder="Saisir la réponse...">
-                        <button id="btnValidate" class="btn btn-dark" disabled="true" onclick="soumettreReponse()">Valider</button>
+                        <script>
+                            document.querySelector('#reponse').addEventListener('keyup', () => { if(event.keyCode === 13) soumettreReponse();});
+                         </script>
+                        <button id="btnValidate" class="btn btn-dark" autocomplete="off" disabled="true" onclick="soumettreReponse()">Valider</button>
                     </div>
                 </div>
 
-                <div class="blackOutline p-1 m-1 mt-3" style="border-radius: 4px; ">
+                <div class="blackOutline p-1 m-1 mt-3" style="border-radius: 4px;">
                     <div style="display: flex;">
                         <h3>Timer : &nbsp </h3>
                         <h3 id="displayTimer">00:30</h3>
                     </div>
 
                     <div style="display: flex;">
-                        <h3>Score :&nbsp </h3>
+                        <h3>Score : &nbsp </h3>
                         <h3 id="displayScore">0</h3>
                     </div>
                     <div style="display: flex;">
@@ -85,13 +89,6 @@ $(function(){
     <div class="flexAllCenter">
         <div style="display: flex; flex-direction: column; justify-content: center;">
             <button class="btn btn-dark" id="playAgain" style="display: none;">Rejouer</button>
-            <script>
-                playAgain.addEventListener('click', event=>{
-                    resetAll();
-                    deroulementJeu();
-                    playAgain.style.display = 'none';
-                });
-            </script>
             <h3 id="messageSuccess"></h3>
         </div>
         <h3 id="ancienMot"></h3>

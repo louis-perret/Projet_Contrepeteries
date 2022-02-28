@@ -305,7 +305,8 @@ function phonToPhrase(phrase) {
 //----------------------------------------------------------------------------
 
 function choixLettreP() {
-	trouverOrthographePhonem("je carottes unes manges")
+	document.getElementById('div1').innerHTML = '';
+	//trouverOrthographePhonem("je carottes unes manges")
 	if (document.getElementById('choixLettreP').value == 'false')
 	{
 		document.getElementById('choixLettreP').setAttribute('style','border: 4px solid #7ac142;');
@@ -317,6 +318,7 @@ function choixLettreP() {
 }
 
 function choixPhonemeP() {
+	document.getElementById('div1').innerHTML = '';
 	console.log("phonem !!!")
 	if (document.getElementById('choixPhonemeP').value == 'false')
 	{
@@ -329,7 +331,6 @@ function choixPhonemeP() {
 }
 
 function redirigeLettreOuPhonemePhrase() {
-
 	if (document.getElementById('choixLettreP').value == 'true')
 	{
 		mainMixSyllabes(mainRecherchePhrase(),"lettre")
