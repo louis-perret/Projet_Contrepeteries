@@ -10,9 +10,9 @@ let nbSoumissionReponse = 0;
 let streak = 0;
 let nbMots = 10;
 
-let listeReponse=[]
+let listeReponse=[];
 
-let motATrouver=[]
+let motATrouver=[];
 
 
 function handleFileSelect(evt) {
@@ -118,8 +118,6 @@ function eventListeners() {
     }); 
 
     document.querySelector('#playAgain').addEventListener('mousedown', event=>{
-        document.querySelector('#info').style.visibility = "visible";
-        document.querySelector('#loadingJeuBeta').style.visibility = "visible";
         document.querySelector('#playAgain').style.display = 'none';
         resetAll();
         deroulementJeu();
@@ -132,9 +130,10 @@ function getRandomInt(max) {
 
 function removeButton() {
     var elem = document.getElementById('myButton');
-    elem.parentNode.removeChild(elem);
+    elem.style.visibility = 'collapse';
     var elemI = document.getElementById('info');
     elemI.style.visibility = 'collapse';
+    document.querySelector('div#divLoadingJeuBeta').style.display = 'none';
 }
 
 function writeText(motToDisplay){
@@ -391,6 +390,7 @@ function resetAll() {
     document.querySelector('h3#ancienMot').innerText = '';
     document.querySelector('h3#solution').innerText = '';
     document.querySelector('h3#messageSuccess').innerText = '';
+    document.querySelector('h3#messageFin').innerText = '';
     document.querySelector('h3#displayScore').innerText = '0';
     document.querySelector('h3#displayTimer').innerText = '00:30';
     document.querySelector('h3#streak').innerText = '0';
@@ -434,6 +434,7 @@ function deroulementJeu()
         listeReponse.push(listeReponseNoId);
         motATrouver.push(dicMot4a8lettres[posRandom]);
     }
+    removeButton();
     writeText(motATrouver[0])
     startGame();
 }
@@ -450,8 +451,8 @@ function soumettreReponse()
             document.getElementById("nombreBonnesRep").innerText = nb;
             streak++;
             updateScore(streak);
-            document.querySelector('h3#messageFin').innerText = 'La dernière réponse était juste !';
-            document.querySelector('h3#messageFin').setAttribute('style', 'color: green;');
+            document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
+            document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
         }
         else
         {
@@ -462,15 +463,15 @@ function soumettreReponse()
                 let anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
                 document.querySelector('h3#solution').innerHTML += anchor;
             });
-            document.querySelector('h3#messageFin').innerText = 'La dernière réponse était fausse...';
-            document.querySelector('h3#messageFin').setAttribute('style', 'color: red;');
+            document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
+            document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         }
-        document.querySelector('h3#messageSuccess').innerText = 'Jeu terminé';
-        document.querySelector('h3#messageSuccess').setAttribute('style','color: #95dabb;');
+        document.querySelector('h3#messageFin').innerText = 'Jeu terminé';
+        document.querySelector('h3#messageFin').setAttribute('style','color: #95dabb;');
         let playAgain = document.querySelector('button#playAgain');
         document.querySelector('h3#timer').innerText = '';
         document.querySelector('h3#displayTimer').innerText = '';
-        playAgain.style.display = 'inline-block';
+        playAgain.style.display = 'inline';
         Stop();
         return;
     }
@@ -491,14 +492,13 @@ function soumettreReponse()
     }
     else
     {
-        document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
-
         document.querySelector('h3#ancienMot').innerText =  motATrouver[nbSoumissionReponse];
         document.querySelector('h3#solution').innerText = '';
         listeReponse[nbSoumissionReponse].forEach(element => {
             let anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
             document.querySelector('h3#solution').innerHTML += anchor;
         });
+        document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
         document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         console.log("perdu")
         streak = 0;
@@ -534,7 +534,7 @@ var reset = false;
 
 function startGame(){
     console.log("start game")
-    document.querySelector('#loadingJeuBeta').style.visibility = "collapse";
+    document.querySelector('#loadingJeuBeta').style.display = "none";
     //curseur normal
     document.body.style.cursor = 'default';
     document.getElementById('btnValidate').disabled=false;
@@ -601,8 +601,9 @@ function rejouer()
 {
     document.querySelector('h3#ancienMot').innerText = '';
     document.querySelector('h3#solution').innerText = '';
-    document.querySelector('h3#messageSuccess').innerText = 'Perdu ! il faut aller plus vite :)';
-    document.querySelector('h3#messageSuccess').setAttribute('style','color: goldenrod;');
+    document.querySelector('h3#messageSuccess').innerText = '';
+    document.querySelector('h3#messageFin').innerText = 'Perdu ! il faut aller plus vite :)';
+    document.querySelector('h3#messageFin').setAttribute('style','color: goldenrod;');
     playAgain = document.querySelector('button#playAgain');
-    playAgain.style.display = 'inline-block';
+    playAgain.style.display = 'inline';
 }

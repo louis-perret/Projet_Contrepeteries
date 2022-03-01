@@ -591,8 +591,8 @@ function chercheMotDico(lettre1,lettre2,x,y,resMot1,resMot2) {
 			}
 		}
 	}
-	console.log("Mot 1 : " + resMot1);
-	console.log("mot 2 : " + resMot2);
+	//console.log("Mot 1 : " + resMot1);
+	//console.log("mot 2 : " + resMot2);
 }
 
 
@@ -605,9 +605,9 @@ function affichageMot(l){
   		element.removeChild(element.firstChild);
 	}
 
-	var actualDivRow =  document.createElement('div');
+	let actualDivRow =  document.createElement('div');
 	actualDivRow.setAttribute("class", "row");
-	for(var i=0; i<l.length; i++){
+	for(let i=0; i<l.length; i++){
 		if(i%5 == 0) {
 			document.getElementById('div1').append(actualDivRow);
 			let divRow = document.createElement('div');

@@ -164,8 +164,8 @@ function mainMixSyllabes(phrase,mode) {
 							}
 							actualDivId += 1;
 						}
-						if(mode === "lettre" && !Lphrases.includes(`<p>${tmp.join(' ')}</p>`)) {
-							Lphrases.push(`<p>${tmp.join(' ')}</p>`)
+						if(mode === "lettre" && !Lphrases.includes("<div class='card shadow-sm bgWhite'>"+ tmp.join(' ') + "</div>") && (tmp.join(' ') !== phrase)) {
+							Lphrases.push("<div class='card shadow-sm bgWhite'>"+ tmp.join(' ') + "</div>");
 						}
 					}
 				}
@@ -173,23 +173,47 @@ function mainMixSyllabes(phrase,mode) {
 			}
 		}
 	}
-	affichageMotPhrase(Lphrases)
+	affichageMotPhrase(Lphrases, mode)
 	document.querySelector('#loadingJeuBeta').style.visibility = "collapse";
 	document.body.style.cursor = 'default';
 }
 
-function affichageMotPhrase(l){
-
-	//console.log("l : ----------------")
-	//console.log(l)
-	var element = document.getElementById("div1");
+function affichageMotPhrase(l, mode){
+	let element = document.getElementById("div1");
 	while (element.firstChild){
 		element.removeChild(element.firstChild);
 	}
-	for(var i=0; i<l.length; i++){
-		let div = document.createElement('div');
-		div.innerHTML=l[i];
-		document.getElementById('div1').append(div);
+
+	if(mode === "lettre") {
+		let actualDivRow =  document.createElement('div');
+		actualDivRow.setAttribute("class", "row");
+		for(let i=0; i<l.length; i++){
+			if(i%5 == 0) {
+				document.querySelector('div#div1').append(actualDivRow);
+				let divRow = document.createElement('div');
+				divRow.setAttribute("class", "row");
+				actualDivRow = divRow;
+				actualDivRow.setAttribute("style","margin: 20px;");
+				let divCol = document.createElement('div');
+				divCol.setAttribute("class", "col");
+				divCol.innerHTML=l[i];
+				actualDivRow.append(divCol);
+			}
+			else {
+				let divCol = document.createElement('div');
+				divCol.setAttribute("class", "col");
+				divCol.innerHTML=l[i];
+				actualDivRow.append(divCol);
+			}
+		}
+	}
+	else if(mode === "phon") {
+		document.querySelector('div#div1').classList.remove("flexAllCenter");
+		for(let i=0; i<l.length; i++){
+			let myDiv = document.createElement('div');
+			myDiv.innerHTML=l[i];
+			document.getElementById('div1').append(myDiv);
+		}
 	}
 }
 
