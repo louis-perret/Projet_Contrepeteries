@@ -279,21 +279,21 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		boucle = True
 		while(boucle):
 			try:
-				selecteur = int(input(
-					"\n0 = quitter l'aide,-3 revenir au début de l'aide :\n-1: page précédente; -2: page suivante : "))
+				selecteur = input(
+					"\na = quitter l'aide,z revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
 				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
-		if selecteur == 0:
+		if selecteur == "a":
 			return 0
-		elif selecteur == -3:
+		elif selecteur == "z":
 			clear()
 			return 1
-		elif selecteur == -2:
+		elif selecteur == "e":
 			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
-		elif selecteur == -1:
+		elif selecteur == "r":
 			numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 
 		else:
@@ -439,7 +439,7 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
 	numPage = 0                          # numéro page en cours
 
 	tailleLigne = 50
-	choix = {-1, -2}
+	choix = {"r", "t"}
 	selecteur = 0
 	continuer = True
 	while(continuer):
@@ -471,22 +471,22 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
 		while(test):
 
 			try:
-				selecteur = int(input("""
-(0 : quitter l'aide/-3: revenir à selection précèdante /-4: revenir au début de l'aide)
-(-1:Gauche / -2:Droite) ou saisissez numéro du mot :\n"""))
+				selecteur = input("""
+(a : quitter l'aide/z: revenir à selection précèdante /e: revenir au début de l'aide)
+(r:Gauche / t:Droite) ou saisissez numéro du mot :\n""")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
 			test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0 #Si je peux toujours afficher des mots
 
-			if selecteur == 0:
+			if selecteur == "a":
 				return 0
-			elif selecteur == -3:
+			elif selecteur == "z":
 				clear()
 				print(f"{mot_origine}\n")
 				return True
-			elif selecteur == -4:
+			elif selecteur == "e":
 				return -1
 			elif selecteur in choix or test1:
 				test = False

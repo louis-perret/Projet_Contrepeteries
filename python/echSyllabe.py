@@ -473,41 +473,42 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 		while True:
 			try:
 				if(isAllContrepeterie):
-					choixutilisateur = int(input("\n-1 / Quitter la recherche, ou saisissez un des index pour obtenir toutes les ortographes : "))
+					choixutilisateur = input("\na / Quitter la recherche, ou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
-					choixutilisateur = int(input(
-				"\n-1 : quitter/ -2 revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : "))
+					choixutilisateur = input(
+				"\na : quitter/ z revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : ")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
-			if (choixutilisateur) < compteur and choixutilisateur > -1:
-				for j in nvDico[dicores[choixutilisateur-1]]: #pour chaque orthographe de la phrase
-					maxlen = 0
-					phrase = []	
-					for k in range(len(j)) :
-						phrase.append(j[k])
-						if len(j[k]) > maxlen :
-							maxlen = len(j[k])
-						for l in range(len(phrase[0])) :
-							phrase[0][l] = phrase[0][l].capitalize()
-					#if diconfig["FiltreGrammatical"] == "Oui":
-							#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
-							#if len(matches) == 0:
-					for m in range(maxlen) :
-						for n in range(len(phrase)) :
-							if len(phrase[n]) > m :
-								print(phrase[n][m], end=" ")
-							else :
-								print(phrase[n][0], end=" ")
-						print()
+			if inputInt(choixutilisateur):
+				if (choixutilisateur) < compteur and choixutilisateur > -1:
+					for j in nvDico[dicores[choixutilisateur-1]]: #pour chaque orthographe de la phrase
+						maxlen = 0
+						phrase = []	
+						for k in range(len(j)) :
+							phrase.append(j[k])
+							if len(j[k]) > maxlen :
+								maxlen = len(j[k])
+							for l in range(len(phrase[0])) :
+								phrase[0][l] = phrase[0][l].capitalize()
+						#if diconfig["FiltreGrammatical"] == "Oui":
+								#matches = language_tool_python.LanguageToolPublicAPI('fr').check(j)
+								#if len(matches) == 0:
+						for m in range(maxlen) :
+							for n in range(len(phrase)) :
+								if len(phrase[n]) > m :
+									print(phrase[n][m], end=" ")
+								else :
+									print(phrase[n][0], end=" ")
+							print()
 
 
-						#else:
-						#	print(j)
+							#else:
+							#	print(j)
 
-			elif choixutilisateur == -1:
+			elif choixutilisateur == "a":
 				return 0
-			elif choixutilisateur == -2:
+			elif choixutilisateur == "z":
 				return 1
 
 	if mode == 'word':
