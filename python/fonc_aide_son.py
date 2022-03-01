@@ -122,26 +122,27 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue, dicoDico):
 		boucle = True
 		while(boucle):
 			try:
-				selecteur = int(input(
-					"\n0 = quitter l'aide,-3 revenir au début de l'aide,\n-1: page précédente; -2: page suivante, \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n"))
+				selecteur = input(
+					"\na = quitter l'aide,z revenir au début de l'aide,\ne: page précédente; r: page suivante, \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
-			if selecteur == 0:
+			if selecteur == "a":
 				return 0
-			elif selecteur == -3:
+			elif selecteur == "z":
 				clear()
 				return 1
-			elif selecteur == -2:
+			elif selecteur == "r":
 				numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
 				boucle = False
-			elif selecteur == -1:
+			elif selecteur == "e":
 				numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 				boucle = False
-			elif selecteur <= len(listeAffichage) and selecteur > 0:
-				affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue, dicoPhon)
-				boucle = False
+			elif inputInt(selecteur):
+				if int(selecteur) <= len(listeAffichage) and selecteur > 0:
+					affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue, dicoPhon)
+					boucle = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
 
@@ -342,7 +343,7 @@ def affiPageParPage2(listeMot, syllOrigine, mot_origine):
 	with open('data/fr/dicoPhoncomFr.json') as tmp:
 		dicoPhon = json.load(tmp)
 
-	choix = {-1, -2}
+	choix = {"r", "t"}
 	selecteur = 0
 	continuer = True
 	while(continuer):
@@ -380,21 +381,21 @@ def affiPageParPage2(listeMot, syllOrigine, mot_origine):
 		while(test):
 
 			try:
-				selecteur = int(input("""
-(0 : quitter l'aide/-3: revenir à selection précèdante /-4: revenir au début de l'aide)
-(-1:Gauche / -2:Droite) ou saisissez numéro du mot :\n"""))
+				selecteur = input("""
+(a : quitter l'aide/z: revenir à selection précèdante /e: revenir au début de l'aide)
+(r:Gauche / t:Droite) ou saisissez numéro du mot :\n""")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 
 			test1 = (nbMotPage*numPage+selecteur) <= len(listeMot) and (nbMotPage*numPage+selecteur) > 0
-			if selecteur == 0:
+			if selecteur == "a":
 				return 0
-			elif selecteur == -3:
+			elif selecteur == "z":
 				clear()
 				print(f"{mot_origine} : {Mot_to_Phon_Only(arbre_mot,mot_origine)}\n")
 				return True
-			elif selecteur == -4:
+			elif selecteur == "e":
 				return -1
 			elif selecteur in choix or test1:
 				print("\nChargement en cours ...")

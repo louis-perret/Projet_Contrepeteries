@@ -247,18 +247,19 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	while(boucle):
 		affichageBasePlusieurs(mot,dicoResWord,dicoResPhon)
 		while(True):
-			choix = inputInt("\n0 -> Quitter l'aide, -1 -> Retour au menu, entrer le numéro des résultats à afficher : ")
-			if(choix == 0):
+			choix = input("\na -> Quitter l'aide, z -> Retour au menu, entrer le numéro des résultats à afficher : ")
+			if(choix == "a"):
 				return choix
-			elif(choix == -1):
+			elif(choix == "z"):
 				return 1
-			elif(choix < 0 or choix > (len(dicoResWord) + len(dicoResPhon))):
-				print("Vous n'avez pas entrer un entier qui fonctionne. Ressayer.")
-				continue
-			elif(choix <= len(dicoResWord)):
-				listeDeMotCop = dicoResWord[str(choix)]
-				mode="word"
-				break
+			elif inputInt(choix):
+				if(int(choix) < 0 or int(choix) > (len(dicoResWord) + len(dicoResPhon))):
+					print("Vous n'avez pas entrer un entier qui fonctionne. Ressayer.")
+					continue
+				elif(int(choix) <= len(dicoResWord)):
+					listeDeMotCop = dicoResWord[str(choix)]
+					mode="word"
+					break
 			else:
 				choix = abs(len(dicoResWord) - choix)
 				listeDeMotCop = dicoResPhon[str(choix)]
@@ -270,11 +271,14 @@ def recherchePlusieurs(mot,langue,dicoDico):
 			affichageBase(ecriturePhonMot,listeDeMotCop,choix)
 		boucle2 = True
 		while(boucle2):
-			selectMot = inputInt("\n0 -> Quitter l'aide, -1 -> Retour au menu, -2 -> Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
-			if selectMot == 0 or selectMot == -1:
+			selectMot = input("\na -> Quitter l'aide, z -> Retour au menu, e -> Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
+			if selectMot == "a" or selectMot == "z":
 				return abs(selectMot)
-			elif selectMot == -2 or (selectMot <= len(listeDeMotCop) and selectMot > 0): #evite les erreurs de segmentations
+			elif selectMot == "e" : #evite les erreurs de segmentations
 				boucle2 = False
+			elif inputInt(selectMot) :
+				if (selectMot <= len(listeDeMotCop) and selectMot > 0):
+					boucle2 = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
 
