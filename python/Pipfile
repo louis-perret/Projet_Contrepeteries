@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+beautifulsoup4 = "==4.7.1"
+language-tool-python = "==2.6.1"
+nltk = "==3.6.2"
+numpy = "==1.19.5"
+Cython = "==0.29.24"
+progressbar2 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
