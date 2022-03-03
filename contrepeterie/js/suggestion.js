@@ -411,9 +411,202 @@ function updateBtn() {
 
 		aidePhonemRechDico(dicPhon[indexMotDic],dicPhon[indexButton]);
 	}
-
 }
 
+//création des filtres flottants et scrollables sur le côté droit
+function affichScrollableFilters() {
+	let bigDivRight = document.createElement('div');
+	bigDivRight.setAttribute('style','width:20%;');
+	let littleDivScrollRight = document.createElement('div');
+	littleDivScrollRight.innerHTML ='<div>\
+										<input type="checkbox" id="couperMots2" value="couperMots2">\
+										<label for="couperMots2">Activer les mots coupés </label>\
+									</div>\
+									<div>\
+										<input type="checkbox" id="filtreClassesGram2" value="filtreClassesGram2">\
+										<label for="filtreClassesGram2">Mêmes classes grammaticales</label>\
+									</div>\
+									<select id="filtreGrossier2">\
+										<option value="filtreGrossUnabled2">Aucun filtre</option>\
+										<option value="filtreGrossOnly2">Seulement grossiers</option>\
+										<option value="filtreGrossNone2">Supprimer grossiers</option>\
+									</select>';
+	littleDivScrollRight.setAttribute('style','background: #bdbebd;position: -webkit-sticky;position: sticky; border-radius: 6px; padding: 5px;');
+	littleDivScrollRight.classList.add('col');
+	bigDivRight.appendChild(littleDivScrollRight);
+	document.querySelector('div#div1').appendChild(bigDivRight);
+
+	document.querySelector("input#couperMots2").addEventListener('change', function(){
+		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
+	});
+	document.querySelector("input#filtreClassesGram2").addEventListener('change', function(){
+		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
+	});
+	document.querySelector("select#filtreGrossier2").addEventListener('change', function(){
+		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
+	});
+	//var floatingDiv = $('.floating-div');
+	//floatingDiv.addClass('sticky');
+	/*
+	// variables
+	var topPosition = $('.floating-div').offset().top - 10;
+	var floatingDivHeight = $('.floating-div').outerHeight();
+	var footerFromTop = $('footer').offset().top;
+	var absPosition = footerFromTop - floatingDivHeight - 20;
+	var win = $(window);
+	var floatingDiv = $('.floating-div');
+  
+	win.scroll(function() {
+	  if (window.matchMedia('(min-width: 768px)').matches) {
+		if ((win.scrollTop() > topPosition) && (win.scrollTop() < absPosition)) {
+		  floatingDiv.addClass('sticky');
+		  floatingDiv.removeClass('abs');
+  
+		} else if ((win.scrollTop() > topPosition) && (win.scrollTop() > absPosition)) {
+		  floatingDiv.removeClass('sticky');
+		  floatingDiv.addClass('abs');
+  
+		} else {
+		  floatingDiv.removeClass('sticky');
+		  floatingDiv.removeClass('abs');
+		}
+	  }
+	});
+	*/
+}
+
+
+//grise les card contenant 4 mots en fonction des filtres valides
+function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltreGrossier){
+	console.log(':::::::::::passe dans updateCardGris::::::::::::')
+	let myCards = document.querySelectorAll('div.card.p-2.shadow-sm');
+	let cardsOdd = [];
+	let cardsEven = [];
+	let partsRealCard = [];
+	let motEntre = myCards[0].innerText.split(' - ')[0];
+	let i=0;
+	myCards.forEach(card => {
+		i++;
+		card.style.backgroundColor = 'white';
+		if(i%2 === 0) 
+			cardsEven.push(card.innerText.split(' - ')[1]);
+		else
+			cardsOdd.push(card.innerText.split(' - ')[1]);
+	});
+	cardsEven.forEach(card => {
+		partsRealCard.push([cardsOdd[cardsEven.indexOf(card)], card]);
+	});
+
+	let successGrossier = [];
+	let successSameClassGram = [];
+	let successMotsCoupes = [];
+	switch(valueFiltreGrossier) {
+		case 'filtreGrossUnabled2':
+			partsRealCard.forEach(card => {
+				successGrossier[partsRealCard.indexOf(card)] = true;
+				if(isSameClasseGramChecked) {
+					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
+						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
+						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
+						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
+						let classeGramMot1 = substr1.split("', '");
+						let classeGramMot2 = substr2.split("', '");
+						let classeGramMot3 = substr3.split("', '");
+						let passedInTheIf = false;
+						classeGramMot1.forEach(element => {
+							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
+								successSameClassGram[partsRealCard.indexOf(card)] = false;
+								passedInTheIf = true;
+							}
+						});
+						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
+					}
+				}
+				else
+					successSameClassGram[partsRealCard.indexOf(card)] = true;
+				/*cas à tester
+				if(isMotsCoupesChecked) {}
+				*/
+				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+			});
+			break;
+		case 'filtreGrossOnly2':
+			partsRealCard.forEach(card => {
+				if(dicVulgaire.includes(card[0]) || dicVulgaire.includes(card[1]))
+					successGrossier[partsRealCard.indexOf(card)] = true;
+				else
+					successGrossier[partsRealCard.indexOf(card)] = false;
+
+				if(isSameClasseGramChecked) {
+					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
+						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
+						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
+						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
+						let classeGramMot1 = substr1.split("', '");
+						let classeGramMot2 = substr2.split("', '");
+						let classeGramMot3 = substr3.split("', '");
+						let passedInTheIf = false;
+						classeGramMot1.forEach(element => {
+							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
+								successSameClassGram[partsRealCard.indexOf(card)] = false;
+								passedInTheIf = true;
+							}
+						});
+						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
+					}
+				}
+				else
+					successSameClassGram[partsRealCard.indexOf(card)] = true;
+				/*cas à tester
+				if(isMotsCoupesChecked) {}
+				*/
+				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+			});
+			break;
+		case 'filtreGrossNone2':
+			partsRealCard.forEach(card => {
+				if(dicVulgaire.includes(card[0]) || dicVulgaire.includes(card)[1])
+					successGrossier[partsRealCard.indexOf(card)] = false;
+				else
+					successGrossier[partsRealCard.indexOf(card)] = true;
+
+				if(isSameClasseGramChecked) {
+					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined"&& typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
+						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
+						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
+						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
+						let classeGramMot1 = substr1.split("', '");
+						let classeGramMot2 = substr2.split("', '");
+						let classeGramMot3 = substr3.split("', '");
+						let passedInTheIf = false;
+						classeGramMot1.forEach(element => {
+							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
+								successSameClassGram[partsRealCard.indexOf(card)] = false;
+								passedInTheIf = true;
+							}
+						});
+						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
+					}
+				}
+				else
+					successSameClassGram[partsRealCard.indexOf(card)] = true;
+				/*cas à tester
+				if(isMotsCoupesChecked) {}
+				*/
+				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+			});
+			break;
+	}
+
+	console.log(successGrossier[4])
+	console.log(successMotsCoupes[4])
+	console.log(successSameClassGram[4])
+	console.log(partsRealCard[4])
+	partsRealCard.forEach(card => {
+		if(!successGrossier[partsRealCard.indexOf(card)] || !successMotsCoupes[partsRealCard.indexOf(card)] || !successSameClassGram[partsRealCard.indexOf(card)])
+			myCards[partsRealCard.indexOf(card)].style.backgroundColor = '#bdbebd';
+	});
+}
 
 
 //Cette fonction permet de creer les couples mot - mot compatibles sous la forme de boutons
@@ -444,7 +637,6 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 			document.getElementById("div1").innerHTML = "No result";
 	}
 		
-
 	for (var i = 0; i < listeMotCompatible.length; i++) { //Pour chaque mot compatible on crée un bouton mot - mot compatible
 			if(motExiste(listeMotCompatible[i],dicPhon) )
 			{
@@ -462,6 +654,8 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 			button.addEventListener('mousedown', afficheStats2);//au click pour trouver les 4 mots
 	}
 }
+
+
 
 //Changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection de l'utilisateur
 function choixLettre() {
@@ -605,11 +799,16 @@ function affichageMot(l){
   		element.removeChild(element.firstChild);
 	}
 
+	let doubleColDiv = document.createElement('div');
+	doubleColDiv.setAttribute("style", "width: 80%"); //en fait c'est mal nommé, c'est un row
+	doubleColDiv.id = 'doubleColDiv';
+	document.querySelector("div#div1").appendChild(doubleColDiv);
+
 	let actualDivRow =  document.createElement('div');
 	actualDivRow.setAttribute("class", "row");
 	for(let i=0; i<l.length; i++){
 		if(i%5 == 0) {
-			document.getElementById('div1').append(actualDivRow);
+			doubleColDiv.append(actualDivRow);
 			let divRow = document.createElement('div');
 			divRow.setAttribute("class", "row");
 			actualDivRow = divRow;
@@ -626,6 +825,7 @@ function affichageMot(l){
 			actualDivRow.append(divCol);
 		}
 	}
+	affichScrollableFilters();
 }
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
