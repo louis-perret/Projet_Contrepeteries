@@ -209,16 +209,15 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 		elif mode == 'phon' :
 			mot = mot[1]
 		if(motIsInBorne(minimum,maximum,mot) and gramFiltre(classGramMotOrigine,mot,mode,dicoGram,dicoPhon,dicoDico['config'])):
-			for ChaqueLettre in range(len(listeDeMotCop)):
-
-				test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
+			#for ChaqueLettre in range(len(listeDeMotCop)):
+			if(True):
+				test1 = listeDeMotCop[index][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
 				test2 = mot[:5] not in listeDeRacines
 				# Racines:
-				if index == ChaqueLettre and test1 and test2: #Si c'est la combinaison sélectionnée avant
-					#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
-					testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],mot.index(listeDeMotCop[ChaqueLettre][2]),len(listeDeMotCop[ChaqueLettre][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
+				if test1 and test2: #Si c'est la combinaison sélectionnée avant
+					testDansMot = replacer(mot, listeDeMotCop[index][1],mot.index(listeDeMotCop[index][2]),len(listeDeMotCop[index][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
+					if testDansMot != Mot_to_Phon_Only(arbre_mot, mot_origine) and testDansMot != isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
 						if mode == "phon" :
 							testTheme1 = dicoPhon[testDansMot]
 							testTheme2 = dicoPhon[mot]
@@ -228,9 +227,9 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 
 						if (filtreTheme(testTheme1,listeDico,dicoDico['config']['Themes']) or filtreTheme(testTheme2,listeDico,dicoDico['config']['Themes'])): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
 							listeDeRacines.append(mot[:5])
-							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-											   listeDeMotCop[ChaqueLettre][2],
-											   listeDeMotCop[ChaqueLettre][0],
+							listeAffichage.append((listeDeMotCop[index][1],
+											   listeDeMotCop[index][2],
+											   listeDeMotCop[index][0],
 											   testDansMot, mot))
 						compteur += 1
 	print("\n")

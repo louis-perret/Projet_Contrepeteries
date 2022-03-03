@@ -13,10 +13,7 @@ def selectionLongueurMot(message):
 	while(not inputInt(l)):
 		print("Vous n'avez pas entré un entier convenable. Ressayer")
 		l=inputInt(message)
-		while(l<-1):
-			print("Vous n'avez pas entré un entier convenable. Ressayer")
-			l=input(message)
-	return l
+	return int(l)
 
 
 """

@@ -10,7 +10,7 @@ complex=$((26**$longueurCouple))
 complex=$(($complex*$longueurMot*$log))
 if test $mode = "plusieurs" 
 then
-	tpsExec=$((($complex/$cpu)*2))
+	tpsExec=$((($complex/$cpu)))
 else
 	tpsExec=$((($complex/$cpu)))
 fi

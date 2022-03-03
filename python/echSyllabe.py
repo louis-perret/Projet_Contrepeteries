@@ -15,7 +15,7 @@ Pour deux mots, teste toutes les combinaisons d'échanges possible entre ces deu
 Renvoie une liste de type : (nouveauMot1,nouveauMot2,[i,j] du mot1,[i,j] du mot2)
 """
 
-def mixSyllablesWord1(Word1, Word2, phrase, mode):
+def mixSyllablesWord1(Word1, Word2, phrase, mode, dicoDico):
 	listeWord = []
 	tmp = []
 	i = 0
@@ -23,7 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		if(False):
+		if(dicoDico['config']['MotCoupe']):
 			for x in allResults :
 				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 				listemot2 = mixSyllabeCoupe(x[0], mode)
@@ -83,7 +83,7 @@ index2 est un tuple contenant les coordonées dans la phrase
 du deuxième mot que l'on échange
 """
 
-def mainMixSyllables(phrase, mode):
+def mainMixSyllables(phrase, mode,dicoDico):
 
 	phrase = phrase.split()
 	WordsContreP = []
@@ -96,18 +96,18 @@ def mainMixSyllables(phrase, mode):
 		# Pour chaque autre mot que tmp dans la phrase on permutra
 		#for m in range(i,len(phrase)) :
 		for j in range(i+1, len(phrase)) :
-			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode)
+			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode,dicoDico)
 			Lphrases.extend(createLPhrase1(WordsContreP,phrase, i, j))
 			if j != i+1 and i < len(phrase)-1:
 				if j < len(phrase)-1 :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode)
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode,dicoDico)
 					Lphrases.extend(createLPhrase2(WordsContreP,phrase, i, j))		
 				else :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode)
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode,dicoDico)
 					Lphrases.extend(createLPhrase3(WordsContreP,phrase, i, j))	
 			else :
 				if j < len(phrase)-1 :
-					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode)
+					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode,dicoDico)
 					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))
 			# remplace les contreP trouvees dans la phrase
 	return Lphrases
@@ -449,7 +449,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 			print("Pas de résultats pour la recherche avec les phonèmes.")
 			return
 		StockPourkey = ""
-		compteur = 0
+		compteur = 1
 		dicores = []
 		print("Voici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné.\n")
 		for key in nvDico:
@@ -481,6 +481,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
 			if inputInt(choixutilisateur):
+				choixutilisateur =  int(choixutilisateur)
 				if (choixutilisateur) < compteur and choixutilisateur > -1:
 					for j in nvDico[dicores[choixutilisateur-1]]: #pour chaque orthographe de la phrase
 						maxlen = 0

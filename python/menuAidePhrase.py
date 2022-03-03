@@ -53,7 +53,7 @@ Paramètres :
 """
 def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepeterie):
 	if mode == 'word':
-		listeRes = mainMixSyllables(phrase, mode)
+		listeRes = mainMixSyllables(phrase, mode,dicoDico)
 		#phrase = phraseOrigine.split()
 		#liste = circulaireMixSyllabes(phrase, 'word')
 		listeRes = affiRechFiltre(listeRes,'word',isAllContrepeterie)
@@ -71,7 +71,7 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 			input()
 			return 1
 		# retourne tout les combinaisons de phonemes qui marchent
-		liste = mainMixSyllables(phrasePhon, mode)
+		liste = mainMixSyllables(phrasePhon, mode,dicoDico)
 
 		nvListe = {}
 		dicoPhon = dicoDico['DicoPhon']

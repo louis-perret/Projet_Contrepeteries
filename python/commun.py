@@ -158,12 +158,12 @@ def affichageBasePlusieurs(mot,dicoResWord,dicoResPhon):
 	i=1
 	print("Voici les résultats pour les échanges entre lettres :")
 	for key in dicoResWord.keys():
-		print(f"-{i}   {key} lettre(s) - {key} lettre(s) --> {len(dicoResWord[key])} résultats")
+		print(f"-{i}   {key} lettre(s) -  x lettre(s) --> {len(dicoResWord[key])} résultats")
 		i=i+1
 	print("\n")
 	print("Voici les résultats pour les échanges entre phonèmes : \n")
 	for key in dicoResPhon.keys():
-		print(f"-{i}   {key} phonème(s) - {key} phonème(s) --> {len(dicoResPhon[key])} résultats")
+		print(f"-{i}   {key} phonème(s) - x phonème(s) --> {len(dicoResPhon[key])} résultats")
 		i=i+1
 
 

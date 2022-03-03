@@ -126,15 +126,14 @@ Paramètres :
 		la longueur selectionnée
 """
 def longueurSyllabe(message):
-	l=input(message)
 	x = True
 	while x :
-		print("Vous n'avez pas entré un nombre convenable. Ressayer")
 		l=input(message)
 		if inputInt(l) :
 			if int(l)>0: #on exige au moins 1
 				x = False
-				
+		else:
+			print("Vous n'avez pas entré un nombre convenable. Ressayer")
 		
 	return int(l)
 
@@ -232,7 +231,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	dicoDico['config']['FiltreGrammatical']="Oui"
 	ecriturePhonMot = Mot_to_Phon_Only(arbre_mot, mot)
 
-	calculTempsExecution(len(mot),3,"plusieurs") #à revoir
+	calculTempsExecution(len(mot)-1,4,"plusieurs")
 	for x in range(1,longueurMot): #pour chaque tranche possible du mot
 		dicoResWord[f"{x}"]=[]
 		dicoResPhon[f"{x}"]=[]
@@ -253,18 +252,19 @@ def recherchePlusieurs(mot,langue,dicoDico):
 			elif(choix == "z"):
 				return 1
 			elif inputInt(choix):
-				if(int(choix) < 0 or int(choix) > (len(dicoResWord) + len(dicoResPhon))):
+				choix=int(choix)
+				if(choix < 0 or choix > (len(dicoResWord) + len(dicoResPhon))):
 					print("Vous n'avez pas entrer un entier qui fonctionne. Ressayer.")
 					continue
-				elif(int(choix) <= len(dicoResWord)):
+				elif(choix <= len(dicoResWord)):
 					listeDeMotCop = dicoResWord[str(choix)]
 					mode="word"
 					break
-			else:
-				choix = abs(len(dicoResWord) - choix)
-				listeDeMotCop = dicoResPhon[str(choix)]
-				mode="phon"
-				break
+				else:
+					choix = abs(len(dicoResWord) - choix)
+					listeDeMotCop = dicoResPhon[str(choix)]
+					mode="phon"
+					break	
 		if(mode=='word'):
 			affichageBase(mot,listeDeMotCop,choix)
 		else:
@@ -273,16 +273,17 @@ def recherchePlusieurs(mot,langue,dicoDico):
 		while(boucle2):
 			selectMot = input("\na -> Quitter l'aide, z -> Retour au menu, e -> Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
 			if selectMot == "a" or selectMot == "z":
-				return abs(selectMot)
+				return selectMot
 			elif selectMot == "e" : #evite les erreurs de segmentations
 				boucle2 = False
 			elif inputInt(selectMot) :
+				selectMot = int(selectMot)
 				if (selectMot <= len(listeDeMotCop) and selectMot > 0):
 					boucle2 = False
 			else:
 				print("\nL'entrée n'est pas valide, réessayez")
 
-		if(selectMot == -2):
+		if(selectMot == "e"):
 			continue
 		listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,-1,-1,dicoDico,mode)
 
@@ -313,7 +314,7 @@ def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):
 		message1="lettre(s)"
 	message+=f"Voici les options sélectionnées : \n\t-Recherche au sein du mot : {mot} en échangeant des {message1}"
 	if mot2 != "":
-		message+="f\n\t-Echange de {x} {message1} par {y} {message1}"
+		message+=f"\n\t-Echange de {x} {message1} par {y} {message1}"
 		message+=f"\n\t-Recherche de quadruplé entre {mot} et {mot2}"
 		if(minimum == -1):
 			message+="\n\t-Longueur minimum des résultats : aucune"
@@ -332,3 +333,4 @@ def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):
 			message += theme + ", "
 	message+=f"\n\t-Filtre grammatical : {diconfig['FiltreGrammatical']}\n"
 	print(message)
+	input('Tapez sur une touche pour revenir en avant')
