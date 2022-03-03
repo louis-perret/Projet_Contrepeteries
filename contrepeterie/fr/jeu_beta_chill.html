@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="../js/suggestion.js"></script>
-    <script src="../js/jeu_version2.js"></script>
+    <script src="../js/jeu_version2_chill.js"></script>
 
     <title>L'art de décaler les sons</title>
 </head>
@@ -24,9 +24,9 @@
 </div>
 
 <script>
-$(function(){
-  $("#nav-placeholder").load("navigation.html");
-});
+    $(function(){
+        $("#nav-placeholder").load("navigation.html");
+    });
 </script>
 <!--end of Navigation bar-->
 
@@ -46,15 +46,15 @@ $(function(){
             <div class="nav-difficultes">
                 <div class="row">
                     <div class="col">
-                        <a id="flechegauche" href="jeu_beta_chill.html">
+                        <a id="flechegauche" href="jeu_beta.html">
                             <img src="../image/arrow_left.png">
                         </a>
                     </div>
                     <div class="col">
-                        <h2 id="diffculte" >Challenge</h2>
+                        <h2 id="diffculte" >Détente</h2>
                     </div>
                     <div class="col">
-                        <a id="flechedroite" href="jeu_beta_chill.html">
+                        <a id="flechedroite" href="jeu_beta.html">
                             <img src="../image/arrow_right.png">
                         </a>
                     </div>
@@ -82,16 +82,13 @@ $(function(){
                         <input id="reponse" placeholder="Saisir la réponse...">
                         <script>
                             document.querySelector('#reponse').addEventListener('keyup', () => { if(event.keyCode === 13) soumettreReponse();});
-                         </script>
+                        </script>
                         <button id="btnValidate" class="btn btn-dark" autocomplete="off" disabled="true" onclick="soumettreReponse()">Valider</button>
+                        <button id="btnSuiv" class="btn btn-dark" autocomplete="off" disabled="true" onclick="motSuivant()">Mot suivant</button>
                     </div>
                 </div>
 
                 <div class="blackOutline p-1 m-1 mt-3" style="border-radius: 4px;">
-                    <div style="display: flex;">
-                        <h3 id="timer">Timer : &nbsp </h3>
-                        <h3 id="displayTimer">00:30</h3>
-                    </div>
 
                     <div style="display: flex;">
                         <h3>Score : &nbsp </h3>
@@ -112,7 +109,7 @@ $(function(){
 
 
     <div class="flexAllCenter">
-        <h3 id="ancienMot"></h3>
+        <button class="btn btn-dark" id="reponseMot" style="visibility: hidden" onclick="afficherReponse()">Voir les réponses ?</button>
         <h3 id="solution"></h3>
         <h3 id="messageSuccess"></h3>
     </div>
