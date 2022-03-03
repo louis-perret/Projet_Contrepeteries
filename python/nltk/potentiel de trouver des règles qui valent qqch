@@ -1,1 +1,44 @@
 https://eduscol.education.fr/document/1872/download
+
+règles :
+
+	phrases :
+		groupe sujet(GS) + groupe verbe(GV) 					"le facteur distribue le courrier"
+		GS + GV + groupe circonstanciel(GC)						"Le facteur distribue le courrier à huit heures"
+
+	groupe sujet :
+		groupe nominal(GN)										"le facteur"
+
+	groupe verbal :
+		verbe(V)												"distribue"
+		V + GN 													"distribue le courrier"
+		V + groupe nominal prépositionnel(GNP)					"parle à sa collègue"
+		V + GN + GNP											"donne une lettre à ma voisine"
+		V + GNP + GNP											"parle de ses vacances à sa collègue"
+
+	groupe nominal prépositionnel :
+
+	groupe nominal :
+		nom propre(NP)											"Alice"
+		déterminant(D) + nom commun(NC)							"une avocate"
+		D + adjectif(ADJ) + NC									"une bonne avocate"
+		D + NC + GNP
+
+	groupe circonstanciel :
+		GNP														"à huit heure"										
+		GN 														"le matin"
+		adverbe(A)												"aujourd'hui"
+		proposition subordonnée complément circonstanciel(PSCC)	"quand le jour se lève"
+
+	complément circonstanciel de temps :
+		GN 														"le matin"
+		GNP														"à huit heure"
+		A 														"aujourd'hui"
+		proposition subordonnée(PS)								"quand le jour se lève"
+
+	complément circonstanciel de lieu :
+		GNP														"dans le quartier"
+		A 														"ici"
+
+	complément circonstanciel de cause:
+		GNP														" à cause de la météo"
