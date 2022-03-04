@@ -217,7 +217,7 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 				if test1 and test2: #Si c'est la combinaison sélectionnée avant
 					testDansMot = replacer(mot, listeDeMotCop[index][1],mot.index(listeDeMotCop[index][2]),len(listeDeMotCop[index][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if testDansMot != Mot_to_Phon_Only(arbre_mot, mot_origine) and testDansMot != isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
+					if testDansMot != Mot_to_Phon_Only(arbre_mot, mot_origine) and isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
 						if mode == "phon" :
 							testTheme1 = dicoPhon[testDansMot]
 							testTheme2 = dicoPhon[mot]
