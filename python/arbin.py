@@ -235,8 +235,6 @@ def Constructeur_Arbre_Mot(langue):
 	for lignes in read_tsv:
 		bar.update(i)
 		i=i+1
-		if i>3000000:
-			break
 		if " " not in lignes[0]:
 			mot = lignes[0] + "," + lignes[1] + "," + lignes[2] + "," + lignes[3]
 			insert(a, mot)
@@ -268,12 +266,20 @@ def Constructeur_Arbre_Phon(langue):
 	tsv_file.close()
 	return a
 
-
+def longueurDico(langue):
+	cheminFichier=f"data/{langue}/dico{langue.capitalize()}.csv"
+	tsv_file = open(cheminFichier, encoding="utf-8")
+	read_tsv = csv.reader(tsv_file, delimiter=",")
+	i=0
+	for lignes in read_tsv:
+		i=i+1
+	return i
 # ----------------------------------------------------------------------------
 #on charge le dico dans deux arbres suivant la langue choisie par l'utilisateur
 
 with open("data/config.json","r") as file:
 	dicoConfig=json.load(file)
 	
+longueurDico = longueurDico(dicoConfig['langue'])
 arbre_mot = Constructeur_Arbre_Mot(dicoConfig['langue'])
 arbre_phon = Constructeur_Arbre_Phon(dicoConfig['langue'])

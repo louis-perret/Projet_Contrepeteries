@@ -190,7 +190,6 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 	langue = dicoDico['config']['langue']
 	tsv_file = open(f"data/{langue}/dico{langue.capitalize()}.csv", encoding="utf-8")
 	lignes = csv.reader(tsv_file, delimiter=",")
-	# lit ligne par ligne du DICO (près de 100k lignes)
 
 	listeDico=[] #liste qui contiendra les dictionnaires par thème sélectionnés par l'utilisateur
 	dicoPhon=dicoDico['DicoPhon']
@@ -198,7 +197,7 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 	listeDico=dicoDico['Themes']
 
 	classGramMotOrigine=dicoDico["DicoGram"][mot_origine]
-	print("recherche des résultats\n")
+	print(f"Recherche des résultats. Patientez jusqu'à que la bar de progression atteigne les {longueurDico}\n")
 	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
 	i=0
 	for mot in lignes:
@@ -279,7 +278,7 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		while(boucle):
 			try:
 				selecteur = input(
-					"\na = quitter l'aide,z revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
+					"\na - quitter l'aide,z - revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
 				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")

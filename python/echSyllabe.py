@@ -23,7 +23,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode, dicoDico):
 	while(i < len(Word1)):
 
 		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
-		if(dicoDico['config']['MotCoupe']):
+		if(dicoDico['config']['MotCoupe'] == "Oui"):
 			for x in allResults :
 				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
 				listemot2 = mixSyllabeCoupe(x[0], mode)
@@ -91,11 +91,17 @@ def mainMixSyllables(phrase, mode,dicoDico):
 	Lphrases = [[phrase]] #phrase se contient elle même
 	i = 0
 
+	print(f"Recherche des résultats. Patientez jusqu'à que la bar de progression atteigne les {longueurDico}\n")
+	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+	k=0
 	# Pour chaque mot dans la phrase
 	for i in range(len(phrase)):
 		# Pour chaque autre mot que tmp dans la phrase on permutra
 		#for m in range(i,len(phrase)) :
+		
 		for j in range(i+1, len(phrase)) :
+			k = k+1
+			bar.update(k)
 			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode,dicoDico)
 			Lphrases.extend(createLPhrase1(WordsContreP,phrase, i, j))
 			if j != i+1 and i < len(phrase)-1:
@@ -476,7 +482,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 					choixutilisateur = input("\na / Quitter la recherche, ou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
 					choixutilisateur = input(
-				"\na : quitter/ z revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : ")
+				"\na : quitter l'application / z revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : ")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
@@ -525,7 +531,6 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 		if(isAllContrepeterie):
 			return nvListe
 		else:
-			print("a")
 			affichagePhraseLettre(nvListe)
 
 

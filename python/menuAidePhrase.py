@@ -60,8 +60,6 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 
 		if(isAllContrepeterie): #si l'utilisateur a choisi le mode qui fait tout
 			return listeRes #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
-		else:
-			affichagePhraseLettre(listeRes)
 	else:											
 		phraseOrigine = phrase.lower().replace("'"," ")
 		phrasePhon = Phrase_to_Phon(phraseOrigine)
