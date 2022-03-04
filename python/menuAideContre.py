@@ -158,21 +158,37 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 
 	if(len(listeDeMotCop) == 0 ):
 		affichagePasResultat(mot,"",x,y,"","",dicoDico['config'],mode)
-		return
-	if(mode == "word"):
-		affichageBase(mot,listeDeMotCop,x)
-	else:
-		affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop,x)
-	if(mode == 'word'):
-		message="effectuer la recherche avec les phonèmes"
-	else:
-		message="effectuer la recherche avec les lettres"
-	selectMot = None
+		return	
 	boucle = True
-	while(boucle):
-		selectMot = input(f"\na - quitter l'aide, z - revenir au début de l'aide, e - {message} \nou numéro de l'échange qui vous intéresse : \n")
+	noPage = 1
+	taillePage = 51
+	nbPage = int(len(listeDeMotCop)/50)+1
+	while(boucle):	
+		if(mode == "word"):
+			if noPage < nbPage :
+				affichageBase(mot,listeDeMotCop[taillePage*(noPage-1):taillePage*noPage-1],x)
+			else :
+				affichageBase(mot,listeDeMotCop[taillePage*(noPage-1):],x)
+		else:
+			if noPage < nbPage :
+				affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop[taillePage*(noPage-1):taillePage*noPage-1],x)
+			else :
+				affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop[taillePage*(noPage-1):],x)
+		if(mode == 'word'):
+			message="effectuer la recherche avec les phonèmes"
+		else:
+			message="effectuer la recherche avec les lettres"
+		selectMot = None
+		print(f"\npage {noPage}/{nbPage}\n")
+		selectMot = input(f"\na - quitter l'aide, z - revenir au début de l'aide, e - {message}, r - page précédente, t - page suivante \nou numéro de l'échange qui vous intéresse : \n")
 		if selectMot == "a":
 			return 0
+		elif selectMot == "r" :
+			if noPage != 1 :
+				noPage -= 1
+		elif selectMot == "t" :
+			if noPage < nbPage :
+				noPage += 1
 		elif selectMot == "z":
 			return 1
 		elif selectMot == "e":
@@ -183,15 +199,16 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 			listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
 		elif inputInt(selectMot) :
 			selectMot = int(selectMot)
+			print("Veuillez sélectionner la longueur des résultats souhaités")
+			minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
+			maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
+			listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot+taillePage*(noPage-1), listeDeMotCop,minimum,maximum,dicoDico,mode)
 			if selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
 				boucle = False
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")
 
-		print("Veuillez sélectionner la longueur des résultats souhaités")
-		minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
-		maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
-		listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot, listeDeMotCop,minimum,maximum,dicoDico,mode)
+		
 
 	# en cas de liste vide, affichant qu'aucune possibilité n'est trouvée
 	if len(listeAffichage) >0:
