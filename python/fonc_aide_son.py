@@ -381,7 +381,7 @@ def affiPageParPage2(listeMot, syllOrigine, mot_origine):
 		while(test):
 
 			try:
-				selecteur = input("""
+				selecteur = ("""
 (a : quitter l'aide/z: revenir à selection précèdante /e: revenir au début de l'aide)
 (r:Gauche / t:Droite) ou saisissez numéro du mot :\n""")
 			except:
