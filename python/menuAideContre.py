@@ -180,7 +180,7 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 			message="effectuer la recherche avec les lettres"
 		selectMot = None
 		print(f"\npage {noPage}/{nbPage}\n")
-		selectMot = input(f"\na - quitter l'aide, z - revenir au début de l'aide, e - {message}, r - page précédente, t - page suivante \nou numéro de l'échange qui vous intéresse : \n")
+		selectMot = input(f"\na: quitter l'aide, z: revenir au début de l'aide, e: {message}, r: page précédente, t: page suivante \nou numéro de l'échange qui vous intéresse : \n")
 		if selectMot == "a":
 			return 0
 		elif selectMot == "r" :
@@ -199,12 +199,15 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 			listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
 		elif inputInt(selectMot) :
 			selectMot = int(selectMot)
-			print("Veuillez sélectionner la longueur des résultats souhaités")
-			minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
-			maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
-			listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot+taillePage*(noPage-1), listeDeMotCop,minimum,maximum,dicoDico,mode)
-			if selectMot <= len(listeDeMotCop) and selectMot > 0: #evite les erreurs de segmentations
-				boucle = False
+			if(selectMot > 0):
+				print("Veuillez sélectionner la longueur des résultats souhaités")
+				minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
+				maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
+				listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot+taillePage*(noPage-1), listeDeMotCop,minimum,maximum,dicoDico,mode)
+				if selectMot <= len(listeDeMotCop): #evite les erreurs de segmentations
+					boucle = False
+			else:
+				print("\nL'entrée n'est pas valide, réessayez")
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")
 
@@ -263,7 +266,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	while(boucle):
 		affichageBasePlusieurs(mot,dicoResWord,dicoResPhon)
 		while(True):
-			choix = input("\na -> Quitter l'aide, z -> Retour au menu, entrer le numéro des résultats à afficher : ")
+			choix = input("\na: Quitter l'aide, z: Retour au menu, entrer le numéro des résultats à afficher : ")
 			if(choix == "a"):
 				return choix
 			elif(choix == "z"):
@@ -282,13 +285,23 @@ def recherchePlusieurs(mot,langue,dicoDico):
 					listeDeMotCop = dicoResPhon[str(choix)]
 					mode="phon"
 					break	
-		if(mode=='word'):
-			affichageBase(mot,listeDeMotCop,choix)
+		
+		noPage = 1
+		taillePage = 51
+		nbPage = int(len(listeDeMotCop)/50)+1
+		if(mode == "word"):
+			if noPage < nbPage :
+				affichageBase(mot,listeDeMotCop[taillePage*(noPage-1):taillePage*noPage-1],x)
+			else :
+				affichageBase(mot,listeDeMotCop[taillePage*(noPage-1):],x)
 		else:
-			affichageBase(ecriturePhonMot,listeDeMotCop,choix)
+			if noPage < nbPage :
+				affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop[taillePage*(noPage-1):taillePage*noPage-1],x)
+			else :
+				affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop[taillePage*(noPage-1):],x)
 		boucle2 = True
 		while(boucle2):
-			selectMot = input("\na -> Quitter l'aide, z -> Retour au menu, e -> Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
+			selectMot = input("\na: Quitter l'aide, z: Retour au menu, e: Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
 			if selectMot == "a" or selectMot == "z":
 				return selectMot
 			elif selectMot == "e" : #evite les erreurs de segmentations

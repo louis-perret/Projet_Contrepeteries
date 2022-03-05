@@ -278,7 +278,7 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		while(boucle):
 			try:
 				selecteur = input(
-					"\na - quitter l'aide,z - revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
+					"\na: quitter l'aide,z: revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
 				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
@@ -289,9 +289,9 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		elif selecteur == "z":
 			clear()
 			return 1
-		elif selecteur == "e":
-			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
 		elif selecteur == "r":
+			numPage = numPage+1 if numPage+1 <= nbPage else numPage #Dépasse pas le nb page max
+		elif selecteur == "e":
 			numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 
 		else:

@@ -17,7 +17,7 @@ def aideContrepetriePhrase(dicoDico,langue):
 		print("""\nVoulez-vous échanger \n
 			a. Les lettres
 			z. Les sons
-			e. Tous les échanges possibles\n""")
+			e. Lettres et sons\n""")
 		try:
 			n = input()
 		except ValueError:
@@ -108,7 +108,7 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 			print("\n")
 			print("Pas de résultats pour l'échange avec les phonèmes")
 		
-		continuer=choisirModeAffichage(f"a -> Quitter l'application, z -> Retour au menu : ")
+		continuer=choisirModeAffichage(f"a: Quitter l'application, z: Retour au menu : ")
 		if(continuer == "a"):
 			sys.exit()
 

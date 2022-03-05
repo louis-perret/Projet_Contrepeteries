@@ -92,7 +92,7 @@ r. Quitter\n""")
 	passeur = 1
 	while passeur != 0:
 		try:
-			tmp = input("a : Quitter l'application / z : Retour au début ")
+			tmp = input("a: Quitter l'application / z: Retour au début ")
 			passeur = 0
 		except ValueError:
 			print("Entrée invalid veuillez réessayer.\n")

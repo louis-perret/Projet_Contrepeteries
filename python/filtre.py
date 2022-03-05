@@ -23,12 +23,13 @@ Modifie le fichier de configuration des filtres.
 def configFiltre(tabDicoThemeDispo,dicoDico):
 	with open('data/config.json','r') as diconfig_:
 		diconfig = json.load(diconfig_)
-		n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
+		n = choixFiltreGrammatical(dicoDico["config"]["langue"])
 		if n == "a":
 			diconfig["FiltreGrammatical"] = "Oui"
 		elif n == "z":
 			diconfig["FiltreGrammatical"] = "Non"
-
+		else:
+			diconfig["FiltreGrammatical"] = n
 		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
 
 		n = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
@@ -83,6 +84,15 @@ def changerDicoTheme(tabDicoThemeDispo):
 			choix="z" #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
 	return tabChoix
 
+def choixFiltreGrammatical(langue):
+	n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
+	if n == "a":
+		n=selectionChoix("\na:Garder les résultats de mêmes classes grammaticales,ou\nz:Sélectionner une classe grammaticale en particulier : ")
+		if(n=="a"):
+			return n
+		else:
+			n=selectionClasseGrammaticale(langue)
+	return n
 
 """
 Objectif : Renvoie le choix entré par l'utilisateur pour les
@@ -94,12 +104,29 @@ Paramètres :
 """
 def selectionChoix(message):
 	while(True):
-		entier=input(message)
-		if(entier == "a" or entier=="z"):
-			print(entier)
-			return entier
-		print("Vous n'avez pas entré une lettre convenable. Ressayer")
+		choix=input(message)
+		if(choix == "a" or choix=="z"):
+			return choix
+		print("Vous n'avez pas entré une lettre convenable. Réessayer")
 
+def selectionClasseGrammaticale(langue):
+	if langue == 'fr':
+		tabClasseGrammaticale=['nom','verbe','adjectif','adverbe','proposition','pronom','nom propre']
+	elif langue == 'en':
+		tabClasseGrammaticale=['noun','verb','adjective','adverb','preposition','pronoun','proper noun']
+	for i in range(len(tabClasseGrammaticale)):
+		print(f"{i} - {tabClasseGrammaticale[i]}")
+
+	boucle=True
+	while(boucle):
+		choix=input("Sélectionnez la classe grammaticale que vous souhaitez garder (à l'aide de son indice) : ")
+		if(inputInt(choix)):
+			choix=int(choix)
+			if(choix >= 0 and choix < len(tabClasseGrammaticale)):
+				print(choix)
+				print(tabClasseGrammaticale)
+				print(tabClasseGrammaticale[choix])
+				return tabClasseGrammaticale[choix]
 
 #-------------------------------------------------------------------------------
 
@@ -179,10 +206,16 @@ def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
 		mot2=dicoPhon[mot2][0] #on récupère son orthographe pour pouvoir ensuite récupérer correctement ses classes grammaticales
 
 	classGramMot2 = dicoGram[mot2]
-	for classGram in classGramMotOrigine:
-		if(classGram in classGramMot2): #si ils ont au moins une classe grammticale en commun
-			return True #on renvoie true
-	return False
+
+	if(diconfig["FiltreGrammatical"] == "Oui"):
+		for classGram in classGramMotOrigine:
+			if(classGram in classGramMot2): #si ils ont au moins une classe grammticale en commun
+				return True #on renvoie true
+		return False
+	else:
+		if(diconfig["FiltreGrammatical"] in classGramMot2):
+			return True
+		return False
 
 """
 Objectif : Renvoie True si le mot est dans au moins un des dico de listeDico

@@ -123,7 +123,7 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue, dicoDico):
 		while(boucle):
 			try:
 				selecteur = input(
-					"\na = quitter l'aide,z revenir au début de l'aide,\ne: page précédente; r: page suivante, \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n")
+					"\na: quitter l'aide,z: revenir au début de l'aide,\ne: page précédente; r: page suivante, \nou numéro du quadruplet, pour voir toutes les orthographes des phonèmes : \n")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
@@ -140,7 +140,8 @@ def affiRechSon(listeAffichage, compteur, mot_origine,langue, dicoDico):
 				numPage = numPage-1 if numPage-1 >= 1 else numPage #Pas en dessous 1 page
 				boucle = False
 			elif inputInt(selecteur):
-				if int(selecteur) <= len(listeAffichage) and selecteur > 0:
+				selecteur = int(selecteur)
+				if selecteur <= len(listeAffichage) and selecteur > 0:
 					affiOrthoPhon(listeAffichage, selecteur-1, mot_origine,langue, dicoPhon)
 					boucle = False
 			else:
