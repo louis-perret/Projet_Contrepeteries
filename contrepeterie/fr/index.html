@@ -6,8 +6,9 @@
       <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
       <link rel="stylesheet" href="../css/style.css">
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
-
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+   
       <title>L'art de décaler les sons</title>
    </head>
    <body>
@@ -16,64 +17,84 @@
               <img src="../image/logo_fr.png"  class="d-inline-block align-top logoM">
           </a>          
      </header>
-      <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon my-toggler"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav navbar-tabs">
-               <li class="nav-item mr-3">
+     <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon my-toggler"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav navbar-tabs">
+              <li class="nav-item mr-3">
                   <a class="nav-link font" href="presentation.html">Présentation</a>
-               </li>
-                          
-               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#classification" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Classification
+              </li>
+
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Classification
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="contrepeterie_classique.html">Contrepèterie classique</a>
-                    <a class="dropdown-item" href="contrepeterie_decadente.html">Contrepèterie décadente</a>
-                    <a class="dropdown-item" href="contrepeterie_irreguliere.html">Contrepèterie irrégulière</a>
-                    <a class="dropdown-item" href="contrepeterie_enchevetree.html">Contrepèterie enchevêtrée</a>
+                      <a class="dropdown-item" href="contrepeterie_classique.html">Contrepèterie classique</a>
+                      <a class="dropdown-item" href="contrepeterie_decadente.html">Contrepèterie décadente</a>
+                      <a class="dropdown-item" href="contrepeterie_irreguliere.html">Contrepèterie irrégulière</a>
+                      <a class="dropdown-item" href="contrepeterie_enchevetree.html">Contrepèterie enchevêtrée</a>
 
                   </div>
-                </li>
+              </li>
 
-                <li class="nav-item">
-                    <a class="nav-link font" href="recherche_phrase.html">Recherche dans une phrase</a>
-                </li>
+              <li class="nav-item">
+                  <a class="nav-link font" href="recherche_phrase.html">Recherche dans une phrase</a>
+              </li>
 
-                <li class="nav-item">
-                    <a class="nav-link font" href="aide_a_la_contrepeterie.html">Aide à la contrepèterie</a>
-                </li>
+              <li class="nav-item">
+                  <a class="nav-link font" href="aide_a_la_contrepeterie.html">Recherche sur les mots</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link font" href="jeu_beta.html">Jeu v2</a>
+              </li>
 
-              
-               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#classification" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Jeu
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Jeu
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item" href="facile.html">Solo</a>
                       <a class="dropdown-item" href="multijoueur.html">Multijoueur</a>
                   </div>
-                </li>
-            
+              </li>
 
-            </ul>
-            
-         </div>
-         <div class="justify-content-end">
-              <ul  class="navbar-nav navbar-tabs">
-               <li class="nav-item ">
-                    <a class="nav-link font langue" href="index.html"><img class="langue1" src="../image/fr.png"/></a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link font langue" href="../en/index.html"><img class="langue2" src="../image/en.png"></a>
-                </li>
-              </ul>
-            </div>
-      </nav>
+          </ul>
+
+      </div>
+      <div class="justify-content-end">
+          <ul class="navbar-nav navbar-tabs">
+              <li class="nav-item ">
+                  <a id="btnFR" class="nav-link font langue"><img class="langue1" src="../image/fr.png" /></a>
+                  <script>
+                      let pathActuel = window.location.pathname;
+                      let fichierActuel = pathActuel.split("/").pop();
+                      if (fichierActuel == "spoonerism_aid.html")
+                          document.querySelector('#btnFR').href = '../fr/aide_a_la_contrepeterie.html';
+                      else if (fichierActuel == "generation_spoonerism.html")
+                          document.querySelector('#btnFR').href = '../fr/recherche_phrase.html';
+                      else 
+                          document.querySelector('#btnFR').href = '../fr/index.html';
+                  </script>
+              </li>
+
+              <li class="nav-item">
+                  <a id="btnEN" class="nav-link font langue"><img class="langue2" src="../image/en.png"></a>
+                  <script>
+                      if (fichierActuel == "aide_a_la_contrepeterie.html")
+                          document.querySelector('#btnEN').href = '../en/spoonerism_aid.html';
+                      else if (fichierActuel == "recherche_phrase.html")
+                          document.querySelector('#btnEN').href = '../en/generation_spoonerism.html';
+                      else 
+                          document.querySelector('#btnEN').href = '../en/index.html';
+                  </script>
+              </li>
+          </ul>
+      </div>
+  </nav>
       <section>
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Qu'est ce qu'une contrepèterie ?</h2>
@@ -159,8 +180,4 @@
         }
        </script>
    </body>
-   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-      crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </html>

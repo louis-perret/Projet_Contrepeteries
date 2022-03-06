@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../src/const.js"></script>
     <script src="https://rawgit.com/mholt/PapaParse/master/papaparse.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="../js/suggestion.js"></script>
     <script src="../js/jeu_version2.js"></script>
 
@@ -61,7 +59,7 @@ $(function(){
                 </div>
             </div>
             <div class="flexAllCenter" id="divLoadingJeuBeta">
-                <button id="myButton" class="btnLettreOrPhoneme m-2" autocomplete="off" disabled="true" onclick="deroulementJeu()">Commencer la partie !</button>
+                <button id="myButton" class="btnLettreOrPhoneme m-2" autocomplete="off" disabled="true" onclick="deroulementJeu()" style="width: 175px;">Commencer la partie !</button>
                 <p id="info" class="alert alert-dark">Le chargement peut prendre quelques secondes.</p>
                 <div id="loadingJeuBeta"></div>
             </div>

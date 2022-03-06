@@ -6,7 +6,8 @@
       <link rel="shortcut icon" href="../image/favicon.png" type="image/x-icon">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
       <link rel="stylesheet" href="../css/style.css">
-      <script src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
 
       <title>The art of shifting sounds</title>
    </head>
@@ -16,15 +17,81 @@
               <img src="../image/logo_en.png"  class="d-inline-block align-top logoM">
           </a>          
      </header>
-      <!--Navigation bar-->
-      <div id="nav-placeholder"> </div>
 
-      <script>
-      $(function(){
-      $("#nav-placeholder").load("navigation.html");
-      });
-      </script>
-      <!--end of Navigation bar-->
+     <nav id="nvbar" class="navbar navbar-expand-lg navbar-light bg-lignt sticky-top">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon my-toggler"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav navbar-tabs">
+              <li class="nav-item mr-3">
+                  <a class="nav-link font" href="presentation.html">Presentation</a>
+              </li>
+
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      More examples
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="spooner_spoonerism.html">Spooner's Spoonerisms</a>
+                      <a class="dropdown-item" href="funny_spoonerism.html">Funny Spoonerisms</a>
+                      <a class="dropdown-item" href="cack_of_pards_spoonerism.html">Cack of Pards Spoonerisms</a>
+                  </div>
+              </li>
+
+              <li class="nav-item">
+                  <a class="nav-link font" href="generation_spoonerism.html">Research in a sentence</a>
+              </li>
+
+              <li class="nav-item">
+                  <a class="nav-link font" href="spoonerism_aid.html">Research in a word</a>
+              </li>
+
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Game
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="easy.html">Easy</a>
+                      <a class="dropdown-item" href="medium.html">Medium</a>
+                      <a class="dropdown-item" href="difficult.html">Difficult</a>
+                  </div>
+              </li>
+
+
+          </ul>
+
+      </div>
+      <div class="justify-content-end">
+          <ul class="navbar-nav navbar-tabs">
+              <li class="nav-item ">
+                  <a id="btnFR" class="nav-link font langue"><img class="langue1" src="../image/fr.png" /></a>
+                  <script>
+                      let pathActuel = window.location.pathname;
+                      let fichierActuel = pathActuel.split("/").pop();
+                      if (fichierActuel == "spoonerism_aid.html")
+                          document.querySelector('#btnFR').href = '../fr/aide_a_la_contrepeterie.html';
+                      else if (fichierActuel == "generation_spoonerism.html")
+                          document.querySelector('#btnFR').href = '../fr/recherche_phrase.html';
+                      else 
+                          document.querySelector('#btnFR').href = '../fr/index.html';
+                  </script>
+              </li>
+
+              <li class="nav-item">
+                  <a id="btnEN" class="nav-link font langue"><img class="langue2" src="../image/en.png"></a>
+                  <script>
+                      if (fichierActuel == "aide_a_la_contrepeterie.html")
+                          document.querySelector('#btnEN').href = '../en/spoonerism_aid.html';
+                      else if (fichierActuel == "recherche_phrase.html")
+                          document.querySelector('#btnEN').href = '../en/generation_spoonerism.html';
+                      else 
+                          document.querySelector('#btnEN').href = '../en/index.html';
+                  </script>
+              </li>
+          </ul>
+      </div>
+  </nav>
       
       <section>
         <div class="jumbotron pt-5 pb-5 text-center">
@@ -109,8 +176,4 @@
         }
        </script>
    </body>
-   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-      crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
-   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </html>

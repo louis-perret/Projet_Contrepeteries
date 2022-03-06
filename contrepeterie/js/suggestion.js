@@ -494,7 +494,7 @@ function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltr
 			cardsOdd.push(card.innerText.split(' - ')[1]);
 	});
 	cardsEven.forEach(card => {
-		partsRealCard.push([cardsOdd[cardsEven.indexOf(card)], card]);
+		partsRealCard.push([cardsOdd[cardsEven.indexOf(card)], card]); //à revoir ça commmence
 	});
 
 	let successGrossier = [];
