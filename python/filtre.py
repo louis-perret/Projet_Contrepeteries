@@ -17,35 +17,55 @@ def clear():
 		else :
 			print("\n"*60)
 #-------------------------------------------------------------------------------
+
 """
-Modifie le fichier de configuration des filtres.
+Objectif : Change une partie/toute la configuration de l'utilisateur
+Paramètres :
+	-Entrée :
+		-tabDicoThemeDispo : thèmes disponibles dans l'applications
+		-dicoDico : dictionnaire contenant les fichiers de l'application et la configuration de l'utilisateur
+		-diconfig : dictionnaire de la configuration
+	-Sortie : 
+		aucun
 """
 def configFiltre(tabDicoThemeDispo,dicoDico):
-	with open('data/config.json','r') as diconfig_:
-		diconfig = json.load(diconfig_)
-		n = choixFiltreGrammatical(dicoDico["config"]["langue"])
-		if n == "a":
-			diconfig["FiltreGrammatical"] = "Oui"
-		elif n == "z":
-			diconfig["FiltreGrammatical"] = "Non"
-		else:
-			diconfig["FiltreGrammatical"] = n
-		diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
+	diconfig = dicoDico['config']
+	boucle=True
+	while(boucle):
+		print("Voici votre configuration actuelle :")
+		j=0
+		for i in diconfig.keys():
+			if(i != "langue"):
+				print(f"\t {j} {i}  -  {diconfig[i]}")
+				j=j+1
+		boucle2=True
+		while(boucle2):
+			choix = input("a: Retour au menu \nEntrer le numéro de la configuration à changer :\n")
+			if(choix == "a"):
+				boucle2=False
+				boucle=False
+				continue
+			elif(inputInt(choix)):
+				choix=int(choix)
+				if(choix >= 0 and choix < j):
+					boucle2=False
+					continue
+			print("Vous n'avez pas entré un choix correcte. Réessayer. ")
 
-		n = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
-		if n == "a":
-			diconfig["MotCoupe"] = "Oui"
-		elif n == "z":
-			diconfig["MotCoupe"] = "Non"
+		if(choix==0):
+			diconfig["FiltreGrammatical"] = choixFiltreGrammatical(dicoDico["config"]["langue"])
+		elif(choix==1):
+			diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
+		elif(choix==2):
+			diconfig["MotCoupe"] = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
+		elif(choix==3):
+			diconfig["EffacerComplétement"] = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
 
-		n = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
-		if n == "a":
-			diconfig["EffacerComplétement"] = "Oui"
-		elif n == "z":
-			diconfig["EffacerComplétement"] = "Non"
-	print("\n")
+	"""
+	print("\nVoici votre nouvelle configuration : ")
 	for i in diconfig.keys():
 		print(f"{i}  -  {diconfig[i]}")
+	"""
 	with open('data/config.json','w') as diconfig_:
 		json.dump(diconfig,diconfig_) #écrit dans le fichier
 
@@ -56,11 +76,27 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 		with open(f'data/{dicoDico["config"]["langue"]}/dico{theme}{dicoDico["config"]["langue"].capitalize()}.json') as dicoTheme:
 			listeDicoTheme.append(json.load(dicoTheme))
 	dicoDico['Themes']=listeDicoTheme
-	dicoDico['Config']=diconfig
-#-------------------------------------------------------------------------------
+	dicoDico['config']=diconfig
+
 
 """
-Objectif : Met à jour les thèmes choisis par l'utilisateur
+Objectif : Change toute la configuration de l'utilisateur
+Paramètres :
+	-Entrée :
+		-tabDicoThemeDispo : thèmes disponibles dans l'applications
+		-diconfig : dictionnaire de la configuration
+	-Sortie : 
+		-aucun
+"""
+def configTousLesFiltres(tabDicoThemeDispo,dicoDico,diconfig):
+	diconfig["FiltreGrammatical"] = choixFiltreGrammatical(dicoDico["config"]["langue"])
+	diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
+	diconfig["MotCoupe"] = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
+	diconfig["EffacerComplétement"] = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
+	return diconfig
+
+"""
+Objectif : Met à jour les thèmes choisi par l'utilisateur
 Paramètres :
 	-Entrée :
 		-tabDicoThemeDispo : thèmes disponibles dans l'applications
@@ -74,16 +110,25 @@ def changerDicoTheme(tabDicoThemeDispo):
 		return list()
 	choix=0
 	for theme in tabDicoThemeDispo:
-		if(choix == 1): #si le thème possèdait un inverse (vulgaire -> non vulgaire par exemple)
+		if(choix == "Oui"): #si le thème possèdait un inverse (vulgaire -> non vulgaire par exemple)
 			choix=0 #on repasse le choix à 0
 			continue #et on saute le thème d'après qui est son inverse
-		choix=selectionChoix(f"Appliquer le thème {theme} ? (a=oui/z=non) :") #gère ce qui est entré
-		if(choix == "a"): #s'il a sélectionné le thème
+		choix=selectionChoix(f"Gardez que les mots {theme} ? (a=oui/z=non) :") #gère ce qui est entré
+		if(choix == "Oui"): #s'il a sélectionné le thème
 			tabChoix.append(theme) #on l'ajoute dans les réponses
 		if("Non" in theme): #et si le thème était un thème inverse
-			choix="z" #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
+			choix=0 #on repasse le choix à 0 pour éviter de sauter celui d'après qui n'est pas un inverse
 	return tabChoix
 
+
+"""
+Objectif : Met à jour le filtre grammatical choisi par l'utilisateur
+Paramètres :
+	-Entrée :
+		-langue : langue choisie par l'utilisateur
+	-Sortie : 
+		-string : choix de l'utilisateur
+"""
 def choixFiltreGrammatical(langue):
 	n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
 	if n == "a":
@@ -92,6 +137,7 @@ def choixFiltreGrammatical(langue):
 			return n
 		else:
 			n=selectionClasseGrammaticale(langue)
+			return n
 	return n
 
 """
@@ -105,10 +151,20 @@ Paramètres :
 def selectionChoix(message):
 	while(True):
 		choix=input(message)
-		if(choix == "a" or choix=="z"):
-			return choix
+		if(choix == "a"):
+			return "Oui"
+		elif(choix == "z"):
+			return "Non"
 		print("Vous n'avez pas entré une lettre convenable. Réessayer")
 
+"""
+Objectif : Permet de choisir une classe grammaticale en particulier
+Paramètres :
+	-Entrée :
+		-langue : langue choisie par l'utilisateur
+	-Sortie : 
+		-string : classe grammaticale choisie par l'utilisateur
+"""
 def selectionClasseGrammaticale(langue):
 	if langue == 'fr':
 		tabClasseGrammaticale=['nom','verbe','adjectif','adverbe','proposition','pronom','nom propre']

@@ -2,19 +2,28 @@
 
 
 //vérifie si une contrepétrie est valide avec espaces
-function verificationEspaces(mot, ancienneLettre, nouvelleLettre, index) {
-	listeMot = []
+function verificationEspaces(mot, nouvelleLettre, index) {
+	let listeMot = [];
 	for (var l = 0; l < mot.length; l++) {
 		if (l >= 2 && l <= mot.length - 2) {
-			motEspace1 = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre+' ');
-			motSplit = motEspace1.split(' ');
+			motApresEchange = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre);
+			for(let indInMotApresEchange=0; indInMotApresEchange<motApresEchange.length; indInMotApresEchange++) {
+				console.log("mot ::: "+mot)
+				console.log("index ::: "+indInMotApresEchange)
+				let mot1 = motApresEchange.substr(0, indInMotApresEchange);
+				let mot2 = motApresEchange.substr(indInMotApresEchange, motApresEchange.length - indInMotApresEchange );
+				let motEspace = mot1.concat(' '.concat(mot2))
+				console.log(mot1 + " -> " + mot2)
+				//console.log("mot1 ::: "+mot1)
+				//console.log("mot2 ::: "+mot2)
+				console.log("motEspace --- "+motEspace)
 
-			if (motExiste(motSplit[0], dicMot) && motExiste(motSplit[1], dicMot) && !motExiste(motEspace1, listeMot)) {
-				listeMot.push(motEspace1);
+				if (motExiste(mot1, dicMot) && motExiste(mot2, dicMot) && mot1.length > 1 && mot2.length > 1 && !motExiste(motEspace, listeMot) && motEspace !== (mot + ' ' + mot) && mot1 !== mot2) {
+					listeMot.push(motEspace);
+				}
 			}
 		}
 	}
-
 	return listeMot;
 }
 
@@ -48,13 +57,9 @@ function aideMultiLettre(x, y, dicVulgaire, valueFiltreGrossier, isClassesGramCh
         //pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
         for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
             mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
-            var tabVerifEspaces = verificationEspaces(mot, mot[i], mot2[i], i);
-            mot2temp = mot2.replace(" ", "");
-            var lengthmot = mot.length
-            lMot = lengthmot - (x - y);
-
-            if (tabVerifEspaces != "" && lMot == mot2temp.length)
-                l.push(tabVerifEspaces);
+            var tabVerifEspaces = verificationEspaces(mot, mot2[i], i);
+            if (tabVerifEspaces != "")
+				tabVerifEspaces.forEach(element => { l.push(element) });
         }
     }
 
