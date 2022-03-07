@@ -352,9 +352,9 @@ function aideMultiPhonModifViteFait(x, y, langue, monMot) {
 					var lengthmot = mot2.length
 					lMot=lengthmot-(x-y);
 					//console.log("longueur mot saisi - diffxy = " + lMot);
-					if(motExiste(nvtMot,dicPhon)) {
+					if(motExiste(nvtMot,dicMot4a8lettres)) {
 						//console.log("Le mot existe !!!!!!!" + nvtMot)
-						var indexMotDic = dicPhon.indexOf(nvtMot)
+						var indexMotDic = dicMot4a8lettres.indexOf(nvtMot)
 						if (mot2 != nvtMot && lMot == nvtMot.length) { //Si le mot existe et si on n'a pas remplacé par les mêmes lettres
 							l.push(dicMot[indexMotDic]);
 						}
