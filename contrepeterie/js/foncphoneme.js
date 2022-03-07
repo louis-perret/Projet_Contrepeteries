@@ -1,5 +1,33 @@
 var alph = []
 
+
+//vérifie si une contrepétrie est valide avec espaces
+function verificationEspaces(mot, nouvelleLettre, index) {
+	let listeMot = [];
+	for (var l = 0; l < mot.length; l++) {
+		if (l >= 2 && l <= mot.length - 2) {
+			motApresEchange = mot.replacerAvecIndex(index, nouvelleLettre.length, nouvelleLettre);
+			for(let indInMotApresEchange=0; indInMotApresEchange<motApresEchange.length; indInMotApresEchange++) {
+				console.log("mot ::: "+mot)
+				console.log("index ::: "+indInMotApresEchange)
+				let mot1 = motApresEchange.substr(0, indInMotApresEchange);
+				let mot2 = motApresEchange.substr(indInMotApresEchange, motApresEchange.length - indInMotApresEchange );
+				let motEspace = mot1.concat(' '.concat(mot2))
+				console.log(mot1 + " -> " + mot2)
+				//console.log("mot1 ::: "+mot1)
+				//console.log("mot2 ::: "+mot2)
+				console.log("motEspace --- "+motEspace)
+
+				if (motExiste(mot1, dicMot) && motExiste(mot2, dicMot) && mot1.length > 1 && mot2.length > 1 && !motExiste(motEspace, listeMot) && motEspace !== (mot + ' ' + mot) && mot1 !== mot2) {
+					listeMot.push(motEspace);
+				}
+			}
+		}
+	}
+	return listeMot;
+}
+
+
 //Fonction principale
 //Fonction qui rend une liste de mot compatible -> pour code = comme, cognent, cochent,...
 //Va ensuite appeler les fonctions pour trouver les groupes de 4 mots
@@ -52,7 +80,16 @@ function aideMultiPhon(x, y, langue, dicVulgaire, valueFiltreGrossier, isClasses
 		//console.log(" ########## motSave :  " + motSave.length);
 		for (var i = 0; i < motSave.length; i++) //Pour chaque lettre du mot
 		{
-			//console.log("!!!!! i : " + i)
+			if (document.getElementById("couperMots").checked) {
+				//pour les mots coupés, mais ne marche pas -> seulement une lettre et un espace est échangée (pas 2 lettres et un espace par exemple, dans le cas x=2 y=1)
+				for (let j = 0; j < alph.length; j++) { //Pour chaque lettre de l'alphabet {
+					mot2 = mot2.replaceAt(i, alph[j]); //On remplace la lettre du mot par la lettre de l'alphabet
+					var tabVerifEspaces = verificationEspaces(mot, mot2[i], i);
+					if (tabVerifEspaces != "")
+						tabVerifEspaces.forEach(element => { l.push(element) });
+				}
+			}
+
 			var coupleLettre = recupCouple(mot2, x, i); //on recupère le prochain couple de lettre à échanger //lettre[0] dans python = i ici normalement
 			//console.log("true ou false ? : " + coupleLettre[0])
 			if (coupleLettre[0] == 'true') //S'il existe un couple possible à échanger
