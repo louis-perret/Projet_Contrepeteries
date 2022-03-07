@@ -47,16 +47,16 @@ function splitdicSelector(){
 
 
 function splitdic(){
+    //dic.length
     for(let i=0; i<dic.length; i++){
         dicMot.push(dic[i]['data'][0]);
         dicPhon.push(dic[i]['data'][1]);
         dicClassesGram.push(dic[i]['data'][3]);         
         if(dic[i]['data'][0].length >= 4 && dic[i]['data'][0].length <= 8 ) {
             let classesGramMot = dicClassesGram[i].replace("['", "").replace("']","").split("', '");
-            classesGramMot.forEach(element => {
-                if(element !== "verbe")
-                    dicMot4a8lettres.push(dic[i]['data'][0]); 
-            });
+            if (!classesGramMot.includes("verbe")) {
+                dicMot4a8lettres.push(dic[i]['data'][0]); 
+            }
         }
     }
     console.log("Affichage du dictionaire de mots");

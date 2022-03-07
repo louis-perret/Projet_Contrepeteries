@@ -53,10 +53,9 @@ function splitdic(){
         dicClassesGram.push(dic[i]['data'][3]);
         if(dic[i]['data'][0].length >= 4 && dic[i]['data'][0].length <= 8 ) {
             let classesGramMot = dicClassesGram[i].replace("['", "").replace("']","").split("', '");
-            classesGramMot.forEach(element => {
-                if(element !== "verbe")
-                    dicMot4a8lettres.push(dic[i]['data'][0]);
-            });
+            if (!classesGramMot.includes("verbe")) {
+                dicMot4a8lettres.push(dic[i]['data'][0]); 
+            }
         }
     }
     console.log("Affichage du dictionaire de mots");
@@ -431,6 +430,7 @@ function deroulementJeu()
     }
     removeButton();
     writeText(motATrouver[0])
+    document.querySelector('h3#nbRepATrouver').innerText = listeReponse[0].length
     startGame();
 
 }
@@ -443,7 +443,18 @@ function soumettreReponse()
     var nb
     let mot = document.getElementById('reponse').value.toLowerCase();
 
+
+    if(listeMotReponse.includes(mot)) {
+        console.log("passe if")
+        document.getElementById("reponseMot").style.visibility="visible"
+        document.querySelector('h3#solution').innerText = '';
+        document.querySelector('h3#messageSuccess').innerText = 'Réponse déjà donnée';
+        document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;'); 
+    }
+
     if(nbSoumissionReponse === nbMots-1) {
+        console.log(listeMotReponse)
+        
         if (listeReponse[nbSoumissionReponse].includes(mot)) {
             if(!listeMotReponse.includes(mot))
             {
@@ -455,11 +466,19 @@ function soumettreReponse()
                 updateScore(streak);
                 document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
                 document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
+                let nbMot = document.querySelector('h3#nbRepATrouver').value 
+                console.log("nb rep !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + nbMot)
+                document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot-1)
+    
             }
+            
 
         }
+        
+        
         else
         {
+            console.log("passe else")
             document.getElementById("reponseMot").style.visibility="visible"
             document.querySelector('h3#solution').innerText = '';
             document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
@@ -481,13 +500,19 @@ function soumettreReponse()
             document.querySelector('h3#solution').innerText = '';
             document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
             document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
+            let nbMot = document.querySelector('h3#nbRepATrouver').innerText 
+
+            console.log("nb rep !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + nbMot)
+            document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot-1)
             console.log("gagné")
             streak++;
             updateScore(streak);
         }
+        
 
 
     }
+    
     else
     {
         document.getElementById("reponseMot").style.visibility="visible"
@@ -516,6 +541,11 @@ function waitcursor() {
 
 function motSuivant()
 {
+
+    document.getElementById("reponseMot").style.visibility="hidden"
+    document.getElementById("solution").style.visibility="hidden"
+    document.querySelector('h3#nbRepATrouver').innerText = listeReponse[nbSoumissionReponse+1].length
+    listeMotReponse=[];
     if(nbSoumissionReponse === nbMots-1) {
         document.querySelector('h3#messageFin').innerText = 'Jeu terminé';
         document.querySelector('h3#messageFin').setAttribute('style','color: #95dabb;');
@@ -523,7 +553,6 @@ function motSuivant()
         playAgain.style.display = 'inline';
         return;
     }
-    listeMotReponse=[]
     //pour prochain mot
     nbSoumissionReponse++;
     writeText(motATrouver[nbSoumissionReponse]);
@@ -533,7 +562,10 @@ function motSuivant()
 
 function afficherReponse()
 {
+
+    document.getElementById("solution").style.visibility="visible"
     const myNode = document.getElementById("solution");
+
     myNode.innerHTML = '';
     listeReponse[nbSoumissionReponse].forEach(element => {
         let anchor = "<a target='_blank' href='https://fr.wiktionary.org/wiki/"+element +"'>" + element + "</a> ";
