@@ -120,7 +120,7 @@ function eventListeners() {
     document.querySelector('#playAgain').addEventListener('mousedown', event=>{
         document.querySelector('#playAgain').style.display = 'none';
         resetAll();
-        deroulementJeu();
+        window.location.href = window.location.href
     });
 }
 
@@ -145,10 +145,10 @@ function writeText(motToDisplay){
     document.getElementById("myH1").innerHTML =anchor
 }
 
-function changeStreakPicture(relativePath) {
+function changeStreakPicture(relativePath,w,h) {
     pic = document.querySelector('#streakPicture');
     pic.setAttribute('src',relativePath);
-    pic.setAttribute('style','width: 40px; height: 40px;');
+    pic.setAttribute('style',`width: ${w}px; height: ${h}px;`);
 }
 
 
@@ -394,7 +394,7 @@ function resetAll() {
     document.querySelector('h3#displayScore').innerText = '0';
     document.querySelector('h3#displayTimer').innerText = '00:30';
     document.querySelector('h3#streak').innerText = '0';
-    changeStreakPicture('../image/ok.png');
+    changeStreakPicture('../image/ok.png',0,0);
 }
 
 function testReponse(motDonne, motEntre) {
@@ -429,9 +429,16 @@ function deroulementJeu()
         while(listeReponseNoId.length === 0) {
             posRandom = getRandomInt(dicMot4a8lettres.length);
             console.log(dicMot4a8lettres[posRandom])
-            listeReponseNoId = aideMultiLettreModifViteFait(1, 1, dicMot4a8lettres[posRandom]).concat(aideMultiPhonModifViteFait(1, 1, "fr", dicMot4a8lettres[posRandom]));
+            listeReponseNoId = aideMultiLettreModifViteFait(1, 1, dicMot4a8lettres[posRandom])
+            listeReponseNoIdPhon = aideMultiPhonModifViteFait(1, 1, "fr", dicMot4a8lettres[posRandom])
+            listeReponseNoIdFinale = listeReponseNoId
+            listeReponseNoIdPhon.forEach(element => {
+                if (!listeReponseNoIdFinale.includes(element)) {
+                    listeReponseNoIdFinale.push(element)
+                }
+            });
         }
-        listeReponse.push(listeReponseNoId);
+        listeReponse.push(listeReponseNoIdFinale);
         motATrouver.push(dicMot4a8lettres[posRandom]);
     }
     removeButton();
@@ -506,11 +513,11 @@ function soumettreReponse()
     nbSoumissionReponse++;
 
     if(streak >= 3) 
-        changeStreakPicture('../image/flamme.png');
+        changeStreakPicture('../image/flamme.png',40,40);
     else if(streak >= 1)
-        changeStreakPicture('../image/thumbs_up.png');
+        changeStreakPicture('../image/thumbs_up.png',40,40);
     else
-        changeStreakPicture('../image/ok.png');
+        changeStreakPicture("",0,0)
     document.querySelector('h3#streak').innerText = streak;
 
     //pour prochain mot
