@@ -3,5 +3,4 @@ Cython==0.29.24
 language-tool-python==2.6.1
 nltk==3.6.2
 numpy==1.19.5
-progressbar==2.5
 progressbar2==4.0.0

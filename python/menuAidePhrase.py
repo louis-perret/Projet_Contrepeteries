@@ -1,6 +1,8 @@
 from echSyllabe import *
 from utilitaires import *
 import sys
+import numpy as np
+
 """
 Objectif : Gère le mode recherche de contrepèterie dans les phrases
 Paramètres :
@@ -17,18 +19,21 @@ def aideContrepetriePhrase(dicoDico,langue):
 		print("""\nVoulez-vous échanger \n
 			a. Les lettres
 			z. Les sons
-			e. Lettres et sons\n""")
+			e. Lettres et sons
+			r. retour\n""")
 		try:
 			n = input()
 		except ValueError:
 			print("Vous n'avez pas saisie un caractère valide.\n")
-		if n in ["a","z","e"]:
+		if n in ["a","z","e","r"]:
+			if (n == "r"):
+				return
 			test = False
 		else:
 			print("Votre saisie n'est pas valide\n")
 
 	while(True):
-		print("a :quitter / z revenir au menu précédant")
+		print("a :quitter\nz revenir au menu précédant")
 		phraseOrigine = input("Phrase à sonder :\n")
 		if  phraseOrigine == "a" : #si la phrase est vide
 			sys.exit()
@@ -56,10 +61,26 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 		listeRes = mainMixSyllables(phrase, mode,dicoDico)
 		#phrase = phraseOrigine.split()
 		#liste = circulaireMixSyllabes(phrase, 'word')
-		listeRes = affiRechFiltre(listeRes,'word',isAllContrepeterie)
+		boucle = True
+		noPage = 1
+		taillePage = 51
+		nbPage = int(len(listeRes)/50)+1
+		while(boucle):	
+			if noPage < nbPage :
+				res = affiRechFiltre(listeRes[taillePage*(noPage-1):taillePage*noPage-1],'word',isAllContrepeterie)
+			else :
+				res =affiRechFiltre(listeRes[taillePage*(noPage-1):],'word',isAllContrepeterie)
+			if res == 2 :
+				if noPage > 1 :
+					noPage -= 1
+			elif res == 3 :
+				if noPage < nbPage :
+					noPage += 1
+			else :
+				boucle = False
 
 		if(isAllContrepeterie): #si l'utilisateur a choisi le mode qui fait tout
-			return listeRes #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
+			return res #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
 	else:											
 		phraseOrigine = phrase.lower().replace("'"," ")
 		phrasePhon = Phrase_to_Phon(phraseOrigine)
@@ -69,20 +90,38 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 			input()
 			return 1
 		# retourne tout les combinaisons de phonemes qui marchent
-		liste = mainMixSyllables(phrasePhon, mode,dicoDico)
-
+		listeRes = mainMixSyllables(phrasePhon, mode,dicoDico)
 		nvListe = {}
 		dicoPhon = dicoDico['DicoPhon']
-		for i in liste[1:]:
+		boucle = True
+		noPage = 1
+		taillePage = 51
+		nbPage = int(len(listeRes)/50)+1
+		
+		for i in listeRes[1:]:
 			tmp = " ".join(i[0])#L'écriture phonétique de la phrase
 			pos1 = i[1][0] #index 1
 			pos2 = i[2][0] #index 2
 			# Phon_to_Phrase ("phrase phon" + phrase origine(l))
 			nvListe[tmp] = Phon_to_Phrase(tmp, phrase.split(" "), pos1, pos2,langue, dicoPhon) #Pour chaque phrase, on ressort toutes ses écritures possibles
+		while(boucle):	
+			if noPage < nbPage :
+				res = affiRechFiltre(dict(np.array(list(nvListe.items()))[taillePage*(noPage-1):taillePage*noPage-1]),'phon',isAllContrepeterie, noPage, nbPage,len(nvListe))
+			else :
+				res =affiRechFiltre(dict(np.array(list(nvListe.items()))[taillePage*(noPage-1):]),'phon',isAllContrepeterie,noPage, nbPage, len(nvListe))
+			if res == 2 :
+				if noPage > 1 :
+					noPage -= 1
+			elif res == 3 :
+				if noPage < nbPage :
+					noPage += 1
+			else :
+				boucle = False
+
 
 		if(isAllContrepeterie): #si l'utilisateur a choisi le mode qui fait tout
 			return nvListe #on renvoie directement les résultats car on ne veut pas faire l'affichage tout de suite
-		return affiRechFiltre(nvListe,'phon',isAllContrepeterie)
+		return res
 
 
 """
@@ -103,15 +142,13 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 		affichagePhraseLettre(listeResWord)
 		if(listeResPhon != 1 ):
 			print("\n")
-			affiRechFiltre(listeResPhon,'phon',True)
+			if (affiRechFiltre(listeResPhon,'phon',True) == 0) :
+				continuer = 0
 		else:
 			print("\n")
 			print("Pas de résultats pour l'échange avec les phonèmes")
-		
-		continuer=choisirModeAffichage(f"a: Quitter l'application, z: Retour au menu : ")
-		if(continuer == "a"):
-			sys.exit()
-
+			input("appuyer sur n'importe quelle touche pour retourner au menu.")
+			continuer = 0
 
 """
 Objectif : Contrôle le choix de l'utilisateur

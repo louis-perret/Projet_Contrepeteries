@@ -90,16 +90,4 @@ r. Quitter\n""")
 	tmp = None
 	test2 = True
 	passeur = 1
-	while passeur != 0:
-		try:
-			tmp = input("a: Quitter l'application / z: Retour au début ")
-			passeur = 0
-		except ValueError:
-			print("Entrée invalid veuillez réessayer.\n")
-		if tmp == "a":
-			test2 = False
-			boucle = False
-
-		elif tmp == "z":
-			test2 = False
-			clear()
+	clear()

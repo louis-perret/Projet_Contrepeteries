@@ -180,7 +180,7 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 			message="effectuer la recherche avec les lettres"
 		selectMot = None
 		print(f"\npage {noPage}/{nbPage}\n")
-		selectMot = input(f"\na: quitter l'aide, z: revenir au début de l'aide, e: {message}, r: page précédente, t: page suivante \nou numéro de l'échange qui vous intéresse : \n")
+		selectMot = input(f"\na: retourner au menu\nz: sélectionner un nouveau mot\ne: {message}\nr: page précédente\nt: page suivante \nou numéro de l'échange qui vous intéresse : \n")
 		if selectMot == "a":
 			return 0
 		elif selectMot == "r" :
@@ -266,7 +266,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	while(boucle):
 		affichageBasePlusieurs(mot,dicoResWord,dicoResPhon)
 		while(True):
-			choix = input("\na: Quitter l'aide, z: Retour au menu, entrer le numéro des résultats à afficher : ")
+			choix = input("\na: Quitter l'aide\nz: Retour au menu\nentrer le numéro des résultats à afficher : ")
 			if(choix == "a"):
 				return choix
 			elif(choix == "z"):
@@ -301,7 +301,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 				affichageBase(Mot_to_Phon_Only(arbre_mot, mot),listeDeMotCop[taillePage*(noPage-1):],x)
 		boucle2 = True
 		while(boucle2):
-			selectMot = input("\na: Quitter l'aide, z: Retour au menu, e: Revenir à la sélection précédente,\n ou numéro de l'échange qui vous intéresse : \n")
+			selectMot = input("\na: Quitter l'aide\nz: Retour au menu\ne: Revenir à la sélection précédente\n ou numéro de l'échange qui vous intéresse : \n")
 			if selectMot == "a" or selectMot == "z":
 				return selectMot
 			elif selectMot == "e" : #evite les erreurs de segmentations

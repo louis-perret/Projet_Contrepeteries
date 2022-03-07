@@ -278,7 +278,7 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 		while(boucle):
 			try:
 				selecteur = input(
-					"\na: quitter l'aide,z: revenir au début de l'aide :\ne: page précédente; r: page suivante : ")
+					"\na: quitter l'aide\nz: revenir au début de l'aide :\ne: page précédente\nr: page suivante : ")
 				break
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
@@ -470,8 +470,8 @@ def affiPageParPage(listeMot, syllOrigine, mot_origine):
 
 			try:
 				selecteur = input("""
-(a : quitter l'aide/z: revenir à selection précèdante /e: revenir au début de l'aide)
-(r:Gauche / t:Droite) ou saisissez numéro du mot :\n""")
+a : quitter l'aide\nz: revenir à selection précèdante\ne: revenir au début de l'aide
+r:Gauche\nt:Droite\nou saisissez numéro du mot :\n""")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue

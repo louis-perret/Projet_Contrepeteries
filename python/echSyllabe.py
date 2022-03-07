@@ -453,7 +453,8 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 
 		if(count1 == 0):
 			print("Pas de résultats pour la recherche avec les phonèmes.")
-			return
+			input("appuyer sur n'importe quelle touche pour retourner au menu")
+			return 0
 		StockPourkey = ""
 		compteur = 1
 		dicores = []
@@ -464,7 +465,8 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 				if j[0] == " ":
 					j = j[1:] #Si la phrase commence par un espace, on l'enlève
 				for k in range(len(j[0])) :
-					j[0][k] = j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
+					"""j[0][k] = """
+					j[0][k].capitalize() #Met la première en majuscule et toutes les autres en minuscules
 				if StockPourkey != key :#and len(language_tool_python.LanguageToolPublicAPI('fr').check(j)) == 0:
 					print(compteur, " -->", end=" ")
 					for k in range(len(j)) :
@@ -479,10 +481,10 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 		while True:
 			try:
 				if(isAllContrepeterie):
-					choixutilisateur = input("\na / Quitter la recherche, ou saisissez un des index pour obtenir toutes les ortographes : ")
+					choixutilisateur = input("\na - Quitter la recherche\nz - page précédente\ne - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
 					choixutilisateur = input(
-				"\na : quitter l'application / z revenir au menu principal \nou saisissez un des index pour obtenir toutes les ortographes : ")
+				"\na : quitter l'application\nz revenir au menu principal\ne - page précédente\nr - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
@@ -517,6 +519,10 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 				return 0
 			elif choixutilisateur == "z":
 				return 1
+			elif choixutilisateur == "e":
+				return 2
+			elif choixutilisateur == "r":
+				return 3
 
 	if mode == 'word':
 		#attention, ici nvDico est une liste de tuple, plus un dico
