@@ -67,9 +67,9 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 		nbPage = int(len(listeRes)/50)+1
 		while(boucle):	
 			if noPage < nbPage :
-				res = affiRechFiltre(listeRes[taillePage*(noPage-1):taillePage*noPage-1],'word',isAllContrepeterie)
+				res = affiRechFiltre(listeRes[taillePage*(noPage-1):taillePage*noPage-1],'word',isAllContrepeterie,noPage,nbPage,len(listeRes))
 			else :
-				res =affiRechFiltre(listeRes[taillePage*(noPage-1):],'word',isAllContrepeterie)
+				res =affiRechFiltre(listeRes[taillePage*(noPage-1):],'word',isAllContrepeterie,noPage,nbPage,len(listeRes))
 			if res == 2 :
 				if noPage > 1 :
 					noPage -= 1

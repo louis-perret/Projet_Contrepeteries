@@ -440,7 +440,7 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue,dicoPhon):
 Applique les filtres et affiche les résultats en fonctions de la config
 donnée par l'utilisateur
 """
-def affiRechFiltre(nvDico,mode,isAllContrepeterie):
+def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 
 	with open('data/config.json') as diconfig_:
 		diconfig = json.load(diconfig_)
@@ -475,8 +475,8 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 					dicores.append(key)
 					print()
 					compteur+=1
-
-		print('\nNombre de résultats pour les échanges avec les phonèmes : ', compteur)
+		print(f"\npage {noPage}/{nbPage}")
+		print('\nNombre de résultats pour les échanges avec les phonèmes : ', taille)
 		choixutilisateur = 1
 		while True:
 			try:
@@ -484,7 +484,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie):
 					choixutilisateur = input("\na - Quitter la recherche\nz - page précédente\ne - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
 					choixutilisateur = input(
-				"\na : quitter l'application\nz revenir au menu principal\ne - page précédente\nr - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
+				"\na - quitter l'application\nz - revenir au menu principal\ne - page précédente\nr - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
 			except:
 				print("\nVous n'avez pas saisi un chiffre")
 				continue
