@@ -15,18 +15,18 @@ Pour deux mots, teste toutes les combinaisons d'échanges possible entre ces deu
 Renvoie une liste de type : (nouveauMot1,nouveauMot2,[i,j] du mot1,[i,j] du mot2)
 """
 
-def mixSyllablesWord1(Word1, Word2, phrase, mode, dicoDico):
+def mixSyllablesWord1(Word1, Word2, phrase, mode, dicoDico, barChargement, avancement):
 	listeWord = []
 	tmp = []
 	i = 0
 	j = 0
 	while(i < len(Word1)):
 
-		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode)
+		[tmp, allResults] = mixSyllablesWord2(Word1[i:j], Word2, phrase, mode, barChargement, avancement)
 		if(dicoDico['config']['MotCoupe'] == "Oui"):
 			for x in allResults :
-				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode)
-				listemot2 = mixSyllabeCoupe(x[0], mode)
+				listemot1 = mixSyllabeCoupe(Word1[:i] + x[1] + Word1[j:], mode,barChargement, avancement)
+				listemot2 = mixSyllabeCoupe(x[0], mode,barChargement, avancement)
 
 				for l in listemot1 :
 					for k in listemot2 :
@@ -50,7 +50,7 @@ def mixSyllablesWord1(Word1, Word2, phrase, mode, dicoDico):
 Créer un nouveau mot à partir de word2 en changeant ses lettres par la syllabe sy
 Retourne une liste de résultat de type : (nouveauMot,ancienneSyllabe, le couple[i,j])
 """
-def mixSyllablesWord2(sy, Word2, phrase, mode):
+def mixSyllablesWord2(sy, Word2, phrase, mode, barChargement,avancement):
 	i = 0
 	j = 0
 	liste = []
@@ -68,6 +68,8 @@ def mixSyllablesWord2(sy, Word2, phrase, mode):
 		if j > len(Word2):
 			i += 1
 			j = i+1
+		barChargement.update(avancement)
+		avancement = avancement+1
 
 	return liste, list(allResults)
 ###############################################################################
@@ -91,29 +93,27 @@ def mainMixSyllables(phrase, mode,dicoDico):
 	Lphrases = [[phrase]] #phrase se contient elle même
 	i = 0
 
-	print(f"Recherche des résultats. Patientez jusqu'à que la bar de progression atteigne les {longueurDico}\n")
-	bar = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
-	k=0
+	print(f"Recherche des résultats en cours...")
+	barChargement = progressbar.ProgressBar(max_value=progressbar.UnknownLength)
+	avancement=0
 	# Pour chaque mot dans la phrase
 	for i in range(len(phrase)):
 		# Pour chaque autre mot que tmp dans la phrase on permutra
 		#for m in range(i,len(phrase)) :
 		
 		for j in range(i+1, len(phrase)) :
-			k = k+1
-			bar.update(k)
-			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode,dicoDico)
+			WordsContreP = mixSyllablesWord1(phrase[i], phrase[j], phrase, mode,dicoDico, barChargement, avancement)
 			Lphrases.extend(createLPhrase1(WordsContreP,phrase, i, j))
 			if j != i+1 and i < len(phrase)-1:
 				if j < len(phrase)-1 :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode,dicoDico)
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j]+phrase[j+1],phrase, mode,dicoDico,barChargement, avancement)
 					Lphrases.extend(createLPhrase2(WordsContreP,phrase, i, j))		
 				else :
-					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode,dicoDico)
+					WordsContreP = mixSyllablesWord1(phrase[i]+phrase[i+1],phrase[j],phrase,mode,dicoDico,barChargement, avancement)
 					Lphrases.extend(createLPhrase3(WordsContreP,phrase, i, j))	
 			else :
 				if j < len(phrase)-1 :
-					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode,dicoDico)
+					WordsContreP = mixSyllablesWord1(phrase[i],phrase[j]+phrase[j+1],phrase, mode,dicoDico,barChargement, avancement)
 					Lphrases.extend(createLPhrase4(WordsContreP,phrase, i, j))
 			# remplace les contreP trouvees dans la phrase
 	return Lphrases
@@ -125,18 +125,20 @@ ajoute des espaces au mot échangé dans mixSyllablesWord1
 """
 
 
-def mixSyllabeCoupe (word1, mode) :
+def mixSyllabeCoupe (word1, mode, barChargement, avancement) :
 	liste = []
 	if isInDico(mode,word1) :
 		liste.append(word1)
 	if len(word1) <= 1 :
 		return liste
 	for i in range(1,len(word1)) :
-		moitié1 = mixSyllabeCoupe(word1[0:i], mode)
-		moitié2 = mixSyllabeCoupe(word1[i:len(word1)], mode)
+		moitié1 = mixSyllabeCoupe(word1[0:i], mode,barChargement, avancement)
+		moitié2 = mixSyllabeCoupe(word1[i:len(word1)], mode,barChargement, avancement)
 		for j in moitié1 :
 			for k in moitié2 :
 				liste.append(j+' '+k)
+				barChargement.update(avancement)
+				avancement = avancement+1
 	return liste
 
 
@@ -417,22 +419,41 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue,dicoPhon):
 
 		#string = string+" "+listePhon[i][0]
 
+
 	listeretour.append(listePhon)
+	"""
+	for i in range(len(listePhon)):
+		for j in range(i,len(len(listePhon))):
+	"""
 	"""
 	for i in range(len(listePhon[pos1])):
 		for j in range(len(listePhon[pos2])):
 			string = phraseOrigine[:]
 			string[pos1] = listePhon[pos1][i]
 			string[pos2] = listePhon[pos2][j]
+
+
+	for mot in listeretour[0]:
+		for mot2 in listeretour[1]:
+			res = mot + "" + mot2
+
+
 	"""
 
-		
+	"""
+	def(listeRes,indice,nbMots):
+		if(indice == nbMots):
+			liste
+		for(mot in listeretour[indice]):
+			listeRe += "" + mot
+
+	def(listeRes,indice,nbMots):
+	"""
 
 
 # Produit de toutes les combinaisons possibles des mots
 # qui ont changer par rapport à la phrase d'origine
 	return listeretour
-
 
 
 
@@ -458,7 +479,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 		StockPourkey = ""
 		compteur = 1
 		dicores = []
-		print("Voici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné.\n")
+		print("\nVoici les résultats possibles en échangeant les phonèmes. \nUn exemple d'orthographe pour chaque phrase vous ai donné.\n")
 		for key in nvDico:
 			for j in nvDico[key]:
 				#j = ' '.join(j) #Joint chaque élément par "" de nvDico[key]
@@ -491,6 +512,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 			if inputInt(choixutilisateur):
 				choixutilisateur =  int(choixutilisateur)
 				if (choixutilisateur) < compteur and choixutilisateur > -1:
+					print("\nAffichage des différentes orthographes. Une orthographe de chaque mot vous est proposée : ")
 					for j in nvDico[dicores[choixutilisateur-1]]: #pour chaque orthographe de la phrase
 						maxlen = 0
 						phrase = []	

@@ -1,22 +1,22 @@
 import string
 import numpy as np
-import nltk
-
-def fonction (y, a):
-	listeMot = []
-	for l in list(string.ascii_lowercase):
-		if y == 1:
-			print(f"{a+l}")
-		else:
-			fonction(y-1, a+l)
-
-#fonction(3,'')
 
 
-def FiltreTheme(mot,listeMotTheme):
-	return mot in listeMotTheme
+listeretour= [["la","là","lacs"],["poule","poules","pool","pools"]]
+listeRes=[]
+for mot in listeretour[0]:
+		for mot2 in listeretour[1]:
+			listeRes.append(mot + " " + mot2)
 
-tab=['verbe','nom','proposition','adverbe']
-print(FiltreTheme("adverbe",tab))
+print(listeRes)
 
+"""
+def(listeRes,indice,nbMots):
+	if(indice == nbMots):
+			liste
+	for(mot in listeretour[indice]):
+		listeRe += "" + mot
+
+def(listeRes,indice,nbMots):
+"""
 

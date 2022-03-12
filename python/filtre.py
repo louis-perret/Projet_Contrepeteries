@@ -80,22 +80,6 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 
 
 """
-Objectif : Change toute la configuration de l'utilisateur
-Paramètres :
-	-Entrée :
-		-tabDicoThemeDispo : thèmes disponibles dans l'applications
-		-diconfig : dictionnaire de la configuration
-	-Sortie : 
-		-aucun
-"""
-def configTousLesFiltres(tabDicoThemeDispo,dicoDico,diconfig):
-	diconfig["FiltreGrammatical"] = choixFiltreGrammatical(dicoDico["config"]["langue"])
-	diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
-	diconfig["MotCoupe"] = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
-	diconfig["EffacerComplétement"] = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
-	return diconfig
-
-"""
 Objectif : Met à jour les thèmes choisi par l'utilisateur
 Paramètres :
 	-Entrée :
@@ -265,11 +249,11 @@ def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
 
 	if(diconfig["FiltreGrammatical"] == "Oui"):
 		for classGram in classGramMotOrigine:
-			if(classGram in classGramMot2): #si ils ont au moins une classe grammticale en commun
+			if(classGram in classGramMot2): #s'ils ont au moins une classe grammticale en commun
 				return True #on renvoie true
 		return False
 	else:
-		if(diconfig["FiltreGrammatical"] in classGramMot2):
+		if(diconfig["FiltreGrammatical"] in classGramMot2): #si mot2 a pour classe grammaticale celle sélectionnée par l'utilisateur
 			return True
 		return False
 
