@@ -148,7 +148,8 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 			print("\n")
 			print("Pas de résultats pour l'échange avec les phonèmes")
 			input("appuyer sur n'importe quelle touche pour retourner au menu.")
-			continuer = 0
+			continuer = 1
+	return continuer
 
 """
 Objectif : Contrôle le choix de l'utilisateur
