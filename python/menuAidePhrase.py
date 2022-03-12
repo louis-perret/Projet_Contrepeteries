@@ -106,9 +106,9 @@ def rechercheContrepeteriesPhrase(phrase, mode, langue, dicoDico, isAllContrepet
 			nvListe[tmp] = Phon_to_Phrase(tmp, phrase.split(" "), pos1, pos2,langue, dicoPhon) #Pour chaque phrase, on ressort toutes ses écritures possibles
 		while(boucle):	
 			if noPage < nbPage :
-				res = affiRechFiltre(dict(list(nvListe.items())[taillePage*(noPage-1):taillePage*noPage-1]),'phon',isAllContrepeterie, noPage, nbPage,len(nvListe))
+				res = affiRechFiltre(dict(list(nvListe.items())[taillePage*(noPage-1):taillePage*noPage-1]),'phon',isAllContrepeterie, noPage, nbPage,len(listeRes))
 			else :
-				res =affiRechFiltre(dict(list(nvListe.items())[taillePage*(noPage-1):]),'phon',isAllContrepeterie,noPage, nbPage, len(nvListe))
+				res =affiRechFiltre(dict(list(nvListe.items())[taillePage*(noPage-1):]),'phon',isAllContrepeterie,noPage, nbPage, len(listeRes))
 			if res == 2 :
 				if noPage > 1 :
 					noPage -= 1
@@ -142,7 +142,7 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 		affichagePhraseLettre(listeResWord)
 		if(listeResPhon != 1 ):
 			print("\n")
-			if (affiRechFiltre(listeResPhon,'phon',True) == 0) :
+			if (affiRechFiltre(listeResPhon,'phon',True, 1, 1, len(listeResPhon)) == 0) :
 				continuer = 0
 		else:
 			print("\n")
