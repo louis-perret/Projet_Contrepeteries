@@ -229,33 +229,33 @@ function afficheStats() {
 	else if (x>7 || y>3) {
 		divStatsToHide.style.backgroundColor = 'darkred';
 		if(langue == "fr") {
-			text='très   lent au moins 60 sec';
+			text='très   lent au moins 2 min';
 			tExec.innerText="Temps : " + text;
 		}
 		else if(langue == "en") {
-			text='very slow, at least 60sec';
+			text='very slow, at least 2 min';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3)) {
 		divStatsToHide.style.backgroundColor = 'orange';
 		if(langue == "fr") {
-			text='lent   10 à 60 sec';
+			text='lent   20 sec à 2 min';
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='slow 10 to 60 sec';
+			text='slow 20 sec to 2 min';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
 		if(langue == "fr") {
-			text='rapide   2 à 10 sec';
+			text='rapide   2 sec à 20 sec';
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='fast, 2 to 10 sec';
+			text='fast, 2 sec to 20 sec';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
@@ -291,33 +291,33 @@ function afficheStats2() {
 	else if (x>7 || y>3 || (max <=8 && max >6)){
 		divStatsToHide.style.backgroundColor = 'darkred';
 		if(langue == "fr") {
-			text='très lent   au moins 60 sec';
+			text='très lent au moins 2 min';
 			tExec.innerText="Temps : " + text;
 		}
 		else if(langue == "en") {
-			text='very slow, at least 60sec';
+			text='very slow, at least 2 min';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
 	else if ((x>=4 || y>=2) && (x<=7 || y<=3) ||  max==6) {
 		divStatsToHide.style.backgroundColor = 'orange';
 		if(langue == "fr") {
-			text='lent   10 à 60 sec';
+			text='lent   20 sec à 2 min';
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='slow 10 to 60 sec';
+			text='slow 20 sec to 2 min';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
 	else {
 		divStatsToHide.style.backgroundColor = 'green';
 		if(langue == "fr") {
-			text='rapide   2 à 10 sec';
+			text='rapide   2 sec à 20 sec';
 			tExec.innerText="Temps d'execution : " + text;
 		}
 		else if(langue == "en") {
-			text='fast, 2 to 10 sec';
+			text='fast, 2 sec to 20 sec';
 			tExec.innerText="Execution time : " + text;
 		}
 	}
@@ -419,10 +419,6 @@ function affichScrollableFilters() {
 	bigDivRight.setAttribute('style','width:20%;');
 	let littleDivScrollRight = document.createElement('div');
 	littleDivScrollRight.innerHTML ='<div>\
-										<input type="checkbox" id="couperMots2" value="couperMots2">\
-										<label for="couperMots2">Activer les mots coupés </label>\
-									</div>\
-									<div>\
 										<input type="checkbox" id="filtreClassesGram2" value="filtreClassesGram2">\
 										<label for="filtreClassesGram2">Mêmes classes grammaticales</label>\
 									</div>\
@@ -436,14 +432,11 @@ function affichScrollableFilters() {
 	bigDivRight.appendChild(littleDivScrollRight);
 	document.querySelector('div#div1').appendChild(bigDivRight);
 
-	document.querySelector("input#couperMots2").addEventListener('change', function(){
-		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
-	});
 	document.querySelector("input#filtreClassesGram2").addEventListener('change', function(){
-		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
+		updateCardGris(document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
 	});
 	document.querySelector("select#filtreGrossier2").addEventListener('change', function(){
-		updateCardGris(document.querySelector("input#couperMots2").checked, document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
+		updateCardGris(document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
 	});
 	//var floatingDiv = $('.floating-div');
 	//floatingDiv.addClass('sticky');
@@ -477,7 +470,7 @@ function affichScrollableFilters() {
 
 
 //grise les card contenant 4 mots en fonction des filtres valides
-function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltreGrossier){
+function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 	console.log(':::::::::::passe dans updateCardGris::::::::::::')
 	let myCards = document.querySelectorAll('div.card.p-2.shadow-sm');
 	let cardsOdd = [];
@@ -499,7 +492,6 @@ function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltr
 
 	let successGrossier = [];
 	let successSameClassGram = [];
-	let successMotsCoupes = [];
 	switch(valueFiltreGrossier) {
 		case 'filtreGrossUnabled2':
 			partsRealCard.forEach(card => {
@@ -524,10 +516,7 @@ function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltr
 				}
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
-				/*cas à tester
-				if(isMotsCoupesChecked) {}
-				*/
-				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+				
 			});
 			break;
 		case 'filtreGrossOnly2':
@@ -557,10 +546,7 @@ function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltr
 				}
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
-				/*cas à tester
-				if(isMotsCoupesChecked) {}
-				*/
-				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+				
 			});
 			break;
 		case 'filtreGrossNone2':
@@ -590,20 +576,16 @@ function updateCardGris(isMotsCoupesChecked, isSameClasseGramChecked, valueFiltr
 				}
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
-				/*cas à tester
-				if(isMotsCoupesChecked) {}
-				*/
-				successMotsCoupes[partsRealCard.indexOf(card)] = true;
+				
 			});
 			break;
 	}
 
 	console.log(successGrossier[4])
-	console.log(successMotsCoupes[4])
 	console.log(successSameClassGram[4])
 	console.log(partsRealCard[4])
 	partsRealCard.forEach(card => {
-		if(!successGrossier[partsRealCard.indexOf(card)] || !successMotsCoupes[partsRealCard.indexOf(card)] || !successSameClassGram[partsRealCard.indexOf(card)])
+		if(!successGrossier[partsRealCard.indexOf(card)] || !successSameClassGram[partsRealCard.indexOf(card)])
 			myCards[partsRealCard.indexOf(card)].style.backgroundColor = '#bdbebd';
 	});
 }

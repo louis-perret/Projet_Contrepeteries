@@ -345,7 +345,6 @@ function choixLettreP() {
 		document.getElementById('choixPhonemeP').setAttribute('style','border: 4px solid transparent;');
 		document.getElementById('choixLettreP').value = 'true';
 		document.getElementById('choixPhonemeP').value = 'false';
-		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Lettres';
 	}
 }
 
@@ -358,7 +357,6 @@ function choixPhonemeP() {
 		document.getElementById('choixLettreP').setAttribute('style','border: 4px solid transparent;');
 		document.getElementById('choixPhonemeP').value = 'true';
 		document.getElementById('choixLettreP').value = 'false';
-		document.getElementById('pSelectLettrePhonP').innerHTML = 'Sélectionné : Phonèmes';
 	}
 }
 

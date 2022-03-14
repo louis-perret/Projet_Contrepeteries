@@ -20,7 +20,7 @@
     </script>
     <!--end of Navigation bar-->
 
-    <section>
+    <section style="min-height: 1000px;">
         <div class="jumbotron pt-5 pb-5 text-center">
             <h2 id="titrePr">Aide à la contrepèterie</h2>
         </div>
@@ -50,7 +50,7 @@
                     </div>
                 </button>
                 <div class='collapse' id='collapseParam'>
-                    <div class="flexAllCenter p-5">  
+                    <div class="flexAllCenter p-1" id="paramMot">  
                         <div id="choixXY" class="blackOutline">
                             <div class="divPadding20px">
                                 <h3 id="h3textToChange" style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Nombre de lettres à échanger :</h3>
@@ -68,7 +68,7 @@
 
                         <div id="choixLongueurMinMax" class="blackOutline">
                             <div class="divPadding20px">
-                                <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Longueur min/max des 2 couples :</h3>
+                                <h3 style="border-bottom: 2px solid darkslateblue; margin-bottom: 20px;">Longueur min/max des résultats :</h3>
                                 <div margin="10">
                                     <p>(minimum)</p>
                                     <input type="text" id="choixLongueurMin" value="3"/>
@@ -79,9 +79,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <p style="padding: 5px;">
+                                Exemple : </br>
+                                Avec (mot renseigné) = 1 et (mot recherché) = 2 </br>
+                                En rentrant "co<b>d</b>e" on peut avoir "co<b>ll</b>e", "co<b>rd</b>e", etc </br>
+                            </p>
+
+                        </div>
                     </div>     
 
-                    <div class="flexAllCenter mt-5 ml-1">
+                    <div class="flexAllCenter mt-2 ml-1">
                         <div class="mr-5">
                             <input type="checkbox" id="couperMots" name="couperMots" value="couperMots">
                             <label for="couperMots">Activer la recherche de mots coupés </label>
@@ -105,7 +113,7 @@
 
                     <div id="divStatsToHide">
                         <div id="loadingStats"></div>
-                        <h5 id="tempsExecution" style="padding: 10%;"></h5>
+                        <h5 id="tempsExecution" ></h5>
                     </div>
                 
                     <div class="m-2"style="display: flex; justify-content: right;">
@@ -143,7 +151,7 @@
                   Retour
             </button>
             
-            <div class="row" id="div1"></div>
+            <div class="row m-5" id="div1"></div>
 
             <button id="bRetour2" class="collapse mt-3" onclick="choixMotCompatible(document.getElementById('mot').value, [true])">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
