@@ -18,6 +18,20 @@ def clear():
 			print("\n"*60)
 #-------------------------------------------------------------------------------
 
+def explicationFiltre():
+	print("Explication des différents filtres disponibles : \n")
+	print("\t-Filtre grammaticale : Permet de filtrer les résultats suivant leur classe grammaticale.\n\tIl y a deux filtres grammaticales disponibles :\n\t\t 1.Garde les résultats qui possède au moins une classe grammaticale en commun\n\t\t 2.Sélectionner une classe grammaticale en particulier et garde les résultats qui possède cette classe.")
+	print("\t Pour sélectionner un des deux filtres grammaticales, activer le filtre grammaticale pour pouvoir choisir l'un des deux.")
+	print("\n\t-Filtre par thème : Sélection de thèmes disponibles. Garde les résultats qui appartiennent à au moins un des thèmes sélectionnés.")
+	print("\n\t-Mot coupé : Permet d'activer la rechercher des mots coupés et des regroupement (seulement dans les phrases) de mots dans les recherches.")
+	print("\n\t-EffacerComplétement : Permet d'effectuer un clear() du terminal à chaque navigation au sein de l'application.")
+	print("\n")
+
+	print("Exemple d'utilisation des filtres :")
+	print("Premier filtre grammaticale : je recherche dans le mot 'code' -> mes résultats seront soit des noms soit des verbes")
+	print("Deuxième filtre grammaticale : je sélectionne 'verbe' comme classe grammaticale, je recherche dans 'code' -> j'aurais que des verbes comme résultats")
+	print("Filtre par thème : Si je sélectionne le thème Vulgaire et Informatique, je recherche dans code -> j'aurais soit des résultats soit grossiés, soit en rapport avec l'informatique")
+	print("\n")
 """
 Objectif : Change une partie/toute la configuration de l'utilisateur
 Paramètres :
@@ -31,6 +45,7 @@ Paramètres :
 def configFiltre(tabDicoThemeDispo,dicoDico):
 	diconfig = dicoDico['config']
 	boucle=True
+	explicationFiltre()
 	while(boucle):
 		print("Voici votre configuration actuelle :")
 		j=0

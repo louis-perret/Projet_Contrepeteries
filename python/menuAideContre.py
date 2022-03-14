@@ -227,7 +227,7 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 		else:
 			mot2=listeDeMotCop[selectMot-1][3]
 		affichagePasResultat(mot,mot2,x,y,minimum,maximum,dicoDico['config'],mode)
-
+	return 1
 
 """
 Objectif : Gère le mode plusieurs (lettre ou phonème)
@@ -243,7 +243,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	dicoResWord = {}
 	dicoResPhon = {}
 	longueurMot = len(mot)
-
+	valeurARetourner=0
 	#Ce mode met les mots coupés et active par défaut le filtre grammatical
 	oldMotCoupe=dicoDico['config']['MotCoupe']
 	dicoDico['config']['MotCoupe']="Non"
@@ -268,9 +268,11 @@ def recherchePlusieurs(mot,langue,dicoDico):
 		while(True):
 			choix = input("\na: Quitter l'aide\nz: Retour au menu\nentrer le numéro des résultats à afficher : ")
 			if(choix == "a"):
-				return choix
+				valeurARetourner = choix
+				break
 			elif(choix == "z"):
-				return 1
+				valeurARetourner = 1
+				break
 			elif inputInt(choix):
 				choix=int(choix)
 				if(choix < 0 or choix > (len(dicoResWord) + len(dicoResPhon))):
@@ -286,6 +288,10 @@ def recherchePlusieurs(mot,langue,dicoDico):
 					mode="phon"
 					break	
 		
+		if(valeurARetourner == "a" or valeurARetourner == 1):
+			print("coucou")
+			boucle = False
+			continue
 		noPage = 1
 		taillePage = 51
 		nbPage = int(len(listeDeMotCop)/50)+1
@@ -303,7 +309,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 		while(boucle2):
 			selectMot = input("\na: Quitter l'aide\nz: Retour au menu\ne: Revenir à la sélection précédente\n ou numéro de l'échange qui vous intéresse : \n")
 			if selectMot == "a" or selectMot == "z":
-				return selectMot
+				valeurARetourner = selectMot
 			elif selectMot == "e" : #evite les erreurs de segmentations
 				boucle2 = False
 			elif inputInt(selectMot) :
@@ -324,7 +330,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 			else:
 				continuer = affiRechSon(listeAffichage, compteur, mot,langue, dicoDico)
 			if continuer == 0 or continuer == -1:
-				return abs(continuer)
+				valeurARetourner = abs(continuer)
 		else:
 			if(mode=="word"):
 				mot2=listeDeMotCop[selectMot-1][0]
@@ -334,6 +340,7 @@ def recherchePlusieurs(mot,langue,dicoDico):
 	#faire la recherche des quadruplé
 	dicoDico['config']['MotCoupe']=oldMotCoupe
 	dicoDico['config']['FiltreGrammatical']=oldFiltreGram
+	return valeurARetourner
 
 
 def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):
@@ -361,6 +368,9 @@ def affichagePasResultat(mot,mot2,x,y,minimum,maximum,diconfig,mode):
 		message+="\n\t-Thème(s) appliqué(s) : "
 		for theme in diconfig['Themes']:
 			message += theme + ", "
-	message+=f"\n\t-Filtre grammatical : {diconfig['FiltreGrammatical']}\n"
+	if(diconfig['FiltreGrammatical'] == "Oui"):
+		message+=f"\n\t-Filtre grammatical : Activé\n"
+	else:
+		message+=f"\n\t-Filtre grammatical : Non-Activé\n"
 	print(message)
-	input('Tapez sur une touche pour revenir en avant')
+	input('Tapez sur une touche pour revenir avant')
