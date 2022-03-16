@@ -22,11 +22,11 @@ tabPhrases.append("regarde une jolie personne") #marche pas
 tabPhrases.append("une regarde jolie personne") #marche pas -> il dit que ça marche alors qu'elle est fausse -> faudra faire des règles plus précises
 
 pos_tagger = StanfordPOSTagger(model, jar, encoding='utf8' )
+"""
 for i in range(len(tabPhrases)): #pour chaque phrase on tokenize, puis on tag
     tabPhrases[i] = word_tokenize(tabPhrases[i], language="french")
     tabPhrases[i] = pos_tagger.tag(tabPhrases[i])
-#print(lotr_pos_tags)
-
+"""
 
 #test avec des patterns simples
 def testChunking(tabPhrases):
@@ -39,10 +39,12 @@ def testChunking(tabPhrases):
 
     chunk_parser = nltk.RegexpParser(grammar)
     for i in range(len(tabPhrases)):
-        tree=chunk_parser.parse(tabPhrases[i])
+        phrase = word_tokenize(tabPhrases[i], language="french")
+        phrase = pos_tagger.tag(phrase)
+        tree=chunk_parser.parse(phrase)
         b=False
         tabElements=tree.productions()[0].rhs() #on récupère la partie droite du premier résultat du parsage 
-        print(tabElements)
+        #print(tabElements)
         for element in tabElements: #on parcours les éléments
             if(isinstance(element,nltk.grammar.Nonterminal)): #si c'est un élément non terminal et non un tuple
                 if(element.symbol() == "CP"): #s'il contient l'élément qu'on a voulu vérifier
@@ -66,6 +68,5 @@ def accuracy(phrase):
 
 testChunking(tabPhrases)
 #accuracy(phrase)
-
 
 
