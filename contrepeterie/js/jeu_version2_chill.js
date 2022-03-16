@@ -542,10 +542,6 @@ function waitcursor() {
 function motSuivant()
 {
 
-    document.getElementById("reponseMot").style.visibility="hidden"
-    document.getElementById("solution").style.visibility="hidden"
-    document.querySelector('h3#nbRepATrouver').innerText = listeReponse[nbSoumissionReponse+1].length
-    listeMotReponse=[];
     if(nbSoumissionReponse === nbMots-1) {
         document.querySelector('h3#messageFin').innerText = 'Jeu terminé';
         document.querySelector('h3#messageFin').setAttribute('style','color: #95dabb;');
@@ -553,6 +549,11 @@ function motSuivant()
         playAgain.style.display = 'inline';
         return;
     }
+    document.getElementById("reponseMot").style.visibility="hidden"
+    document.getElementById("solution").style.visibility="hidden"
+    document.querySelector('h3#nbRepATrouver').innerText = listeReponse[nbSoumissionReponse+1].length
+    listeMotReponse=[];
+
     //pour prochain mot
     nbSoumissionReponse++;
     writeText(motATrouver[nbSoumissionReponse]);
