@@ -76,7 +76,7 @@ def choixMot(historique):
 		for i in range(len(historique)):
 			print(i+1," : ",historique[i],"\n")
 		print("Pour utiliser l'historique, veuillez entrer le numéro du mot.")
-	print("Pour effectuer une recherche rapide entre deux mots, séparez les avec un '/' (mot1/mot2).")
+	print("Pour effectuer une recherche rapide entre deux mots, séparez les avec un '/' (code/groupe => gode/croupe).")
 	while(True):
 		Linput = input("Mot : ")
 		if historique != []: #si l'historique n'est pas vide
@@ -150,8 +150,8 @@ Paramètres :
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
 def modePersonnalisé(mode,mot,langue,dicoDico):
-	x = longueurSyllabe("Longueur de la syllabe à enlever dans votre mot : ")
-	y = longueurSyllabe("Longueur de la syllabe à ajouter à la place de la syllabe enlevée : ")
+	x = longueurSyllabe("Longueur de la syllabe à enlever dans votre mot (1: c o d e; 2: co od de; ...) : ")
+	y = longueurSyllabe("Longueur de la syllabe à ajouter à la place de la syllabe enlevée (1: cOde --> cade;2: cOde --> coude; ...) : ")
 	print("Recherche des contrepétries possibles ...")
 	calculTempsExecution(len(mot),y,"seul")
 	listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)
@@ -201,8 +201,8 @@ def modePersonnalisé(mode,mot,langue,dicoDico):
 			selectMot = int(selectMot)
 			if(selectMot > 0):
 				print("Veuillez sélectionner la longueur des résultats souhaités")
-				minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) : ")
-				maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) : ")
+				minimum=selectionLongueurMot("Longueur minimum (-1=toutes les longueurs) (1: tout les mots; 2: tout les mots sauf ceux de 1 lettre; ...) : ")
+				maximum=selectionLongueurMot("Longueur maximum (-1=toutes les longueurs) (5: tous le mots de longueur comprise entre le minimum inscrit précedemment et 5; ...): ")
 				listeAffichage, compteur = aideRechDicoGeneral(mot,selectMot+taillePage*(noPage-1), listeDeMotCop,minimum,maximum,dicoDico,mode)
 				if selectMot <= len(listeDeMotCop): #evite les erreurs de segmentations
 					boucle = False
