@@ -72,7 +72,7 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 		elif(choix==1):
 			diconfig["Themes"]=changerDicoTheme(tabDicoThemeDispo)
 		elif(choix==2):
-			diconfig["MotCoupe"] = selectionChoix("\nActiver les mots coupés\n(a:Oui/z:Non/autre:defaut):")
+			diconfig["MotCoupe"] = selectionChoix("\nActiver les mots coupés (cela augmentera grandement le nombre de résultats et le temps de recherche)\n(a:Oui/z:Non/autre:defaut):")
 		elif(choix==3):
 			diconfig["EffacerComplétement"] = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
 
@@ -131,7 +131,7 @@ Paramètres :
 def choixFiltreGrammatical(langue):
 	n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
 	if n == "a":
-		n=selectionChoix("\na:Garder les résultats de mêmes classes grammaticales,ou\nz:Sélectionner une classe grammaticale en particulier : ")
+		n=selectionChoix("\na:Garder les résultats de mêmes classes grammaticales (garde les échange nom <=> nom mais pas nom <=> adjectifs par exemple) ,ou\nz:Sélectionner une classe grammaticale en particulier : ")
 		if(n=="a"):
 			return n
 		else:

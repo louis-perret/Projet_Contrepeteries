@@ -105,9 +105,9 @@ Paramètres :
 """
 def choixMode():
 	print("\nSélectionner le type de recherche : ")
-	print("\ta - recherche par lettre")
-	print("\tz - recherche par phonèmes")
-	print("\te - recherche complète")
+	print("\ta - recherche par lettre (moule <=> poule)")
+	print("\tz - recherche par phonèmes (chute <=> chatte)")
+	print("\te - recherche complète (lettres + phonèmes)")
 	print("\tr - Retour au menu")
 	while(True):
 		selection=input("Choix du mode : ")
@@ -150,8 +150,8 @@ Paramètres :
 		un entier (0 => revenir au menu, 1 => revenir au début de l'aide)
 """
 def modePersonnalisé(mode,mot,langue,dicoDico):
-	x = longueurSyllabe("Longueur de la syllabe à enlever : ")
-	y = longueurSyllabe("Longueur de la syllabe à ajouter : ")
+	x = longueurSyllabe("Longueur de la syllabe à enlever dans votre mot : ")
+	y = longueurSyllabe("Longueur de la syllabe à ajouter à la place de la syllabe enlevée : ")
 	print("Recherche des contrepétries possibles ...")
 	calculTempsExecution(len(mot),y,"seul")
 	listeDeMotCop = aide(mot,x,y,mode,langue,dicoDico)

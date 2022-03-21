@@ -474,7 +474,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 
 		if(count1 == 0):
 			print("Pas de résultats pour la recherche avec les phonèmes.")
-			input("appuyer sur n'importe quelle touche pour retourner au menu")
+			input("appuyer sur n'importe quelle touche puis entrée pour retourner au menu")
 			return 0
 		StockPourkey = ""
 		compteur = 1

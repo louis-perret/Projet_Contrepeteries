@@ -17,8 +17,8 @@ def aideContrepetriePhrase(dicoDico,langue):
 	n = 0
 	while test:
 		print("""\nVoulez-vous échanger \n
-			a. Les lettres
-			z. Les sons
+			a. Les lettres (la poule mue --> la moule pue)
+			z. Les sons	(la chine et le nippons --> la pine et les nichons)
 			e. Lettres et sons
 			r. retour\n""")
 		try:
