@@ -466,9 +466,9 @@ function soumettreReponse()
                 updateScore(streak);
                 document.querySelector('h3#messageSuccess').innerText = 'Bonne réponse, tu es un dieu des contrepèteries !';
                 document.querySelector('h3#messageSuccess').setAttribute('style', 'color: green;');
-                let nbMot = document.querySelector('h3#nbRepATrouver').value 
-                console.log("nb rep !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + nbMot)
-                document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot-1)
+                let nbMot = document.querySelector('h3#nbRepATrouver').innerText
+                console.log("nb rep a trouver : " + nbMot + " pour le mot " + nbSoumissionReponse )
+                document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot)-1
     
             }
             
@@ -484,7 +484,6 @@ function soumettreReponse()
             document.querySelector('h3#messageSuccess').innerText = 'Aïe, mauvaise réponse';
             document.querySelector('h3#messageSuccess').setAttribute('style', 'color: red;');
         }
-
     }
 
     //let mot = document.getElementById('reponse').value.toLowerCase();
@@ -503,7 +502,7 @@ function soumettreReponse()
             let nbMot = document.querySelector('h3#nbRepATrouver').innerText 
 
             console.log("nb rep !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + nbMot)
-            document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot-1)
+            document.querySelector('h3#nbRepATrouver').innerText = parseInt(nbMot)-1
             console.log("gagné")
             streak++;
             updateScore(streak);
@@ -549,6 +548,7 @@ function motSuivant()
         playAgain.style.display = 'inline';
         return;
     }
+
     document.getElementById("reponseMot").style.visibility="hidden"
     document.getElementById("solution").style.visibility="hidden"
     document.querySelector('h3#nbRepATrouver').innerText = listeReponse[nbSoumissionReponse+1].length

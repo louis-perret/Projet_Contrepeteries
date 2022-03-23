@@ -637,7 +637,15 @@ function choixMotCompatible(motSave,listeMotCompatible) {
 	}
 }
 
-
+//Fonction qui permet de verifier que l'utilisateur a bien rentré 2 mots
+function recherche2mots()
+{
+	if(document.querySelector('input#mot1of2').value != "" && document.querySelector('input#mot2of2').value != "")
+	{
+		aideLettreRechDico(document.querySelector('input#mot1of2').value,document.querySelector('input#mot2of2').value)
+		afficheStats()
+	}
+}
 
 //Changement des valeurs des éléments choixLettre et choixPhoneme selon la sélection de l'utilisateur
 function choixLettre() {
