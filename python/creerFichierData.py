@@ -44,8 +44,18 @@ def creerFichierGramm(fichierSrc,fichierDest):
     with open(fichierDest,'w') as file2:
         json.dump(dicoClassGramm,file2)
 
+def creerFichierPluriel(fichierSrc, fichierDest):
+    file = open(fichierSrc, encoding="utf-8")
+    read_file = csv.reader(file, delimiter=",")
+    dicoplur={}
+    for ligne in read_file:
+        dicoplur[ligne[0]]=ligne[4]
+    with open(fichierDest, 'w') as file2:
+        json.dump(dicoplur,file2)
+
 
 langue="fr"
 fichierSrc=f"data/{langue}/dico{langue.capitalize()}.csv"
-creerFichierGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
-creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
+#creerFichierGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
+#creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
+creerFichierPluriel(fichierSrc,f"data/{langue}/dicoplur{langue.capitalize()}.json")

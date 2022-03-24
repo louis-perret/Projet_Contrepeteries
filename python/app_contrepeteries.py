@@ -28,6 +28,10 @@ with open(f'data/{langue}/dicoClassGramm{langue.capitalize()}.json') as tmp:
 			dicoClassGramm = json.load(tmp)
 			dicoDico['DicoGram']=dicoClassGramm
 
+with open(f'data/{langue}/dicoplur{langue.capitalize()}.json') as tmp:
+			dicoplur = json.load(tmp)
+			dicoDico['pluriel']=dicoplur
+
 boucle = True
 memoireImport = set()
 historique = []
@@ -37,7 +41,7 @@ while boucle:
 	valide = True
 	test = True
 	n = 0
-	# selecteur type de programme:
+	# selecteur type de programme: 
 	print(
 """\nSelectionnez le mode que vous souhaitez : \n
 a. Recherche de contrepèteries dans un mot

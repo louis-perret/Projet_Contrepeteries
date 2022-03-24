@@ -55,7 +55,7 @@ def aide(mot,x,y,mode,langue,dicoDico):
 			for couple in listeCouple: #Pour chaque combinaison possible
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
 				if coupleLettre[1] != couple and isInDico(mode, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
-					if (filtreTheme(nvtMot,listeDico,dicoDico['config']['Themes']) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config'])):
+					if (filtreTheme(nvtMot,listeDico,dicoDico['config']['Themes']) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config']) and verifPluriel(nvtMot,dicoDico["DicoGram"],dicoDico["pluriel"])):
 						if(mode=='phon'):
 							listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
 						if(mode=='word'):
@@ -69,37 +69,17 @@ def aide(mot,x,y,mode,langue,dicoDico):
 	return listeMotCop
 
 #---------- a enlever plus tard
-def circulaire (ancLettre, nouvLettre, nouvMot, x):
-	listeSextup = []
-	with open('data/config.json') as diconfig_:
-		diconfig = json.load(diconfig_)
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
-	lignes = csv.reader(tsv_file, delimiter=",")
-	# lit ligne par ligne du DICO (près de 100k lignes)
-	# changer filtres
-	diconfig = changerfiltre(diconfig)
-	# bd filtres
-	with open('data/DicoVulgaire.json') as vulgaire:
-		BDvulgaire = json.load(vulgaire)
-	for mot in lignes:
-		mot = mot[0]
-		if len(mot) < 1:
-			for l in enumerate(mot):
-				nouvMot1 = replacer(mot, ancLettre, l[0], x)
-				if isInDico('word', nouvMot1):
-					midLettre = mot[l[0]:l[0]+x]
-					print(midLettre)
-					for mot2 in lignes:
-						mot2 = mot2[0]
-						if len(mot) < 1:
-							if nouvLettre in mot2:
-								for l2 in enumerate(mot2):
-									if mot2[l2[0]:l2[0]+len(nouvLettre)] == nouvLettre:
-										nouvMot2 = replacer(mot2, midLettre, l2[0], x)
-										if isInDico('word', nouvMot2):
-												listeSextup.append((ancLettre, midLettre, nouvLettre, mot, mot2, nouvMot, nouvMot1, nouvMot2))
-	print(listeSextup)
-	return listeSextup
+def verifPluriel (mot, dicogram, dicoplur):
+	testC = False
+	testP = True
+	for classe in dicogram[mot]:
+		if classe == "verbe" :
+			testC = True
+	if dicoplur[mot] == "p":
+		testP = False
+	return testC and testP
+
+
 
 # ----------------------------------------------------------------------------
 """
