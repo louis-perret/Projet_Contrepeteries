@@ -416,7 +416,7 @@ function updateBtn() {
 //création des filtres flottants et scrollables sur le côté droit
 function affichScrollableFilters() {
 	let bigDivRight = document.createElement('div');
-	bigDivRight.setAttribute('style','width:20%;');
+	bigDivRight.setAttribute('style','width:20%; position: sticky; top: 75px; align-self: flex-start;');
 	let littleDivScrollRight = document.createElement('div');
 	littleDivScrollRight.innerHTML ='<div>\
 										<input type="checkbox" id="filtreClassesGram2" value="filtreClassesGram2">\
@@ -427,7 +427,7 @@ function affichScrollableFilters() {
 										<option value="filtreGrossOnly2">Seulement grossiers</option>\
 										<option value="filtreGrossNone2">Supprimer grossiers</option>\
 									</select>';
-	littleDivScrollRight.setAttribute('style','background: #bdbebd;position: -webkit-sticky;position: sticky; border-radius: 6px; padding: 5px;');
+	littleDivScrollRight.setAttribute('style','background: #bdbebd; border-radius: 6px; padding: 5px;');
 	littleDivScrollRight.classList.add('col');
 	bigDivRight.appendChild(littleDivScrollRight);
 	document.querySelector('div#div1').appendChild(bigDivRight);
@@ -438,34 +438,6 @@ function affichScrollableFilters() {
 	document.querySelector("select#filtreGrossier2").addEventListener('change', function(){
 		updateCardGris(document.querySelector("input#filtreClassesGram2").checked, document.querySelector('select#filtreGrossier2').value);
 	});
-	//var floatingDiv = $('.floating-div');
-	//floatingDiv.addClass('sticky');
-	/*
-	// variables
-	var topPosition = $('.floating-div').offset().top - 10;
-	var floatingDivHeight = $('.floating-div').outerHeight();
-	var footerFromTop = $('footer').offset().top;
-	var absPosition = footerFromTop - floatingDivHeight - 20;
-	var win = $(window);
-	var floatingDiv = $('.floating-div');
-  
-	win.scroll(function() {
-	  if (window.matchMedia('(min-width: 768px)').matches) {
-		if ((win.scrollTop() > topPosition) && (win.scrollTop() < absPosition)) {
-		  floatingDiv.addClass('sticky');
-		  floatingDiv.removeClass('abs');
-  
-		} else if ((win.scrollTop() > topPosition) && (win.scrollTop() > absPosition)) {
-		  floatingDiv.removeClass('sticky');
-		  floatingDiv.addClass('abs');
-  
-		} else {
-		  floatingDiv.removeClass('sticky');
-		  floatingDiv.removeClass('abs');
-		}
-	  }
-	});
-	*/
 }
 
 
@@ -476,6 +448,7 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 	let cardsOdd = [];
 	let cardsEven = [];
 	let partsRealCard = [];
+	let partsRealCardNoTuples = [];
 	let motEntre = myCards[0].innerText.split(' - ')[0];
 	let i=0;
 	myCards.forEach(card => {
@@ -485,9 +458,10 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 			cardsEven.push(card.innerText.split(' - ')[1]);
 		else
 			cardsOdd.push(card.innerText.split(' - ')[1]);
+		partsRealCardNoTuples.push((card.innerText.split(' - ')[1]));
 	});
 	cardsEven.forEach(card => {
-		partsRealCard.push([cardsOdd[cardsEven.indexOf(card)], card]); //à revoir ça commmence
+		partsRealCard.push([cardsOdd[cardsEven.indexOf(card)], card]);
 	});
 
 	let successGrossier = [];
@@ -495,25 +469,10 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 	switch(valueFiltreGrossier) {
 		case 'filtreGrossUnabled2':
 			partsRealCard.forEach(card => {
-				successGrossier[partsRealCard.indexOf(card)] = true;
-				if(isSameClasseGramChecked) {
-					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
-						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
-						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
-						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
-						let classeGramMot1 = substr1.split("', '");
-						let classeGramMot2 = substr2.split("', '");
-						let classeGramMot3 = substr3.split("', '");
-						let passedInTheIf = false;
-						classeGramMot1.forEach(element => {
-							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
-								successSameClassGram[partsRealCard.indexOf(card)] = false;
-								passedInTheIf = true;
-							}
-						});
-						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
-					}
-				}
+				successGrossier.push(true); //premier mot de la card (= card[0])
+				successGrossier.push(true); //deuxième mot de la card (= card[1])
+				if(isSameClasseGramChecked)
+					successSameClassGram[partsRealCard.indexOf(card)] = checkClasseGram(card);
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
 				
@@ -521,29 +480,19 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 			break;
 		case 'filtreGrossOnly2':
 			partsRealCard.forEach(card => {
-				if(dicVulgaire.includes(card[0]) || dicVulgaire.includes(card[1]))
-					successGrossier[partsRealCard.indexOf(card)] = true;
+				//grossier
+				if(dicVulgaire.includes(card[0]))
+					successGrossier.push(true);
 				else
-					successGrossier[partsRealCard.indexOf(card)] = false;
-
-				if(isSameClasseGramChecked) {
-					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
-						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
-						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
-						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
-						let classeGramMot1 = substr1.split("', '");
-						let classeGramMot2 = substr2.split("', '");
-						let classeGramMot3 = substr3.split("', '");
-						let passedInTheIf = false;
-						classeGramMot1.forEach(element => {
-							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
-								successSameClassGram[partsRealCard.indexOf(card)] = false;
-								passedInTheIf = true;
-							}
-						});
-						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
-					}
-				}
+					successGrossier.push(false);
+				if(dicVulgaire.includes(card[1]))
+					successGrossier.push(true);
+				else
+					successGrossier.push(false);
+				
+				//classes gram
+				if(isSameClasseGramChecked)
+					successSameClassGram[partsRealCard.indexOf(card)] = checkClasseGram(card);
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
 				
@@ -551,29 +500,19 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 			break;
 		case 'filtreGrossNone2':
 			partsRealCard.forEach(card => {
-				if(dicVulgaire.includes(card[0]) || dicVulgaire.includes(card)[1])
-					successGrossier[partsRealCard.indexOf(card)] = false;
+				//grossier
+				if(dicVulgaire.includes(card[0]))
+					successGrossier.push(false);
 				else
-					successGrossier[partsRealCard.indexOf(card)] = true;
-
-				if(isSameClasseGramChecked) {
-					if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined"&& typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])] != "undefined") {
-						let substr1 = dicClassesGram[dicMot.indexOf(motEntre)].replace("['", "").replace("']","");
-						let substr2 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[0])].replace("['", "").replace("']","");
-						let substr3 = dicClassesGram[dicMot.indexOf(partsRealCard.indexOf(card)[1])].replace("['", "").replace("']","");
-						let classeGramMot1 = substr1.split("', '");
-						let classeGramMot2 = substr2.split("', '");
-						let classeGramMot3 = substr3.split("', '");
-						let passedInTheIf = false;
-						classeGramMot1.forEach(element => {
-							if(!classeGramMot2.includes(element) || !classeGramMot3.includes(element)) {
-								successSameClassGram[partsRealCard.indexOf(card)] = false;
-								passedInTheIf = true;
-							}
-						});
-						if(!passedInTheIf) successSameClassGram[partsRealCard.indexOf(card)] = true;
-					}
-				}
+					successGrossier.push(true);
+				if(dicVulgaire.includes(card[1]))
+					successGrossier.push(false);
+				else
+					successGrossier.push(true);
+				
+				//classes gram
+				if(isSameClasseGramChecked)
+					successSameClassGram[partsRealCard.indexOf(card)] = checkClasseGram(card);
 				else
 					successSameClassGram[partsRealCard.indexOf(card)] = true;
 				
@@ -581,13 +520,35 @@ function updateCardGris(isSameClasseGramChecked, valueFiltreGrossier){
 			break;
 	}
 
-	console.log(successGrossier[4])
-	console.log(successSameClassGram[4])
-	console.log(partsRealCard[4])
-	partsRealCard.forEach(card => {
-		if(!successGrossier[partsRealCard.indexOf(card)] || !successSameClassGram[partsRealCard.indexOf(card)])
-			myCards[partsRealCard.indexOf(card)].style.backgroundColor = '#bdbebd';
+	console.log(successGrossier[4]) //test
+	console.log(successSameClassGram[4]) //test
+	console.log(partsRealCard[4]) //test
+	let indexTemp = 0;
+	let realIndex = 0;
+	partsRealCardNoTuples.forEach(card => {
+		if(indexTemp == 2) {
+			realIndex++;
+			indexTemp = 0;
+		}
+		if(!successGrossier[partsRealCardNoTuples.indexOf(card)] || !successSameClassGram[realIndex])
+			myCards[partsRealCardNoTuples.indexOf(card)].style.backgroundColor = '#bdbebd';
+		indexTemp++;
 	});
+}
+
+function checkClasseGram(card) {
+	if(typeof dicClassesGram[dicMot.indexOf(mot)] != "undefined" && typeof dicClassesGram[dicMot.indexOf(card[1])] != "undefined" && typeof dicClassesGram[dicMot.indexOf(card[1])] != "undefined") {
+		let substr1 = dicClassesGram[dicMot.indexOf(card[0])].replace("['", "").replace("']","");
+		let substr2 = dicClassesGram[dicMot.indexOf(card[1])].replace("['", "").replace("']","");
+		let classeGramMot1 = substr1.split("', '");
+		let classeGramMot2 = substr2.split("', '");
+		oneInCommon = false
+		classeGramMot1.forEach(element => {
+			if(classeGramMot2.includes(element))
+				oneInCommon = true;
+		});
+		return oneInCommon;
+	}
 }
 
 
@@ -657,8 +618,10 @@ function choixLettre() {
 		//document.getElementById('choixPhoneme').classList.remove('choixPhonemeRedBorder');
 		document.getElementById('choixLettre').value = 'true';
 		document.getElementById('choixPhoneme').value = 'false';
-		//document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Lettres';
-		//document.getElementById("h3textToChange").innerText = "Nombre de lettres à échanger :";
+		if(langue == "fr")
+			document.getElementById("h3textToChange").innerText = "Nombre de lettres à échanger :";	
+		else if(langue == "en")
+			document.getElementById("h3textToChange").innerText = "Number of letters to exchange :";
 		saveTuple = [];
     }
 }
@@ -672,16 +635,10 @@ function choixPhoneme() {
 		//document.getElementById('choixPhoneme').classList.add('choixPhonemeRedBorder');
 		document.getElementById('choixPhoneme').value = 'true';
 		document.getElementById('choixLettre').value = 'false';
-		/*
-		if(langue == "fr") {
-			document.getElementById("h3textToChange").innerText = "Nombre de phonèmes à échanger :";	
-			document.getElementById('pSelectLettrePhon').innerHTML = 'Sélectionné : Phonèmes';
-		}
-		else if(langue == "en") {
+		if(langue == "fr")
+			document.getElementById("h3textToChange").innerText = "Nombre de phonèmes à échanger :";
+		else if(langue == "en")
 			document.getElementById("h3textToChange").innerText = "Number of phonemes to exchange :";
-			document.getElementById('pSelectLettrePhon').innerHTML = 'Selected : Phonemes';
-		}
-		*/
 		saveTuple = [];
     }
 }
