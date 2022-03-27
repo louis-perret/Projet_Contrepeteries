@@ -1,8 +1,8 @@
 # Contrepèterie : l'Art de dé**c**aler les **s**ons !
 * * *
-### Application python sur console permettant la recherche de contrepèteries dans un mot et dans une phrase
+## Application python sur console permettant la recherche de contrepèteries dans un mot et dans une phrase
 
-<h1><u>Guide de lancement</u></h1>
+<h3><u>Guide de lancement</u></h3>
 
 ```python
 pip3 install -r requirements.txt #permet de télécharger le fichier requirements.txt
@@ -43,7 +43,7 @@ Vous trouverez des exemples d'utilisations tout le long de l'application afin de
 * * *
 * * *
 * * *
-### Site web
+## Site web
 * * *
 Le site web est disponible à l'adresse suivante : 
 https://sancy.iut-clermont.uca.fr/~lafourcade/contrepetries-regroupees/contrepeterie/fr/aide_a_la_contrepeterie.html
