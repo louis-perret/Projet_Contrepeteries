@@ -165,24 +165,3 @@ def affichageBasePlusieurs(mot,dicoResWord,dicoResPhon):
 	for key in dicoResPhon.keys():
 		print(f"{i}   {key} phonème(s) - x phonème(s) --> {len(dicoResPhon[key])} résultats")
 		i=i+1
-
-
-
-
-"""
-Objectif : chercher des contrepèterie circulaires
-Paramètres :
-	-Entrée :
-		x : taille enlevée
-		y : taille du rajout
-		w : nombre de mot dans la boucle
-		dico : type du dictionnaire
-		motDepart : mot de départ
-		motPrec : mots précédents dans la boucle
-		sylabe : sylabe échangée dans le mot de départ
-		index : index de la sylabe échangée dans le mot de départ
-	-Sortie :
-		listeCirculaires : liste des contrepèterie circulaires fonctionelles 
-"""
-
-#def rechercheCirculaire (motDepart, x, y, w, dico, motPrec, sylabe, index):

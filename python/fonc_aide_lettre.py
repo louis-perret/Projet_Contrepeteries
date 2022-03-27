@@ -55,7 +55,7 @@ def aide(mot,x,y,mode,langue,dicoDico):
 			for couple in listeCouple: #Pour chaque combinaison possible
 				nvtMot=replacer(mot,couple,lettre[0],x) #On remplace
 				if coupleLettre[1] != couple and isInDico(mode, nvtMot): #Si le mot existe et si on n'a pas remplacer par les mêmes lettres
-					if (filtreTheme(nvtMot,listeDico,dicoDico['config']['Themes']) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config']) and verifPluriel(nvtMot,dicoDico["DicoGram"],dicoDico["pluriel"])):
+					if (filtreTheme(nvtMot,listeDico,dicoDico['config']['Themes']) and gramFiltre(classGramMotOrigine,nvtMot,mode,dicoGram,dicoPhon,dicoDico['config']) and verifPluriel(nvtMot,dicoDico["DicoGram"],dicoDico["pluriel"], mode)):
 						if(mode=='phon'):
 							listeMotCop.append((nvtMot,coupleLettre[1],couple,dicoPhon[nvtMot][0]))
 						if(mode=='word'):
@@ -69,90 +69,18 @@ def aide(mot,x,y,mode,langue,dicoDico):
 	return listeMotCop
 
 #---------- a enlever plus tard
-def verifPluriel (mot, dicogram, dicoplur):
+def verifPluriel (mot, dicogram, dicoplur,mode):
 	testC = False
 	testP = True
-	for classe in dicogram[mot]:
+	if(mode == "phon"):
+		return True
+	for classe in dicogram[mot.lower()]:
 		if classe == "verbe" :
 			testC = True
 	if dicoplur[mot] == "p":
 		testP = False
 	return testC and testP
 
-
-
-# ----------------------------------------------------------------------------
-"""
-Gènère les quadruplets de l'aide, avec l'échange d'une seule lettre entre les mots.
-Prend en argument la sortie de aideSonSub et l'index du mot saisie par l'utilisateur
-
-retourne une liste de tuple de format :
-(lettre1,lettre2,mot1',mot2',mot2)
-lettre1 -> lettre saisie, que l'on désir échanger
-lettre2 -> lettre selectionnée ensuite que l'on veut échanger avec lettre1
-
-mot2 -> obtenu en échangeant lettre1 par lettre2 dans le mot d'origine
-
-mot1'-> mot contenant lettre1
-mot2'-> mot contenant lettre2
-"""
-"""
-def aideLettreRechDico(index, listeDeMotCop):
-	index -= 1
-	NombreDeMot = len(listeDeMotCop)
-	compteur = 0
-	listeDeMotNONCop = []
-	listeDeRacines = []
-	listeAffichage = []
-	# config filtres
-	with open('data/config.json') as diconfig_:
-		diconfig = json.load(diconfig_)
-
-	tsv_file = open("data/Lexique383.tsv", encoding="utf-8")
-	lignes = csv.reader(tsv_file, delimiter="\t")
-	# lit ligne par ligne du DICO (près de 100k lignes)
-	# changer filtres
-	diconfig = changerfiltre(diconfig)
-	# bd filtres
-	with open('data/DicoVulgaire.json') as vulgaire:
-		BDvulgaire = json.load(vulgaire)
-
-	for mot in lignes:
-		mot = mot[0] #On recupère le mot qu'on veut tester
-
-		for ChaqueLettre in range(len(listeDeMotCop)):
-
-			test1 = listeDeMotCop[ChaqueLettre][2] in mot #Si la nouvelle lettre du mot listeDeMotCop[ChaqueLettre][2] est dans le mot du dictionnaire
-			test2 = mot[:5] not in listeDeRacines
-			# Racines:
-			if index == ChaqueLettre and test1 and test2: #Si numéro du mot qu'on a sélectionné = index ChaqueLettre
-				#print(f" '{listeDeMotCop[ChaqueLettre][1]}' ")
-				testDansMot = replacer(mot, listeDeMotCop[ChaqueLettre][1],
-									   mot.index(
-					listeDeMotCop[ChaqueLettre][2]),1) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
-				# la lettre est dans le mot
-				if isInDico('word', testDansMot):
-					# test we need
-					if diconfig["FiltreGrossier"] == "Oui":
-
-						if (listeDeMotCop[ChaqueLettre][0] in BDvulgaire or testDansMot in BDvulgaire or mot in BDvulgaire): #mot de base grossié, mot trouvé grossié ou mot du dico grossié
-							listeDeRacines.append(mot[:5])
-
-							listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-												   listeDeMotCop[ChaqueLettre][2],
-												   listeDeMotCop[ChaqueLettre][0],
-												   testDansMot, mot))
-
-					else:
-						listeDeRacines.append(mot[:5])
-
-						listeAffichage.append((listeDeMotCop[ChaqueLettre][1],
-											   listeDeMotCop[ChaqueLettre][2],
-											   listeDeMotCop[ChaqueLettre][0],
-											   testDansMot, mot))
-					compteur += 1
-	return (listeAffichage, compteur, diconfig)
-"""
 
 #-----------------------------------------------------------------------------
 """
@@ -183,6 +111,8 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 	for mot in lignes:
 		i = i+1
 		bar.update(i)
+		if(not verifPluriel(mot[0],dicoGram, dicoDico["pluriel"],"word")):
+			continue
 		if mode == 'word' :
 			mot = mot[0] #On recupère le mot qu'on veut tester
 		elif mode == 'phon' :
@@ -196,7 +126,7 @@ def aideRechDicoGeneral(mot_origine, index, listeDeMotCop, minimum, maximum, dic
 				if test1 and test2: #Si c'est la combinaison sélectionnée avant
 					testDansMot = replacer(mot, listeDeMotCop[index][1],mot.index(listeDeMotCop[index][2]),len(listeDeMotCop[index][2])) #replacer dans mot, à partir de l'index de là où se situe la nouvelle lettre par l'ancienne lettre
 					# la lettre est dans le mot
-					if testDansMot != Mot_to_Phon_Only(arbre_mot, mot_origine) and isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']):
+					if testDansMot != Mot_to_Phon_Only(arbre_mot, mot_origine) and isInDico(mode, testDansMot) and motIsInBorne(minimum,maximum,testDansMot) and gramFiltre(classGramMotOrigine,testDansMot,mode,dicoGram,dicoPhon,dicoDico['config']) and testDansMot != mot_origine:
 						if mode == "phon" :
 							testTheme1 = dicoPhon[testDansMot]
 							testTheme2 = dicoPhon[mot]
@@ -276,90 +206,6 @@ def affiRechLettre(listeAffichage, compteur, mot_origine):
 
 		else:
 			print("\nL'entrée n'est pas valide, réessayez")
-
-
-"""
-# ----------------------------------------------------------------------------
-# Partie sur les syllabes :
-# ----------------------------------------------------------------------------
-"""
-"""
-Retourne un dico dont les clefs sont toutes les tranches du mots plus grandes
-que tailleMin
-"""
-
-def tranchesMot(mot, tSlice):
-
-	dicoSliceCom = {}
-	for i in range(len(mot)):
-		for j in range(i+1, len(mot)+1):
-			if mot[i:j] != mot and j-i <= tSlice: #Pas plus de 3 lettres
-				dicoSliceCom[mot[i:j]] = []
-
-	return dicoSliceCom
-# ----------------------------------------------------------------------------
-"""
-génère un itérateur de tuples contenant (debutMot,finMot) autour de toutes
-les différentes tranches possible du mot.
-"""
-def DebFinMot(mot, tSlice):
-
-	for i in range(len(mot)):
-		for j in range(i+1, len(mot)+1):
-			if mot[i:j] != mot and j-i <= tSlice:
-				yield (mot[:i], mot[j:]) #retourne un générateur (itérateur qu'on ne parcours qu'une fois)
-
-
-# ----------------------------------------------------------------------------
-"""
-Prend en argument le mot dont on veut les contrepétries,
-La fonction retourne un dictionnaire avec en clefs la slice et en valeur
-un ensemble contenant les mots contenant cette slice du mot d'origine
-"""
-
-
-def aideSyllSubs(mot_origine):
-
-	tsv_file = open("data/fr/dicoFr.csv", encoding="utf-8")
-	Lexlignes = csv.reader(tsv_file, delimiter=",")
-	"""
-	with open('data/DicoVulgaire.json') as vulgaire:
-		BDvulgaire = json.load(vulgaire)
-	"""
-	dicoSliceCom = tranchesMot(mot_origine, 3)
-
-
-# recherche dans le lexique la correspondance des slices
-	for ligne in Lexlignes:
-		# on ne fait pas de recherche sur les mots composés et on exclue le mot d'entrée
-		if '-' not in ligne[0] and ' ' not in ligne[0] and ligne[0] != mot_origine:
-			ensTmp = []
-			LexMot = ligne[0] #=mot qu'on teste du dico Lexique383
-
-			iterDebFin = DebFinMot(mot_origine, 3)
-# pour chaque tranche on recherche les mots dans lexique qui commencent
-# et finissent de la même façon que le mot_origine:
-# ex. danse -> slice: "an", on cherche les mots commençant
-# par "d" et finissant par "se".
-
-			for slice in dicoSliceCom.keys():
-				try:
-					deb, fin = next(iterDebFin) #prend la valeur suivante de l'itérateur
-				except:
-					break
-
-				test = (len(LexMot) - len(deb) - len(fin)) <= 5
-				if LexMot.startswith(deb) and LexMot.endswith(fin) and test: #si le mot commence et se termine par ce qu'on veut
-					dicoSliceCom[slice].append(LexMot)
-	# on supprime les tranches qui n'ont pas de résultats
-	dicoTmp = {}
-	for i in dicoSliceCom.keys():
-		if dicoSliceCom[i] != []:
-			dicoTmp[i] = dicoSliceCom[i]
-
-	print(f"Mot saisie : {mot_origine}")
-	print(dicoSliceCom['c'])
-	return dicoSliceCom
 
 
 # -----------------------------------------------------------------------------

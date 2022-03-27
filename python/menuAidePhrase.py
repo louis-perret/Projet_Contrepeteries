@@ -142,8 +142,8 @@ def rechercheToutesContrepeteriesPhrase(phrase,langue, dicoDico):
 		affichagePhraseLettre(listeResWord)
 		if(listeResPhon != 1 ):
 			print("\n")
-			if (affiRechFiltre(listeResPhon,'phon',True, 1, 1, len(listeResPhon)) == 0) :
-				continuer = 0
+			if (affiRechFiltre(listeResPhon,'phon',True, 1, 1, len(listeResPhon)) == 1) :
+				continuer = 1
 		else:
 			print("\n")
 			print("Pas de résultats pour l'échange avec les phonèmes")

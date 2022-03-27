@@ -40,10 +40,19 @@ def creerFichierGramm(fichierSrc,fichierDest):
     read_file = csv.reader(file, delimiter=",")
     dicoClassGramm={}
     for ligne in read_file:
-        dicoClassGramm[ligne[0]]=ligne[3][2:-2].replace('\'','').replace(' ','').split(',')
+        dicoClassGramm[ligne[0].lower()]=ligne[3][2:-2].replace('\'','').replace(' ','').split(',')
     with open(fichierDest,'w') as file2:
         json.dump(dicoClassGramm,file2)
 
+"""
+Objectif : Créer un fichier qui contient un dico : key -> un mot, value -> son nombre (s'il est pluriel ou singulier)
+Paramètres :
+    -Entrée :
+        fichierSrc : fichier source
+        fichierDest : fichier destination
+    -Sortie :
+        aucun
+"""
 def creerFichierPluriel(fichierSrc, fichierDest):
     file = open(fichierSrc, encoding="utf-8")
     read_file = csv.reader(file, delimiter=",")
@@ -56,6 +65,6 @@ def creerFichierPluriel(fichierSrc, fichierDest):
 
 langue="fr"
 fichierSrc=f"data/{langue}/dico{langue.capitalize()}.csv"
-#creerFichierGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
-#creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
+creerFichierGramm(fichierSrc,f"data/{langue}/dicoClassGramm{langue.capitalize()}.json")
+creerFichierPhon(fichierSrc,f"data/{langue}/dicoPhoncom{langue.capitalize()}.json")
 creerFichierPluriel(fichierSrc,f"data/{langue}/dicoplur{langue.capitalize()}.json")

@@ -258,124 +258,6 @@ def createLPhrase4 (WordsContreP, phrase, i, j) :
 			Lphrases.append((tmp, L1, L2))
 	return Lphrases
 
-"""
-def mixSyllabeCoupe (word1, word2, mode, ij, ij2) :
-	listefinal = []
-	liste1 = []
-	for j in range(len(word1)) :
-		if (j < 1 and j > 0) or (j > len(word1)-1) :
-			continue
-		tmp10 = replacer(word1," ",j,0)
-		tmp10 = tmp10.split(" ")
-		tmp11 = tmp10[0]
-		tmp12 = tmp10[1]
-		for i in range(len(tmp11)) :
-			if i < 1 and i > 0 or i > len(tmp11)-1 :
-				continue
-			tmp110 = replacer(tmp11," ",i,0)
-			tmp110 = tmp110.split(" ")
-			tmp111 = tmp110[0]
-			tmp112 = tmp110[1]
-			for k in range(len(tmp12)) :
-				if k < 1 and k > 0 or k > len(tmp12)-1 :
-					continue
-				tmp120 = replacer(tmp12," ",k,0)
-				tmp120 = tmp120.split(" ")
-				tmp121 = tmp120[0]
-				tmp122 = tmp120[1]
-				if isInDico(mode, tmp11) and isInDico(mode, tmp121) and isInDico(mode, tmp122) :
-					liste1.append(tmp11+" "+tmp121+" "+tmp122)
-				if isInDico(mode, tmp111) and isInDico(mode, tmp112) and isInDico(mode, tmp121) and isInDico(mode, tmp122) :
-					liste1.append(tmp111+" "+tmp112+" "+tmp121+" "+tmp122)
-			if isInDico(mode, tmp111) and isInDico(mode, tmp112) and isInDico(mode, tmp12) :
-				liste1.append(tmp111+" "+tmp112+" "+tmp12)
-		if (isInDico(mode, tmp11) and isInDico(mode, tmp12)) or (tmp11 == "" and isInDico(mode, tmp12)) :
-			liste1.append(tmp11+" "+tmp12)
-	liste2 = secondeVerif(word2, mode)
-	liste1 = list(set(liste1))
-	liste2 = list(set(liste2))
-	for l in enumerate(liste1) :
-		for m in enumerate(liste2) :
-			listefinal.append([l[1],m[1],ij,ij2])
-	return listefinal
-
-
-def secondeVerif (word2,mode) :
-	liste = []
-	for j in range(len(word2)) :
-		if (j < 1 and j > 0) or (j > len(word2)-1) :
-			continue
-		tmp20 = replacer(word2," ",j,0)
-		tmp20 = tmp20.split(" ")
-		tmp21 = tmp20[0]
-		tmp22 = tmp20[1]
-		for i in range(len(tmp21)) :
-			if i < 1 and i > 0 or i > len(tmp21)-1 :
-				continue
-			tmp210 = replacer(tmp21," ",i,0)
-			tmp210 = tmp210.split(" ")
-			tmp211 = tmp210[0]
-			tmp212 = tmp210[1]
-			for k in range(len(tmp22)) :
-				if k < 1 and k > 0 or k > len(tmp22)-1 :
-					continue
-				tmp220 = replacer(tmp22," ",k,0)
-				tmp220 = tmp220.split(" ")
-				tmp221 = tmp220[0]
-				tmp222 = tmp220[1]
-				if isInDico(mode, tmp21) and isInDico(mode, tmp221) and isInDico(mode, tmp222) :
-					liste.append(tmp21+" "+tmp221+" "+tmp222)
-				if isInDico(mode, tmp211) and isInDico(mode, tmp212) and isInDico(mode, tmp221) and isInDico(mode, tmp222) :
-					liste.append(tmp211+" "+tmp212+" "+tmp221+" "+tmp222)
-			if isInDico(mode, tmp211) and isInDico(mode, tmp212) and isInDico(mode, tmp22) :
-				liste.append(tmp211+" "+tmp212+" "+tmp22)
-		if (isInDico(mode, tmp21) and isInDico(mode, tmp22)) or (tmp21 == "" and isInDico(mode, tmp22)) :
-			liste.append(tmp21+" "+tmp22)
-	return liste
-"""
-#------------------------------------------------------------------------------
-
-
-"""
-circulaireMixSyllabes
-effectue des recherches circulaires dans une phrase
-"""
-"""
-def circulaireMixSyllabes (phrase, mode):
-	results = []
-	for i in range(3, len(phrase)):
-		for j in range(min(len(enumerate(phrase)))):
-			for k in range(j, min(len(enumerate(phrase))))
-				results.extends(circulaire(i,j,phrase,mode,[]))
-	return results
-"""
-"""
-def circulaire (i,j,k,phrase,mode,sylabePrec):
-	results = []
-	for mot in enumerate(phrase):
-		for x in range(j, k) :
-			for lettre in enumerate(mot): #Pour chaque lettre du mot
-				coupleLettre=recupCouple(mot,x,lettre[0]) #on recupère le prochain couple de lettre à échanger
-				if coupleLettre[0] :
-					if sylabePrec is not None :
-						nvtMot=replacer(mot,sylabePrec,lettre[0],x) #On remplace
-						if coupleLettre[1] != couple and isInDico(mode, nvtMot):
-							if i == 0 :
-								results = [nvMot, coupleLettre]
-								return results
-							else :
-								results = [nvMot].extend(circulaire(i-1,j,k,phrase.remove(mot),mode,coupleLettre))
-								return results
-					else :
-						tmpResults = circulaire(i-1,j,k,phrase.remove(mot),mode,coupleLettre)
-						nvMot = replacer(mot, results.pop(-1), lettre[0], x)
-						if coupleLettre[1] != couple and isInDico(mode, nvtMot):
-							results = [nvMot].extend(tmpResults)
-							return results
-				
-"""
-
-
 
 
 ###############################################################################
@@ -421,35 +303,6 @@ def Phon_to_Phrase(PhrasePhoneme, phraseOrigine, pos1, pos2,langue,dicoPhon):
 
 
 	listeretour.append(listePhon)
-	"""
-	for i in range(len(listePhon)):
-		for j in range(i,len(len(listePhon))):
-	"""
-	"""
-	for i in range(len(listePhon[pos1])):
-		for j in range(len(listePhon[pos2])):
-			string = phraseOrigine[:]
-			string[pos1] = listePhon[pos1][i]
-			string[pos2] = listePhon[pos2][j]
-
-
-	for mot in listeretour[0]:
-		for mot2 in listeretour[1]:
-			res = mot + "" + mot2
-
-
-	"""
-
-	"""
-	def(listeRes,indice,nbMots):
-		if(indice == nbMots):
-			liste
-		for(mot in listeretour[indice]):
-			listeRe += "" + mot
-
-	def(listeRes,indice,nbMots):
-	"""
-
 
 # Produit de toutes les combinaisons possibles des mots
 # qui ont changer par rapport à la phrase d'origine
@@ -502,7 +355,7 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 		while True:
 			try:
 				if(isAllContrepeterie):
-					choixutilisateur = input("\na - Quitter la recherche\nz - page précédente\ne - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
+					choixutilisateur = input("\nz - Quitter la recherche\ne - page précédente\nr - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
 				else:
 					choixutilisateur = input(
 				"\na - quitter l'application\nz - revenir au menu principal\ne - page précédente\nr - page suivante\nou saisissez un des index pour obtenir toutes les ortographes : ")
@@ -562,6 +415,14 @@ def affiRechFiltre(nvDico,mode,isAllContrepeterie, noPage, nbPage, taille):
 			affichagePhraseLettre(nvListe)
 
 
+"""
+Objectif : Affiche le résultats de la recherche de contrepèteries par échange de lettres dans une phrase
+Paramètres :
+    -Entrée :
+        listeRes : liste des réponses
+    -Sortie :
+        aucun
+"""
 def affichagePhraseLettre(listeRes):
 	if(len(listeRes) == 0):
 		print("Pas de résultats pour l'échange avec les lettres")
@@ -572,3 +433,4 @@ def affichagePhraseLettre(listeRes):
 		print(f"{count} --> {contrepet}")
 		count += 1
 	print('\nNombre de résultats pour les échanges avec les lettres : ', count)
+	input("Tapez sur entrée pour revenir au menu")

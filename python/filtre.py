@@ -18,6 +18,14 @@ def clear():
 			print("\n"*60)
 #-------------------------------------------------------------------------------
 
+"""
+Objectif : Explication des filtres
+Paramètres :
+    -Entrée :
+    	aucun
+    -Sortie :
+        aucun
+"""
 def explicationFiltre():
 	print("Explication des différents filtres disponibles : \n")
 	print("\t-Filtre grammaticale : Permet de filtrer les résultats suivant leur classe grammaticale.\n\tIl y a deux filtres grammaticales disponibles :\n\t\t 1.Garde les résultats qui possède au moins une classe grammaticale en commun\n\t\t 2.Sélectionner une classe grammaticale en particulier et garde les résultats qui possède cette classe.")
@@ -32,6 +40,8 @@ def explicationFiltre():
 	print("Deuxième filtre grammaticale : je sélectionne 'verbe' comme classe grammaticale, je recherche dans 'code' -> j'aurais que des verbes comme résultats")
 	print("Filtre par thème : Si je sélectionne le thème Vulgaire et Informatique, je recherche dans code -> j'aurais soit des résultats soit grossiés, soit en rapport avec l'informatique")
 	print("\n")
+
+
 """
 Objectif : Change une partie/toute la configuration de l'utilisateur
 Paramètres :
@@ -76,11 +86,6 @@ def configFiltre(tabDicoThemeDispo,dicoDico):
 		elif(choix==3):
 			diconfig["EffacerComplétement"] = selectionChoix("\nActiver effaçage définitif (empêche de voir les saisies précédantes)\n(a:Oui/z:Non/autre:defaut):")
 
-	"""
-	print("\nVoici votre nouvelle configuration : ")
-	for i in diconfig.keys():
-		print(f"{i}  -  {diconfig[i]}")
-	"""
 	with open('data/config.json','w') as diconfig_:
 		json.dump(diconfig,diconfig_) #écrit dans le fichier
 
@@ -130,9 +135,9 @@ Paramètres :
 """
 def choixFiltreGrammatical(langue):
 	n = selectionChoix("\nActiver filtre Grammaticale\n(a:Oui/z:Non/autre:defaut):")
-	if n == "a":
+	if n == "Oui":
 		n=selectionChoix("\na:Garder les résultats de mêmes classes grammaticales (garde les échange nom <=> nom mais pas nom <=> adjectifs par exemple) ,ou\nz:Sélectionner une classe grammaticale en particulier : ")
-		if(n=="a"):
+		if(n=="Oui"):
 			return n
 		else:
 			n=selectionClasseGrammaticale(langue)
@@ -260,7 +265,7 @@ def gramFiltre(classGramMotOrigine, mot2, mode, dicoGram, dicoPhon, diconfig):
 	if(mode == "phon"): #si le mode est phonétique -> mot2 est en écriture phonétique
 		mot2=dicoPhon[mot2][0] #on récupère son orthographe pour pouvoir ensuite récupérer correctement ses classes grammaticales
 
-	classGramMot2 = dicoGram[mot2]
+	classGramMot2 = dicoGram[mot2.lower()]
 
 	if(diconfig["FiltreGrammatical"] == "Oui"):
 		for classGram in classGramMotOrigine:
