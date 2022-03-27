@@ -8,7 +8,6 @@
 ### Site web
 * * *
 Le site web est disponible à l'adresse suivante : 
-* * *
 https://sancy.iut-clermont.uca.fr/~lafourcade/contrepetries-regroupees/contrepeterie/fr/aide_a_la_contrepeterie.html
 * * *
 Si vous souhaitez lancer vous même le site, il vous suffit de lancer la page /contrepeterie/fr/presentation.html pour arriver à la page principale du site. 
